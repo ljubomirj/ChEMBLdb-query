@@ -27,7 +27,7 @@ Key flags and defaults from `src/db_llm_query_v1.py`.
 ## Execution controls
 
 - `--max-retries`: Iterations (default: `20`).
-- `-t, --timeout`: Query timeout in seconds (default: `60`).
+- `-t, --timeout`: Query timeout in seconds (default: `600`).
 - `--history-window`: Iterations kept in context (default: `11`).
 - `--judge-score-threshold`: Stop if score >= threshold (default: `0.9`).
 - `--judge-call-retries`: Retries per judge call (default: `3`).

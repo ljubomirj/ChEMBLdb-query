@@ -25,7 +25,7 @@ class OpenRouterProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'openai/gpt-5.1-codex-mini',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
         temperature: float = 1.0,
     ):

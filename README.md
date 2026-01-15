@@ -122,7 +122,7 @@ Options and defaults:
 - `--judge-model-list`: judge tier (`cheap|expensive|super|all`). Default: `expensive`.
 - `--judge-model-cycle`: judge cycling (`random|orderly|cicada`). Default: unset (uses SQL cycle).
 - `--max-retries`: max iterations. Default: `20`.
-- `-t, --timeout`: SQLite timeout seconds. Default: `60`.
+- `-t, --timeout`: SQLite timeout seconds. Default: `600`.
 - `-a, --auto`: auto-save results to timestamped CSV. Default: `false`.
 - `-f, --format`: output format (`json|csv|table`). Default: `table`.
 - `-v, --verbose`: verbosity; repeat for more (`-v/-vv/-vvv`). Default: `0`.
@@ -194,7 +194,7 @@ Notebook reference:
 Reference:
 [Searching ChEMBL with Gemini](https://patwalters.github.io/Searching-ChEMBL-with-Gemini/)
 
-Equivalent run with a single run label (shared across logs and outputs):
+Attempt at equivalent run with a single run label (shared across logs and outputs):
 ```bash
 RUN_LABEL=$(date +%Y%m%d_%H%M%S)
 PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABEL}" -q "get the smiles,chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
@@ -202,5 +202,20 @@ PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABE
 
 Current canonical query run (descriptive run label + CSV output):
 ```bash
-RUN_LABEL="query1_kinase_after_2022_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+RUN_LABEL="query1_kinase_after_2022_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=300000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
 ```
+The result .csv. table
+```bash
+./query_results_query1_kinase_after_2022_relaxed_20260115_052049.csv
+```
+
+The log file with everything going on, the queries, the responses, the system context with database schema, the user prompts, the SQL returned by the LLM call, the result of running the SQL on the database, is 
+```bash
+./logs/db_llm_query1_kinase_after_2022_relaxed_20260115_052049.log
+```
+
+If there are multiple iterations, their results will be in dir ./logs/intermediate
+```bash
+./logs/intermediate/query_results_query1_kinase_after_2022_relaxed_20260115_052049_iter1.csv
+```
+

@@ -24,7 +24,7 @@ class CerebrasProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'zai-glm-4.7',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
         base_url: Optional[str] = None,
         temperature: float = 1.0,

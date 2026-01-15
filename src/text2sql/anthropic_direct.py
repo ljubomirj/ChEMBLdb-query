@@ -33,7 +33,7 @@ class AnthropicProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'claude-sonnet-4.5',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
         temperature: float = 1.0,
     ):

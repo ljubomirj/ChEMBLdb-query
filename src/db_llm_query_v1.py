@@ -534,7 +534,7 @@ class ChEMBLLLMQuery:
         judge_model_cycle: Optional[str] = None,
         verbose: int | bool = False,
         max_retries: int = 20,
-        timeout: int = 60,
+        timeout: int = 600,
         history_window: int = 11,
         judge_score_threshold: float = 0.9,
         judge_call_retries: int = 3,
@@ -1406,7 +1406,7 @@ def main() -> None:
     )
 
     parser.add_argument('--max-retries', type=int, default=20, help='Max iterations (default: 20)')
-    parser.add_argument('-t', '--timeout', type=int, default=60, help='Query timeout in seconds (default: 60)')
+    parser.add_argument('-t', '--timeout', type=int, default=600, help='Query timeout in seconds (default: 600)')
     parser.add_argument('-a', '--auto', action='store_true', help='Auto-save results to timestamped CSV')
     parser.add_argument('-f', '--format', choices=['json', 'csv', 'table'], default='table', help='Output format')
     parser.add_argument('-v', '--verbose', action='count', default=0, help='Verbose output; repeat for more (-vv, -vvv)')
