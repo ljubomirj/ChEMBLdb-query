@@ -22,7 +22,7 @@ Create a `.env` (ignored by git) from the template:
 ```bash
 cp .env.example .env
 ```
-Fill in any of:
+Then open `.env` and add the missing API keys (the template placeholders are blank). Fill in any of:
 ```
 OPENROUTER_API_KEY=
 CEREBRAS_API_KEY=
@@ -47,6 +47,58 @@ uv run python src/db_llm_query.py --no-provider -q "..."
 
 ## Provider reference
 See `doc/providers.md` for providers, default models, and model IDs.
+
+## Agentic files and directories
+- `AGENTS.md`: repo-specific agent instructions; includes the copied global CLAUDE learning-loop text so the requirement is visible to anyone who checks out the repo.
+- `.claude/LEARNINGS.md`: per-repo learning log required by global agent instructions.
+- `.claude/skills`: symlink to `.codex/skills`.
+- `.codex/skills/`: skill definitions used by agents:
+  - `chembl-database/` (schema/query guidance, references, and scripts)
+  - `db-llm-query-chembl/` (outer-loop `db_llm_query.py` runner guidance)
+- `db-llm-query-chembl.skill`: packaged skill artifact.
+- Note: there is no repo-local `CLAUDE.md` in this tree (some setups use a user-level global `CLAUDE.md`).
+
+Acknowledgement: created with the codex-5.2-high agent.
+
+## Public release file inventory (as of 2026-01-15)
+This list reflects files intended for the public repo. Excluded: local `.env` files (except `.env.example`), `.venv/`, `.git*`, editor swap/backup files, `__pycache__/`/`*.pyc`, and temp files. Some logs and run outputs are intentionally included.
+
+- `.claude/LEARNINGS.md`: Per-repo learning log required by global agent instructions.
+- `.codex/skills/chembl-database/SKILL.md`: Skill definition and workflow notes for ChEMBL database querying.
+- `.codex/skills/chembl-database/references/api_reference.md`: Reference notes for the chembl-database skill.
+- `.codex/skills/chembl-database/scripts/example_queries.py`: Example ChEMBL query snippets for the skill.
+- `.codex/skills/db-llm-query-chembl/SKILL.md`: Skill definition and workflow guidance for running db_llm_query.
+- `.codex/skills/db-llm-query-chembl/references/cli_flags.md`: Reference for db_llm_query CLI flags and defaults.
+- `.codex/skills/db-llm-query-chembl/references/output_layout.md`: Reference for output file naming and layout.
+- `.codex/skills/db-llm-query-chembl/references/prompt_patterns.md`: Prompt templates for reliable Text-to-SQL results.
+- `.codex/skills/db-llm-query-chembl/scripts/inspect_results.py`: Polars-based CSV inspector for query outputs.
+- `.codex/skills/db-llm-query-chembl/scripts/rdkit_similarity.py`: RDKit similarity helper for SMILES-based exports.
+- `.env.example`: Template environment file with provider API key placeholders.
+- `.python-version`: Python version pin for tooling (3.13).
+- `AGENTS.md`: Repo-specific agent instructions and policies.
+- `README.md`: Primary project documentation and CLI usage notes.
+- `database/INSTALL`: Instructions for downloading and unpacking ChEMBLdb releases.
+- `db-llm-query-chembl.skill`: Packaged skill artifact for agent tooling.
+- `doc/AGENTS_TEXT2CHEMBL.md`: Guidance for agent prompts and text-to-ChEMBL conventions.
+- `doc/chembl_database_schema.md`: Cached schema docs (tables/columns/sample rows) for the SQLite DB.
+- `doc/chembl_prompt_hints.md`: Prompt hints and lookup tables to steer LLM SQL generation.
+- `doc/providers.md`: Provider reference and model lists.
+- `logs/db_llm_query1_kinase_after_2022_relaxed_20260115_052049.log`: Run log captured from 'db_llm_query1_kinase_after_2022_relaxed_20260115_052049'.
+- `logs/intermediate/query_results_query1_kinase_after_2022_relaxed_20260115_052049_iter1.csv`: Intermediate CSV for run label 'query1_kinase_after_2022_relaxed_20260115_052049' (iteration 1).
+- `pyproject.toml`: Project metadata and dependency definitions.
+- `query_results_query1_kinase_after_2022_relaxed_20260115_052049.csv`: Final CSV output for run label 'query1_kinase_after_2022_relaxed_20260115_052049'.
+- `src/db_llm_query.py`: Stable wrapper entry point for the LLM query CLI.
+- `src/db_llm_query_v1.py`: Main Text-to-SQL pipeline implementation (v1).
+- `src/text2sql/ANTHROPIC_PROVIDER.md`: Provider-specific notes for Anthropic integration.
+- `src/text2sql/__init__.py`: Text2SQL package initializer.
+- `src/text2sql/anthropic_direct.py`: Anthropic provider implementation.
+- `src/text2sql/base.py`: Base provider interfaces and shared helpers.
+- `src/text2sql/cerebras.py`: Cerebras provider implementation.
+- `src/text2sql/deepseek.py`: DeepSeek provider implementation.
+- `src/text2sql/env.py`: Environment loading and provider config helpers.
+- `src/text2sql/local_llm.py`: Local model provider integration.
+- `src/text2sql/openrouter.py`: OpenRouter provider implementation.
+- `uv.lock`: Locked dependency versions for uv.
 
 ## CLI options (db_llm_query.py)
 All options are available on `src/db_llm_query.py` (wrapper) and `src/db_llm_query_v1.py`.
@@ -98,6 +150,11 @@ Options and defaults:
 - `--judge-temperature`: temperature for judge model. Default: `0.1`.
 
 ## Examples
+Most recent recommended run (relaxed filter + long context + CSV + logs):
+```bash
+unset OPENROUTER_API_KEY && set -a && source ./.env && set +a && RUN_LABEL="query1_kinase_after_2022_relaxed_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=300000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
+```
+
 Example session with verbose output and logging via `tee`:
 ```bash
 PYTHONUNBUFFERED=1 python src/db_llm_query_v1.py -vv -q "" |& tee logs/db_llm_query_$(date +%Y%m%d_%H%M%S).log^C
@@ -132,14 +189,10 @@ For those interested in the gory details, a Jupyter notebook with code I used to
 ```
 
 Notebook reference:
-```
-https://github.com/PatWalters/practical_cheminformatics_posts/tree/main/gemini_chembl
-```
+[PatWalters/practical_cheminformatics_posts gemini_chembl](https://github.com/PatWalters/practical_cheminformatics_posts/tree/main/gemini_chembl)
 
 Reference:
-```
-https://patwalters.github.io/Searching-ChEMBL-with-Gemini/
-```
+[Searching ChEMBL with Gemini](https://patwalters.github.io/Searching-ChEMBL-with-Gemini/)
 
 Equivalent run with a single run label (shared across logs and outputs):
 ```bash

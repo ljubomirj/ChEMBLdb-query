@@ -1,0 +1,49 @@
+# ChEMBLdb download instructions
+
+Main requirement: install lftp on your system (preferred for reliable recursive downloads).
+
+Install lftp:
+- macOS (Homebrew):
+  brew install lftp
+- Ubuntu/Debian:
+  sudo apt install lftp
+- Fedora/RHEL:
+  sudo dnf install lftp
+
+Install sqlite (for local querying):
+- macOS (Homebrew):
+  brew install sqlite
+- Ubuntu/Debian:
+  sudo apt install sqlite3
+- Fedora/RHEL:
+  sudo dnf install sqlite
+
+Download ChEMBLdb (latest release) with lftp:
+  cd database
+  lftp -e "set ssl:verify-certificate no; mirror --verbose --parallel=4 --continue --only-newer /pub/databases/chembl/ChEMBLdb/latest latest; bye" https://ftp.ebi.ac.uk
+
+Notes:
+- This mirrors the entire latest/ directory from the EBI FTP site into database/latest/.
+- Adjust --parallel if your connection is slower/faster.
+
+Fallback (wget recursive):
+  cd database
+  wget -r -N -np -nH --cut-dirs=4 -e robots=off \
+    https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/
+
+Notes on wget:
+- This will create database/latest/ and download the full tree.
+- Use --continue if you need to resume large downloads.
+
+Extract the SQLite database after download:
+  cd database
+  tar -xzf latest/chembl_*_sqlite.tar.gz -C latest
+
+If the SQLite file is gzipped, unpack it:
+  gunzip latest/chembl_*_sqlite/*.db.gz
+
+Expected SQLite DB path (used by this repo):
+  database/latest/chembl_<VERSION>/chembl_<VERSION>_sqlite/chembl_<VERSION>.db
+
+Example (ChEMBL 36):
+  database/latest/chembl_36/chembl_36_sqlite/chembl_36.db

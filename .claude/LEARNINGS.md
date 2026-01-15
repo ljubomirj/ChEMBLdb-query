@@ -1,0 +1,37 @@
+# LEARNINGS
+
+- 2026-01-14: ChEMBL SQLite DB is expected at `database/latest/chembl_36/chembl_36_sqlite/chembl_36.db`; if missing, extract `chembl_36_sqlite.tar.gz` before running.
+- 2026-01-14: Schema docs are generated from SQLite introspection into `doc/chembl_database_schema.md` and cached by mtime.
+- 2026-01-14: Text2SQL providers were copied into `src/text2sql` to keep this repo self-contained.
+- 2026-01-14: ChEMBL Text2SQL does not use any `lists` table; SP contains only schema + sampled rows.
+- 2026-01-14: Use `uv` with Python 3.13 for all runs; `.env` is loaded by `src/text2sql/env.py`, and `TEXT2SQL_PROVIDER` can override provider defaults.
+- 2026-01-14: `src/db_llm_query_v1.py` uses `-v/-vv/-vvv` for verbose output; `_build_system_prompt()` is where extra “tricks” could be appended to the schema docs.
+- 2026-01-14: `doc/chembl_prompt_hints.md` now holds full contents of small lookup tables; `--prompt-hints-path` wires it into the system prompt if present.
+- 2026-01-14: Added `super` model tier with `openai/gpt-5.2-pro` and exposed it in `--sql-model-list/--judge-model-list`.
+- 2026-01-14: Added `src/db_llm_query.py` wrapper; README now documents full CLI options and defaults.
+- 2026-01-14: Added `--output-base` to customize CSV filename base for auto/manual CSV outputs.
+- 2026-01-14: Added `--output-file` to set an exact CSV filename (overrides base/timestamp).
+- 2026-01-14: Increased OpenRouter SQL-generation `max_tokens` to 100000 in `src/text2sql/openrouter.py`.
+- 2026-01-14: Log OpenRouter error response body on request failures to diagnose 400s.
+- 2026-01-14: Default OpenRouter model switched to `openai/gpt-5.1-codex-mini`.
+- 2026-01-14: When no SQL model/list is provided, default to the `cheap` model list (rotating schedule).
+- 2026-01-14: Added verbose RES_n logging to show query result summaries (row count/columns/samples) sent to the judge.
+- 2026-01-14: Added OpenRouter model context filtering (`--min-context`) and intermediate CSV saves per iteration.
+- 2026-01-15: Defaults updated: `--min-context=300000`, `--judge-score-threshold=0.9`, and SQL model list defaults to `expensive`; added `--run-label` and logs final filtered model lists.
+- 2026-01-15: Manual CSV outputs (`-f csv`) now include `{run_id}` in filenames unless `--output-file` is set.
+- 2026-01-15: README includes a run-label example command for consistent log/output filenames.
+- 2026-01-15: Added OpenRouter context filtering note to `doc/providers.md` and local Text2SQL CLI notes to the chembl-database skill.
+- 2026-01-15: Judge now receives `res_mode` with full rows only when estimated to fit within 90% of context; otherwise samples.
+- 2026-01-15: Added `--temperature` (SQL + prompt-writer) and `--judge-temperature` flags; default SQL sampling now uses temperature 1.0.
+- 2026-01-15: Providers now accept a `temperature` init arg to avoid TypeErrors when passing through create_provider.
+- 2026-01-15: Added `db-llm-query-chembl` skill (packaged to `db-llm-query-chembl.skill`) to guide outer-loop db_llm_query runs; README now includes the canonical RUN_LABEL+CSV command.
+- 2026-01-15: `db_llm_query.py` failed with OpenRouter 401 "User not found" during prompt-writer step; ensure OpenRouter credentials (e.g., `OPENROUTER_API_KEY`) are set before running.
+- 2026-01-15: Judge prompts now explicitly explain sample-mode context limits and include larger subsamples (hundreds to ~1000 rows) with per-cell truncation notes to avoid penalizing missing rows.
+- 2026-01-15: Result row counts are highly sensitive to filtering choices; relaxing `assays.confidence_score` (e.g., 9 -> >=8) and dropping `docs.doc_type='PUBLICATION'` / `doi IS NOT NULL` can roughly double rows for kinase IC50 queries.
+- 2026-01-15: Added `--filter-profile {strict|relaxed}` to steer prompt-writer constraints (strict: publication+confidence=9+single protein; relaxed: no doc/doi requirement, confidence>=8).
+- 2026-01-15: Replaced `database/INSTALL` wget log with concise lftp-first download instructions and wget fallback.
+- 2026-01-15: Added sqlite install + extraction/unzip steps and documented expected SQLite DB path in `database/INSTALL`.
+- 2026-01-15: README now starts the Examples section with the latest relaxed-filter run, clarifies copying `.env.example` and filling missing keys, and uses Markdown links for the Pat Walters references.
+- 2026-01-15: README updated to drop the hardcoded `cd` in the newest example and align its log filename with the query1 convention.
+- 2026-01-15: README now documents agentic files/dirs and includes an acknowledgement for the codex-5.2-high agent.
+- 2026-01-15: AGENTS.md now embeds the global CLAUDE learning-loop text; README notes this so the requirement is visible in-repo.
