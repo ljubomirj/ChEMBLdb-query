@@ -172,7 +172,7 @@ SQL QUERY:"""
         messages: list[dict],
         *,
         temperature: float = 0.1,
-        max_tokens: int = 512,
+        max_tokens: int = 4096,
     ) -> Optional[str]:
         """
         Generate free-form text from a chat-style messages array.

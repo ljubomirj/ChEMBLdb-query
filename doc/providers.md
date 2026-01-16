@@ -18,7 +18,7 @@ Recommended IDs (subset):
 - `anthropic/claude-opus-4-20250514`
 
 Context filtering:
-- When using OpenRouter model lists, `--min-context` filters models by context length via OpenRouter `/models` (default is 300000).
+- When using OpenRouter model lists, `--min-context` filters models by context length via OpenRouter `/models` (default is 100000).
 - The filtered SQL/judge lists are logged at startup.
 
 ## Cerebras

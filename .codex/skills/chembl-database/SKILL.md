@@ -20,7 +20,7 @@ uv run python src/db_llm_query.py -q "..."
 ```
 Notes:
 - Default SQL model list is `expensive` (unless overridden).
-- OpenRouter model lists can be filtered by context via `--min-context` (default 300000).
+- OpenRouter model lists can be filtered by context via `--min-context` (default 100000).
 - Use `--run-label` to stamp a consistent ID across logs and outputs.
 
 ## When to Use This Skill

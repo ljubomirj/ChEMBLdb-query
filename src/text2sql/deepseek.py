@@ -98,7 +98,7 @@ Generate the SQL query:"""
                 {'role': 'user', 'content': user_prompt}
             ]
 
-        raw = self.generate_text(messages, temperature=self.temperature, max_tokens=15000)
+        raw = self.generate_text(messages, temperature=self.temperature, max_tokens=4096)
         if raw is None:
             return None
         return self._clean_sql(raw)

@@ -59,7 +59,7 @@ Key flags and defaults from `src/db_llm_query_v1.py`.
 
 ## Context and temperature
 
-- `--min-context`: Minimum OpenRouter context length (default: `300000`).
+- `--min-context`: Minimum OpenRouter context length (default: `100000`).
 - `--temperature`: SQL + prompt-writer temperature (default: `1.0`).
 - `--judge-temperature`: Judge temperature (default: `0.1`).
 

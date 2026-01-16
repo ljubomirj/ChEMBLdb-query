@@ -141,7 +141,7 @@ Options and defaults:
 - `--filter-profile`: prompt-writer preset filters (`strict|relaxed`). Default: `strict`.
 - `--output-base`: base filename for CSV outputs. Default: `query_results`.
 - `--output-file`: exact filename for CSV outputs (overrides `--output-base`). Default: unset.
-- `--min-context`: minimum OpenRouter model context length. Default: `300000`.
+- `--min-context`: minimum OpenRouter model context length. Default: `100000`.
 - `--intermediate-dir`: directory for intermediate CSV results. Default: `logs/intermediate`.
 - `--save-intermediate`: save intermediate CSV results per iteration. Default: `true`.
 - `--no-save-intermediate`: disable intermediate CSV results.
@@ -152,7 +152,7 @@ Options and defaults:
 ## Examples
 Most recent recommended run (relaxed filter + long context + CSV + logs):
 ```bash
-unset OPENROUTER_API_KEY && set -a && source ./.env && set +a && RUN_LABEL="query1_kinase_after_2022_relaxed_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=300000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
+unset OPENROUTER_API_KEY && set -a && source ./.env && set +a && RUN_LABEL="query1_kinase_after_2022_relaxed_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=100000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
 ```
 
 Example session with verbose output and logging via `tee`:
@@ -202,7 +202,7 @@ PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABE
 
 Current canonical query run (descriptive run label + CSV output):
 ```bash
-RUN_LABEL="query1_kinase_after_2022_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=300000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+RUN_LABEL="query1_kinase_after_2022_relaxed_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=100000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
 ```
 The result .csv. table
 ```bash
@@ -218,4 +218,21 @@ If there are multiple iterations, their results will be in dir ./logs/intermedia
 ```bash
 ./logs/intermediate/query_results_query1_kinase_after_2022_relaxed_20260115_052049_iter1.csv
 ```
+By default OpenRouter models are the more expensive higher quality models.
+
+For good value, quality at not to big a price, example call using DeepSeek API only. Where SQL writer = deepseek-chat, judge = deepseek-reasoner:
+
+```bash
+DEEPSEEK_API_KEY="your_key_here" \
+RUN_LABEL="query1_kinase_after_2022_relaxed_deepseek_$(date +%Y%m%d_%H%M%S)"; \
+PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv \
+  --provider deepseek \
+  --sql-model deepseek-chat \
+  --judge-model deepseek-reasoner \
+  --filter-profile relaxed -f csv --run-label "${RUN_LABEL}" \
+  -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" \
+  |& tee "logs/db_llm_${RUN_LABEL}.log"
+```
+
+This avoids OpenRouter entirely by forcing --provider deepseek and uses the DeepSeek models directly.
 

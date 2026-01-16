@@ -22,6 +22,9 @@ TODO
 """
 
 import argparse
+import contextlib
+import contextvars
+import hashlib
 import json
 import logging
 import os
@@ -31,7 +34,7 @@ import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple
 
 import sqlite3
 import polars as pl
@@ -48,11 +51,86 @@ if str(_TOOLS_DIR) not in sys.path:
 from text2sql import create_provider
 from text2sql.env import load_dotenv_once
 
+_LOG_STAGE_STACK: contextvars.ContextVar[Tuple[str, ...]] = contextvars.ContextVar(
+    "log_stage_stack",
+    default=(),
+)
+_LOG_RECORD_FACTORY = logging.getLogRecordFactory()
+
+
+def _format_log_stage() -> str:
+    stack = _LOG_STAGE_STACK.get()
+    return " > ".join(stack) if stack else "INIT"
+
+
+def _stage_record_factory(*args: Any, **kwargs: Any) -> logging.LogRecord:
+    record = _LOG_RECORD_FACTORY(*args, **kwargs)
+    record.stage = _format_log_stage()
+    return record
+
+
+@contextlib.contextmanager
+def log_stage(stage: str) -> Iterator[None]:
+    stack = _LOG_STAGE_STACK.get()
+    token = _LOG_STAGE_STACK.set(stack + (stage,))
+    try:
+        yield
+    finally:
+        _LOG_STAGE_STACK.reset(token)
+
+
+LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(stage)s - %(message)s'
+
+logging.setLogRecordFactory(_stage_record_factory)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format=LOG_FORMAT,
 )
 logger = logging.getLogger(__name__)
+
+
+STAGE_LABELS = (
+    ("SP", "SystemPrompt"),
+    ("UQ", "UserQuestion"),
+    ("ITER_n", "Iteration_n"),
+    ("UP_n", "UserPrompt_n"),
+    ("SQL_n", "SqlWrite_n"),
+    ("RES_n", "Result_n"),
+    ("J_n", "Judge_n"),
+    ("INIT", "ProviderModelSelection"),
+)
+
+
+def _format_param_value(value: Any) -> str:
+    return repr(value)
+
+
+def log_stage_labels() -> None:
+    logger.info("Stage labels (short -> long):")
+    for short, long_name in STAGE_LABELS:
+        logger.info("  %s = %s", short, long_name)
+
+
+def log_effective_params(
+    args: argparse.Namespace,
+    *,
+    provider: str,
+    run_id: Optional[str],
+    query: Optional[str],
+    save_file: Optional[str],
+) -> None:
+    logger.info("Effective parameters:")
+    derived_params = [
+        ("query", query),
+        ("provider", provider),
+        ("run_id", run_id),
+        ("save_file", save_file),
+    ]
+    for key, value in derived_params:
+        logger.info("  %s = %s", key, _format_param_value(value))
+    logger.info("CLI arguments (post-defaults):")
+    for key, value in sorted(vars(args).items()):
+        logger.info("  %s = %s", key, _format_param_value(value))
 
 
 CHEAP_MODELS = [
@@ -477,32 +555,47 @@ def _nonempty_lines(text: str) -> List[str]:
 
 def parse_judge_output(text: str) -> Tuple[Optional[bool], Optional[float]]:
     """
-    Judge output must end with:
-      penultimate line: float score in [0,1]
-      last line: YES or NO
+    Preferred judge output (JSON):
+      {"analysis": "...", "score": 0.93, "decision": "YES"}
     """
-    lines = _nonempty_lines(text)
-    if len(lines) < 2:
-        return None, None
+    cleaned = (text or "").strip()
+    if cleaned:
+        cleaned = re.sub(r'^```(?:json)?\s*', '', cleaned, flags=re.IGNORECASE | re.MULTILINE)
+        cleaned = re.sub(r'\s*```\s*$', '', cleaned, flags=re.MULTILINE)
+        start = cleaned.find('{')
+        end = cleaned.rfind('}')
+        if start != -1 and end != -1 and end > start:
+            candidate = cleaned[start:end + 1]
+            try:
+                obj = json.loads(candidate)
+            except Exception:
+                preview = cleaned.replace("\n", " ")[:200]
+                logger.warning(f"Judge output JSON parse failed; preview='{preview}'")
+                obj = None
+            if isinstance(obj, dict):
+                decision_raw = str(obj.get("decision", "")).strip().upper()
+                decision: Optional[bool]
+                if decision_raw == "YES":
+                    decision = True
+                elif decision_raw == "NO":
+                    decision = False
+                else:
+                    decision = None
+                try:
+                    score = float(obj.get("score"))
+                except Exception:
+                    score = None
+                if score is not None and not (0.0 <= score <= 1.0):
+                    score = None
+                if decision is None or score is None:
+                    preview = cleaned.replace("\n", " ")[:200]
+                    logger.warning(f"Judge JSON missing/invalid fields; preview='{preview}'")
+                    return None, None
+                return decision, score
 
-    decision_raw = re.sub(r'[^A-Za-z]', '', lines[-1]).upper()
-    decision: Optional[bool]
-    if decision_raw == "YES":
-        decision = True
-    elif decision_raw == "NO":
-        decision = False
-    else:
-        decision = None
-
-    try:
-        score = float(lines[-2])
-    except Exception:
-        score = None
-
-    if score is not None and not (0.0 <= score <= 1.0):
-        score = None
-
-    return decision, score
+    preview = cleaned.replace("\n", " ")[:200]
+    logger.warning(f"Judge output missing JSON object; preview='{preview}'")
+    return None, None
 
 
 @dataclass(frozen=True, slots=True)
@@ -542,12 +635,13 @@ class ChEMBLLLMQuery:
         schema_sample_rows: int = 3,
         schema_max_cell_len: int = 80,
         prompt_hints_path: str = 'doc/chembl_prompt_hints.md',
-        min_context: int = 300000,
+        min_context: int = 100000,
         save_intermediate: bool = True,
         intermediate_dir: str = 'logs/intermediate',
         output_base: str = 'query_results',
         run_id: Optional[str] = None,
         filter_profile: str = 'strict',
+        strip_unrequested_limit: bool = True,
         sql_temperature: float = 1.0,
         prompt_writer_temperature: float = 1.0,
         judge_temperature: float = 0.1,
@@ -579,6 +673,7 @@ class ChEMBLLLMQuery:
         self.filter_profile = (filter_profile or 'strict').strip().lower()
         if self.filter_profile not in {'strict', 'relaxed'}:
             raise ValueError(f"Invalid filter_profile={filter_profile!r}; expected 'strict' or 'relaxed'")
+        self.strip_unrequested_limit = bool(strip_unrequested_limit)
         self.sql_temperature = float(sql_temperature)
         self.prompt_writer_temperature = float(prompt_writer_temperature)
         self.judge_temperature = float(judge_temperature)
@@ -641,42 +736,47 @@ class ChEMBLLLMQuery:
         self.judge_model = judge_model
 
         # Load schema docs with table samples.
-        schema_path = Path(self.schema_docs_path)
-        db_file = Path(self.db_path)
-        should_regenerate = False
+        with log_stage("SP"):
+            schema_path = Path(self.schema_docs_path)
+            db_file = Path(self.db_path)
+            should_regenerate = False
 
-        if not db_file.exists():
-            if schema_path.exists():
-                logger.warning("DB file missing; using existing schema docs at %s", schema_path)
-                self.schema_docs = schema_path.read_text()
-            else:
-                raise FileNotFoundError(f"ChEMBL SQLite DB not found: {self.db_path}")
-        else:
-            should_regenerate = not schema_path.exists()
-            try:
+            if not db_file.exists():
                 if schema_path.exists():
-                    should_regenerate = schema_path.stat().st_mtime < db_file.stat().st_mtime
-            except Exception:
-                logger.warning("Could not compare schema docs mtime to DB mtime", exc_info=True)
-
-            if should_regenerate:
-                print("⚠️  Schema docs missing or stale; generating...")
-                self.schema_docs = generate_schema_docs_sqlite(
-                    db_path=self.db_path,
-                    output_path=str(schema_path),
-                    sample_rows=self.schema_sample_rows,
-                    max_cell_len=self.schema_max_cell_len,
-                )
+                    logger.warning("DB file missing; using existing schema docs at %s", schema_path)
+                    self.schema_docs = schema_path.read_text()
+                else:
+                    raise FileNotFoundError(f"ChEMBL SQLite DB not found: {self.db_path}")
             else:
-                self.schema_docs = schema_path.read_text()
+                should_regenerate = not schema_path.exists()
+                try:
+                    if schema_path.exists():
+                        should_regenerate = schema_path.stat().st_mtime < db_file.stat().st_mtime
+                except Exception:
+                    logger.warning("Could not compare schema docs mtime to DB mtime", exc_info=True)
 
-        prompt_hints_path = Path(self.prompt_hints_path)
-        if prompt_hints_path.exists():
-            self.prompt_hints = prompt_hints_path.read_text()
-        else:
-            self.prompt_hints = ""
+                if should_regenerate:
+                    print("⚠️  Schema docs missing or stale; generating...")
+                    self.schema_docs = generate_schema_docs_sqlite(
+                        db_path=self.db_path,
+                        output_path=str(schema_path),
+                        sample_rows=self.schema_sample_rows,
+                        max_cell_len=self.schema_max_cell_len,
+                    )
+                else:
+                    self.schema_docs = schema_path.read_text()
 
-        self.system_prompt = self._build_system_prompt()
+            prompt_hints_path = Path(self.prompt_hints_path)
+            if prompt_hints_path.exists():
+                self.prompt_hints = prompt_hints_path.read_text()
+            else:
+                self.prompt_hints = ""
+
+            self.system_prompt = self._build_system_prompt()
+            sp_hash = hashlib.sha256(self.system_prompt.encode("utf-8")).hexdigest()
+            self.system_prompt_hash = sp_hash
+            logger.info("SP_SHA256: %s", sp_hash)
+            logger.info("SP_FULL:\n%s", self.system_prompt)
 
         # Providers
         print("🧪 Initializing SQL provider...")
@@ -827,7 +927,51 @@ You will be used in different roles. Follow the task instructions in the user me
             )
         return ""
 
+    def _assert_system_prompt_unchanged(self) -> None:
+        current_hash = hashlib.sha256(self.system_prompt.encode("utf-8")).hexdigest()
+        if current_hash != self.system_prompt_hash:
+            logger.error(
+                "System prompt changed during run: expected %s, got %s",
+                self.system_prompt_hash,
+                current_hash,
+            )
+            raise RuntimeError("System prompt changed during run; caching assumptions violated.")
+
+    def _user_requested_limit(self, text: str) -> bool:
+        lowered = text.lower()
+        patterns = [
+            r"\blimit\s+\d+\b",
+            r"\btop\s+\d+\b",
+            r"\bfirst\s+\d+\b",
+            r"\blast\s+\d+\b",
+            r"\bat\s+most\s+\d+\b",
+            r"\bno\s+more\s+than\s+\d+\b",
+            r"\bmaximum\s+\d+\b",
+            r"\bminimum\s+\d+\b",
+            r"\bonly\s+\d+\b",
+            r"\breturn\s+\d+\b",
+            r"\bshow\s+\d+\b",
+            r"\brows?\s+\d+\b",
+            r"\bsample\s+\d+\b",
+        ]
+        return any(re.search(pat, lowered) for pat in patterns)
+
+    def _strip_unrequested_limit(self, *, sql: str, uq: str, up: str) -> str:
+        if not self.strip_unrequested_limit:
+            return sql
+        if self._user_requested_limit(f"{uq}\n{up}"):
+            return sql
+        if not re.search(r"\blimit\b", sql, flags=re.IGNORECASE):
+            return sql
+        clause_re = re.compile(r"\s+limit\s+\d+(?:\s+offset\s+\d+)?", flags=re.IGNORECASE)
+        cleaned, count = clause_re.subn("", sql)
+        if count:
+            logger.warning("Removed %s unrequested LIMIT clause(s) from SQL.", count)
+        cleaned = re.sub(r"\s+;", ";", cleaned).strip()
+        return cleaned
+
     def _build_messages_for_up(self, *, uq: str, iterations: List[Iteration], next_n: int) -> List[Dict[str, str]]:
+        self._assert_system_prompt_unchanged()
         task = f"""<TASK>
 You are a prompt-writer that crafts a single improved user prompt UP_{next_n} for a Text-to-SQL model.
 
@@ -854,6 +998,7 @@ Rules:
         return [{"role": "system", "content": self.system_prompt}, {"role": "user", "content": user}]
 
     def _build_messages_for_sql(self, *, uq: str, up: str, iterations: List[Iteration], n: int) -> List[Dict[str, str]]:
+        self._assert_system_prompt_unchanged()
         task = f"""<TASK>
 You are a SQL-writer for SQLite (ChEMBL).
 Generate SQL_{n} as a SINGLE SQLite SELECT query.
@@ -861,6 +1006,8 @@ Generate SQL_{n} as a SINGLE SQLite SELECT query.
 Rules:
 - Output ONLY the SQL text (no tags, no markdown, no explanation).
 - Use explicit JOIN clauses; avoid implicit joins.
+- Do NOT add LIMIT clauses unless the user explicitly requests a row cap or top-N.
+- If neither UQ nor UP explicitly requests a row cap/top-N, any LIMIT is incorrect.
 - If the user asks for ranking/top-N, use ORDER BY ... DESC then LIMIT N.
 - If you need multiple steps, use CTEs (WITH ...).
 </TASK>"""
@@ -876,15 +1023,19 @@ Rules:
         return [{"role": "system", "content": self.system_prompt}, {"role": "user", "content": user}]
 
     def _build_messages_for_judge(self, *, uq: str, up: str, sql: str, res_summary: str, iterations: List[Iteration], n: int) -> List[Dict[str, str]]:
+        self._assert_system_prompt_unchanged()
         task = f"""<TASK>
 You are a strict judge evaluating whether RES_{n} answers the user's question.
 
-You MUST output:
-1) Qualitative judgement + concrete improvement advice for the next iteration
-2) The penultimate non-empty line: a float score in [0,1]
-   - If your final decision is YES then the score MUST be >= {self.judge_score_threshold}
-   - If your final decision is NO then the score MUST be < {self.judge_score_threshold}
-3) The last non-empty line: exactly YES or NO
+You MUST output a single JSON object on one line with keys:
+- "analysis": string containing qualitative judgement + concrete improvement advice
+- "score": float in [0,1]
+- "decision": "YES" or "NO"
+
+Constraints:
+- If decision is YES then score MUST be >= {self.judge_score_threshold}
+- If decision is NO then score MUST be < {self.judge_score_threshold}
+- Output JSON ONLY (no markdown, no extra text, no code fences).
 
 IMPORTANT:
 - RES_{n} may be a summary with samples only, or it may include full rows.
@@ -894,6 +1045,7 @@ IMPORTANT:
 - When `res_mode: sample`, focus on correctness and completeness of the query intent based on the sample and schema/SQL.
 - Sample rows may truncate long fields for context; do NOT penalize truncation in the sample.
 - If `sample_strata` is provided, samples are stratified by those columns; do NOT penalize missing strata not shown.
+- If SQL_{n} includes a LIMIT but neither UQ nor UP explicitly requests a row cap/top-N, decision MUST be NO and score MUST be < {self.judge_score_threshold}.
 
 Do NOT write SQL.
 </TASK>"""
@@ -997,28 +1149,33 @@ Do NOT write SQL.
 
         return row_count, cols, samples_t, "\n".join(lines)
 
+    def _print_full_result_rows(self, *, df: Optional[pl.DataFrame], n: int) -> None:
+        if df is None:
+            return
+        self._vprint(2, "\n" + "=" * 20)
+        self._vprint(2, f"RES_{n} FULL ROWS (CSV):")
+        self._vprint(2, "=" * 20)
+        try:
+            df.write_csv(sys.stdout)
+        except BrokenPipeError:
+            logger.warning("Broken pipe while printing full result rows; continuing.")
+        self._vprint(2, "=" * 20 + "\n")
+
     def _call_prompt_writer(self, *, uq: str, iterations: List[Iteration], next_n: int, attempt_idx: int) -> Optional[str]:
         if not self.judge_provider.is_available():
             logger.error("Judge/provider not available for prompt writing")
             return None
 
         messages = self._build_messages_for_up(uq=uq, iterations=iterations, next_n=next_n)
-        if self.verbose and next_n == 1:
-            print("\n" + "=" * 20)
-            print("🔍 VERBOSE: Full System Prompt (SP)")
-            print("=" * 20)
-            print(f"(chars: {len(self.system_prompt):,})")
-            print("-" * 20)
-            try:
-                print(self.system_prompt)
-            except BrokenPipeError:
-                logger.warning("Broken pipe while printing full system prompt; continuing.")
-            print("=" * 20 + "\n")
+        if self.verbosity >= 2:
+            user_prompt = messages[1]["content"] if len(messages) > 1 else ""
+            logger.info("SP here; SHA256=%s", self.system_prompt_hash)
+            logger.info("UP_PROMPT_USER:\n%s", user_prompt)
 
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
             self._ensure_judge_provider_for_attempt_with_offset(attempt_idx=attempt_idx, offset=offset)
-            text = self.judge_provider.generate_text(messages, max_tokens=800, temperature=self.prompt_writer_temperature)
+            text = self.judge_provider.generate_text(messages, max_tokens=4096, temperature=self.prompt_writer_temperature)
             if text is None:
                 logger.warning("Prompt-writer call failed; trying next judge model")
                 continue
@@ -1138,6 +1295,7 @@ Do NOT write SQL.
         cleaned = re.sub(r'^```sql\s*', '', cleaned, flags=re.MULTILINE)
         cleaned = re.sub(r'^```\s*$', '', cleaned, flags=re.MULTILINE)
         cleaned = re.sub(r'\s*```\s*$', '', cleaned, flags=re.MULTILINE)
+        cleaned = self._strip_unrequested_limit(sql=cleaned, uq=uq, up=up)
         return cleaned
 
     def _call_judge(self, *, uq: str, up: str, sql: str, res_summary: str, iterations: List[Iteration], n: int, attempt_idx: int) -> Tuple[Optional[bool], Optional[float], str]:
@@ -1157,14 +1315,20 @@ Do NOT write SQL.
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
             self._ensure_judge_provider_for_attempt_with_offset(attempt_idx=attempt_idx, offset=offset)
-            text = self.judge_provider.generate_text(messages, max_tokens=1200, temperature=self.judge_temperature)
+            text = self.judge_provider.generate_text(messages, max_tokens=4096, temperature=self.judge_temperature)
             if text is None:
                 logger.warning("Judge call failed; trying next judge model")
                 continue
             last_text = text.strip()
             decision, score = parse_judge_output(last_text)
             if decision is None or score is None:
-                logger.warning("Judge output malformed (missing score/YESNO); trying next judge model")
+                logger.warning("Judge output malformed; model=%s; trying next judge model", self.current_judge_model)
+                self._save_malformed_judge_output(
+                    text=last_text,
+                    n=n,
+                    attempt_idx=attempt_idx,
+                    offset=offset,
+                )
                 continue
 
             # Enforce requested invariants.
@@ -1181,6 +1345,26 @@ Do NOT write SQL.
             return None, None, "Judge failed\n0\nNO"
         return parse_judge_output(last_text)[0], parse_judge_output(last_text)[1], last_text
 
+    def _save_malformed_judge_output(
+        self,
+        *,
+        text: str,
+        n: int,
+        attempt_idx: int,
+        offset: int,
+    ) -> None:
+        run_id = self.run_id or "run"
+        model = self.current_judge_model or "unknown_model"
+        safe_model = re.sub(r'[^A-Za-z0-9._-]+', '-', model).strip('-')
+        out_dir = Path("logs") / "judge_malformed"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path = out_dir / f"judge_malformed_{run_id}_iter{n}_attempt{attempt_idx}_offset{offset}_{safe_model}.txt"
+        try:
+            out_path.write_text(text, encoding="utf-8")
+            logger.warning("Saved malformed judge output to %s", out_path)
+        except Exception as exc:
+            logger.warning("Failed to save malformed judge output: %s", exc)
+
     def query(
         self,
         question: str,
@@ -1193,155 +1377,173 @@ Do NOT write SQL.
         if not uq:
             return None
 
-        iterations: List[Iteration] = []
+        with log_stage("UQ"):
+            logger.info("User question received (%s chars)", len(uq))
 
-        # Step 3: initial UP_1
-        self._vprint(2, "\n" + "=" * 20, "\nPROMPT-WRITER: generating UP_1\n" + "=" * 20)
-        up = self._call_prompt_writer(uq=uq, iterations=[], next_n=1, attempt_idx=0)
-        if up is None:
-            raise RuntimeError("Failed to generate UP_1")
+        iterations: List[Iteration] = []
+        up: Optional[str] = None
 
         for attempt_idx in range(self.max_retries):
             n = attempt_idx + 1
-            logger.info(f"Iteration {n}/{self.max_retries} using SQL model: {self.current_sql_model}")
+            with log_stage(f"ITER_{n}"):
+                logger.info("Iteration %s/%s using SQL model: %s", n, self.max_retries, self.current_sql_model)
 
-            window_iters = iterations[-self.history_window :]
+                window_iters = iterations[-self.history_window :]
 
-            self._vprint(2, f"\nUP_{n}:\n{up}\n")
-            logger.info("Generating SQL...")
-            sql = self._call_sql_writer(uq=uq, up=up, iterations=window_iters, n=n, attempt_idx=attempt_idx)
-            if sql is None:
-                raise RuntimeError("SQL generation returned None")
+                self._vprint(2, "\n" + "=" * 20, f"\nPROMPT-WRITER: generating UP_{n}\n" + "=" * 20)
+                with log_stage(f"UP_{n}"):
+                    logger.info("Generating UP_%s...", n)
+                    up_next = self._call_prompt_writer(
+                        uq=uq,
+                        iterations=window_iters,
+                        next_n=n,
+                        attempt_idx=attempt_idx,
+                    )
+                if up_next is None or not up_next.strip():
+                    if up is None:
+                        raise RuntimeError("Failed to generate UP_1")
+                    logger.warning("Failed to generate UP_%s; reusing previous UP", n)
+                else:
+                    up = up_next.strip()
+                if up is None:
+                    raise RuntimeError(f"Failed to generate UP_{n}")
 
-            if self.verbose:
-                print("\n" + "=" * 20)
-                print(f"Generated SQL_{n} ({self.current_sql_model}):")
-                print("=" * 20)
-                print(sql)
-                print("=" * 20 + "\n")
+                self._vprint(2, f"\nUP_{n}:\n{up}\n")
+                with log_stage(f"SQL_{n}"):
+                    logger.info("Generating SQL...")
+                    sql = self._call_sql_writer(uq=uq, up=up, iterations=window_iters, n=n, attempt_idx=attempt_idx)
+                if sql is None:
+                    raise RuntimeError("SQL generation returned None")
 
-            if dry_run:
-                print("DRY RUN: not executing SQL")
-                return None
+                if self.verbose:
+                    print("\n" + "=" * 20)
+                    print(f"Generated SQL_{n} ({self.current_sql_model}):")
+                    print("=" * 20)
+                    print(sql)
+                    print("=" * 20 + "\n")
 
-            success, df, err = self.execute_query_with_timeout(sql)
+                if dry_run:
+                    print("DRY RUN: not executing SQL")
+                    return None
 
-            res_mode = "sample"
-            sample_rows: Optional[int] = None
-            sample_cell_len = 60
-            strata_cols: Tuple[str, ...] = tuple()
-            available_tokens: Optional[int] = None
-            if success and df is not None:
-                context_limit = self._judge_context_limit()
-                if context_limit:
-                    task = f"""<TASK>
+                with log_stage(f"RES_{n}"):
+                    success, df, err = self.execute_query_with_timeout(sql)
+
+                    res_mode = "sample"
+                    sample_rows: Optional[int] = None
+                    sample_cell_len = 60
+                    strata_cols: Tuple[str, ...] = tuple()
+                    available_tokens: Optional[int] = None
+                    if success and df is not None:
+                        if self.verbosity >= 2:
+                            self._print_full_result_rows(df=df, n=n)
+                        context_limit = self._judge_context_limit()
+                        if context_limit:
+                            task = f"""<TASK>
 You are a strict judge evaluating whether RES_{n} answers the user's question.
 </TASK>"""
-                    base_user = self._build_judge_user_content(
-                        task=task,
+                            base_user = self._build_judge_user_content(
+                                task=task,
+                                uq=uq,
+                                up=up,
+                                sql=sql,
+                                res_summary="",
+                                iterations=window_iters,
+                                n=n,
+                            )
+                            base_tokens = self._estimate_tokens(self.system_prompt) + self._estimate_tokens(base_user)
+                            available = int(context_limit * 0.9) - base_tokens
+                            available_tokens = max(0, available)
+                            est_full = self._estimate_full_result_tokens(df)
+                            if available > 0 and est_full <= available:
+                                res_mode = "full"
+                            if self.verbosity >= 2:
+                                self._vprint(
+                                    2,
+                                    f"\nRES_{n} sizing: context={context_limit} tokens, base≈{base_tokens}, "
+                                    f"full≈{est_full}, available≈{max(0, available)} -> {res_mode}",
+                                )
+                    if success and df is not None and res_mode == "sample":
+                        sample_rows, sample_cell_len = self._choose_sample_params(df, available_tokens=available_tokens)
+                        strata_cols = self._choose_strata_cols(df)
+
+                    row_count, cols, samples_t, res_summary = self._summarize_result(
+                        df=df,
+                        error=err if not success else None,
+                        min_rows=min_rows,
+                        res_mode=res_mode,
+                        sample_rows=sample_rows,
+                        sample_cell_len=sample_cell_len,
+                        strata_cols=strata_cols,
+                    )
+
+                    if self.verbosity >= 2:
+                        sampled_for_judge = row_count if res_mode == "full" else len(samples_t)
+                        self._vprint(2, "\n" + "=" * 20)
+                        self._vprint(2, f"RES_{n} STATS:")
+                        self._vprint(2, "=" * 20)
+                        self._vprint(2, f"row_count: {row_count}")
+                        self._vprint(2, f"res_mode: {res_mode}")
+                        self._vprint(2, f"rows_passed_to_judge: {sampled_for_judge}")
+                        self._vprint(2, "=" * 20)
+                        self._vprint(2, "\n" + "=" * 20)
+                        self._vprint(2, f"RES_{n}:")
+                        self._vprint(2, "=" * 20)
+                        self._vprint(2, res_summary)
+                        self._vprint(2, "=" * 20 + "\n")
+
+                with log_stage(f"J_{n}"):
+                    logger.info("Judging RES_%s...", n)
+                    judge_decision, judge_score, judge_text = self._call_judge(
                         uq=uq,
                         up=up,
                         sql=sql,
-                        res_summary="",
+                        res_summary=res_summary,
                         iterations=window_iters,
                         n=n,
+                        attempt_idx=attempt_idx,
                     )
-                    base_tokens = self._estimate_tokens(self.system_prompt) + self._estimate_tokens(base_user)
-                    available = int(context_limit * 0.9) - base_tokens
-                    available_tokens = max(0, available)
-                    est_full = self._estimate_full_result_tokens(df)
-                    if available > 0 and est_full <= available:
-                        res_mode = "full"
-                    if self.verbosity >= 2:
-                        self._vprint(
-                            2,
-                            f"\nRES_{n} sizing: context={context_limit} tokens, base≈{base_tokens}, "
-                            f"full≈{est_full}, available≈{max(0, available)} -> {res_mode}",
-                        )
-            if success and df is not None and res_mode == "sample":
-                sample_rows, sample_cell_len = self._choose_sample_params(df, available_tokens=available_tokens)
-                strata_cols = self._choose_strata_cols(df)
 
-            row_count, cols, samples_t, res_summary = self._summarize_result(
-                df=df,
-                error=err if not success else None,
-                min_rows=min_rows,
-                res_mode=res_mode,
-                sample_rows=sample_rows,
-                sample_cell_len=sample_cell_len,
-                strata_cols=strata_cols,
-            )
+                it = Iteration(
+                    n=n,
+                    up=up,
+                    sql=sql,
+                    sql_model=self.current_sql_model,
+                    res_row_count=row_count,
+                    res_columns=cols,
+                    res_samples=samples_t,
+                    res_error=err if not success else None,
+                    judge_text=judge_text,
+                    judge_model=self.current_judge_model,
+                    judge_score=judge_score,
+                    judge_decision=judge_decision,
+                )
+                iterations.append(it)
 
-            if self.verbosity >= 2:
-                self._vprint(2, "\n" + "=" * 20)
-                self._vprint(2, f"RES_{n}:")
-                self._vprint(2, "=" * 20)
-                self._vprint(2, res_summary)
-                self._vprint(2, "=" * 20 + "\n")
+                if self.save_intermediate and df is not None:
+                    run_id = self.run_id or "run"
+                    out_dir = Path(self.intermediate_dir)
+                    out_dir.mkdir(parents=True, exist_ok=True)
+                    out_path = out_dir / f"{self.output_base}_{run_id}_iter{n}.csv"
+                    df.write_csv(out_path)
+                    self._vprint(2, f"\n📄 Intermediate saved to: {out_path}")
 
-            judge_decision, judge_score, judge_text = self._call_judge(
-                uq=uq,
-                up=up,
-                sql=sql,
-                res_summary=res_summary,
-                iterations=window_iters,
-                n=n,
-                attempt_idx=attempt_idx,
-            )
+                if self.verbosity >= 2:
+                    self._vprint(2, "\n" + "-" * 20)
+                    self._vprint(2, f"J_{n}:\n{judge_text}\n")
+                    self._vprint(2, "-" * 20 + "\n")
 
-            it = Iteration(
-                n=n,
-                up=up,
-                sql=sql,
-                sql_model=self.current_sql_model,
-                res_row_count=row_count,
-                res_columns=cols,
-                res_samples=samples_t,
-                res_error=err if not success else None,
-                judge_text=judge_text,
-                judge_model=self.current_judge_model,
-                judge_score=judge_score,
-                judge_decision=judge_decision,
-            )
-            iterations.append(it)
+                stop_by_threshold = judge_score is not None and judge_score >= self.judge_score_threshold
+                stop_by_yes = judge_decision is True and (judge_score is None or judge_score >= self.judge_score_threshold)
 
-            if self.save_intermediate and df is not None:
-                run_id = self.run_id or "run"
-                out_dir = Path(self.intermediate_dir)
-                out_dir.mkdir(parents=True, exist_ok=True)
-                out_path = out_dir / f"{self.output_base}_{run_id}_iter{n}.csv"
-                df.write_csv(out_path)
-                self._vprint(2, f"\n📄 Intermediate saved to: {out_path}")
-
-            if self.verbosity >= 2:
-                self._vprint(2, "\n" + "-" * 20)
-                self._vprint(2, f"J_{n}:\n{judge_text}\n")
-                self._vprint(2, "-" * 20 + "\n")
-
-            stop_by_threshold = judge_score is not None and judge_score >= self.judge_score_threshold
-            stop_by_yes = judge_decision is True and (judge_score is None or judge_score >= self.judge_score_threshold)
-
-            if stop_by_yes or stop_by_threshold:
-                logger.info(f"Stopping: judge_decision={judge_decision} judge_score={judge_score}")
-                if df is None:
-                    return None
-                if save_to_file:
-                    df.write_csv(save_to_file)
-                    print(f"\n📄 Saved to: {save_to_file}")
-                return df
-
-            # Step 18/28/...: produce next UP
-            self._vprint(2, "\n" + "=" * 20, f"\nPROMPT-WRITER: generating UP_{n+1}\n" + "=" * 20)
-            up_next = self._call_prompt_writer(
-                uq=uq,
-                iterations=iterations[-self.history_window :],
-                next_n=n + 1,
-                attempt_idx=attempt_idx + 1,
-            )
-            if up_next is None or not up_next.strip():
-                logger.warning("Failed to generate next UP; reusing current UP")
-                up_next = up
-            up = up_next.strip()
+                if stop_by_yes or stop_by_threshold:
+                    logger.info(f"Stopping: judge_decision={judge_decision} judge_score={judge_score}")
+                    if df is None:
+                        return None
+                    if save_to_file:
+                        df.write_csv(save_to_file)
+                        print(f"\n📄 Saved to: {save_to_file}")
+                    return df
 
         logger.error(f"All {self.max_retries} iterations exhausted")
         return None
@@ -1355,6 +1557,7 @@ def main() -> None:
         root.setLevel(level)
         for handler in root.handlers:
             handler.setLevel(level)
+            handler.setFormatter(logging.Formatter(LOG_FORMAT))
 
     parser = argparse.ArgumentParser(
         description='Natural language to SQL with UP/SQL/J loop (v1) for ChEMBL',
@@ -1428,11 +1631,13 @@ def main() -> None:
     )
     parser.add_argument('--output-base', default='query_results', help='Base filename for CSV outputs (default: query_results)')
     parser.add_argument('--output-file', default=None, help='Exact filename for CSV outputs (overrides --output-base)')
-    parser.add_argument('--min-context', type=int, default=300000, help='Minimum OpenRouter model context length (default: 300000)')
+    parser.add_argument('--min-context', type=int, default=100000, help='Minimum OpenRouter model context length (default: 100000)')
+    parser.add_argument('--strip-unrequested-limit', dest='strip_unrequested_limit', action='store_true', help='Strip LIMIT unless user explicitly requested a row cap/top-N')
+    parser.add_argument('--no-strip-unrequested-limit', dest='strip_unrequested_limit', action='store_false', help='Disable heuristic LIMIT stripping')
     parser.add_argument('--intermediate-dir', default='logs/intermediate', help='Directory for intermediate CSV results (default: logs/intermediate)')
     parser.add_argument('--save-intermediate', dest='save_intermediate', action='store_true', help='Save intermediate CSV results per iteration')
     parser.add_argument('--no-save-intermediate', dest='save_intermediate', action='store_false', help='Disable intermediate CSV results')
-    parser.set_defaults(save_intermediate=True)
+    parser.set_defaults(save_intermediate=True, strip_unrequested_limit=True)
     parser.add_argument('--run-label', default=None, help='Label used in all run-derived filenames (default: timestamp)')
     parser.add_argument('--temperature', type=float, default=1.0, help='Temperature for SQL generation and prompt-writer (default: 1.0)')
     parser.add_argument('--judge-temperature', type=float, default=0.1, help='Temperature for judge model (default: 0.1)')
@@ -1476,6 +1681,20 @@ def main() -> None:
     if run_id:
         logger.info("Run label: %s", run_id)
 
+    save_file = None
+    if args.auto:
+        save_stamp = run_id or "run"
+        save_file = args.output_file or f"{args.output_base}_{save_stamp}.csv"
+
+    log_stage_labels()
+    log_effective_params(
+        args,
+        provider=provider,
+        run_id=run_id,
+        query=query,
+        save_file=save_file,
+    )
+
     llm = ChEMBLLLMQuery(
         db_path=args.db_path,
         provider=provider,
@@ -1501,17 +1720,13 @@ def main() -> None:
         output_base=args.output_base,
         run_id=run_id,
         filter_profile=args.filter_profile,
+        strip_unrequested_limit=args.strip_unrequested_limit,
         sql_temperature=args.temperature,
         prompt_writer_temperature=args.temperature,
         judge_temperature=args.judge_temperature,
     )
 
     try:
-        timestamp = run_id or "run"
-        save_file = None
-        if args.auto:
-            save_file = args.output_file or f"{args.output_base}_{timestamp}.csv"
-
         result = llm.query(
             question=query,
             save_to_file=save_file,
