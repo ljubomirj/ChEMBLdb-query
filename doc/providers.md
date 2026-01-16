@@ -21,13 +21,30 @@ Context filtering:
 - When using OpenRouter model lists, `--min-context` filters models by context length via OpenRouter `/models` (default is 100000).
 - The filtered SQL/judge lists are logged at startup.
 
+## Z.AI
+Env: `ZAI_API_KEY`  
+CLI: `--provider zai`  
+Default model: `glm-4.7`
+
+Base URLs:
+- Coding (default): `ZAI_CODING_BASE_URL` → https://api.z.ai/api/coding/paas/v4
+- General: `ZAI_BASE_URL` → https://api.z.ai/api/paas/v4
+
+Allowed IDs:
+- `glm-4.7`
+- `glm-4.5-air`
+
 ## Cerebras
 Env: `CEREBRAS_API_KEY`  
 CLI: `--provider cerebras`  
 Default model: `zai-glm-4.7`
 
+Base URL override:
+- `CEREBRAS_BASE_URL` → https://api.cerebras.ai/v1
+
 Allowed IDs:
 - `zai-glm-4.7`
+- (additional Cerebras model IDs may be used via `--sql-model/--judge-model`)
 
 ## DeepSeek
 Env: `DEEPSEEK_API_KEY`  
@@ -55,5 +72,5 @@ Default model: `Qwen/Qwen2.5-3B-Instruct`
 ## Provider env var
 You can avoid passing `--provider` by setting:
 ```
-TEXT2SQL_PROVIDER=openrouter|cerebras|deepseek|anthropic|local|auto
+TEXT2SQL_PROVIDER=openrouter|zai|cerebras|deepseek|anthropic|local|auto
 ```

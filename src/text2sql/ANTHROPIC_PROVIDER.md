@@ -24,6 +24,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 ## Usage
 
 These commands target the local ChEMBL SQLite database via `src/db_llm_query.py`.
+Filter profiles: `none` (default), `strict`, `relaxed`.
 
 ### Command Line (single example)
 

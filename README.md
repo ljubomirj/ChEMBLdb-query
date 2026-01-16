@@ -25,8 +25,9 @@ cp .env.example .env
 Then open `.env` and add the missing API keys (the template placeholders are blank). Fill in any of:
 ```
 OPENROUTER_API_KEY=
-CEREBRAS_API_KEY=
 DEEPSEEK_API_KEY=
+CEREBRAS_API_KEY=
+ZAI_API_KEY=
 ANTHROPIC_API_KEY=
 ```
 
@@ -93,11 +94,12 @@ This list reflects files intended for the public repo. Excluded: local `.env` fi
 - `src/text2sql/__init__.py`: Text2SQL package initializer.
 - `src/text2sql/anthropic_direct.py`: Anthropic provider implementation.
 - `src/text2sql/base.py`: Base provider interfaces and shared helpers.
-- `src/text2sql/cerebras.py`: Cerebras provider implementation.
+- `src/text2sql/openrouter.py`: OpenRouter provider implementation.
 - `src/text2sql/deepseek.py`: DeepSeek provider implementation.
+- `src/text2sql/cerebras.py`: Cerebras provider implementation.
+- `src/text2sql/zai.py`: Z.AI provider implementation.
 - `src/text2sql/env.py`: Environment loading and provider config helpers.
 - `src/text2sql/local_llm.py`: Local model provider integration.
-- `src/text2sql/openrouter.py`: OpenRouter provider implementation.
 - `uv.lock`: Locked dependency versions for uv.
 
 ## CLI options (db_llm_query.py)
@@ -112,7 +114,7 @@ echo "..." | uv run python src/db_llm_query.py
 Options and defaults:
 - `query` (positional): natural language query. Optional if provided via `-q/--query` or stdin.
 - `-q, --query`: natural language query string. Default: unset.
-- `--provider`: LLM provider (`auto|anthropic|openrouter|cerebras|deepseek|local`). Default: unset (uses `TEXT2SQL_PROVIDER` or `openrouter`).
+- `--provider`: LLM provider (`auto|anthropic|openrouter|deepseek|cerebras|zai|local`). Default: unset (uses `TEXT2SQL_PROVIDER` or `openrouter`).
 - `--no-provider`: disable remote providers (force local LLM). Default: `false`.
 - `--db-path`: SQLite DB path. Default: `database/latest/chembl_36/chembl_36_sqlite/chembl_36.db`.
 - `-m, --sql-model, --model`: SQL model ID. Default: unset.
@@ -123,6 +125,8 @@ Options and defaults:
 - `--judge-model-cycle`: judge cycling (`random|orderly|cicada`). Default: unset (uses SQL cycle).
 - `--max-retries`: max iterations. Default: `20`.
 - `-t, --timeout`: SQLite timeout seconds. Default: `600`.
+- `--provider-sleep`: min seconds between LLM API calls. Default: `0`.
+- `--provider-retry-backoff`: base seconds for exponential backoff after failed provider calls. Default: `0`.
 - `-a, --auto`: auto-save results to timestamped CSV. Default: `false`.
 - `-f, --format`: output format (`json|csv|table`). Default: `table`.
 - `-v, --verbose`: verbosity; repeat for more (`-v/-vv/-vvv`). Default: `0`.
@@ -138,7 +142,7 @@ Options and defaults:
 - `--schema-sample-rows`: sample rows per table in schema docs. Default: `3`.
 - `--schema-max-cell-len`: max cell length for schema docs. Default: `80`.
 - `--prompt-hints-path`: full lookup-table hints path. Default: `doc/chembl_prompt_hints.md`.
-- `--filter-profile`: prompt-writer preset filters (`strict|relaxed`). Default: `strict`.
+- `--filter-profile`: prompt-writer preset filters (`none|strict|relaxed`). Default: `none`.
 - `--output-base`: base filename for CSV outputs. Default: `query_results`.
 - `--output-file`: exact filename for CSV outputs (overrides `--output-base`). Default: unset.
 - `--min-context`: minimum OpenRouter model context length. Default: `100000`.
@@ -235,4 +239,213 @@ PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv \
 ```
 
 This avoids OpenRouter entirely by forcing --provider deepseek and uses the DeepSeek models directly.
+
+Use Cerberas for speed, atm (16-Jan-2026) only top model there available is GLM-4.7:
+
+```bash
+$ PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --provider cerebras --sql-model zai-glm-4.7 --judge-model zai-glm-4.7 --filter-profile none -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+```
+
+Similar query, but confidence filter is not used, so it returns 44K+ rows
+```bash
+$ wc -l query_results_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.csv
+   44914 query_results_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.csv
+```
+
+The user prompt (that is created from the user question above) is
+```text
+Write a SQL query to retrieve the canonical_smiles, chembl_id, target_name (pref_name from target_dictionary), publication year, article doi, and standard IC50 value. Join the activities table with assays, docs, molecule_dictionary, compound_structures, target_dictionary, target_components, component_class, and protein_classification tables. Filter for activities where the standard_type is 'IC50' and the document year is greater than 2022. Restrict the results to targets where the protein_classification.pref_name contains 'Kinase'. Do not apply any filters on doc_type or confidence_score.
+```
+
+The SQL generated was
+```sql
+SELECT
+    compound_structures.canonical_smiles,
+    molecule_dictionary.chembl_id,
+    target_dictionary.pref_name AS target_name,
+    docs.year,
+    docs.doi,
+    activities.standard_value AS IC50
+FROM activities
+JOIN assays ON activities.assay_id = assays.assay_id
+JOIN docs ON assays.doc_id = docs.doc_id
+JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno
+JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno
+JOIN target_dictionary ON assays.tid = target_dictionary.tid
+JOIN target_components ON target_dictionary.tid = target_components.tid
+JOIN component_class ON target_components.component_id = component_class.component_id
+JOIN protein_classification ON component_class.protein_class_id = protein_classification.protein_class_id
+WHERE activities.standard_type = 'IC50'
+  AND docs.year > 2022
+  AND protein_classification.pref_name LIKE '%Kinase%'
+```
+
+The judge thought of the user question, prompt, the sql, and the rows sampled from the result
+```json
+{
+  "analysis": "The SQL query correctly retrieves the requested columns (canonical_smiles, chembl_id, target_name, year, doi, IC50) and applies appropriate
+ filters: standard_type='IC50', year>2022, and protein_classification.pref_name LIKE '%Kinase%'. The joins correctly connect activities to assays, docs, m
+olecule_dictionary, compound_structures, target_dictionary, target_components, component_class, and protein_classification. The sample results show valid
+kinase targets with IC50 values from 2023 publications. The query interpretation is reasonable - 'kinase inhibitors' is interpreted as IC50 activities aga
+inst kinase targets, which is standard practice. No LIMIT clause was used, and all requested fields are present.",
+  "score": 1.0,
+  "decision": "YES"
+}
+```
+
+Big log file! :-)
+```bash
+$ l logs/db_llm_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.log
+-rw-------@ 1 ljubomir  staff   6.3M 16 Jan 23:04 logs/db_llm_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.log
+```
+
+The label has `relaxed` in but that is in error, the filtering is none. (not `relaxed`)
+
+Using a Z.AI API using GLM-4.7 model that way
+
+```bash
+```
+
+The result is 38K+
+```bash
+$ wc -l query_results_query1_kinase_after_2022_zai_20260116_231554.csv
+   38487 query_results_query1_kinase_after_2022_zai_20260116_231554.csv
+```
+
+The SQL quary is
+```sql
+SELECT
+    compound_structures.canonical_smiles,
+    molecule_dictionary.chembl_id,
+    target_dictionary.pref_name AS target_name,
+    docs.year,
+    docs.doi,
+    activities.standard_value AS IC50
+FROM
+    molecule_dictionary
+JOIN
+    compound_structures ON molecule_dictionary.molregno = compound_structures.molregno
+JOIN
+    activities ON molecule_dictionary.molregno = activities.molregno
+JOIN
+    assays ON activities.assay_id = assays.assay_id
+JOIN
+    target_dictionary ON assays.tid = target_dictionary.tid
+JOIN
+    docs ON assays.doc_id = docs.doc_id
+WHERE
+    docs.year > 2022
+    AND activities.standard_type = 'IC50'
+    AND target_dictionary.pref_name LIKE '%kinase%'
+```
+
+The judge judgement accepting
+```json
+{"analysis":"The SQL query correctly implements the user's request. It joins the necessary tables (molecule_dictionary, compound_structures, activities, assays, target_dictionary, docs), returns all requested columns (canonical_smiles, chembl_id, target_name, year, doi, IC50), and applies the specified filters (year > 2022, standard_type = 'IC50', target_name contains 'kinase'). The query does not include an arbitrary LIMIT clause. The sample results (38,486 total rows, stratified by year) show the correct structure and data, with all target names containing 'kinase', years of 2023, and valid IC50 values. The filtering by 'kinase' in the target name is the standard approach for identifying kinase-related targets in ChEMBL. While one could argue that action_type filtering (INHIBITOR) might be more precise for 'inhibitors', the UP did not request this and the LIKE '%kinase%' filter on target name is the typical way to identify kinase targets. The query is correct and complete.","score":0.95,"decision":"YES"}
+```
+
+Log file 
+```bash
+$ l logs/db_llm_query1_kinase_after_2022_zai_20260116_231554.log
+-rw-------@ 1 ljubomir  staff   5.6M 16 Jan 23:18 logs/db_llm_query1_kinase_after_2022_zai_20260116_231554.log
+```
+
+Back to OpenRouter API using PAYG credits
+```bash
+$ RUN_LABEL="query1_kinase_after_2022_openrouter_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+```
+
+Returned 41K+ rows for the result in iteration 2
+```bash
+$ wc -l query_results_query1_kinase_after_2022_openrouter_20260116_233251.csv
+   41383 query_results_query1_kinase_after_2022_openrouter_20260116_233251.csv
+```
+
+The final SQL query
+```sql
+WITH kinase_tids AS (
+  SELECT DISTINCT tc.tid
+  FROM target_components tc
+  JOIN component_class cc ON cc.component_id = tc.component_id
+  JOIN protein_classification pc ON pc.protein_class_id = cc.protein_class_id
+  WHERE LOWER(pc.pref_name) LIKE '%kinase%'
+)
+SELECT
+  cs.canonical_smiles AS smiles,
+  md.chembl_id AS compound_chembl_id,
+  td.pref_name AS target_name,
+  d.year AS publication_year,
+  d.doi AS doi,
+  act.standard_value AS ic50_value,
+  act.standard_units AS ic50_units
+FROM activities act
+JOIN assays ass ON ass.assay_id = act.assay_id
+JOIN target_dictionary td ON td.tid = ass.tid
+JOIN kinase_tids kt ON kt.tid = td.tid
+JOIN molecule_dictionary md ON md.molregno = act.molregno
+JOIN compound_structures cs ON cs.molregno = md.molregno
+JOIN docs d ON d.doc_id = COALESCE(ass.doc_id, act.doc_id)
+WHERE act.standard_type = 'IC50'
+  AND d.year > 2022
+ORDER BY
+  publication_year DESC,
+  (ic50_value IS NULL) ASC,
+  ic50_value ASC;
+```
+
+
+```json
+2026-01-16 23:34:48,364 - text2sql.openrouter - INFO - ITER_2 > J_2 - OpenRouter API call: 215085 prompt + 491 completion = 215576 total tokens
+📄 Intermediate saved to: logs/intermediate/query_results_query1_kinase_after_2022_openrouter_20260116_233251_iter2.csv
+--------------------
+J_2:
+{"analysis":"RES_2 correctly applies the kinase-target definition via component_class/protein_classification, filters IC50 records from docs.year>2022, joins docs using COALESCE(assays.doc_id, activities.doc_id) as required, returns the specified seven columns in order, omits any LIMIT, and sorts by publication_year DESC, then ic50_value nullness and value as requested. Sample rows confirm the intent. No issues found.","score":0.98,"decision":"YES"}
+--------------------
+2026-01-16 23:34:48,377 - db_llm_query_v1 - INFO - ITER_2 - Stopping: judge_decision=True judge_score=0.98
+```
+
+In the initial iteration (1), the SQL query was somewhat different
+```sql
+WITH kinase_tids AS (
+  SELECT DISTINCT tc.tid
+  FROM target_components tc
+  JOIN component_class cc
+    ON cc.component_id = tc.component_id
+  JOIN protein_classification pc
+    ON pc.protein_class_id = cc.protein_class_id
+  WHERE LOWER(pc.pref_name) LIKE '%kinase%'
+)
+SELECT
+  cs.canonical_smiles AS smiles,
+  md.chembl_id AS compound_chembl_id,
+  td.pref_name AS target_name,
+  d.year AS publication_year,
+  d.doi AS doi,
+  act.standard_value AS ic50_value,
+  act.standard_units AS ic50_units
+FROM activities act
+JOIN assays ass
+  ON ass.assay_id = act.assay_id
+JOIN target_dictionary td
+  ON td.tid = ass.tid
+JOIN kinase_tids kt
+  ON kt.tid = td.tid
+JOIN molecule_dictionary md
+  ON md.molregno = act.molregno
+JOIN compound_structures cs
+  ON cs.molregno = md.molregno
+JOIN docs d
+  ON d.doc_id = COALESCE(act.doc_id, ass.doc_id)
+WHERE act.standard_type = 'IC50'
+  AND d.year > 2022
+ORDER BY
+  publication_year DESC,
+  ic50_value IS NULL ASC,
+  ic50_value ASC;
+```
+
+But the query and the result were rejected by the judge on the grounds of:
+```json
+{"analysis":"RES_1 largely matches the requested output columns and filters (IC50 only, docs.year > 2022, kinase targets via protein_classification name contains 'kinase', no LIMIT, ordered by year desc then value asc with NULLs last). However, the SQL joins docs using COALESCE(act.doc_id, ass.doc_id), which prioritizes activities.doc_id over assays.doc_id. The instructions explicitly say to join docs using assays.doc_id (and only coalesce with activities.doc_id if needed), so the coalesce order should be COALESCE(ass.doc_id, act.doc_id). Using the reversed order can attach the wrong publication year/DOI to an assay/activity when activities.doc_id is populated but differs from the assay document. Fix: change the docs join to prefer ass.doc_id, and keep the year filter on that joined docs row.","score":0.85,"decision":"NO"}
+```
 

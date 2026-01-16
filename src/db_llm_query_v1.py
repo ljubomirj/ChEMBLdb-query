@@ -100,6 +100,14 @@ STAGE_LABELS = (
     ("INIT", "ProviderModelSelection"),
 )
 
+DEFAULT_JUDGE_CONTEXT_LIMITS = {
+    "zai": 32768,
+    "cerebras": 32768,
+    "deepseek": 65536,
+    "anthropic": 200000,
+    "local": 8192,
+}
+
 
 def _format_param_value(value: Any) -> str:
     return repr(value)
@@ -120,11 +128,15 @@ def log_effective_params(
     save_file: Optional[str],
 ) -> None:
     logger.info("Effective parameters:")
+    effective_judge_context = args.judge_context_limit
+    if effective_judge_context is None:
+        effective_judge_context = DEFAULT_JUDGE_CONTEXT_LIMITS.get(provider)
     derived_params = [
         ("query", query),
         ("provider", provider),
         ("run_id", run_id),
         ("save_file", save_file),
+        ("judge_context_limit_effective", effective_judge_context),
     ]
     for key, value in derived_params:
         logger.info("  %s = %s", key, _format_param_value(value))
@@ -172,6 +184,11 @@ SUPER_MODELS = [
 ALL_MODELS = CHEAP_MODELS + EXPENSIVE_MODELS + SUPER_MODELS
 
 # Provider-specific model lists (non-OpenRouter)
+ZAI_MODELS = [
+    'glm-4.7',
+    'glm-4.5-air',
+]
+
 CEREBRAS_MODELS = [
     'zai-glm-4.7',
 ]
@@ -208,6 +225,8 @@ def cic_schedule(n: int) -> List[int]:
 
 def get_model_list(category: str, provider: str = 'openrouter') -> List[str]:
     provider_lower = (provider or 'openrouter').lower()
+    if provider_lower == 'zai':
+        return ZAI_MODELS
     if provider_lower == 'cerebras':
         return CEREBRAS_MODELS
     if provider_lower == 'deepseek':
@@ -640,11 +659,14 @@ class ChEMBLLLMQuery:
         intermediate_dir: str = 'logs/intermediate',
         output_base: str = 'query_results',
         run_id: Optional[str] = None,
-        filter_profile: str = 'strict',
+        filter_profile: str = 'none',
         strip_unrequested_limit: bool = True,
+        judge_context_limit: Optional[int] = None,
         sql_temperature: float = 1.0,
         prompt_writer_temperature: float = 1.0,
         judge_temperature: float = 0.1,
+        provider_sleep: float = 0.0,
+        provider_retry_backoff: float = 0.0,
     ):
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)
@@ -670,13 +692,22 @@ class ChEMBLLLMQuery:
         self.intermediate_dir = intermediate_dir
         self.output_base = output_base
         self.run_id = run_id
-        self.filter_profile = (filter_profile or 'strict').strip().lower()
-        if self.filter_profile not in {'strict', 'relaxed'}:
-            raise ValueError(f"Invalid filter_profile={filter_profile!r}; expected 'strict' or 'relaxed'")
+        self.filter_profile = (filter_profile or 'none').strip().lower()
+        if self.filter_profile not in {'none', 'strict', 'relaxed'}:
+            raise ValueError(
+                f"Invalid filter_profile={filter_profile!r}; expected 'none', 'strict' or 'relaxed'"
+            )
         self.strip_unrequested_limit = bool(strip_unrequested_limit)
+        if judge_context_limit is None:
+            self.judge_context_limit = DEFAULT_JUDGE_CONTEXT_LIMITS.get(provider)
+        else:
+            self.judge_context_limit = int(judge_context_limit)
         self.sql_temperature = float(sql_temperature)
         self.prompt_writer_temperature = float(prompt_writer_temperature)
         self.judge_temperature = float(judge_temperature)
+        self.provider_sleep = max(0.0, float(provider_sleep))
+        self.provider_retry_backoff = max(0.0, float(provider_retry_backoff))
+        self._last_provider_call_ts: Optional[float] = None
         self.openrouter_context_map: Dict[str, int] = {}
         if provider == 'openrouter':
             try:
@@ -809,6 +840,26 @@ class ChEMBLLLMQuery:
         if self.verbosity >= level:
             print(*args)
 
+    def _throttle_before_call(self, *, stage: str) -> None:
+        now = time.time()
+        if self._last_provider_call_ts is not None and self.provider_sleep > 0:
+            elapsed = now - self._last_provider_call_ts
+            if elapsed < self.provider_sleep:
+                delay = self.provider_sleep - elapsed
+                logger.info("Throttling %s call: sleeping %.2fs", stage, delay)
+                time.sleep(delay)
+                now = time.time()
+        self._last_provider_call_ts = now
+
+    def _backoff_after_failure(self, *, stage: str, retry_idx: int) -> None:
+        if self.provider_retry_backoff <= 0:
+            return
+        delay = self.provider_retry_backoff * (2 ** max(0, int(retry_idx)))
+        if delay <= 0:
+            return
+        logger.info("Backoff after %s failure: sleeping %.2fs", stage, delay)
+        time.sleep(delay)
+
     def _build_system_prompt(self) -> str:
         prompt_hints_block = ""
         if self.prompt_hints.strip():
@@ -906,6 +957,15 @@ You will be used in different roles. Follow the task instructions in the user me
         return f"<HISTORY from=\"{start_n}\" to=\"{end_n}\">\n{blocks}\n</HISTORY>"
 
     def _filter_profile_guidance(self) -> str:
+        if self.filter_profile == 'none':
+            return "\n".join(
+                [
+                    "- Do NOT require docs.doc_type or DOI unless explicitly requested; only use year filters.",
+                    "- Do NOT filter on assays.confidence_score unless explicitly requested.",
+                    "- Do NOT restrict target_type unless explicitly requested.",
+                    "- Do NOT add extra filters unless explicitly requested (no unit restrictions, no relation restrictions).",
+                ]
+            )
         if self.filter_profile == 'strict':
             return "\n".join(
                 [
@@ -1175,9 +1235,11 @@ Do NOT write SQL.
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
             self._ensure_judge_provider_for_attempt_with_offset(attempt_idx=attempt_idx, offset=offset)
+            self._throttle_before_call(stage="prompt-writer")
             text = self.judge_provider.generate_text(messages, max_tokens=4096, temperature=self.prompt_writer_temperature)
             if text is None:
                 logger.warning("Prompt-writer call failed; trying next judge model")
+                self._backoff_after_failure(stage="prompt-writer", retry_idx=offset)
                 continue
             last_text = text.strip()
             if last_text:
@@ -1236,8 +1298,10 @@ Do NOT write SQL.
             return 0, max_cell_len
 
         cap = min(df.height, max_samples)
-        if available_tokens is None or available_tokens <= 0:
+        if available_tokens is None:
             return max(1, min(cap, max(min_samples, cap))), max_cell_len
+        if available_tokens <= 0:
+            return max(1, min(cap, min_samples)), max_cell_len
 
         budget = int(available_tokens * 0.6)
         tokens_per_row = self._estimate_sample_row_tokens(df, max_cell_len=max_cell_len)
@@ -1256,7 +1320,7 @@ Do NOT write SQL.
                     return min_samples, alt_len
         return target, max_cell_len
 
-    def _estimate_full_result_tokens(self, df: pl.DataFrame, sample_rows: int = 200) -> int:
+    def _estimate_full_result_chars(self, df: pl.DataFrame, sample_rows: int = 200) -> int:
         if df.height == 0:
             return 0
         sample = df.head(min(sample_rows, df.height))
@@ -1266,16 +1330,22 @@ Do NOT write SQL.
         avg = total / sample.height if sample.height else 0
         header = sum(len(c) for c in df.columns) + max(0, len(df.columns) - 1)
         approx_chars = int(header + (avg + 1) * df.height)
-        return self._estimate_tokens("X" * approx_chars)
+        return approx_chars
+
+    def _estimate_full_result_tokens(self, df: pl.DataFrame, sample_rows: int = 200) -> int:
+        approx_chars = self._estimate_full_result_chars(df, sample_rows=sample_rows)
+        if approx_chars <= 0:
+            return 0
+        return max(1, int(approx_chars / 4))
 
     def _judge_context_limit(self) -> Optional[int]:
-        if self.base_provider != 'openrouter':
-            return None
-        if not self.openrouter_context_map:
-            return None
-        if not self.current_judge_model:
-            return None
-        return self.openrouter_context_map.get(self.current_judge_model)
+        if self.base_provider == 'openrouter':
+            if not self.openrouter_context_map:
+                return None
+            if not self.current_judge_model:
+                return None
+            return self.openrouter_context_map.get(self.current_judge_model)
+        return self.judge_context_limit
 
     def _call_sql_writer(self, *, uq: str, up: str, iterations: List[Iteration], n: int, attempt_idx: int) -> Optional[str]:
         if not self.sql_provider.is_available():
@@ -1285,6 +1355,7 @@ Do NOT write SQL.
         self._ensure_sql_provider_for_attempt(attempt_idx)
         messages = self._build_messages_for_sql(uq=uq, up=up, iterations=iterations, n=n)
         start_time = time.time()
+        self._throttle_before_call(stage="sql-writer")
         sql = self.sql_provider.generate_sql(question=up, schema_docs=self.schema_docs, conversation_history=messages)
         elapsed = time.time() - start_time
         logger.info(f"SQL generated in {elapsed:.2f}s")
@@ -1315,9 +1386,11 @@ Do NOT write SQL.
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
             self._ensure_judge_provider_for_attempt_with_offset(attempt_idx=attempt_idx, offset=offset)
+            self._throttle_before_call(stage="judge")
             text = self.judge_provider.generate_text(messages, max_tokens=4096, temperature=self.judge_temperature)
             if text is None:
                 logger.warning("Judge call failed; trying next judge model")
+                self._backoff_after_failure(stage="judge", retry_idx=offset)
                 continue
             last_text = text.strip()
             decision, score = parse_judge_output(last_text)
@@ -1477,6 +1550,19 @@ You are a strict judge evaluating whether RES_{n} answers the user's question.
                         strata_cols=strata_cols,
                     )
 
+                    if df is not None and success:
+                        approx_chars = self._estimate_full_result_chars(df)
+                        approx_tokens = max(1, int(approx_chars / 4)) if approx_chars > 0 else 0
+                        logger.info(
+                            "RES_%s size: rows=%s cols=%s approx_bytes=%s approx_tokens=%s res_mode=%s",
+                            n,
+                            row_count,
+                            len(cols),
+                            approx_chars,
+                            approx_tokens,
+                            res_mode,
+                        )
+
                     if self.verbosity >= 2:
                         sampled_for_judge = row_count if res_mode == "full" else len(samples_t)
                         self._vprint(2, "\n" + "=" * 20)
@@ -1566,7 +1652,7 @@ def main() -> None:
 
     parser.add_argument('query', nargs='?', help='Natural language query (can be provided via pipe)')
     parser.add_argument('-q', '--query', dest='query_text', help='Natural language query')
-    provider_choices = ['auto', 'anthropic', 'openrouter', 'cerebras', 'deepseek', 'local']
+    provider_choices = ['auto', 'anthropic', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local']
     parser.add_argument(
         '--provider',
         choices=provider_choices,
@@ -1610,6 +1696,8 @@ def main() -> None:
 
     parser.add_argument('--max-retries', type=int, default=20, help='Max iterations (default: 20)')
     parser.add_argument('-t', '--timeout', type=int, default=600, help='Query timeout in seconds (default: 600)')
+    parser.add_argument('--provider-sleep', type=float, default=0.0, help='Min seconds between LLM API calls (default: 0)')
+    parser.add_argument('--provider-retry-backoff', type=float, default=0.0, help='Base seconds for exponential backoff after failed provider calls (default: 0)')
     parser.add_argument('-a', '--auto', action='store_true', help='Auto-save results to timestamped CSV')
     parser.add_argument('-f', '--format', choices=['json', 'csv', 'table'], default='table', help='Output format')
     parser.add_argument('-v', '--verbose', action='count', default=0, help='Verbose output; repeat for more (-vv, -vvv)')
@@ -1625,13 +1713,14 @@ def main() -> None:
     parser.add_argument('--prompt-hints-path', default='doc/chembl_prompt_hints.md', help='Prompt hints path (full small lookup tables)')
     parser.add_argument(
         '--filter-profile',
-        choices=['strict', 'relaxed'],
-        default='strict',
-        help='Preset filters for prompt-writer (strict: publication+confidence=9+single protein; relaxed: no doc/doi, confidence>=8)',
+        choices=['none', 'strict', 'relaxed'],
+        default='none',
+        help='Preset filters for prompt-writer (none: no baseline filters; strict: publication+confidence=9+single protein; relaxed: no doc/doi, confidence>=8)',
     )
     parser.add_argument('--output-base', default='query_results', help='Base filename for CSV outputs (default: query_results)')
     parser.add_argument('--output-file', default=None, help='Exact filename for CSV outputs (overrides --output-base)')
     parser.add_argument('--min-context', type=int, default=100000, help='Minimum OpenRouter model context length (default: 100000)')
+    parser.add_argument('--judge-context-limit', type=int, default=None, help='Max judge context tokens for non-OpenRouter providers (default: provider preset)')
     parser.add_argument('--strip-unrequested-limit', dest='strip_unrequested_limit', action='store_true', help='Strip LIMIT unless user explicitly requested a row cap/top-N')
     parser.add_argument('--no-strip-unrequested-limit', dest='strip_unrequested_limit', action='store_false', help='Disable heuristic LIMIT stripping')
     parser.add_argument('--intermediate-dir', default='logs/intermediate', help='Directory for intermediate CSV results (default: logs/intermediate)')
@@ -1721,9 +1810,12 @@ def main() -> None:
         run_id=run_id,
         filter_profile=args.filter_profile,
         strip_unrequested_limit=args.strip_unrequested_limit,
+        judge_context_limit=args.judge_context_limit,
         sql_temperature=args.temperature,
         prompt_writer_temperature=args.temperature,
         judge_temperature=args.judge_temperature,
+        provider_sleep=args.provider_sleep,
+        provider_retry_backoff=args.provider_retry_backoff,
     )
 
     try:

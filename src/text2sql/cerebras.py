@@ -147,6 +147,7 @@ Generate the SQL query:"""
             print(f"   timeout: {self.timeout}s")
             print("="*20 + "\n")
 
+        response = None
         try:
             response = requests.post(
                 f'{self.base_url}/chat/completions',
@@ -186,6 +187,16 @@ Generate the SQL query:"""
             content = message.get('content', '')
             return content.strip()
 
+        except requests.exceptions.HTTPError as e:
+            body = ""
+            try:
+                body = response.text if response is not None else ""
+            except Exception:
+                body = ""
+            if body:
+                logger.error("Cerebras API error body: %s", body[:2000])
+            logger.error(f"Cerebras API request failed: {e}", exc_info=True)
+            return None
         except requests.exceptions.Timeout as e:
             logger.error(f"Cerebras API timeout: {e}", exc_info=True)
             return None

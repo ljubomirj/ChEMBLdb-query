@@ -35,3 +35,4 @@
 - 2026-01-15: README updated to drop the hardcoded `cd` in the newest example and align its log filename with the query1 convention.
 - 2026-01-15: README now documents agentic files/dirs and includes an acknowledgement for the codex-5.2-high agent.
 - 2026-01-15: AGENTS.md now embeds the global CLAUDE learning-loop text; README notes this so the requirement is visible in-repo.
+- 2026-01-16: Keep Cerebras and Z.AI as separate providers; do not treat Cerebras as a legacy alias when adding Z.AI support.
