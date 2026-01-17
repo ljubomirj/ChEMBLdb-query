@@ -299,11 +299,12 @@ $ l logs/db_llm_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.log
 -rw-------@ 1 ljubomir  staff   6.3M 16 Jan 23:04 logs/db_llm_query1_kinase_after_2022_relaxed_cerebras_20260116_202627.log
 ```
 
-The label has `relaxed` in but that is in error, the filtering is none. (not `relaxed`)
+(NB the label has `relaxed` in but that is in error, the filtering is none, not `relaxed`)
 
 Using a Z.AI API using GLM-4.7 model that way
 
 ```bash
+RUN_LABEL="query1_kinase_after_2022_zai_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --provider zai --sql-model glm-4.7 --judge-model glm-4.7 --filter-profile none -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
 ```
 
 The result is 38K+
