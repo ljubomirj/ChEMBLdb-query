@@ -367,18 +367,23 @@ RECOMMENDED_MODELS = {
         'cost_per_query_usd': 0.00026,
         'description': 'Good balance of cost and quality'
     },
-    'claude-3.5-sonnet': {
-        'id': 'anthropic/claude-3.5-sonnet',
+    'claude-sonnet-4.5': {
+        'id': 'anthropic/claude-sonnet-4.5',
         'cost_per_query_usd': 0.0015,
         'description': 'Premium quality, very reliable'
+    },
+    'claude-haiku-4.5': {
+        'id': 'anthropic/claude-haiku-4.5',
+        'cost_per_query_usd': 0.0005,
+        'description': 'Fast, low-cost Claude; great for quick SQL drafts'
     },
     'grok-code-fast': {
         'id': 'x-ai/grok-code-fast-1',
         'cost_per_query_usd': 0.0025,
         'description': 'xAI coding model, fast and accurate'
     },
-    'claude-opus-4': {
-        'id': 'anthropic/claude-opus-4-20250514',
+    'claude-opus-4.5': {
+        'id': 'anthropic/claude-opus-4.5',
         'cost_per_query_usd': 0.0075,
         'description': 'Highest quality, most expensive, best for critical queries'
     }

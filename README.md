@@ -13,7 +13,6 @@ uv run python src/db_llm_query.py -q "find kinase inhibitors after 2022"
 
 Optional extras:
 ```bash
-uv sync --extra anthropic
 uv sync --extra local
 ```
 
@@ -93,6 +92,7 @@ This list reflects files intended for the public repo. Excluded: local `.env` fi
 - `src/text2sql/ANTHROPIC_PROVIDER.md`: Provider-specific notes for Anthropic integration.
 - `src/text2sql/__init__.py`: Text2SQL package initializer.
 - `src/text2sql/anthropic_direct.py`: Anthropic provider implementation.
+- `src/text2sql/openai_direct.py`: OpenAI provider implementation.
 - `src/text2sql/base.py`: Base provider interfaces and shared helpers.
 - `src/text2sql/openrouter.py`: OpenRouter provider implementation.
 - `src/text2sql/deepseek.py`: DeepSeek provider implementation.
@@ -114,7 +114,7 @@ echo "..." | uv run python src/db_llm_query.py
 Options and defaults:
 - `query` (positional): natural language query. Optional if provided via `-q/--query` or stdin.
 - `-q, --query`: natural language query string. Default: unset.
-- `--provider`: LLM provider (`auto|anthropic|openrouter|deepseek|cerebras|zai|local`). Default: unset (uses `TEXT2SQL_PROVIDER` or `openrouter`).
+- `--provider`: LLM provider (`auto|anthropic|openai|openrouter|deepseek|cerebras|zai|local`). Default: unset (uses `TEXT2SQL_PROVIDER` or `openrouter`).
 - `--no-provider`: disable remote providers (force local LLM). Default: `false`.
 - `--db-path`: SQLite DB path. Default: `database/latest/chembl_36/chembl_36_sqlite/chembl_36.db`.
 - `-m, --sql-model, --model`: SQL model ID. Default: unset.
@@ -449,4 +449,3 @@ But the query and the result were rejected by the judge on the grounds of:
 ```json
 {"analysis":"RES_1 largely matches the requested output columns and filters (IC50 only, docs.year > 2022, kinase targets via protein_classification name contains 'kinase', no LIMIT, ordered by year desc then value asc with NULLs last). However, the SQL joins docs using COALESCE(act.doc_id, ass.doc_id), which prioritizes activities.doc_id over assays.doc_id. The instructions explicitly say to join docs using assays.doc_id (and only coalesce with activities.doc_id if needed), so the coalesce order should be COALESCE(ass.doc_id, act.doc_id). Using the reversed order can attach the wrong publication year/DOI to an assay/activity when activities.doc_id is populated but differs from the assay document. Fix: change the docs join to prefer ass.doc_id, and keep the year filter on that joined docs row.","score":0.85,"decision":"NO"}
 ```
-

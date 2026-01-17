@@ -13,7 +13,7 @@ Direct Anthropic API provider for text-to-SQL conversion using Claude models.
 ## Installation
 
 ```bash
-uv sync --extra anthropic
+uv sync
 ```
 
 Set your API key:
@@ -47,7 +47,7 @@ This same query run is recorded in `logs/db_llm_query1_kinase_after_2022_relaxed
 The provider automatically normalizes model names:
 
 ### Short Names (Recommended)
-- `claude-haiku-4.5` → claude-haiku-4-5-20250429
+- `claude-haiku-4.5` → claude-haiku-4-5-20251001
 - `claude-sonnet-4.5` → claude-sonnet-4-5-20250929
 - `claude-opus-4.5` → claude-opus-4-5-20251101
 
@@ -145,7 +145,7 @@ Use `--provider anthropic` with Claude model names (no `anthropic/` prefix), or 
 ## Troubleshooting
 
 ### "Anthropic provider not available"
-Install the SDK with `uv sync --extra anthropic` and ensure `ANTHROPIC_API_KEY` is set in your environment.
+Install dependencies with `uv sync` and ensure `ANTHROPIC_API_KEY` is set in your environment.
 
 ### "API key not found"
 Set `ANTHROPIC_API_KEY` in the environment or pass it directly when constructing the provider.

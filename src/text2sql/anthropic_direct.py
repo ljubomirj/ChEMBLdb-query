@@ -49,7 +49,7 @@ class AnthropicProvider(Text2SQLProvider):
         if anthropic is None:
             raise ImportError(
                 "anthropic package not installed. "
-                "Install with: pip install anthropic"
+                "Install with: uv sync"
             )
 
         self.api_key = api_key or os.getenv('ANTHROPIC_API_KEY')
@@ -69,9 +69,9 @@ class AnthropicProvider(Text2SQLProvider):
         Normalize model name to Anthropic format.
 
         Handles:
-        - Short names: claude-haiku-4.5 → claude-haiku-4-5-20250429
-        - Full names: claude-sonnet-4-5-20250429 → unchanged
-        - OpenRouter format: anthropic/claude-sonnet-4.5 → claude-sonnet-4-5-20250429
+        - Short names: claude-haiku-4.5 → claude-haiku-4-5-20251001
+        - Full names: claude-sonnet-4-5-20250929 → unchanged
+        - OpenRouter format: anthropic/claude-sonnet-4.5 → claude-sonnet-4-5-20250929
         """
         # Remove anthropic/ prefix if present (from OpenRouter format)
         if model.startswith('anthropic/'):
@@ -79,7 +79,7 @@ class AnthropicProvider(Text2SQLProvider):
 
         # Map short names to full model IDs
         model_map = {
-            'claude-haiku-4.5': 'claude-haiku-4-5-20250429',
+            'claude-haiku-4.5': 'claude-haiku-4-5-20251001',
             'claude-sonnet-4.5': 'claude-sonnet-4-5-20250929',
             'claude-opus-4.5': 'claude-opus-4-5-20251101',
             # Legacy mappings

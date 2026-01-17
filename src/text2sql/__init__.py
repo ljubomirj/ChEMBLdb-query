@@ -10,6 +10,7 @@ from typing import Optional
 from .base import Text2SQLProvider
 from .local_llm import LocalLLMProvider
 from .openrouter import OpenRouterProvider, RECOMMENDED_MODELS
+from .openai_direct import OpenAIProvider
 from .env import load_dotenv_once
 from .cerebras import CerebrasProvider
 from .zai import ZAIProvider
@@ -29,6 +30,7 @@ __all__ = [
     'Text2SQLProvider',
     'LocalLLMProvider',
     'OpenRouterProvider',
+    'OpenAIProvider',
     'ZAIProvider',
     'CerebrasProvider',
     'DeepSeekProvider',
@@ -49,7 +51,7 @@ def create_provider(
     Factory function to create appropriate text-to-SQL provider.
 
     Args:
-        provider: Provider type - 'auto', 'anthropic', 'openrouter', 'zai', 'cerebras', 'deepseek', or 'local'
+        provider: Provider type - 'auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', or 'local'
         model: Model identifier (provider-specific)
         verbose: If True, enable verbose output for debugging
         **kwargs: Additional provider-specific configuration
@@ -66,6 +68,9 @@ def create_provider(
 
         >>> # Force Anthropic direct API for Claude models
         >>> provider = create_provider('anthropic', model='claude-sonnet-4.5')
+
+        >>> # Force OpenAI direct API with specific model
+        >>> provider = create_provider('openai', model='gpt-5.1-codex')
 
         >>> # Force OpenRouter with specific model
         >>> provider = create_provider('openrouter', model='openai/gpt-5.1-codex-mini', temperature=1.0)
@@ -110,6 +115,13 @@ def create_provider(
                 verbose=verbose,
                 **kwargs
             )
+        elif os.getenv('OPENAI_API_KEY'):
+            logger.info("Auto-selecting OpenAI (API key found)")
+            return OpenAIProvider(
+                model=model or 'gpt-5.1-codex',
+                verbose=verbose,
+                **kwargs
+            )
         elif os.getenv('CEREBRAS_API_KEY'):
             logger.info("Auto-selecting Cerebras (API key found)")
             return CerebrasProvider(
@@ -135,7 +147,7 @@ def create_provider(
         if not HAS_ANTHROPIC:
             raise ValueError(
                 "Anthropic provider not available. "
-                "Install with: pip install anthropic"
+                "Install with: uv sync"
             )
         return AnthropicProvider(
             model=model or 'claude-sonnet-4.5',
@@ -146,6 +158,13 @@ def create_provider(
     elif provider == 'openrouter':
         return OpenRouterProvider(
             model=model or 'openai/gpt-5.1-codex-mini',
+            verbose=verbose,
+            **kwargs
+        )
+
+    elif provider == 'openai':
+        return OpenAIProvider(
+            model=model or 'gpt-5.1-codex',
             verbose=verbose,
             **kwargs
         )
@@ -180,5 +199,5 @@ def create_provider(
     else:
         raise ValueError(
             f"Unknown provider: {provider}. "
-            f"Choose from: 'auto', 'anthropic', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local'"
+            f"Choose from: 'auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local'"
         )

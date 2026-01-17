@@ -100,11 +100,23 @@ STAGE_LABELS = (
     ("INIT", "ProviderModelSelection"),
 )
 
+
+def _log_lines(level: int, message: str) -> None:
+    text = str(message)
+    lines = text.splitlines()
+    if text.endswith("\n"):
+        lines.append("")
+    if not lines:
+        lines = [""]
+    for line in lines:
+        logger.log(level, line)
+
 DEFAULT_JUDGE_CONTEXT_LIMITS = {
     "zai": 32768,
     "cerebras": 32768,
     "deepseek": 65536,
     "anthropic": 200000,
+    "openai": 200000,
     "local": 8192,
 }
 
@@ -145,13 +157,13 @@ def log_effective_params(
         logger.info("  %s = %s", key, _format_param_value(value))
 
 
-CHEAP_MODELS = [
+OPENROUTER_CHEAP_MODELS = [
     'z-ai/glm-4.7',
     'z-ai/glm-4.6v',
     'z-ai/glm-4.6:exacto',
     'z-ai/glm-4.5-air:free',
     'minimax/minimax-m2.1',
-    'anthropic/claude-4.5-haiku',
+    'anthropic/claude-haiku-4.5',
     'deepseek/deepseek-v3.2-speciale',
     'deepseek/deepseek-v3.2',
     'minimax/minimax-m2.1',
@@ -163,27 +175,28 @@ CHEAP_MODELS = [
     'qwen/qwen3-coder-flash',
 ]
 
-EXPENSIVE_MODELS = [
+OPENROUTER_EXPENSIVE_MODELS = [
     'openai/gpt-5.2',
     'openai/gpt-5.2-chat',
     'openai/gpt-5.1-codex-max',
     'openai/gpt-5.1-codex',
-    'anthropic/claude-opus-4.5',
     'anthropic/claude-sonnet-4.5',
-    'anthropic/claude-haiku-4.5',
     'x-ai/grok-4',
     'google/gemini-3-pro-preview',
     'qwen/qwen3-coder-plus',
     'qwen/qwen3-coder:exacto',
 ]
 
-SUPER_MODELS = [
+OPENROUTER_SUPER_MODELS = [
     'openai/gpt-5.2-pro',
+    'anthropic/claude-opus-4.5',
 ]
 
-ALL_MODELS = CHEAP_MODELS + EXPENSIVE_MODELS + SUPER_MODELS
+OPENROUTER_ALL_MODELS = (
+    OPENROUTER_CHEAP_MODELS + OPENROUTER_EXPENSIVE_MODELS + OPENROUTER_SUPER_MODELS
+)
 
-# Provider-specific model lists (non-OpenRouter)
+# Provider-specific model lists (explicit providers)
 ZAI_MODELS = [
     'glm-4.7',
     'glm-4.5-air',
@@ -198,11 +211,51 @@ DEEPSEEK_MODELS = [
     'deepseek-chat',
 ]
 
-ANTHROPIC_MODELS = [
+OPENAI_CHEAP_MODELS = [
+    'gpt-5.1-codex-mini',
+    'gpt-5-mini',
+    'gpt-5-nano',
+    'o3-mini',
+    'o3-mini-high',
+]
+
+OPENAI_EXPENSIVE_MODELS = [
+    'gpt-5.1-codex',
+    'gpt-5.2-codex',
+    'gpt-5.1',
+    'gpt-5.2',
+    'gpt-5.1-chat',
+    'gpt-5.2-chat',
+    'gpt-5-image',
+    'gpt-5-image-mini',
+    'o3',
+]
+
+OPENAI_SUPER_MODELS = [
+    'gpt-5.1-codex-max',
+    'gpt-5.2-pro',
+    'gpt-5-pro',
+    'o3-pro',
+    'o3-deep-research',
+]
+
+OPENAI_ALL_MODELS = OPENAI_CHEAP_MODELS + OPENAI_EXPENSIVE_MODELS + OPENAI_SUPER_MODELS
+
+ANTHROPIC_CHEAP_MODELS = [
     'claude-haiku-4.5',
+]
+
+ANTHROPIC_EXPENSIVE_MODELS = [
     'claude-sonnet-4.5',
+]
+
+ANTHROPIC_SUPER_MODELS = [
     'claude-opus-4.5',
 ]
+
+ANTHROPIC_ALL_MODELS = (
+    ANTHROPIC_CHEAP_MODELS + ANTHROPIC_EXPENSIVE_MODELS + ANTHROPIC_SUPER_MODELS
+)
 
 
 def cic_find_primes(limit: int) -> List[int]:
@@ -231,26 +284,44 @@ def get_model_list(category: str, provider: str = 'openrouter') -> List[str]:
         return CEREBRAS_MODELS
     if provider_lower == 'deepseek':
         return DEEPSEEK_MODELS
+    if provider_lower == 'openai':
+        if category == 'cheap':
+            return OPENAI_CHEAP_MODELS
+        if category == 'expensive':
+            return OPENAI_EXPENSIVE_MODELS
+        if category == 'super':
+            return OPENAI_SUPER_MODELS
+        if category == 'all':
+            return OPENAI_ALL_MODELS
+        raise ValueError(f"Invalid model category: {category}")
     if provider_lower == 'anthropic':
-        return ANTHROPIC_MODELS
+        if category == 'cheap':
+            return ANTHROPIC_CHEAP_MODELS
+        if category == 'expensive':
+            return ANTHROPIC_EXPENSIVE_MODELS
+        if category == 'super':
+            return ANTHROPIC_SUPER_MODELS
+        if category == 'all':
+            return ANTHROPIC_ALL_MODELS
+        raise ValueError(f"Invalid model category: {category}")
     if provider_lower == 'local':
         return []
 
     if category == 'cheap':
-        return CHEAP_MODELS
+        return OPENROUTER_CHEAP_MODELS
     if category == 'expensive':
-        return EXPENSIVE_MODELS
+        return OPENROUTER_EXPENSIVE_MODELS
     if category == 'super':
-        return SUPER_MODELS
+        return OPENROUTER_SUPER_MODELS
     if category == 'all':
-        return ALL_MODELS
+        return OPENROUTER_ALL_MODELS
     raise ValueError(f"Invalid model category: {category}")
 
 
 _OPENROUTER_CONTEXT_CACHE: Optional[Dict[str, int]] = None
 
 
-def filter_models_by_context(models: List[str], min_context: int) -> List[str]:
+def filter_openrouter_models_by_context(models: List[str], min_context: int) -> List[str]:
     if min_context <= 0:
         return models
 
@@ -725,7 +796,7 @@ class ChEMBLLLMQuery:
                 if self.openrouter_context_map:
                     base_list = [m for m in base_list if self.openrouter_context_map.get(m, 0) >= self.min_context]
                 else:
-                    base_list = filter_models_by_context(base_list, self.min_context)
+                    base_list = filter_openrouter_models_by_context(base_list, self.min_context)
                 if self.min_context > 0 and not base_list:
                     raise RuntimeError("No SQL models meet the minimum context requirement.")
             if sql_model:
@@ -752,7 +823,7 @@ class ChEMBLLLMQuery:
                 if self.openrouter_context_map:
                     base_list = [m for m in base_list if self.openrouter_context_map.get(m, 0) >= self.min_context]
                 else:
-                    base_list = filter_models_by_context(base_list, self.min_context)
+                    base_list = filter_openrouter_models_by_context(base_list, self.min_context)
                 if self.min_context > 0 and not base_list:
                     raise RuntimeError("No judge models meet the minimum context requirement.")
             if judge_model:
@@ -787,7 +858,7 @@ class ChEMBLLLMQuery:
                     logger.warning("Could not compare schema docs mtime to DB mtime", exc_info=True)
 
                 if should_regenerate:
-                    print("⚠️  Schema docs missing or stale; generating...")
+                    logger.warning("Schema docs missing or stale; generating...")
                     self.schema_docs = generate_schema_docs_sqlite(
                         db_path=self.db_path,
                         output_path=str(schema_path),
@@ -807,14 +878,14 @@ class ChEMBLLLMQuery:
             sp_hash = hashlib.sha256(self.system_prompt.encode("utf-8")).hexdigest()
             self.system_prompt_hash = sp_hash
             logger.info("SP_SHA256: %s", sp_hash)
-            logger.info("SP_FULL:\n%s", self.system_prompt)
+            _log_lines(logging.INFO, f"SP_FULL:\n{self.system_prompt}")
 
         # Providers
-        print("🧪 Initializing SQL provider...")
+        logger.info("Initializing SQL provider...")
         self.sql_provider = create_provider(provider=provider, model=self.sql_model, verbose=self.verbose, temperature=self.sql_temperature)
         self.current_sql_model = self.sql_model
 
-        print("🧪 Initializing judge provider...")
+        logger.info("Initializing judge provider...")
         self.judge_provider = create_provider(provider=provider, model=self.judge_model, verbose=self.verbose, temperature=self.judge_temperature)
         self.current_judge_model = self.judge_model
 
@@ -838,7 +909,9 @@ class ChEMBLLLMQuery:
 
     def _vprint(self, level: int, *args: object) -> None:
         if self.verbosity >= level:
-            print(*args)
+            message = " ".join(str(a) for a in args)
+            log_level = logging.DEBUG if level >= 2 else logging.INFO
+            _log_lines(log_level, message)
 
     def _throttle_before_call(self, *, stage: str) -> None:
         now = time.time()
@@ -1216,7 +1289,11 @@ Do NOT write SQL.
         self._vprint(2, f"RES_{n} FULL ROWS (CSV):")
         self._vprint(2, "=" * 20)
         try:
-            df.write_csv(sys.stdout)
+            buf = io.StringIO()
+            df.write_csv(buf)
+            csv_text = buf.getvalue().strip()
+            if csv_text:
+                _log_lines(logging.DEBUG, csv_text)
         except BrokenPipeError:
             logger.warning("Broken pipe while printing full result rows; continuing.")
         self._vprint(2, "=" * 20 + "\n")
@@ -1229,8 +1306,8 @@ Do NOT write SQL.
         messages = self._build_messages_for_up(uq=uq, iterations=iterations, next_n=next_n)
         if self.verbosity >= 2:
             user_prompt = messages[1]["content"] if len(messages) > 1 else ""
-            logger.info("SP here; SHA256=%s", self.system_prompt_hash)
-            logger.info("UP_PROMPT_USER:\n%s", user_prompt)
+            logger.debug("SP here; SHA256=%s", self.system_prompt_hash)
+            _log_lines(logging.DEBUG, f"UP_PROMPT_USER:\n{user_prompt}")
 
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
@@ -1489,14 +1566,14 @@ Do NOT write SQL.
                     raise RuntimeError("SQL generation returned None")
 
                 if self.verbose:
-                    print("\n" + "=" * 20)
-                    print(f"Generated SQL_{n} ({self.current_sql_model}):")
-                    print("=" * 20)
-                    print(sql)
-                    print("=" * 20 + "\n")
+                    self._vprint(1, "\n" + "=" * 20)
+                    self._vprint(1, f"Generated SQL_{n} ({self.current_sql_model}):")
+                    self._vprint(1, "=" * 20)
+                    self._vprint(1, sql)
+                    self._vprint(1, "=" * 20 + "\n")
 
                 if dry_run:
-                    print("DRY RUN: not executing SQL")
+                    logger.info("DRY RUN: not executing SQL")
                     return None
 
                 with log_stage(f"RES_{n}"):
@@ -1628,7 +1705,7 @@ You are a strict judge evaluating whether RES_{n} answers the user's question.
                         return None
                     if save_to_file:
                         df.write_csv(save_to_file)
-                        print(f"\n📄 Saved to: {save_to_file}")
+                        logger.info("Saved to: %s", save_to_file)
                     return df
 
         logger.error(f"All {self.max_retries} iterations exhausted")
@@ -1652,7 +1729,7 @@ def main() -> None:
 
     parser.add_argument('query', nargs='?', help='Natural language query (can be provided via pipe)')
     parser.add_argument('-q', '--query', dest='query_text', help='Natural language query')
-    provider_choices = ['auto', 'anthropic', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local']
+    provider_choices = ['auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local']
     parser.add_argument(
         '--provider',
         choices=provider_choices,
@@ -1838,7 +1915,7 @@ def main() -> None:
                     else:
                         output_file = f"{args.output_base}.csv"
                     result.write_csv(output_file)
-                    print(f"\n📄 Saved to: {output_file}")
+                    logger.info("Saved to: %s", output_file)
             else:
                 print("\n" + "=" * 20)
                 print("Results:")
@@ -1847,10 +1924,10 @@ def main() -> None:
                 print("=" * 20)
 
     except KeyboardInterrupt:
-        print("\n\nInterrupted by user")
+        logger.warning("Interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\nError: {e}")
+        logger.error("Error: %s", e)
         sys.exit(1)
 
 V1_FLOW_SPEC = r"""

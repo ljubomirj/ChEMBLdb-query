@@ -14,12 +14,23 @@ Recommended IDs (subset):
 - `deepseek/deepseek-chat`
 - `deepseek/deepseek-r1`
 - `meta-llama/llama-3.1-70b-instruct`
-- `anthropic/claude-3.5-sonnet`
-- `anthropic/claude-opus-4-20250514`
+- `anthropic/claude-sonnet-4.5`
+- `anthropic/claude-opus-4.5`
 
 Context filtering:
 - When using OpenRouter model lists, `--min-context` filters models by context length via OpenRouter `/models` (default is 100000).
 - The filtered SQL/judge lists are logged at startup.
+
+## OpenAI (direct)
+Env: `OPENAI_API_KEY`  
+CLI: `--provider openai`  
+Default model: `gpt-5.1-codex`
+
+Allowed IDs include OpenAI chat/reasoning/codex models such as:
+- `gpt-5.1-codex`
+- `gpt-5.2`
+- `gpt-4o`
+- `o3`
 
 ## Z.AI
 Env: `ZAI_API_KEY`  
@@ -72,5 +83,5 @@ Default model: `Qwen/Qwen2.5-3B-Instruct`
 ## Provider env var
 You can avoid passing `--provider` by setting:
 ```
-TEXT2SQL_PROVIDER=openrouter|zai|cerebras|deepseek|anthropic|local|auto
+TEXT2SQL_PROVIDER=openrouter|openai|zai|cerebras|deepseek|anthropic|local|auto
 ```
