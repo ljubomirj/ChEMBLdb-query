@@ -37,3 +37,4 @@
 - 2026-01-15: AGENTS.md now embeds the global CLAUDE learning-loop text; README notes this so the requirement is visible in-repo.
 - 2026-01-16: Keep Cerebras and Z.AI as separate providers; do not treat Cerebras as a legacy alias when adding Z.AI support.
 - 2026-01-17: OpenAI provider returned strings with invalid surrogate code points causing UTF-8 log/JSON errors; sanitize request/response text with UTF-8 replace in `src/text2sql/openai_direct.py`.
+- 2026-01-17: Gemini responses sometimes include stray leading text (e.g., 'ite' before SELECT); strip to the first SQL keyword in `src/text2sql/gemini_direct.py` to avoid invalid SQL.

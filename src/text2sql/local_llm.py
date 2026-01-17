@@ -56,8 +56,9 @@ class LocalLLMProvider(Text2SQLProvider):
             logger.error("transformers not installed. Install with: pip install transformers torch tokenizers")
             return
 
-        print(f"🦆 Loading {self.model_name}...")
-        print("   This may take a minute on first run (downloading model)...")
+        self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "Local LLM Load", "=" * 20]))
+        self._emit_raw_block(f"Loading {self.model_name}...\nThis may take a minute on first run (downloading model)...")
+        self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
@@ -67,9 +68,13 @@ class LocalLLMProvider(Text2SQLProvider):
                 device_map='auto' if torch.cuda.is_available() else 'cpu',
                 low_cpu_mem_usage=True
             )
-            print(f"✅ Model loaded successfully!")
-            print(f"   Model: {self.model_name}")
-            print(f"   Device: {'CUDA' if torch.cuda.is_available() else 'CPU'}\n")
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "Local LLM Loaded", "=" * 20]))
+            self._emit_raw_block(
+                "Model loaded successfully!\n"
+                f"Model: {self.model_name}\n"
+                f"Device: {'CUDA' if torch.cuda.is_available() else 'CPU'}"
+            )
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         except Exception as e:
             logger.error(f"Failed to load model {self.model_name}: {e}", exc_info=True)
@@ -77,18 +82,28 @@ class LocalLLMProvider(Text2SQLProvider):
 
             # Provide specific fixes for common errors
             if "TokenizersBackend" in error_str or "tokenizers" in error_str.lower():
-                print("\n   Common fixes:")
-                print("   1. Install tokenizers: uv pip install --no-cache-dir tokenizers")
-                print("   2. Reinstall transformers: uv pip install --no-cache-dir --upgrade transformers")
-                print("   3. Run fix script: bash tools/fix_tokenizers.sh")
-                print("   4. Clear cache: rm -rf ~/.cache/huggingface/hub/*")
+                self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "Local LLM Fixes", "=" * 20]))
+                self._emit_raw_block(
+                    "Common fixes:\n"
+                    "1. Install tokenizers: uv pip install --no-cache-dir tokenizers\n"
+                    "2. Reinstall transformers: uv pip install --no-cache-dir --upgrade transformers\n"
+                    "3. Run fix script: bash tools/fix_tokenizers.sh\n"
+                    "4. Clear cache: rm -rf ~/.cache/huggingface/hub/*"
+                )
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
             elif "out of memory" in error_str.lower() or "oom" in error_str.lower():
-                print("\n   Memory issue detected. Try:")
-                print("   - Using a smaller model")
-                print("   - Closing other applications")
-                print("   - Setting PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 (for Mac)")
+                self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "Local LLM Memory", "=" * 20]))
+                self._emit_raw_block(
+                    "Memory issue detected. Try:\n"
+                    "- Using a smaller model\n"
+                    "- Closing other applications\n"
+                    "- Setting PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 (for Mac)"
+                )
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
-            print("\n   Falling back to manual SQL entry")
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "Local LLM Fallback", "=" * 20]))
+            self._emit_raw_block("Falling back to manual SQL entry")
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
             self.model = None
 
     def generate_sql(
@@ -256,3 +271,38 @@ SQL QUERY:"""
         # Clear CUDA cache if available
         if HAS_TRANSFORMERS and torch.cuda.is_available():
             torch.cuda.empty_cache()
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()

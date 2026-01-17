@@ -161,14 +161,13 @@ Generate the SQL query:"""
         }
 
         if self.verbose:
-            print("\n" + "="*20)
-            print("🔍 VERBOSE: OpenRouter API Request")
-            print("="*20)
-            print(f"\n📍 Endpoint: {self.base_url}/chat/completions")
-            print(f"🤖 Model: {self.model}")
-
-            print(f"\n💬 CONVERSATION ({len(messages)} messages):")
-            print("-"*20)
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: OpenRouter API Request", "=" * 20]))
+            body_lines = [
+                f"Endpoint: {self.base_url}/chat/completions",
+                f"Model: {self.model}",
+                f"CONVERSATION ({len(messages)} messages):",
+                "-" * 20,
+            ]
             for i, msg in enumerate(messages):
                 role = str(msg.get('role', '')).upper()
                 content = msg.get('content', '')
@@ -176,14 +175,18 @@ Generate the SQL query:"""
                     preview = content[:200] + "..." if len(content) > 200 else content
                 else:
                     preview = str(content)[:200] + "..."
-                print(f"{i+1}. {role}: {preview}")
-            print("-"*20)
-
-            print(f"\n⚙️  API Parameters:")
-            print(f"   temperature: {request_payload['temperature']}")
-            print(f"   max_tokens: {request_payload['max_tokens']}")
-            print(f"   timeout: {self.timeout}s")
-            print("="*20 + "\n")
+                body_lines.append(f"{i+1}. {role}: {preview}")
+            body_lines.extend(
+                [
+                    "-" * 20,
+                    "API Parameters:",
+                    f"   temperature: {request_payload['temperature']}",
+                    f"   max_tokens: {request_payload['max_tokens']}",
+                    f"   timeout: {self.timeout}s",
+                ]
+            )
+            self._emit_raw_block("\n".join(body_lines))
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             response = requests.post(
@@ -201,23 +204,39 @@ Generate the SQL query:"""
             data = response.json()
 
             if self.verbose:
-                print("="*20)
-                print("🔍 VERBOSE: OpenRouter API Response")
-                print("="*20)
-                print(f"\n📊 Response Status: {response.status_code}")
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: OpenRouter API Response", "=" * 20]))
+                body_lines = [
+                    f"Response Status: {response.status_code}",
+                ]
                 if 'usage' in data:
                     usage = data['usage']
-                    print(f"📈 Token Usage:")
-                    print(f"   Prompt tokens: {usage.get('prompt_tokens', 0)}")
-                    print(f"   Completion tokens: {usage.get('completion_tokens', 0)}")
-                    print(f"   Total tokens: {usage.get('total_tokens', 0)}")
+                    body_lines.extend(
+                        [
+                            "Token Usage:",
+                            f"   Prompt tokens: {usage.get('prompt_tokens', 0)}",
+                            f"   Completion tokens: {usage.get('completion_tokens', 0)}",
+                            f"   Total tokens: {usage.get('total_tokens', 0)}",
+                        ]
+                    )
                     if 'cache_creation_input_tokens' in usage:
-                        print(f"💾 Prompt Cache:")
-                        print(f"   Cache creation tokens: {usage.get('cache_creation_input_tokens', 0)}")
-                        print(f"   Cache read tokens: {usage.get('cache_read_input_tokens', 0)}")
+                        body_lines.extend(
+                            [
+                                "Prompt Cache:",
+                                f"   Cache creation tokens: {usage.get('cache_creation_input_tokens', 0)}",
+                                f"   Cache read tokens: {usage.get('cache_read_input_tokens', 0)}",
+                            ]
+                        )
                 raw_content = data.get('choices', [{}])[0].get('message', {}).get('content', '')
-                print(f"\n💬 RAW RESPONSE:\n{'-'*20}\n{raw_content}\n{'-'*20}")
-                print("="*20 + "\n")
+                body_lines.extend(
+                    [
+                        "RAW RESPONSE:",
+                        "-" * 20,
+                        raw_content,
+                        "-" * 20,
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             # Log token usage for cost tracking
             if 'usage' in data:
@@ -331,6 +350,41 @@ Generate the SQL query:"""
             sql = sql.split(';')[0] + ';'
 
         return sql.strip()
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()
 
 
 # Recommended models and their characteristics

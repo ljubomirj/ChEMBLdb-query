@@ -159,11 +159,6 @@ Most recent recommended run (relaxed filter + long context + CSV + logs):
 unset OPENROUTER_API_KEY && set -a && source ./.env && set +a && RUN_LABEL="query1_kinase_after_2022_relaxed_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --min-context=100000 --filter-profile relaxed --run-label "${RUN_LABEL}" -f csv -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
 ```
 
-Example session with verbose output and logging via `tee`:
-```bash
-PYTHONUNBUFFERED=1 python src/db_llm_query_v1.py -vv -q "" |& tee logs/db_llm_query_$(date +%Y%m%d_%H%M%S).log^C
-```
-
 Query used:
 ```
 get the smiles,chembl_id, target_name, publication year, article doi,
@@ -177,16 +172,6 @@ CSV file written: kinase_inhibitors_after_2022.csv
 Columns: canonical_smiles, molecule_chembl_id, target_name, publication_year, doi, standard_type, standard_value, standard_units
 ```
 
-CSV filenames:
-- With `-a/--auto`, the file name is `{output_base}_YYYYMMDD_HHMMSS.csv` (local time), unless `--output-file` is set.
-- With `-f csv` and no `-a`, the file name is `{output_base}_{run_id}.csv` when `--run-label` (or default timestamp) is available, unless `--output-file` is set.
-Intermediate results:
-- When enabled, intermediate CSVs are saved to `{intermediate_dir}` as `{output_base}_{run_id}_iterN.csv`.
-Run labels:
-- Use `--run-label` to replace the timestamp used in `{run_id}` for intermediate and auto-saved results.
-Judge inputs:
-- RES summaries are sent to the judge with `res_mode: sample` or `res_mode: full`. Full rows are only passed when the estimated RES size fits within 90% of the judge model’s context window.
-
 Expected result excerpt (from the reference text):
 ```
 For those interested in the gory details, a Jupyter notebook with code I used to extract and analyze the data is available on GitHub. My search returned 44,992 records, while the Gemini search returned 38,571. Why the difference?
@@ -199,10 +184,6 @@ Reference:
 [Searching ChEMBL with Gemini](https://patwalters.github.io/Searching-ChEMBL-with-Gemini/)
 
 Attempt at equivalent run with a single run label (shared across logs and outputs):
-```bash
-RUN_LABEL=$(date +%Y%m%d_%H%M%S)
-PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABEL}" -q "get the smiles,chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
-```
 
 Current canonical query run (descriptive run label + CSV output):
 ```bash
@@ -394,7 +375,7 @@ ORDER BY
   ic50_value ASC;
 ```
 
-
+The judge-ment accepting the result in iteration 2.
 ```json
 2026-01-16 23:34:48,364 - text2sql.openrouter - INFO - ITER_2 > J_2 - OpenRouter API call: 215085 prompt + 491 completion = 215576 total tokens
 📄 Intermediate saved to: logs/intermediate/query_results_query1_kinase_after_2022_openrouter_20260116_233251_iter2.csv
@@ -405,7 +386,7 @@ J_2:
 2026-01-16 23:34:48,377 - db_llm_query_v1 - INFO - ITER_2 - Stopping: judge_decision=True judge_score=0.98
 ```
 
-In the initial iteration (1), the SQL query was somewhat different
+In the initial iteration 1, the SQL query was somewhat different
 ```sql
 WITH kinase_tids AS (
   SELECT DISTINCT tc.tid
@@ -449,3 +430,132 @@ But the query and the result were rejected by the judge on the grounds of:
 ```json
 {"analysis":"RES_1 largely matches the requested output columns and filters (IC50 only, docs.year > 2022, kinase targets via protein_classification name contains 'kinase', no LIMIT, ordered by year desc then value asc with NULLs last). However, the SQL joins docs using COALESCE(act.doc_id, ass.doc_id), which prioritizes activities.doc_id over assays.doc_id. The instructions explicitly say to join docs using assays.doc_id (and only coalesce with activities.doc_id if needed), so the coalesce order should be COALESCE(ass.doc_id, act.doc_id). Using the reversed order can attach the wrong publication year/DOI to an assay/activity when activities.doc_id is populated but differs from the assay document. Fix: change the docs join to prefer ass.doc_id, and keep the year filter on that joined docs row.","score":0.85,"decision":"NO"}
 ```
+OpenAI provider added - runs
+```bash
+ljubomir@macbook2(::main):~/ChEMBLdb-query$ RUN_LABEL="query1_kinase_after_2022_openai_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vvv --provider openai -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"^C
+```
+
+...but only 21K+ lines of result returned - TBD debug
+```bash
+ljubomir@macbook2(::main):~/ChEMBLdb-query$ wc -l query_results_query1_kinase_after_2022_openai_20260117_170659.csv
+   21339 query_results_query1_kinase_after_2022_openai_20260117_170659.csv
+ljubomir@macbook2(::main):~/ChEMBLdb-query$ l logs/db_llm_query1_kinase_after_2022_openai_20260117_170659.log
+-rw-------@ 1 ljubomir  staff   4.1M 17 Jan 17:07 logs/db_llm_query1_kinase_after_2022_openai_20260117_170659.log
+```
+
+The judgement was
+```json
+2026-01-17 17:07:36,373 - db_llm_query_v1 - DEBUG - ITER_1 - J_1:
+{"analysis":"SQL follows instructions: correct columns and aliases, deduplicated via ROW_NUMBER over the required key, filters exactly match the user’s profile (IC50, non-null standard_value, DOI, year > 2022, kinase targets), and ordering is year DESC then IC50 ascending. Result set is large but sample mode is acceptable. Minor future refinement could remove the redundant IS NOT NULL predicate on target_name, though it doesn’t affect correctness.","score":0.94,"decision":"YES"}
+```
+
+for SQL
+```sql
+WITH ranked AS (
+    SELECT
+        cs.canonical_smiles AS smiles,
+        md.chembl_id,
+        td.pref_name AS target_name,
+        d.year AS publication_year,
+        d.doi,
+        act.standard_value AS ic50_value,
+        act.standard_units AS ic50_units,
+        ROW_NUMBER() OVER (
+            PARTITION BY md.chembl_id, td.pref_name, d.year, act.standard_value, act.standard_units
+            ORDER BY act.activity_id
+        ) AS rn
+    FROM activities AS act
+    JOIN assays AS a ON act.assay_id = a.assay_id
+    JOIN target_dictionary AS td ON a.tid = td.tid
+    JOIN docs AS d ON a.doc_id = d.doc_id
+    JOIN molecule_dictionary AS md ON act.molregno = md.molregno
+    JOIN compound_structures AS cs ON md.molregno = cs.molregno
+    WHERE act.standard_type = 'IC50'
+      AND act.standard_value IS NOT NULL
+      AND d.year > 2022
+      AND d.doi IS NOT NULL
+      AND td.pref_name IS NOT NULL
+      AND LOWER(td.pref_name) LIKE '%kinase%'
+)
+SELECT
+    smiles,
+    chembl_id,
+    target_name,
+    publication_year,
+    doi,
+    ic50_value,
+    ic50_units
+FROM ranked
+WHERE rn = 1
+ORDER BY publication_year DESC, ic50_value ASC;
+```
+
+from User Prompt
+```text
+Return a result set containing the following columns in this order: compound canonical_smiles (rename to smiles), molecule_dictionary.chembl_id, target_dictionary.pref_name (rename to target_name), docs.year AS publication_year, docs.doi, and activities.standard_value AS ic50_value with activities.standard_units AS ic50_units. Use activities joined through assays to target_dictionary (assays.tid) and docs (assays.doc_id), and to molecule_dictionary plus compound_structures (molregno). Filter rows to: activities.standard_type = 'IC50'; activities.standard_value IS NOT NULL; docs.year > 2022; docs.doi IS NOT NULL; target_dictionary.pref_name ILIKE '%kinase%' (to capture kinase targets). Do not add other filters (respect provided filter profile). Deduplicate on (chembl_id, target_name, publication_year, ic50_value, ic50_units). Order results by docs.year DESC, then activities.standard_value ASC.
+```
+
+Having Anthropic as provider runs too
+```bash
+RUN_LABEL="query1_kinase_after_2022_anthropic_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --provider anthropic -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+```
+
+Got ~41K rows back
+```bash
+ljubomir@macbook2(::main):~/ChEMBLdb-query$ wc -l query_results_query1_kinase_after_2022_anthropic_20260117_091522.csv
+   40818 query_results_query1_kinase_after_2022_anthropic_20260117_091522.csv
+ljubomir@macbook2(::main):~/ChEMBLdb-query$ l logs/*anthropic_20260117_091522*
+-rw-------@ 1 ljubomir  staff   7.0M 17 Jan 09:26 logs/db_llm_query1_kinase_after_2022_anthropic_20260117_091522.log
+```
+
+The SQL query was
+```sql
+====================
+Generated SQL_3 (claude-sonnet-4.5):
+====================
+WITH kinase_target_ids AS (
+  SELECT DISTINCT td.tid
+  FROM target_dictionary td
+  INNER JOIN target_components tc ON td.tid = tc.tid
+  INNER JOIN component_class cc ON tc.component_id = cc.component_id
+  INNER JOIN protein_classification pc ON cc.protein_class_id = pc.protein_class_id
+  WHERE pc.pref_name LIKE '%kinase%'
+)
+SELECT
+  cs.canonical_smiles,
+  cil.chembl_id,
+  td.pref_name AS target_name,
+  d.year AS publication_year,
+  d.doi,
+  a.standard_value AS ic50_value
+FROM activities a
+INNER JOIN assays ass ON a.assay_id = ass.assay_id
+INNER JOIN docs d ON ass.doc_id = d.doc_id
+INNER JOIN target_dictionary td ON ass.tid = td.tid
+INNER JOIN molecule_dictionary md ON a.molregno = md.molregno
+INNER JOIN compound_structures cs ON md.molregno = cs.molregno
+INNER JOIN chembl_id_lookup cil ON md.molregno = cil.entity_id AND cil.entity_type = 'COMPOUND'
+WHERE a.standard_type = 'IC50'
+  AND a.standard_value IS NOT NULL
+  AND d.year > 2022
+  AND ass.tid IN (SELECT tid FROM kinase_target_ids)
+ORDER BY d.year DESC, a.standard_value ASC
+====================
+```
+
+Gemini API via gemini provider also works - but seems I run of quota on the free tier too fast for it to be useful. Still - leaving this Gemini variant here for future reference:
+```bash
+RUN_LABEL="query1_kinase_after_2022_gemini_$(date +%Y%m%d_%H%M%S)"; PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vvv --provider gemini -f csv --run-label "${RUN_LABEL}" -q "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_${RUN_LABEL}.log"
+```
+
+Example session with verbose output and logging via `tee`:
+```bash
+PYTHONUNBUFFERED=1 python src/db_llm_query_v1.py -vv -q "" |& tee logs/db_llm_query_$(date +%Y%m%d_%H%M%S).log
+```
+
+```bash
+RUN_LABEL=$(date +%Y%m%d_%H%M%S)
+PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py -vv --run-label "${RUN_LABEL}" -q "get the smiles,chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022" |& tee "logs/db_llm_query1_${RUN_LABEL}.log"
+```
+
+

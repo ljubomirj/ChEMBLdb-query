@@ -117,12 +117,41 @@ DEFAULT_JUDGE_CONTEXT_LIMITS = {
     "deepseek": 65536,
     "anthropic": 200000,
     "openai": 200000,
+    "gemini": 1048576,
     "local": 8192,
 }
 
 
 def _format_param_value(value: Any) -> str:
     return repr(value)
+
+
+def _sanitize_text(text: str) -> str:
+    if not isinstance(text, str):
+        text = str(text)
+    return text.encode('utf-8', 'replace').decode('utf-8')
+
+
+def _emit_raw_block(text: str) -> None:
+    if text is None:
+        return
+    sanitized = _sanitize_text(text)
+    if not sanitized.endswith("\n"):
+        sanitized += "\n"
+    root = logging.getLogger()
+    stream = None
+    for handler in root.handlers:
+        stream = getattr(handler, "stream", None)
+        if stream is not None:
+            break
+    if stream is None:
+        stream = sys.stderr
+    try:
+        stream.write(sanitized)
+        stream.flush()
+    except Exception:
+        sys.stderr.write(sanitized)
+        sys.stderr.flush()
 
 
 def log_stage_labels() -> None:
@@ -211,6 +240,21 @@ DEEPSEEK_MODELS = [
     'deepseek-chat',
 ]
 
+GEMINI_CHEAP_MODELS = [
+    'gemini-2.5-flash-lite',
+]
+
+GEMINI_EXPENSIVE_MODELS = [
+    'gemini-2.5-flash',
+    'gemini-3-flash-preview',
+]
+
+GEMINI_SUPER_MODELS = [
+    'gemini-2.5-pro',
+]
+
+GEMINI_ALL_MODELS = GEMINI_CHEAP_MODELS + GEMINI_EXPENSIVE_MODELS + GEMINI_SUPER_MODELS
+
 OPENAI_CHEAP_MODELS = [
     'gpt-5.1-codex-mini',
     'gpt-5-mini',
@@ -284,6 +328,16 @@ def get_model_list(category: str, provider: str = 'openrouter') -> List[str]:
         return CEREBRAS_MODELS
     if provider_lower == 'deepseek':
         return DEEPSEEK_MODELS
+    if provider_lower == 'gemini':
+        if category == 'cheap':
+            return GEMINI_CHEAP_MODELS
+        if category == 'expensive':
+            return GEMINI_EXPENSIVE_MODELS
+        if category == 'super':
+            return GEMINI_SUPER_MODELS
+        if category == 'all':
+            return GEMINI_ALL_MODELS
+        raise ValueError(f"Invalid model category: {category}")
     if provider_lower == 'openai':
         if category == 'cheap':
             return OPENAI_CHEAP_MODELS
@@ -878,7 +932,8 @@ class ChEMBLLLMQuery:
             sp_hash = hashlib.sha256(self.system_prompt.encode("utf-8")).hexdigest()
             self.system_prompt_hash = sp_hash
             logger.info("SP_SHA256: %s", sp_hash)
-            _log_lines(logging.INFO, f"SP_FULL:\n{self.system_prompt}")
+            logger.info("SP_FULL:")
+            self._emit_raw_block(self.system_prompt)
 
         # Providers
         logger.info("Initializing SQL provider...")
@@ -912,6 +967,27 @@ class ChEMBLLLMQuery:
             message = " ".join(str(a) for a in args)
             log_level = logging.DEBUG if level >= 2 else logging.INFO
             _log_lines(log_level, message)
+
+    def _emit_raw_block(self, text: str) -> None:
+        if text is None:
+            return
+        sanitized = _sanitize_text(text)
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            stream = sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            sys.stderr.write(sanitized)
+            sys.stderr.flush()
 
     def _throttle_before_call(self, *, stage: str) -> None:
         now = time.time()
@@ -1293,7 +1369,7 @@ Do NOT write SQL.
             df.write_csv(buf)
             csv_text = buf.getvalue().strip()
             if csv_text:
-                _log_lines(logging.DEBUG, csv_text)
+                self._emit_raw_block(csv_text)
         except BrokenPipeError:
             logger.warning("Broken pipe while printing full result rows; continuing.")
         self._vprint(2, "=" * 20 + "\n")
@@ -1307,7 +1383,12 @@ Do NOT write SQL.
         if self.verbosity >= 2:
             user_prompt = messages[1]["content"] if len(messages) > 1 else ""
             logger.debug("SP here; SHA256=%s", self.system_prompt_hash)
-            _log_lines(logging.DEBUG, f"UP_PROMPT_USER:\n{user_prompt}")
+            self._vprint(2, "UP_PROMPT_USER:")
+            self._emit_raw_block(user_prompt)
+            if self.verbosity >= 3:
+                system_prompt = messages[0]["content"] if messages else ""
+                self._vprint(3, "UP_PROMPT_SYSTEM:")
+                self._emit_raw_block(system_prompt)
 
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
@@ -1431,6 +1512,13 @@ Do NOT write SQL.
 
         self._ensure_sql_provider_for_attempt(attempt_idx)
         messages = self._build_messages_for_sql(uq=uq, up=up, iterations=iterations, n=n)
+        if self.verbosity >= 3:
+            system_prompt = messages[0]["content"] if messages else ""
+            user_prompt = messages[1]["content"] if len(messages) > 1 else ""
+            self._vprint(3, "SQL_PROMPT_SYSTEM:")
+            self._emit_raw_block(system_prompt)
+            self._vprint(3, "SQL_PROMPT_USER:")
+            self._emit_raw_block(user_prompt)
         start_time = time.time()
         self._throttle_before_call(stage="sql-writer")
         sql = self.sql_provider.generate_sql(question=up, schema_docs=self.schema_docs, conversation_history=messages)
@@ -1454,11 +1542,32 @@ Do NOT write SQL.
         if self.verbosity >= 3:
             user_chars = sum(len(m.get('content', '')) for m in messages if m.get('role') == 'user')
             self._vprint(3, "\n" + "=" * 20)
-            self._vprint(3, f"🔍 VERBOSE: Judge Prompt (Iteration {n})")
+            self._vprint(3, f"VERBOSE: Judge Prompt (Iteration {n})")
             self._vprint(3, "=" * 20)
             self._vprint(3, f"(system chars: {len(messages[0]['content']):,})")
             self._vprint(3, f"(user chars total: {user_chars:,})")
             self._vprint(3, "=" * 20 + "\n")
+            system_text = ""
+            user_text = ""
+            for msg in messages:
+                role = str(msg.get("role", ""))
+                content = msg.get("content", "")
+                if isinstance(content, list):
+                    content = "\n".join(str(c) for c in content)
+                else:
+                    content = str(content)
+                if role == "system":
+                    system_text += content
+                elif role == "user":
+                    user_text += content
+            self._vprint(3, "Judge system prompt:")
+            self._emit_raw_block(system_text)
+            self._vprint(3, "Judge user prompt:")
+            self._emit_raw_block(user_text)
+            self._vprint(3, "SQL passed to judge:")
+            self._emit_raw_block(sql)
+            self._vprint(3, "RES summary passed to judge:")
+            self._emit_raw_block(res_summary)
 
         last_text: Optional[str] = None
         for offset in range(max(1, self.judge_call_retries)):
@@ -1558,7 +1667,8 @@ Do NOT write SQL.
                 if up is None:
                     raise RuntimeError(f"Failed to generate UP_{n}")
 
-                self._vprint(2, f"\nUP_{n}:\n{up}\n")
+                self._vprint(2, f"\nUP_{n}:")
+                self._emit_raw_block(up)
                 with log_stage(f"SQL_{n}"):
                     logger.info("Generating SQL...")
                     sql = self._call_sql_writer(uq=uq, up=up, iterations=window_iters, n=n, attempt_idx=attempt_idx)
@@ -1569,7 +1679,7 @@ Do NOT write SQL.
                     self._vprint(1, "\n" + "=" * 20)
                     self._vprint(1, f"Generated SQL_{n} ({self.current_sql_model}):")
                     self._vprint(1, "=" * 20)
-                    self._vprint(1, sql)
+                    self._emit_raw_block(sql)
                     self._vprint(1, "=" * 20 + "\n")
 
                 if dry_run:
@@ -1652,7 +1762,7 @@ You are a strict judge evaluating whether RES_{n} answers the user's question.
                         self._vprint(2, "\n" + "=" * 20)
                         self._vprint(2, f"RES_{n}:")
                         self._vprint(2, "=" * 20)
-                        self._vprint(2, res_summary)
+                        self._emit_raw_block(res_summary)
                         self._vprint(2, "=" * 20 + "\n")
 
                 with log_stage(f"J_{n}"):
@@ -1693,7 +1803,8 @@ You are a strict judge evaluating whether RES_{n} answers the user's question.
 
                 if self.verbosity >= 2:
                     self._vprint(2, "\n" + "-" * 20)
-                    self._vprint(2, f"J_{n}:\n{judge_text}\n")
+                    self._vprint(2, f"J_{n}:")
+                    self._emit_raw_block(judge_text)
                     self._vprint(2, "-" * 20 + "\n")
 
                 stop_by_threshold = judge_score is not None and judge_score >= self.judge_score_threshold
@@ -1729,7 +1840,7 @@ def main() -> None:
 
     parser.add_argument('query', nargs='?', help='Natural language query (can be provided via pipe)')
     parser.add_argument('-q', '--query', dest='query_text', help='Natural language query')
-    provider_choices = ['auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local']
+    provider_choices = ['auto', 'anthropic', 'openai', 'gemini', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local']
     parser.add_argument(
         '--provider',
         choices=provider_choices,
@@ -1905,7 +2016,9 @@ def main() -> None:
 
         if result is not None and not args.dry_run:
             if args.format == 'json':
-                print(json.dumps(result.to_dicts(), indent=2))
+                _log_lines(logging.INFO, "\n".join(["", "=" * 20, "Results (JSON)", "=" * 20]))
+                _emit_raw_block(json.dumps(result.to_dicts(), indent=2))
+                _log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
             elif args.format == 'csv':
                 if not args.auto:
                     if args.output_file:
@@ -1917,11 +2030,9 @@ def main() -> None:
                     result.write_csv(output_file)
                     logger.info("Saved to: %s", output_file)
             else:
-                print("\n" + "=" * 20)
-                print("Results:")
-                print("=" * 20)
-                print(result)
-                print("=" * 20)
+                _log_lines(logging.INFO, "\n".join(["", "=" * 20, "Results", "=" * 20]))
+                _emit_raw_block(str(result))
+                _log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
     except KeyboardInterrupt:
         logger.warning("Interrupted by user")

@@ -106,76 +106,106 @@ Generate the SQL query:"""
         request_payload = {
             'model': self.model,
             'input': input_items,
-            'temperature': float(temperature),
             'max_output_tokens': int(max_tokens),
         }
+        if temperature is not None:
+            request_payload['temperature'] = float(temperature)
 
-        if logger.isEnabledFor(logging.DEBUG):
-            logger.debug(
-                "OpenAI request: endpoint=%s/responses model=%s messages=%s temperature=%s max_output_tokens=%s",
-                self.base_url,
-                self.model,
-                len(input_items),
-                request_payload["temperature"],
-                request_payload["max_output_tokens"],
-            )
+        def _log_request(payload: dict, *, note: Optional[str] = None) -> None:
+            if logger.isEnabledFor(logging.DEBUG):
+                logger.debug(
+                    "OpenAI request: endpoint=%s/responses model=%s messages=%s temperature=%s max_output_tokens=%s",
+                    self.base_url,
+                    self.model,
+                    len(input_items),
+                    payload.get("temperature", "<omitted>"),
+                    payload.get("max_output_tokens"),
+                )
 
-        if self.verbose:
-            lines = [
-                "",
-                "=" * 20,
-                "VERBOSE: OpenAI API Request",
-                "=" * 20,
-                f"Endpoint: {self.base_url}/responses",
-                f"Model: {self.model}",
-                f"CONVERSATION ({len(input_items)} messages):",
-                "-" * 20,
-            ]
-            for i, msg in enumerate(input_items):
-                role = str(msg.get('role', '')).upper()
-                content = msg.get('content', [])
-                preview = ''
-                if content:
-                    text = content[0].get('text', '') if isinstance(content, list) else str(content)
-                    preview = text[:200] + '...' if len(text) > 200 else text
-                lines.append(f"{i+1}. {role}: {preview}")
-            lines.extend(
-                [
-                    "-" * 20,
-                    "API Parameters:",
-                    f"   temperature: {request_payload['temperature']}",
-                    f"   max_output_tokens: {request_payload['max_output_tokens']}",
-                    f"   timeout: {self.timeout}s",
-                    "=" * 20,
-                    "",
+            if self.verbose:
+                self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: OpenAI API Request", "=" * 20]))
+                body_lines = [
+                    f"Endpoint: {self.base_url}/responses",
+                    f"Model: {self.model}",
                 ]
-            )
-            self._log_lines(logging.INFO, "\n".join(lines))
+                if note:
+                    body_lines.append(f"Note: {note}")
+                body_lines.extend(
+                    [
+                        f"CONVERSATION ({len(input_items)} messages):",
+                        "-" * 20,
+                    ]
+                )
+                for i, msg in enumerate(input_items):
+                    role = str(msg.get('role', '')).upper()
+                    content = msg.get('content', [])
+                    preview = ''
+                    if content:
+                        text = content[0].get('text', '') if isinstance(content, list) else str(content)
+                        preview = text[:200] + '...' if len(text) > 200 else text
+                    body_lines.append(f"{i+1}. {role}: {preview}")
+                body_lines.extend(
+                    [
+                        "-" * 20,
+                        "API Parameters:",
+                    ]
+                )
+                if "temperature" in payload:
+                    body_lines.append(f"   temperature: {payload['temperature']}")
+                else:
+                    body_lines.append("   temperature: <omitted>")
+                body_lines.extend(
+                    [
+                        f"   max_output_tokens: {payload['max_output_tokens']}",
+                        f"   timeout: {self.timeout}s",
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         response = None
         try:
-            response = requests.post(
-                f"{self.base_url}/responses",
-                headers={
-                    'Authorization': f'Bearer {self.api_key}',
-                    'Content-Type': 'application/json',
-                },
-                json=request_payload,
-                timeout=self.timeout,
-            )
-            response.raise_for_status()
-            data = response.json()
+            payload = dict(request_payload)
+            retried_without_temperature = False
+            while True:
+                _log_request(payload, note="retry without temperature" if retried_without_temperature else None)
+                response = requests.post(
+                    f"{self.base_url}/responses",
+                    headers={
+                        'Authorization': f'Bearer {self.api_key}',
+                        'Content-Type': 'application/json',
+                    },
+                    json=payload,
+                    timeout=self.timeout,
+                )
+                if response.status_code == 400 and payload.get("temperature") is not None:
+                    try:
+                        err_data = response.json()
+                    except Exception:
+                        err_data = {}
+                    err = err_data.get("error") if isinstance(err_data, dict) else None
+                    param = err.get("param") if isinstance(err, dict) else None
+                    if param == "temperature" and not retried_without_temperature:
+                        logger.warning(
+                            "OpenAI model rejected temperature; retrying without temperature (model=%s).",
+                            self.model,
+                        )
+                        payload = dict(payload)
+                        payload.pop("temperature", None)
+                        retried_without_temperature = True
+                        continue
+                response.raise_for_status()
+                data = response.json()
+                break
 
             if self.verbose:
-                lines = [
-                    "=" * 20,
-                    "VERBOSE: OpenAI API Response",
-                    "=" * 20,
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: OpenAI API Response", "=" * 20]))
+                body_lines = [
                     f"Response Status: {response.status_code}",
                 ]
                 usage = data.get('usage') or {}
                 if usage:
-                    lines.extend(
+                    body_lines.extend(
                         [
                             "Token Usage:",
                             f"   Input tokens: {usage.get('input_tokens', 0)}",
@@ -185,7 +215,7 @@ Generate the SQL query:"""
                 text_preview = (self._extract_output_text(data) or '')
                 if text_preview:
                     preview = text_preview[:500] + ('...' if len(text_preview) > 500 else '')
-                    lines.extend(
+                    body_lines.extend(
                         [
                             "RAW RESPONSE (text):",
                             "-" * 20,
@@ -193,13 +223,8 @@ Generate the SQL query:"""
                             "-" * 20,
                         ]
                     )
-                lines.extend(
-                    [
-                        "=" * 20,
-                        "",
-                    ]
-                )
-                self._log_lines(logging.INFO, "\n".join(lines))
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             if logger.isEnabledFor(logging.DEBUG):
                 usage = data.get('usage') or {}
@@ -257,6 +282,30 @@ Generate the SQL query:"""
             lines = [""]
         for line in lines:
             logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()
 
     def _message_to_input_item(self, msg: dict) -> dict:
         role = msg.get('role', 'user')

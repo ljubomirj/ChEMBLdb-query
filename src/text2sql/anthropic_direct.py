@@ -189,20 +189,23 @@ Generate the SQL query:"""
             ]
 
         if self.verbose:
-            print("\n" + "="*20)
-            print("🔍 VERBOSE: Anthropic API Request")
-            print("="*20)
-            print(f"\n📍 Model: {self.model}")
-            print(f"\n💬 SYSTEM MESSAGE (cached):")
-            print("-"*20)
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: Anthropic API Request", "=" * 20]))
+            body_lines = [
+                f"Model: {self.model}",
+                "SYSTEM MESSAGE (cached):",
+                "-" * 20,
+            ]
             if isinstance(system_content, list):
                 for item in system_content:
                     text = item.get('text', str(item))[:200]
-                    print(f"{text}...")
-            print("-"*20)
-
-            print(f"\n💬 CONVERSATION ({len(user_messages)} messages):")
-            print("-"*20)
+                    body_lines.append(f"{text}...")
+            body_lines.append("-" * 20)
+            body_lines.extend(
+                [
+                    f"CONVERSATION ({len(user_messages)} messages):",
+                    "-" * 20,
+                ]
+            )
             for i, msg in enumerate(user_messages):
                 role = str(msg.get('role', '')).upper()
                 content = msg.get('content', '')
@@ -210,13 +213,17 @@ Generate the SQL query:"""
                     content_preview = content[:200] + "..." if len(content) > 200 else content
                 else:
                     content_preview = str(content)[:200] + "..."
-                print(f"{i+1}. {role}: {content_preview}")
-            print("-"*20)
-
-            print(f"\n⚙️  API Parameters:")
-            print(f"   max_tokens: {max_tokens}")
-            print(f"   timeout: {self.timeout}s")
-            print("="*20 + "\n")
+                body_lines.append(f"{i+1}. {role}: {content_preview}")
+            body_lines.extend(
+                [
+                    "-" * 20,
+                    "API Parameters:",
+                    f"   max_tokens: {max_tokens}",
+                    f"   timeout: {self.timeout}s",
+                ]
+            )
+            self._emit_raw_block("\n".join(body_lines))
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             response = self.client.messages.create(
@@ -228,27 +235,38 @@ Generate the SQL query:"""
             )
 
             if self.verbose:
-                print("="*20)
-                print("🔍 VERBOSE: Anthropic API Response")
-                print("="*20)
-                print("\n📊 Response Status: success")
-
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: Anthropic API Response", "=" * 20]))
+                body_lines = [
+                    "Response Status: success",
+                ]
                 usage = response.usage
-                print("📈 Token Usage:")
-                print(f"   Input tokens: {usage.input_tokens}")
-                print(f"   Output tokens: {usage.output_tokens}")
-
+                body_lines.extend(
+                    [
+                        "Token Usage:",
+                        f"   Input tokens: {usage.input_tokens}",
+                        f"   Output tokens: {usage.output_tokens}",
+                    ]
+                )
                 if hasattr(usage, 'cache_creation_input_tokens') and usage.cache_creation_input_tokens:
-                    print("💾 Prompt Cache:")
-                    print(f"   Cache creation tokens: {usage.cache_creation_input_tokens}")
+                    body_lines.extend(
+                        [
+                            "Prompt Cache:",
+                            f"   Cache creation tokens: {usage.cache_creation_input_tokens}",
+                        ]
+                    )
                 if hasattr(usage, 'cache_read_input_tokens') and usage.cache_read_input_tokens:
-                    print(f"   Cache read tokens: {usage.cache_read_input_tokens}")
+                    body_lines.append(f"   Cache read tokens: {usage.cache_read_input_tokens}")
 
-                print("\n💬 RAW RESPONSE:")
-                print("-"*20)
-                print(response.content[0].text)
-                print("-"*20)
-                print("="*20 + "\n")
+                body_lines.extend(
+                    [
+                        "RAW RESPONSE:",
+                        "-" * 20,
+                        response.content[0].text,
+                        "-" * 20,
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             text = response.content[0].text.strip()
 
@@ -328,3 +346,38 @@ Generate the SQL query:"""
             sql = sql.split(';')[0] + ';'
 
         return sql.strip()
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()

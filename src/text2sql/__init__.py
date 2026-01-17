@@ -11,6 +11,7 @@ from .base import Text2SQLProvider
 from .local_llm import LocalLLMProvider
 from .openrouter import OpenRouterProvider, RECOMMENDED_MODELS
 from .openai_direct import OpenAIProvider
+from .gemini_direct import GeminiProvider
 from .env import load_dotenv_once
 from .cerebras import CerebrasProvider
 from .zai import ZAIProvider
@@ -31,6 +32,7 @@ __all__ = [
     'LocalLLMProvider',
     'OpenRouterProvider',
     'OpenAIProvider',
+    'GeminiProvider',
     'ZAIProvider',
     'CerebrasProvider',
     'DeepSeekProvider',
@@ -51,7 +53,7 @@ def create_provider(
     Factory function to create appropriate text-to-SQL provider.
 
     Args:
-        provider: Provider type - 'auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', or 'local'
+        provider: Provider type - 'auto', 'anthropic', 'openai', 'gemini', 'openrouter', 'zai', 'cerebras', 'deepseek', or 'local'
         model: Model identifier (provider-specific)
         verbose: If True, enable verbose output for debugging
         **kwargs: Additional provider-specific configuration
@@ -74,6 +76,9 @@ def create_provider(
 
         >>> # Force OpenRouter with specific model
         >>> provider = create_provider('openrouter', model='openai/gpt-5.1-codex-mini', temperature=1.0)
+
+        >>> # Force Gemini direct API with specific model
+        >>> provider = create_provider('gemini', model='gemini-3-flash-preview')
 
         >>> # Force Z.AI with specific model
         >>> provider = create_provider('zai', model='glm-4.7')
@@ -119,6 +124,13 @@ def create_provider(
             logger.info("Auto-selecting OpenAI (API key found)")
             return OpenAIProvider(
                 model=model or 'gpt-5.1-codex',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('GEMINI_API_KEY'):
+            logger.info("Auto-selecting Gemini (API key found)")
+            return GeminiProvider(
+                model=model or 'gemini-3-flash-preview',
                 verbose=verbose,
                 **kwargs
             )
@@ -169,6 +181,13 @@ def create_provider(
             **kwargs
         )
 
+    elif provider == 'gemini':
+        return GeminiProvider(
+            model=model or 'gemini-3-flash-preview',
+            verbose=verbose,
+            **kwargs
+        )
+
     elif provider == 'zai':
         return ZAIProvider(
             model=model or 'glm-4.7',
@@ -199,5 +218,5 @@ def create_provider(
     else:
         raise ValueError(
             f"Unknown provider: {provider}. "
-            f"Choose from: 'auto', 'anthropic', 'openai', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local'"
+            f"Choose from: 'auto', 'anthropic', 'openai', 'gemini', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local'"
         )
