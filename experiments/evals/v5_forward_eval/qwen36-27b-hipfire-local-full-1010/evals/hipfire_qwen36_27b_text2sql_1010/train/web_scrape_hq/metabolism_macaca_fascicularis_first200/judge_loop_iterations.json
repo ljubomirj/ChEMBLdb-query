@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the organism is Macaca fascicularis. For each record, include the substrate name, parent compound name, SMILES of the substrate, conversion details, pathway information, and enzyme name. Join the metabolism table with compound records to get the names and structures. Ensure the organism filter is applied correctly to the metabolism table.",
+    "sql": "SELECT\n  sub.compound_name AS substrate_name,\n  drug.compound_name AS parent_compound_name,\n  cs.canonical_smiles AS substrate_smiles,\n  m.met_conversion AS conversion_details,\n  m.pathway_key AS pathway,\n  m.enzyme_name AS enzyme_name\nFROM metabolism m\nJOIN compound_records sub ON m.substrate_record_id = sub.record_id\nJOIN compound_records drug ON m.drug_record_id = drug.record_id\nLEFT JOIN compound_structures cs ON sub.molregno = cs.molregno\nWHERE m.organism = 'Macaca fascicularis'\nLIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH sub USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH drug USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 11,
+    "res_columns": [
+      "substrate_name",
+      "parent_compound_name",
+      "substrate_smiles",
+      "conversion_details",
+      "pathway",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

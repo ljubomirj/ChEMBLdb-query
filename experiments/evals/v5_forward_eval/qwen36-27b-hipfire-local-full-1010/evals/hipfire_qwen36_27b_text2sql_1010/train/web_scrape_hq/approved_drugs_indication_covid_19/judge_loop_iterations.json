@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Find all approved drugs (therapeutic_flag = 1 in molecule_dictionary) that have a COVID-19 indication. Join molecule_dictionary with drug_indication on molregno. Filter indications where efo_term or mesh_heading contains 'COVID-19', 'SARS-CoV-2', or 'Coronavirus Infection'. Return the drug's preferred name, ChEMBL ID, max clinical phase, and the exact indication text. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, md.max_phase, COALESCE(di.efo_term, di.mesh_heading) AS indication_text FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND (di.efo_term LIKE '%COVID-19%' OR di.efo_term LIKE '%SARS-CoV-2%' OR di.efo_term LIKE '%Coronavirus Infection%' OR di.mesh_heading LIKE '%COVID-19%' OR di.mesh_heading LIKE '%SARS-CoV-2%' OR di.mesh_heading LIKE '%Coronavirus Infection%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n25 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 297,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "max_phase",
+      "indication_text"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

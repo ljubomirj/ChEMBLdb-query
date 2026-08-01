@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for the human target CHEMBL1994 (Mineralocorticoid receptor), which is a single protein. Return the assay ChEMBL ID, the target type description, the tax_id, the canonical SMILES of the compound, the molecule ChEMBL ID, the standard type of the activity, and the pChEMBL value. Filter for activities where the standard type is IC50 and the pChEMBL value is not null. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID. Limit the output to the first 1000 rows.",
+    "sql": "SELECT\n  ass.chembl_id AS assay_chembl_id,\n  tt.target_desc AS target_type_description,\n  td.tax_id AS tax_id,\n  cs.canonical_smiles AS canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type AS standard_type,\n  a.pchembl_value AS pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN target_type tt ON td.target_type = tt.target_type\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL1994'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY\n  md.chembl_id,\n  ass.chembl_id\nLIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 33 | SEARCH tt USING INDEX pk_tt_tt (target_type=?)\n22 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n31 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n38 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n83 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type_description",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

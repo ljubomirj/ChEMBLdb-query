@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records where standard_type is IC50 and standard_units are nM against target CHEMBL230 (Prostaglandin G/H synthase 2). Resolve the compound set by finding the active_molregno for CHEMBL122 (ROFECOXIB) via molecule_hierarchy, then include that parent compound and all salts/derivatives sharing the same active_molregno. Join activities to molecule_dictionary for compound_chembl_id, to compound_structures for canonical_smiles, to compound_records for compound_key, to docs for pubmed_id_or_doi (use COALESCE to prefer pubmed_id, fallback to doi), to assays for assay_description, and to target_dictionary for target_chembl_id, target_name, and target_organism. Return exactly: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not limit the number of rows.",
+    "sql": "WITH active_mol AS (\n  SELECT mh.active_molregno\n  FROM molecule_dictionary md\n  JOIN molecule_hierarchy mh ON mh.molregno = md.molregno\n  WHERE md.chembl_id = 'CHEMBL122'\n),\nmol_set AS (\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  JOIN active_mol am ON mh.active_molregno = am.active_molregno\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities act\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN mol_set ms ON act.molregno = ms.molregno\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON act.molregno = cs.molregno\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL230'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 10\n21 | 0 | 47 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n26 | 0 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n32 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n39 | 0 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n58 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n64 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n74 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n84 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n90 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 65,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

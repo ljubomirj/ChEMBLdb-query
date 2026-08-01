@@ -1,0 +1,222 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, target_name, target_organism. Filter: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi from docs), assay_description, target_name, target_organism. Filter: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL. Crucially, join docs via compound_records.doc_id (after joining compound_records on activities.record_id) instead of activities.doc_id to prevent missing rows due to NULL doc_id in activities. Ensure all requested columns are returned exactly as named.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n45 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n60 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi from docs), assay_description, target_name, target_organism. Filter: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL. Crucially, join docs via compound_records.doc_id (after joining compound_records on activities.record_id) instead of activities.doc_id to prevent missing rows due to NULL doc_id in activities. Ensure all requested columns are returned exactly as named. If the previous strict filters yield no results, verify that the join path activities.record_id -> compound_records.record_id -> docs.doc_id is correct for linking activity records to their source documents.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n45 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n60 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi from docs), assay_description, target_name, target_organism. Filter: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). Crucially, join docs using activities.doc_id = docs.doc_id. Ensure all requested columns are returned exactly as named.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE(CAST(d.pubmed_id AS TEXT), d.doi)), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). Use join path: activities JOIN assays ON assay_id, assays JOIN target_dictionary ON tid, activities JOIN compound_records ON record_id, compound_records JOIN molecule_dictionary ON molregno, molecule_dictionary JOIN compound_structures ON molregno, activities JOIN docs ON doc_id. If molecule_dictionary join fails due to NULL molregno in compound_records, fall back to activities.molregno = molecule_dictionary.molregno. Ensure exact column aliases and filter conditions are preserved.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN target_dictionary td ON a.tid = td.tid WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n32 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n38 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n66 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi from docs), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). Use the following join path explicitly: activities JOIN assays ON assay_id, assays JOIN target_dictionary ON tid, activities JOIN molecule_dictionary ON molregno, molecule_dictionary JOIN compound_structures ON molregno, activities LEFT JOIN compound_records ON record_id (to safely retrieve compound_key without filtering rows where record_id is NULL), and activities JOIN docs ON doc_id (do not use compound_records.doc_id for the docs join).",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve IC50 activity values in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', compound_structures.canonical_smiles IS NOT NULL, and docs.pubmed_id IS NOT NULL. Do NOT filter on standard_relation to include both exact and range values. Use the explicit join path: activities JOIN assays ON assay_id, assays JOIN target_dictionary ON tid, activities JOIN molecule_dictionary ON molregno, molecule_dictionary JOIN compound_structures ON molregno, activities LEFT JOIN compound_records ON record_id, activities JOIN docs ON doc_id. Ensure pubmed_id_or_doi prefers pubmed_id. Return all matching rows.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and docs.pubmed_id IS NOT NULL. Crucially, join docs using assays.doc_id = docs.doc_id (not activities.doc_id) to correctly link the assay's document. Use LEFT JOIN compound_records on activities.record_id to safely retrieve compound_key without filtering rows where record_id is NULL. Ensure all requested columns are returned exactly as named.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested in assay CHEMBL1865 that have a canonical SMILES structure and are from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: assay.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and docs.pubmed_id IS NOT NULL. Crucially, join docs using assays.doc_id = docs.doc_id (not activities.doc_id) to correctly link the assay's document. Use LEFT JOIN compound_records on activities.record_id to safely retrieve compound_key without filtering rows where record_id is NULL. Ensure all requested columns are returned exactly as named.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE a.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n35 | 0 | 64 | SEARCH ac USING INDEX fk_act_assay_id (assay_id=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve exact IC50 activity values (standard_relation = '=') in nM for compounds tested against target CHEMBL1865 (not an assay ID). The compounds must have a canonical SMILES structure and be from a PubMed-indexed document. Return columns exactly as: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (COALESCE of pubmed_id and doi), assay_description, target_name, target_organism, ic50_nM (standard_value). Apply filters: target_dictionary.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and docs.pubmed_id IS NOT NULL. Use the explicit join path: activities JOIN assays ON assay_id, assays JOIN target_dictionary ON tid, activities JOIN molecule_dictionary ON molregno, molecule_dictionary JOIN compound_structures ON molregno, activities LEFT JOIN compound_records ON record_id (to safely retrieve compound_key), and activities JOIN docs ON doc_id (to get the PubMed-indexed document for the activity). Ensure all requested columns are returned exactly as named.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs d ON ac.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL1865' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND d.pubmed_id IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n38 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n47 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n65 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 5208,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Find drugs that are approved (max_phase = 4) but have indications that only reached Phase III (max_phase_for_ind = 3). Return the drug name, ChEMBL ID, MeSH heading, and EFO term for those indications. Do not include drugs where any indication reached Phase 4 or higher.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 3",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 11426,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

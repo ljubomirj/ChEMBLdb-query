@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 rows by joining the metabolism table with compound_records and compound_structures. Use the exact join path: metabolism.substrate_record_id = compound_records.record_id and compound_records.molregno = compound_structures.molregno. Return the canonical SMILES, substrate compound name, metabolic conversion, and pathway key. Do not apply DISTINCT or any deduplication; simply return the first 200 rows from the join result.",
+    "sql": "SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 126 | SCAN m\n9 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n16 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 200,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

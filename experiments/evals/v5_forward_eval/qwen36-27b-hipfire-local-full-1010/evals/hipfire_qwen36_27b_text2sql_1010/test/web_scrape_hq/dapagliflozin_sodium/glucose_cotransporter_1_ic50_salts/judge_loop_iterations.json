@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity data for dapagliflozin and its salt forms against the target sodium/glucose cotransporter 1. Include the following output columns: compound name, compound ChEMBL ID, target name, assay description, literature source title, literature year, and literature DOI. Join through the molecule hierarchy to include salt forms of dapagliflozin. Do not filter by confidence score or document type. Do not limit the number of rows returned.",
+    "sql": "WITH parent_compound AS (\n  SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'dapagliflozin'\n),\nrelated_mols AS (\n  SELECT molregno FROM parent_compound\n  UNION\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  JOIN parent_compound pc ON mh.parent_molregno = pc.molregno\n)\nSELECT\n  md2.pref_name AS compound_name,\n  md2.chembl_id AS compound_chembl_id,\n  td.pref_name AS target_name,\n  ass.description AS assay_description,\n  d.title AS literature_title,\n  d.year AS literature_year,\n  d.doi AS literature_doi\nFROM activities a\nJOIN related_mols rm ON rm.molregno = a.molregno\nJOIN molecule_dictionary md2 ON md2.molregno = rm.molregno\nJOIN assays ass ON ass.assay_id = a.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN docs d ON d.doc_id = ass.doc_id\nWHERE a.standard_type = 'IC50'\n  AND LOWER(td.pref_name) = 'sodium/glucose cotransporter 1'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE related_mols\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n7 | 4 | 229 | SCAN molecule_dictionary\n16 | 3 | 0 | UNION USING TEMP B-TREE\n20 | 16 | 229 | SCAN mh\n22 | 16 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n59 | 0 | 0 | BLOOM FILTER ON rm (molregno=?)\n70 | 0 | 54 | SEARCH rm USING AUTOMATIC COVERING INDEX (molregno=?)\n77 | 0 | 47 | SEARCH md2 USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n87 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n93 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n103 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 27,
+    "res_columns": [
+      "compound_name",
+      "compound_chembl_id",
+      "target_name",
+      "assay_description",
+      "literature_title",
+      "literature_year",
+      "literature_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

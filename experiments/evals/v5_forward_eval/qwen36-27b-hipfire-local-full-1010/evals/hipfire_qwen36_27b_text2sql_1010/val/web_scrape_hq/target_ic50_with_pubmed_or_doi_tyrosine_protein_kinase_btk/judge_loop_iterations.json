@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 values in nM for compounds tested against human BTK (CHEMBL5251). Output columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, target_organism, and exact_ic50_value. Filters: target CHEMBL ID = 'CHEMBL5251', target organism = 'Homo sapiens', activity standard_type = 'IC50', standard_units = 'nM', standard_relation = '='. Only include rows where a PubMed ID or DOI is available and the compound has a canonical SMILES string. Join tables: activities, assays, target_dictionary, molecule_dictionary, compound_records, compound_structures, docs.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, td.organism AS target_organism, ac.standard_value AS exact_ic50_value FROM activities ac JOIN assays ON ac.assay_id = assays.assay_id JOIN target_dictionary td ON assays.tid = td.tid JOIN compound_structures cs ON ac.molregno = cs.molregno JOIN compound_records cr ON ac.record_id = cr.record_id JOIN docs ON ac.doc_id = docs.doc_id JOIN molecule_dictionary md ON ac.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL5251' AND td.organism = 'Homo sapiens' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)\n54 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n63 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n69 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 3479,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_organism",
+      "exact_ic50_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

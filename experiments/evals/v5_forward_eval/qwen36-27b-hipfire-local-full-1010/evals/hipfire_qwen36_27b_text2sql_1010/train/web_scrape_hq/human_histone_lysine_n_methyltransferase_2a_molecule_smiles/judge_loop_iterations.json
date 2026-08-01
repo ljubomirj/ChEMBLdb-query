@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds that have been tested against the target 'Histone-lysine N-methyltransferase 2A' in human assays. Return the distinct ChEMBL ID for each compound and their canonical SMILES. Ensure the organism is Homo sapiens. Do not filter by assay type, confidence score, or activity value units. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'Histone-lysine N-methyltransferase 2A' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n24 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n34 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 17292,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

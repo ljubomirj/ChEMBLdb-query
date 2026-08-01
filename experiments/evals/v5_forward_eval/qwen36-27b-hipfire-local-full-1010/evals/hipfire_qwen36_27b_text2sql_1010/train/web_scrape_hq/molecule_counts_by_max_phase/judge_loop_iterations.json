@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Count the number of molecules grouped by their maximum development phase. Use the max_phase column from the molecule_dictionary table. Return two columns: the development phase value and the count of molecules. Order the results by the development phase value in ascending order. Exclude rows where the development phase is null.",
+    "sql": "SELECT max_phase, COUNT(molregno) AS molecule_count FROM molecule_dictionary WHERE max_phase IS NOT NULL GROUP BY max_phase ORDER BY max_phase ASC",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 1\n8 | 0 | 233 | SEARCH molecule_dictionary USING INDEX idx_moldict_max_phase (max_phase>?)",
+    "res_row_count": 6,
+    "res_columns": [
+      "max_phase",
+      "molecule_count"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

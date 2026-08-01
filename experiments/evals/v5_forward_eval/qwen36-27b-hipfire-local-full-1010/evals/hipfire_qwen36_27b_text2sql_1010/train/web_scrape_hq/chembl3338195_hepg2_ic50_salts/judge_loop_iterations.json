@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 activity values for CHEMBL3338195 and all its salt or derivative forms, tested against the target HepG2 (CHEMBL395). Return the following columns: chembl_id, pref_name, standard_value, standard_units, standard_type. Filter activities where the target's ChEMBL ID (target_dictionary.chembl_id) is 'CHEMBL395' and the standard_type is 'IC50'. To capture CHEMBL3338195 and all its salts/derivatives, use molecule_hierarchy to find the parent_molregno associated with CHEMBL3338195, then filter molecule_dictionary to include only compounds sharing that exact parent_molregno. Join activities with assays, target_dictionary, molecule_dictionary, and molecule_hierarchy appropriately. Return distinct rows.",
+    "sql": "WITH target_parent AS (\n  SELECT mh.parent_molregno\n  FROM molecule_hierarchy mh\n  JOIN molecule_dictionary md ON mh.molregno = md.molregno\n  WHERE md.chembl_id = 'CHEMBL3338195'\n),\nrelated_mols AS (\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  WHERE mh.parent_molregno IN (SELECT * FROM target_parent)\n)\nSELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  a.standard_value,\n  a.standard_units,\n  a.standard_type\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN related_mols rm ON md.molregno = rm.molregno\nWHERE\n  td.chembl_id = 'CHEMBL395'\n  AND a.standard_type = 'IC50';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 10\n12 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n17 | 0 | 96 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n21 | 0 | 0 | LIST SUBQUERY 2\n27 | 21 | 47 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n32 | 21 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n42 | 21 | 0 | CREATE BLOOM FILTER\n51 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n68 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n90 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "standard_value",
+      "standard_units",
+      "standard_type"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

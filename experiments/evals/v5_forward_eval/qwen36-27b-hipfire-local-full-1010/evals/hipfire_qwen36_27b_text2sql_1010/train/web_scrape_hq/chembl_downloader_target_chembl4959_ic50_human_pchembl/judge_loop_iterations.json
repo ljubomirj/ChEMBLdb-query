@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows for the human single-protein target CHEMBL4959 (Gastrin-releasing peptide receptor). Return the following columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. Filter the results to include only exact activity values (standard_relation = '=') where pchembl_value is not null. Order the results by molecule_chembl_id and then by assay_chembl_id. Limit the output to 1000 rows.",
+    "sql": "SELECT\n  a.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value\nFROM target_dictionary td\nJOIN assays a ON td.tid = a.tid\nJOIN activities act ON a.assay_id = act.assay_id\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON act.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL4959'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\nORDER BY\n  md.chembl_id,\n  a.chembl_id\nLIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 236 | SEARCH act USING INDEX idx_acc_relation (standard_relation=?)\n25 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 199,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

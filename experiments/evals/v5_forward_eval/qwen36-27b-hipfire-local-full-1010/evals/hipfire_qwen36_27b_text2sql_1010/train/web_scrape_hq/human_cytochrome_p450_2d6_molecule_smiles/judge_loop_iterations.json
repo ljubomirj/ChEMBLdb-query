@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES of compounds tested against the human protein target Cytochrome P450 2D6 (target CHEMBL ID CHEMBL289). Ensure the results are distinct (one row per compound).",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL289'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES of distinct compounds tested against the target identified by ChEMBL ID 'CHEMBL289' (Cytochrome P450 2D6). Ensure the query correctly joins activities, assays, target dictionary, molecule dictionary, and compound structures to return exactly one row per unique compound.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 27662,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

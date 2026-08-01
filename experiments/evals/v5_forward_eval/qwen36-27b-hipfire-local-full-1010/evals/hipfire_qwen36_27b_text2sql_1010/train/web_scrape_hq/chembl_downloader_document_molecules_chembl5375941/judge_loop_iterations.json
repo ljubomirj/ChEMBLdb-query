@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES, ChEMBL ID, name, maximum phase, and molecule type for all molecules reported in document CHEMBL5375941. Order the results by ChEMBL ID.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS name, md.max_phase AS max_phase, md.molecule_type AS type, cs.canonical_smiles AS canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5375941' ORDER BY chembl_id",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n53 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n54 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 703,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "max_phase",
+      "type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

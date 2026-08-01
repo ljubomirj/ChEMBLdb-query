@@ -1,0 +1,30 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES for distinct molecules that have been tested against the human parathyroid hormone receptor (target CHEMBL1793). Do not apply any additional filters on activity type, units, or confidence scores. Return only the SMILES strings.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1793'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return the distinct canonical SMILES for all molecules that have been tested against the human parathyroid hormone receptor (target CHEMBL1793). Join the target dictionary (filtered by chembl_id = 'CHEMBL1793') to assays, then to activities, and finally to compound structures to retrieve the canonical SMILES. Do not apply any additional filters on activity type, units, confidence scores, or relation types. Return only the canonical SMILES column.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1793'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 46854,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

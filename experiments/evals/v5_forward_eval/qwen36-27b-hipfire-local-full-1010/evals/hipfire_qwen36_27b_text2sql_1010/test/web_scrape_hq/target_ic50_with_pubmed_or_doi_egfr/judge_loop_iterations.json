@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity data against target CHEMBL203 (Epidermal Growth Factor Receptor). Output columns must be exactly: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Apply filters: target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', canonical_smiles IS NOT NULL, and (pubmed_id IS NOT NULL OR doi IS NOT NULL). Return DISTINCT rows based on the specified output columns. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_records cr ON act.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id JOIN compound_structures cs ON act.molregno = cs.molregno JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL203' AND td.target_type = 'SINGLE PROTEIN' AND td.organism = 'Homo sapiens' AND act.standard_type = 'IC50' AND act.standard_units = 'nM' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n69 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n101 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 16346,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

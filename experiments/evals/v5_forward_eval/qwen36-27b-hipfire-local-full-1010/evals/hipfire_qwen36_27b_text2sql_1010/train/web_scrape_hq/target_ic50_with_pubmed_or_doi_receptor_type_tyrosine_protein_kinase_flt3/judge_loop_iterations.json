@@ -1,0 +1,48 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity values (standard_value in nM) for compounds tested against human FLT3 (target pref_name = 'FLT3' or 'FMS-related receptor tyrosine kinase 3', organism = 'Homo sapiens'). For each activity row, include: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), pubmed_id_or_doi (from docs: use pubmed_id if present, otherwise doi), assay_description (from assays), and target details (tid, pref_name, organism from target_dictionary). Do not apply any row limits. Do not filter on confidence_score, doc_type, or standard_relation unless explicitly requested. Ensure standard_units = 'nM' and standard_type = 'IC50'.",
+    "sql": "SELECT a.standard_value, md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, CASE WHEN d.pubmed_id IS NOT NULL THEN CAST(d.pubmed_id AS TEXT) ELSE d.doi END AS pubmed_id_or_doi, ass.description AS assay_description, td.tid, td.pref_name, td.organism FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name IN ('FLT3', 'FMS-related receptor tyrosine kinase 3') AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n57 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n63 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "standard_value",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "tid",
+      "pref_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values (standard_value in nM) for compounds tested against human FLT3. Filter target_dictionary by tid = 22475 (or pref_name containing 'FLT3' and organism 'Homo sapiens') to ensure correct target matching. Return: compound_chembl_id (molecule_dictionary.chembl_id), canonical_smiles (compound_structures), compound_key (compound_records), pubmed_id_or_doi (from docs: use pubmed_id if present, else doi), assay_description (assays.description), and target details (tid, pref_name, organism). Join path: activities -> compound_records (on record_id) -> molecule_dictionary (on molregno) -> compound_structures (on molregno) LEFT JOIN docs (on doc_id) -> assays (on assay_id) -> target_dictionary (on tid). Ensure activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Do not apply row limits. Do not filter on confidence_score or doc_type.",
+    "sql": "SELECT a.standard_value, md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, CASE WHEN d.pubmed_id IS NOT NULL THEN CAST(d.pubmed_id AS TEXT) ELSE d.doi END AS pubmed_id_or_doi, ass.description AS assay_description, td.tid, td.pref_name, td.organism FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND LOWER(td.pref_name) LIKE '%flt3%' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n57 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n63 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 6946,
+    "res_columns": [
+      "standard_value",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "tid",
+      "pref_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

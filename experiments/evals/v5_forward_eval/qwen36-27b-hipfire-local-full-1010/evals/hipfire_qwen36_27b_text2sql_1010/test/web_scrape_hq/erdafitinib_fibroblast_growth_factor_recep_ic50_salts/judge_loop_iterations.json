@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for erdafitinib and its salt forms (children in the molecule hierarchy) against the target fibroblast growth factor receptor 2 (FGFR2). The activity type must be IC50. Return the following columns: the molecule's ChEMBL ID, the molecule's preferred name, the standard relation, the standard value, the standard units, the assay's ChEMBL ID, and the canonical SMILES of the molecule. Do not apply any limit on the number of rows returned. Do not filter by confidence score, assay type, or publication details unless explicitly requested.",
+    "sql": "WITH parent_mol AS (SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'erdafitinib'), related_mols AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno IN (SELECT molregno FROM parent_mol) UNION SELECT molregno FROM parent_mol) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_pref_name, a.standard_relation, a.standard_value, a.standard_units, ass.chembl_id AS assay_chembl_id, cs.canonical_smiles FROM related_mols rm JOIN activities a ON a.molregno = rm.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'fibroblast growth factor receptor 2' AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE related_mols\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 96 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n12 | 4 | 0 | LIST SUBQUERY 2\n15 | 12 | 229 | SCAN molecule_dictionary\n24 | 12 | 0 | CREATE BLOOM FILTER\n39 | 3 | 0 | UNION USING TEMP B-TREE\n41 | 39 | 229 | SCAN molecule_dictionary\n67 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n72 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n82 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n88 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n99 | 0 | 0 | BLOOM FILTER ON rm (molregno=?)\n110 | 0 | 54 | SEARCH rm USING AUTOMATIC COVERING INDEX (molregno=?)\n117 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n143 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "assay_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity records for erdafitinib and its salt/related forms against fibroblast growth factor receptor 2. Identify the base compound using molecule_dictionary.pref_name = 'Erdafitinib' (case-insensitive). Use molecule_hierarchy to include all related molregnos: the compound itself, its children (where parent_molregno matches), and its parent (where molregno matches). Join the activities table on molregno and filter by standard_type = 'IC50'. Join assays and filter by target_dictionary.pref_name = 'Fibroblast growth factor receptor 2' (case-insensitive). Return the following columns: molecule_chembl_id, molecule_pref_name, standard_relation, standard_value, standard_units, assay_chembl_id, and canonical_smiles. Do not apply a row limit.",
+    "sql": "WITH base_mol AS (SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'erdafitinib'), related_mols AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno IN (SELECT molregno FROM base_mol) UNION SELECT molregno FROM molecule_hierarchy WHERE molregno IN (SELECT molregno FROM base_mol) UNION SELECT parent_molregno FROM molecule_hierarchy WHERE molregno IN (SELECT molregno FROM base_mol) UNION SELECT molregno FROM base_mol) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_pref_name, a.standard_relation, a.standard_value, a.standard_units, ass.chembl_id AS assay_chembl_id, cs.canonical_smiles FROM related_mols rm JOIN activities a ON rm.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND (LOWER(td.pref_name) LIKE '%fgfr2%' OR LOWER(td.pref_name) LIKE '%fibroblast growth factor receptor 2%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 27\n2 | 0 | 0 | CO-ROUTINE related_mols\n4 | 2 | 0 | COMPOUND QUERY\n5 | 4 | 0 | LEFT-MOST SUBQUERY\n8 | 5 | 96 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n12 | 5 | 0 | LIST SUBQUERY 2\n15 | 12 | 229 | SCAN molecule_dictionary\n24 | 12 | 0 | CREATE BLOOM FILTER\n39 | 4 | 0 | UNION USING TEMP B-TREE\n41 | 39 | 91 | SEARCH molecule_hierarchy USING COVERING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n45 | 39 | 0 | LIST SUBQUERY 4\n48 | 45 | 229 | SCAN molecule_dictionary\n57 | 45 | 0 | CREATE BLOOM FILTER\n70 | 4 | 0 | UNION USING TEMP B-TREE\n73 | 70 | 93 | SEARCH molecule_hierarchy USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n77 | 70 | 0 | LIST SUBQUERY 6\n80 | 77 | 229 | SCAN molecule_dictionary\n89 | 77 | 0 | CREATE BLOOM FILTER\n103 | 4 | 0 | UNION USING TEMP B-TREE\n105 | 103 | 229 | SCAN molecule_dictionary\n131 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n136 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n146 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n152 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n169 | 0 | 0 | BLOOM FILTER ON rm (molregno=?)\n180 | 0 | 54 | SEARCH rm USING AUTOMATIC COVERING INDEX (molregno=?)\n187 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n213 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 15,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "assay_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

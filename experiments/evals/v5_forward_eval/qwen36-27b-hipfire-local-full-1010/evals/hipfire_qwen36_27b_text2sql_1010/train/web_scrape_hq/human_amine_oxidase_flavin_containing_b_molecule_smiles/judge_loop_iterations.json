@@ -1,0 +1,155 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct canonical SMILES for all compounds tested against the target named 'Amine oxidase B (flavin-containing)' in assays conducted on 'Homo sapiens'. Filter the target by its preferred name and the assay by organism 'Homo sapiens'. Return only the distinct SMILES strings.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE td.pref_name = 'Amine oxidase B (flavin-containing)'\n  AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 224 | SCAN ass\n14 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n22 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n32 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the target 'amine oxidase B (flavin-containing)'. Use a LIKE pattern on target_dictionary.pref_name (e.g., '%amine oxidase b%') to robustly match the target name. Filter the target to be human by requiring target_dictionary.organism = 'Homo sapiens'. Filter the assay to be human by requiring assays.assay_organism = 'Homo sapiens' OR assays.assay_organism IS NULL. Return only the distinct canonical SMILES from compound_structures.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE td.pref_name LIKE '%Amine oxidase B%'\n  AND td.organism = 'Homo sapiens'\n  AND (ass.assay_organism = 'Homo sapiens' OR ass.assay_organism IS NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n20 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n53 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the distinct molregno and canonical SMILES for compounds tested in human assays against a human target named like 'amine oxidase b' (case-insensitive). Filter the target by requiring LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%' and (target_dictionary.organism = 'Homo sapiens' OR target_dictionary.tax_id = 9606). Filter the assays by requiring (assays.assay_organism = 'Homo sapiens' OR assays.assay_tax_id = 9606). Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct molregno and canonical SMILES strings.",
+    "sql": "SELECT DISTINCT a.molregno, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND (LOWER(td.pref_name) LIKE '%amine oxidase b%' OR LOWER(td.pref_name) LIKE '%monoamine oxidase b%') AND (td.tax_id = 9606 OR LOWER(td.organism) LIKE '%human%') AND (ass.assay_tax_id = 9606 OR LOWER(ass.assay_organism) LIKE '%human%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 224 | SCAN ass\n18 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n38 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n60 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n68 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n83 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "molregno",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against a target whose preferred name matches '%amine oxidase%' (case-insensitive) and which is human (target_dictionary.tax_id = 9606). Filter the assays to be human by requiring assays.assay_tax_id = 9606 OR LOWER(assays.assay_organism) LIKE '%human%' OR assays.assay_organism IS NULL. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct canonical SMILES.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND LOWER(td.pref_name) LIKE '%amine oxidase%' AND td.tax_id = 9606 AND (ass.assay_tax_id = 9606 OR LOWER(ass.assay_organism) LIKE '%human%' OR ass.assay_organism IS NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n22 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n52 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n64 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11426,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human target 'Amine oxidase B (flavin-containing)'. Filter the target by requiring LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%' and target_dictionary.tax_id = 9606. Filter the assays by requiring assays.assay_tax_id = 9606. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct canonical SMILES.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND LOWER(td.pref_name) LIKE '%amine oxidase b%' AND td.tax_id = 9606 AND ass.assay_tax_id = 9606",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 224 | SCAN ass\n14 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n26 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n62 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human target 'Amine oxidase B' or 'Monoamine oxidase B'. Filter the target by requiring LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%' OR LOWER(target_dictionary.pref_name) LIKE '%monoamine oxidase b%'. Ensure the target is human by requiring (target_dictionary.tax_id = 9606 OR target_dictionary.organism = 'Homo sapiens'). Filter the assays to be human by requiring (assays.assay_tax_id = 9606 OR assays.assay_organism = 'Homo sapiens'). Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct canonical SMILES.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND (LOWER(td.pref_name) LIKE '%monoamine oxidase b%' OR LOWER(td.pref_name) LIKE '%amine oxidase b%') AND (td.tax_id = 9606 OR td.organism = 'Homo sapiens') AND (ass.assay_tax_id = 9606 OR ass.assay_organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n22 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n44 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n62 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human target 'Amine oxidase B' or 'Monoamine oxidase B'. Filter the target by requiring LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%' OR LOWER(target_dictionary.pref_name) LIKE '%monoamine oxidase b%'. Ensure the target is human by requiring (target_dictionary.tax_id = 9606 OR LOWER(target_dictionary.organism) LIKE '%human%' OR target_dictionary.organism = 'Homo sapiens'). DO NOT filter on assays.assay_organism or assays.assay_tax_id as these are frequently NULL and will incorrectly exclude valid human assays. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct canonical SMILES.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND (LOWER(td.pref_name) LIKE '%amine oxidase b%' OR LOWER(td.pref_name) LIKE '%monoamine oxidase b%') AND (td.tax_id = 9606 OR LOWER(td.organism) LIKE '%human%' OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n21 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against a target where the preferred name matches '%amine oxidase b%' or '%monoamine oxidase b%' (case-insensitive). Do not apply any organism or tax_id filters on the target or assay. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND (LOWER(td.pref_name) LIKE '%amine oxidase b%' OR LOWER(td.pref_name) LIKE '%monoamine oxidase b%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n21 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n42 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the target 'Monoamine oxidase B' or 'Amine oxidase B'. The target name in ChEMBL is likely 'Monoamine oxidase B' or 'Amine oxidase [flavin-containing]'. Use a case-insensitive LIKE pattern on target_dictionary.pref_name, such as LOWER(target_dictionary.pref_name) LIKE '%monoamine oxidase b%' OR LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%'. The target must be human, so filter on target_dictionary.tax_id = 9606 OR target_dictionary.organism = 'Homo sapiens'. Do NOT filter on assays.assay_organism or assays.assay_tax_id as these are frequently NULL. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return only the distinct canonical SMILES.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.tax_id = 9606 AND (LOWER(td.pref_name) LIKE '%amine oxidase%' OR LOWER(td.pref_name) LIKE '%monoamine oxidase%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n42 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11561,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve the compound identifiers (chembl_id, pref_name) and their canonical SMILES for compounds tested against the human target 'Amine oxidase B' or 'Monoamine oxidase B'. Filter the target by requiring (LOWER(target_dictionary.pref_name) LIKE '%monoamine oxidase b%' OR LOWER(target_dictionary.pref_name) LIKE '%amine oxidase b%') AND (target_dictionary.tax_id = 9606 OR target_dictionary.organism = 'Homo sapiens'). Do not filter on assays.assay_organism or assays.assay_tax_id. Join activities to assays on assay_id, assays to target_dictionary on tid, activities to molecule_dictionary on molregno, and activities to compound_structures on molregno. Ensure activities.molregno IS NOT NULL. Return distinct chembl_id, pref_name, and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.molregno IS NOT NULL AND (LOWER(td.pref_name) LIKE '%monoamine oxidase b%' OR LOWER(td.pref_name) LIKE '%amine oxidase b%') AND (td.tax_id = 9606 OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 221 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n57 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  }
+]

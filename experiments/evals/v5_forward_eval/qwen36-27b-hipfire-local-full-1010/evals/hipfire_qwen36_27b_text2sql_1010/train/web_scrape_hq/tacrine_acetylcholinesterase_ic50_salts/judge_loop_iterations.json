@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for compound CHEMBL95 and all its salts/derivatives. First, identify the molregno for CHEMBL95 from molecule_dictionary. Use molecule_hierarchy to find all related molregnos where parent_molregno equals the CHEMBL95 molregno (include the parent itself). Filter activities to those linked to these molregnos, with standard_type = 'IC50' and standard_units = 'nM', targeting CHEMBL220. Join assays to get assay_description and tid, then join target_dictionary on tid to filter for chembl_id = 'CHEMBL220' and retrieve target_chembl_id (chembl_id), target_name (pref_name), and target_organism (organism). Join compound_records to get compound_key and doc_id, then join docs to get pubmed_id and doi. Combine these into pubmed_id_or_doi (prefer pubmed_id if present, otherwise use doi). Join compound_structures to get canonical_smiles. Return exactly: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not limit the number of rows.",
+    "sql": "WITH parent_mol AS (\n    SELECT molregno\n    FROM molecule_dictionary\n    WHERE chembl_id = 'CHEMBL95'\n),\nrelated_mols AS (\n    SELECT molregno\n    FROM molecule_hierarchy\n    WHERE parent_molregno = (SELECT molregno FROM parent_mol)\n    UNION\n    SELECT molregno FROM parent_mol\n)\nSELECT DISTINCT\n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    cr.compound_key,\n    COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n    ass.description AS assay_description,\n    a.standard_type,\n    a.standard_relation,\n    a.standard_value,\n    a.standard_units,\n    a.activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE\n    a.molregno IN (SELECT molregno FROM related_mols)\n    AND a.standard_type = 'IC50'\n    AND a.standard_units = 'nM'\n    AND td.chembl_id = 'CHEMBL220';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 20\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 93 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | LIST SUBQUERY 5\n29 | 25 | 0 | MATERIALIZE related_mols\n31 | 29 | 0 | COMPOUND QUERY\n32 | 31 | 0 | LEFT-MOST SUBQUERY\n36 | 32 | 50 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n39 | 32 | 0 | SCALAR SUBQUERY 2\n44 | 39 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n61 | 31 | 0 | UNION USING TEMP B-TREE\n64 | 61 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n82 | 25 | 32 | SCAN related_mols\n88 | 25 | 0 | CREATE BLOOM FILTER\n98 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n104 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n111 | 0 | 0 | REUSE LIST SUBQUERY 5\n126 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n132 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n138 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n169 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 191,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

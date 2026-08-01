@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct target names (target_dictionary.pref_name) for assays where the organism is not specified (assays.assay_organism IS NULL). Join the assays table with the target_dictionary table on tid. Return only the distinct target names.",
+    "sql": "SELECT DISTINCT td.pref_name FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism IS NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3185,
+    "res_columns": [
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

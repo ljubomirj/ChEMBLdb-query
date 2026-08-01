@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against human TYK2 (Tyrosine kinase 2). For each activity, return the standard_value (IC50 in nM), compound chembl_id, canonical_smiles, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, and target pref_name. Filter for activities where standard_type = 'IC50' and standard_units = 'nM'. The target organism must be Homo sapiens and pref_name must be 'Tyrosine kinase 2'. Join activities with compound_structures, molecule_dictionary, docs, assays, and target_dictionary.",
+    "sql": "SELECT a.standard_value, md.chembl_id, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.pref_name = 'Tyrosine kinase 2' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n46 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "standard_value",
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against human TYK2 (Tyrosine kinase 2). For each activity, return the standard_value (IC50 in nM), compound chembl_id, canonical_smiles, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, and target pref_name. Use LEFT JOINs for compound_structures and docs to preserve rows even if SMILES or document info is missing. Filter for activities where standard_type = 'IC50' and standard_units = 'nM'. The target organism must be 'Homo sapiens' and pref_name must be 'Tyrosine kinase 2'. Join activities with molecule_dictionary, assays, and target_dictionary using INNER JOINs. Return all matching rows without limits.",
+    "sql": "SELECT a.standard_value, md.chembl_id, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.pref_name = 'Tyrosine kinase 2' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n53 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "standard_value",
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against human TYK2. Return the standard_value (IC50 in nM), compound chembl_id, canonical_smiles, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, and target pref_name. Use LEFT JOINs for compound_structures and docs to preserve rows even if SMILES or document info is missing. Filter activities where standard_type = 'IC50' and standard_units = 'nM'. For the target, match human TYK2 by checking if target_dictionary.pref_name contains 'TYK2' or 'Tyrosine kinase 2' using a LIKE pattern (e.g., LIKE '%TYK2%' OR LIKE '%Tyrosine kinase 2%'), and verify the organism is human via assays.assay_organism or target_dictionary.organism containing 'Homo sapiens' (use LIKE for organism as well). Join activities with assays, target_dictionary, and molecule_dictionary using INNER JOINs. Return all matching rows.",
+    "sql": "SELECT a.standard_value, md.chembl_id, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (td.pref_name LIKE '%TYK2%' OR td.pref_name LIKE '%Tyrosine kinase 2%') AND (td.organism LIKE '%Homo sapiens%' OR ass.assay_organism LIKE '%Homo sapiens%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n45 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n61 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 7119,
+    "res_columns": [
+      "standard_value",
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

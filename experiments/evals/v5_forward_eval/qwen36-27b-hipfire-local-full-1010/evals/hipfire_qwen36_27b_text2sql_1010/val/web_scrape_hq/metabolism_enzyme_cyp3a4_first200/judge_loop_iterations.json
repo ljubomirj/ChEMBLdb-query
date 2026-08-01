@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records where the enzyme is CYP3A4. Join the metabolism table with compound_records on substrate_record_id to obtain the substrate name, and on drug_record_id to obtain the parent compound name. Also join with compound_structures to retrieve the substrate's canonical SMILES as the substrate structure. Return the following columns: substrate_structure (canonical SMILES), substrate_name, parent_compound_name, met_conversion, pathway_key, and organism. Limit the results to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, cr_sub.compound_name AS substrate_name, cr_par.compound_name AS parent_compound_name, m.met_conversion AS metabolic_conversion, m.pathway_key AS pathway, m.organism AS organism FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno WHERE m.enzyme_name = 'CYP3A4' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 174,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_compound_name",
+      "metabolic_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

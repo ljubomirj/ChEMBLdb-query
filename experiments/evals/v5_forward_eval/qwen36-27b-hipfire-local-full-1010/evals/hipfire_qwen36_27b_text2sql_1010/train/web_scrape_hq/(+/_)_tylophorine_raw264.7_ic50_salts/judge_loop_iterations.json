@@ -1,0 +1,20 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values for tylophorine and its salt forms against the RAW264.7 cell line. Join molecule_hierarchy to capture all salt/derivative molecules (children) of the parent compound tylophorine. Filter activities for standard_type = 'IC50'. Match the assay target/cell line to 'RAW264.7'. Return the compound preferred name, IC50 value, IC50 units, and the cell line name for each activity record. Do not apply additional filters on confidence scores or document types.",
+    "sql": "WITH tylophorine_parent AS (\n  SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'tylophorine'\n),\ntylophorine_set AS (\n  SELECT molregno FROM molecule_hierarchy\n  WHERE parent_molregno IN (SELECT molregno FROM tylophorine_parent)\n  UNION\n  SELECT molregno FROM tylophorine_parent\n)\nSELECT DISTINCT\n  md.pref_name AS compound_name,\n  a.standard_value AS ic50_value,\n  a.standard_units AS ic50_units,\n  cd.cell_name AS cell_line_name\nFROM activities a\nJOIN tylophorine_set ts ON a.molregno = ts.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN cell_dictionary cd ON ass.cell_id = cd.cell_id\nWHERE\n  a.standard_type = 'IC50'\n  AND cd.cell_name = 'RAW264.7';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE tylophorine_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 96 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n12 | 4 | 0 | LIST SUBQUERY 2\n15 | 12 | 229 | SCAN molecule_dictionary\n24 | 12 | 0 | CREATE BLOOM FILTER\n39 | 3 | 0 | UNION USING TEMP B-TREE\n41 | 39 | 229 | SCAN molecule_dictionary\n65 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n70 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n80 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n87 | 0 | 0 | BLOOM FILTER ON cd (cell_id=?)\n95 | 0 | 39 | SEARCH cd USING INDEX sqlite_autoindex_cell_dictionary_1 (cell_id=?)\n107 | 0 | 0 | BLOOM FILTER ON ts (molregno=?)\n118 | 0 | 54 | SEARCH ts USING AUTOMATIC COVERING INDEX (molregno=?)\n135 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2,
+    "res_columns": [
+      "compound_name",
+      "ic50_value",
+      "ic50_units",
+      "cell_line_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

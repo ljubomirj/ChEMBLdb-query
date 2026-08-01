@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label (efo_term), and max phase for that indication (max_phase_for_ind) for all compounds that are approved (max_phase = 4) and indicated for chronic kidney disease. Filter the drug_indication table where efo_term or mesh_heading matches 'chronic kidney disease' (case-insensitive). Join molecule_dictionary, compound_structures, and drug_indication on molregno. Return distinct rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (LOWER(di.efo_term) LIKE '%chronic kidney disease%' OR LOWER(di.mesh_heading) LIKE '%chronic kidney disease%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 150,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

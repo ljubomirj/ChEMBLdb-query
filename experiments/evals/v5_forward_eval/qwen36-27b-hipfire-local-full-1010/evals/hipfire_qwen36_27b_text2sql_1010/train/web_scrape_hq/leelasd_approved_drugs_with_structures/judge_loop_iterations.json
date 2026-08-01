@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct `molecule_chembl_id` (sourced from `molecule_dictionary.chembl_id`), `pref_name`, `canonical_smiles`, `max_phase`, and `first_approval`. Filter results to only include molecules where `max_phase` is 3 or 4. Enforce an INNER JOIN between `molecule_dictionary` and `compound_records` to ensure each returned molecule has at least one compound record. Use a LEFT JOIN for `compound_structures` to fetch `canonical_smiles`, allowing molecules without structures to remain in the results. Return exactly the specified columns with no additional fields.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS molecule_chembl_id,\n    md.pref_name,\n    cs.canonical_smiles,\n    md.max_phase,\n    md.first_approval\nFROM molecule_dictionary md\nINNER JOIN compound_records cr ON md.molregno = cr.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase IN (3, 4)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 218 | SEARCH md USING INDEX idx_moldict_max_phase (max_phase=?)\n26 | 0 | 46 | SEARCH cr USING COVERING INDEX fk_comp_rec_molregno (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5921,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "first_approval"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity records for the human target CHEMBL1898 (5-hydroxytryptamine receptor 1B, a single-protein target). The query must join activities, assays, target_dictionary, and compound_structures. Filter conditions: 1) target_dictionary.chembl_id = 'CHEMBL1898'; 2) target_dictionary.target_type = 'SINGLE PROTEIN'; 3) target_dictionary.tax_id = 9606 (human); 4) activities.standard_relation = '='; 5) activities.pchembl_value IS NOT NULL; 6) activities.standard_type = 'IC50'. Output columns in this exact order: assays.chembl_id (as assay_chembl_id), target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, activities.molregno (or molecule_chembl_id if preferred, but UQ asks for molecule ChEMBL ID, so use molecule_dictionary.chembl_id or activities.molregno mapped to chembl_id - let's use molecule_dictionary.chembl_id as molecule_chembl_id), activities.standard_type, activities.pchembl_value. Ordering: molecule_chembl_id ASC, assay_chembl_id ASC. Limit: 1000 rows.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value AS pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1898' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 337,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

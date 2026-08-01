@@ -850,17 +850,80 @@ Sample rows:
 | 3 | NULL | CHEMBL265667 | NULL | 0 | 0 | MOL | Small molecule | NULL | 0 | 0 | 0 | 0 | 0 | -1 | -1 | -1 | -1 | NULL | -1 | NULL | 0 | NULL | NULL | 0 | 0 | -1 | -1 |
 
 ## Table: molecule_hierarchy
+**Purpose:** Tracks parent-child relationships between molecules (e.g., active drug and its salt forms)
+
 Columns:
-- molregno BIGINT NOT NULL PK
-- parent_molregno BIGINT NULL
-- active_molregno BIGINT NULL
+- molregno BIGINT NOT NULL PK  - Child molecule (e.g., salt form, prodrug)
+- parent_molregno BIGINT NULL  - Parent molecule (e.g., active drug compound)
+- active_molregno BIGINT NULL  - Reference to the active form (often = parent_molregno)
+
+**Relationships:**
+- `molregno` = the child/derived molecule (e.g., "TOFACITINIB citrate salt")
+- `parent_molregno` = the parent molecule (e.g., "TOFACITINIB free base")
+- `active_molregno` = the active pharmacological form (usually the parent)
+
+**Common Patterns:**
+
+1. **Find all salts/derivatives of a parent compound:**
+```sql
+-- Given parent CHEMBL ID, find its children (salts, prodrugs)
+SELECT child.chembl_id, child.pref_name
+FROM molecule_dictionary parent
+JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno
+JOIN molecule_dictionary child ON child.molregno = mh.molregno
+WHERE parent.chembl_id = 'CHEMBL221959'  -- TOFACITINIB (parent)
+```
+
+2. **Find the parent of a salt/derivative:**
+```sql
+-- Given child CHEMBL ID, find its parent
+SELECT parent.chembl_id, parent.pref_name
+FROM molecule_dictionary child
+JOIN molecule_hierarchy mh ON mh.molregno = child.molregno
+JOIN molecule_dictionary parent ON parent.molregno = mh.parent_molregno
+WHERE child.chembl_id = 'CHEMBL2106030'  -- TOFACITINIB citrate (child)
+```
+
+3. **Get both parent and all related forms:**
+```sql
+-- Self-join to get parent + all children in one query
+SELECT parent.chembl_id AS parent_chembl_id,
+       parent.pref_name AS parent_name,
+       child.chembl_id AS related_chembl_id,
+       child.pref_name AS related_name,
+       CASE
+         WHEN parent.molregno = child.molregno THEN 'parent'
+         ELSE 'child'
+       END AS relationship_type
+FROM molecule_dictionary parent
+LEFT JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno
+LEFT JOIN molecule_dictionary child ON child.molregno = mh.molregno
+WHERE parent.chembl_id = 'CHEMBL221959'
+```
+
+**⚠️ Common Mistakes to Avoid:**
+
+1. **Reversed logic:** Using `mh.molregno = parent.molregno` instead of `mh.parent_molregno = parent.molregno`
+   - WRONG: Finds parent's parent (grandparent), not children
+   - CORRECT: `mh.parent_molregno = parent.molregno` finds children
+
+2. **Self-join confusion:** Joining on `mh.molregno = mh.molregno`
+   - This creates a Cartesian product, not a hierarchy traversal
+
+3. **Missing DISTINCT:** When joining through hierarchy, you may get duplicates
+   - Use DISTINCT to ensure unique rows when appropriate
+
+**Example - Imatinib and its salts:**
+- Parent: Imatinib (CHEMBL1481) - molregno = 92646
+- Salts: Imatinib mesylate, Imatinib hydrochloride, etc.
+- Query pattern: `WHERE parent_molregno = 92646` returns all salts
 
 Sample rows:
 | molregno | parent_molregno | active_molregno |
 |---|---|---|
-| 1 | 1 | 1 |
-| 2 | 2 | 2 |
-| 3 | 3 | 3 |
+| 92646 | 92646 | 92646 |  -- Imatinib (parent = self)
+| 92647 | 92646 | 92646 |  -- Imatinib mesylate (child)
+| 92648 | 92646 | 92646 |  -- Imatinib hydrochloride (child) |
 
 ## Table: molecule_synonyms
 Columns:

@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for type 2 diabetes mellitus. An approved drug is defined as having max_phase = 4 in the molecule_dictionary. Retrieve the following columns: 1) molecule_chembl_id (from molecule_dictionary), 2) pref_name (preferred name from molecule_dictionary), 3) canonical_smiles (from compound_structures), 4) mesh_heading (the specific indication from drug_indication), 5) efo_term (the indication term from drug_indication). The indication must be related to 'diabetes mellitus type 2'. Join molecule_dictionary with drug_indication on molregno to get the indication details. Join compound_structures on molregno to get the structure. Filter drug_indication.mesh_heading to contain 'diabetes' or 'diabetes mellitus'. Return all matching rows without limiting the number of results.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON di.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE md.max_phase = 4 AND LOWER(di.mesh_heading) LIKE '%diabetes%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 382,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated specifically for 'type 2 diabetes mellitus'. An approved drug is defined as having max_phase = 4 in the molecule_dictionary. Retrieve distinct rows containing: 1) molecule_chembl_id (from molecule_dictionary), 2) pref_name (from molecule_dictionary), 3) canonical_smiles (from compound_structures), 4) mesh_heading (from drug_indication), 5) efo_term (from drug_indication). Join molecule_dictionary with drug_indication on molregno to get indication details, and join compound_structures on molregno for the structure. Filter the indication specifically for type 2 diabetes by using: LOWER(mesh_heading) LIKE '%diabetes mellitus, type 2%' OR LOWER(efo_term) LIKE '%type 2 diabetes mellitus%'. Return all matching distinct rows without any row limit.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON di.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE md.max_phase = 4 AND (LOWER(di.mesh_heading) LIKE '%diabetes mellitus, type 2%' OR LOWER(di.efo_term) LIKE '%type 2 diabetes mellitus%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n17 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n26 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 164,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

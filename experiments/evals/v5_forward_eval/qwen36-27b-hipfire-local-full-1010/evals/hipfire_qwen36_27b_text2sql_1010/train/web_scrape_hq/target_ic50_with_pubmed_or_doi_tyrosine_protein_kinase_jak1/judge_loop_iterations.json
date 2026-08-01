@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against human JAK1 (target CHEMBL2835). For each activity, include: compound canonical SMILES, compound key, PubMed ID or DOI (prefer PubMed ID if available), assay description, and target details (target name and organism). Filter for exact IC50 values (standard_relation = '='), with units in nM. Do not limit the number of rows.",
+    "sql": "SELECT\n  a.standard_value AS ic50_nM,\n  cs.canonical_smiles,\n  cr.compound_key,\n  CASE WHEN d.pubmed_id IS NOT NULL THEN d.pubmed_id ELSE d.doi END AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN compound_records cr ON a.record_id = cr.record_id\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL2835'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n49 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 11197,
+    "res_columns": [
+      "ic50_nM",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

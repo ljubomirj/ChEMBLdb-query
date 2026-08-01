@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activities in nM against target CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Return columns: canonical_smiles, compound_chembl_id, compound_key, pubmed_id_or_doi (prefer pubmed_id if available, otherwise use doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Apply filters: target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', canonical_smiles IS NOT NULL, and at least one of pubmed_id or doi must be non-null. Return only DISTINCT rows for the specified columns.",
+    "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  md.chembl_id AS compound_chembl_id,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units,\n  a.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL1824'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n41 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n56 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n95 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2813,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_chembl_id",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

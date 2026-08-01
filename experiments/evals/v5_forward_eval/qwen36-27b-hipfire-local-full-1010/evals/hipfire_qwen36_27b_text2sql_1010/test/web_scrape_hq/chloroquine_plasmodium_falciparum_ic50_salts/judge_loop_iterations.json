@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity records for the compound Chloroquine (CHEMBL76) and its salt forms, targeting Plasmodium falciparum (CHEMBL364). The query must join the molecule hierarchy to include salts/derivatives of the parent compound. Required output columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), standard_value, standard_units, standard_relation, assay_chembl_id (from assays), and pubmed_id (from docs). Do not apply filters on standard_relation or standard_units beyond what is necessary to identify IC50 records. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT child.chembl_id AS compound_chembl_id, cs.canonical_smiles, a.standard_value, a.standard_units, a.standard_relation, ass.chembl_id AS assay_chembl_id, d.pubmed_id FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno JOIN activities a ON a.molregno = child.molregno JOIN assays ass ON ass.assay_id = a.assay_id JOIN target_dictionary td ON td.tid = ass.tid JOIN compound_structures cs ON cs.molregno = child.molregno JOIN docs d ON d.doc_id = a.doc_id WHERE parent.chembl_id = 'CHEMBL76' AND td.chembl_id = 'CHEMBL364' AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 9\n18 | 0 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n23 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n28 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n34 | 0 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n60 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n69 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n90 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2139,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "assay_chembl_id",
+      "pubmed_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

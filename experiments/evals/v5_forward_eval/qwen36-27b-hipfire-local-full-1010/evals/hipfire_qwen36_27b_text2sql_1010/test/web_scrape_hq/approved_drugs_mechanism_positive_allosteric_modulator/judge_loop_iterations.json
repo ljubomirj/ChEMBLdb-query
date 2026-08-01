@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs that have a mechanism of action described as 'POSITIVE ALLOSTERIC MODULATOR'. For each drug, provide the drug name, the target protein name, the target ChEMBL ID, and the canonical SMILES of the active drug structure. Only include records where the action_type in the drug mechanism data is 'POSITIVE ALLOSTERIC MODULATOR'. Approved drugs are defined as having max_phase >= 4 in the molecule dictionary. Join with the molecule hierarchy to ensure the SMILES corresponds to the active form if the approved drug is a salt/prodrug.",
+    "sql": "SELECT DISTINCT md.pref_name AS drug_name, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, cs.canonical_smiles AS canonical_smiles FROM drug_mechanism dm JOIN target_dictionary td ON dm.tid = td.tid JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN molecule_hierarchy mh ON md.molregno = mh.molregno JOIN compound_structures cs ON COALESCE(mh.active_molregno, md.molregno) = cs.molregno WHERE dm.action_type = 'POSITIVE ALLOSTERIC MODULATOR' AND md.max_phase >= 4",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 144 | SCAN dm\n15 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 51,
+    "res_columns": [
+      "drug_name",
+      "target_name",
+      "target_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the compound ChEMBL ID, preferred name, activity type, standard value, and standard units for all exact activity measurements from assay CHEMBL1613992. Filter to include only records where the standard relation is exactly '=' to ensure exact values are returned, and exclude any rows where the standard value is null. Do not apply any limits on the number of rows returned.",
+    "sql": "SELECT md.chembl_id, md.pref_name, a.standard_type, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1613992' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 10385,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

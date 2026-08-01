@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values for compounds tested in assay CHEMBL1614481, along with their compound ChEMBL IDs and canonical SMILES structures. Filter activities to only include exact values where standard_relation = '='. Join activities with assays on assay_id, filter by assays.chembl_id = 'CHEMBL1614481'. Join compound_structures to get canonical_smiles, and molecule_dictionary to get chembl_id. Return columns: standard_value, standard_units, standard_relation, chembl_id, canonical_smiles. Do not apply row limits. Do not filter by confidence_score or other unrequested criteria.",
+    "sql": "SELECT a.standard_value, a.standard_units, a.standard_relation, md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614481' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 6208,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

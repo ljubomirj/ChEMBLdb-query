@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID (chembl_id), preferred name (pref_name), canonical SMILES (canonical_smiles), EFO ID (efo_id), indication label (efo_term), and max phase for indication (max_phase_for_ind) for all approved drugs indicated for schizophrenia. Join molecule_dictionary, drug_indication, and compound_structures on molregno. Filter drug_indication where efo_term or mesh_heading contains 'schizophrenia'. Filter for approved drugs by requiring max_phase_for_ind = 4. Return distinct rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.efo_term LIKE '%schizophrenia%' OR di.mesh_heading LIKE '%schizophrenia%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n17 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 29,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact IC50 activity values (standard_value in nM, where standard_relation is '=') for compounds tested against the human target 'Cytochrome P450 1A2'. For each activity record, return the compound ChEMBL ID, canonical SMILES, PubMed ID (or DOI if PubMed ID is missing), assay description, target name, and organism. Join activities, assays, target_dictionary, molecule_dictionary, compound_structures, and docs. Filter for human organism (Homo sapiens) in target_dictionary. Ensure standard_units is 'nM' and standard_relation is '='. Return all matching records without a row limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_name, td.organism AS organism, ac.standard_value AS ic50_nM FROM activities ac JOIN assays a ON ac.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ac.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON ac.doc_id = d.doc_id WHERE td.pref_name = 'Cytochrome P450 1A2' AND td.organism = 'Homo sapiens' AND ac.standard_type = 'IC50' AND ac.standard_units = 'nM' AND ac.standard_relation = '=' AND ac.standard_value IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 1732,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

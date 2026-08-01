@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact activity values (standard_value, standard_units, standard_relation) and canonical SMILES for all compounds tested in the assay with ChEMBL ID CHEMBL4649961. Join activities with compound_structures via molregno to get the SMILES. Filter where assays.chembl_id = 'CHEMBL4649961'. Return distinct rows based on activity_id to ensure unique activity records. Do not apply any additional filters on activity type, units, or relation.",
+    "sql": "SELECT DISTINCT a.standard_value, a.standard_units, a.standard_relation, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649961'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 53170,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

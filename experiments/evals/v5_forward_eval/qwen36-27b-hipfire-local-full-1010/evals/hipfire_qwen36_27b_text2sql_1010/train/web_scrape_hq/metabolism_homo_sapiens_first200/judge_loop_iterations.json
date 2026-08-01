@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 human metabolism records. Return the canonical SMILES of the substrate (alias as substrate_structure), the substrate compound name (alias as substrate_name), the parent drug compound name (alias as parent_name), the metabolic conversion (alias as met_conversion), the pathway key (alias as pathway), and the enzyme name (alias as enzyme). Join the metabolism table with compound_records twice: first on substrate_record_id to retrieve the substrate compound name, and second on drug_record_id to retrieve the parent compound name. Join compound_structures on the substrate's molregno to get the canonical SMILES. Filter where organism = 'Homo sapiens'. Apply a LIMIT of 200.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, sub_rec.compound_name AS substrate_name, drug_rec.compound_name AS parent_name, m.met_conversion AS met_conversion, m.pathway_key AS pathway, m.enzyme_name AS enzyme FROM metabolism m JOIN compound_records sub_rec ON m.substrate_record_id = sub_rec.record_id JOIN compound_structures cs ON sub_rec.molregno = cs.molregno JOIN compound_records drug_rec ON m.drug_record_id = drug_rec.record_id WHERE m.organism = 'Homo sapiens' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH sub_rec USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 0 | 47 | SEARCH drug_rec USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 200,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_name",
+      "met_conversion",
+      "pathway",
+      "enzyme"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

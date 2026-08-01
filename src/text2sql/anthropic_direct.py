@@ -9,6 +9,8 @@ Supports prompt caching for optimal performance with large schemas.
 import os
 import re
 import logging
+import hashlib
+import json
 from typing import Optional
 
 try:
@@ -33,8 +35,9 @@ class AnthropicProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'claude-sonnet-4.5',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
+        base_url: Optional[str] = None,
         temperature: float = 1.0,
     ):
         """
@@ -49,7 +52,7 @@ class AnthropicProvider(Text2SQLProvider):
         if anthropic is None:
             raise ImportError(
                 "anthropic package not installed. "
-                "Install with: pip install anthropic"
+                "Install with: uv sync"
             )
 
         self.api_key = api_key or os.getenv('ANTHROPIC_API_KEY')
@@ -57,21 +60,25 @@ class AnthropicProvider(Text2SQLProvider):
         self.timeout = timeout
         self.verbose = verbose
         self.temperature = float(temperature)
+        self.base_url = base_url
 
         if not self.api_key:
             logger.warning("Anthropic API key not found. Set ANTHROPIC_API_KEY environment variable.")
             self.client = None
         else:
-            self.client = anthropic.Anthropic(api_key=self.api_key)
+            if self.base_url:
+                self.client = anthropic.Anthropic(api_key=self.api_key, base_url=self.base_url)
+            else:
+                self.client = anthropic.Anthropic(api_key=self.api_key)
 
     def _normalize_model_name(self, model: str) -> str:
         """
         Normalize model name to Anthropic format.
 
         Handles:
-        - Short names: claude-haiku-4.5 → claude-haiku-4-5-20250429
-        - Full names: claude-sonnet-4-5-20250429 → unchanged
-        - OpenRouter format: anthropic/claude-sonnet-4.5 → claude-sonnet-4-5-20250429
+        - Short names: claude-haiku-4.5 → claude-haiku-4-5-20251001
+        - Full names: claude-sonnet-4-5-20250929 → unchanged
+        - OpenRouter format: anthropic/claude-sonnet-4.5 → claude-sonnet-4-5-20250929
         """
         # Remove anthropic/ prefix if present (from OpenRouter format)
         if model.startswith('anthropic/'):
@@ -79,7 +86,7 @@ class AnthropicProvider(Text2SQLProvider):
 
         # Map short names to full model IDs
         model_map = {
-            'claude-haiku-4.5': 'claude-haiku-4-5-20250429',
+            'claude-haiku-4.5': 'claude-haiku-4-5-20251001',
             'claude-sonnet-4.5': 'claude-sonnet-4-5-20250929',
             'claude-opus-4.5': 'claude-opus-4-5-20251101',
             # Legacy mappings
@@ -149,9 +156,11 @@ Generate the SQL query:"""
         *,
         temperature: float = 0.1,
         max_tokens: int = 4096,
+        response_format: Optional[dict] = None,
     ) -> Optional[str]:
         # Anthropic supports temperature, but we keep default behavior unless needed.
         _ = temperature
+        _ = response_format
         return self._chat(messages, max_tokens=int(max_tokens))
 
     def _chat(self, messages: list[dict], *, max_tokens: int) -> Optional[str]:
@@ -189,34 +198,47 @@ Generate the SQL query:"""
             ]
 
         if self.verbose:
-            print("\n" + "="*20)
-            print("🔍 VERBOSE: Anthropic API Request")
-            print("="*20)
-            print(f"\n📍 Model: {self.model}")
-            print(f"\n💬 SYSTEM MESSAGE (cached):")
-            print("-"*20)
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: Anthropic API Request", "=" * 20]))
+            system_text = ""
             if isinstance(system_content, list):
+                parts: list[str] = []
                 for item in system_content:
-                    text = item.get('text', str(item))[:200]
-                    print(f"{text}...")
-            print("-"*20)
-
-            print(f"\n💬 CONVERSATION ({len(user_messages)} messages):")
-            print("-"*20)
+                    if isinstance(item, dict) and 'text' in item:
+                        parts.append(str(item.get('text', '')))
+                    else:
+                        parts.append(str(item))
+                system_text = "".join(parts)
+            else:
+                system_text = str(system_content)
+            system_hash = hashlib.sha256(system_text.encode('utf-8')).hexdigest()
+            body_lines = [
+                f"Model: {self.model}",
+                f"SYSTEM_SHA256: {system_hash}",
+                "-" * 20,
+                f"CONVERSATION ({len(user_messages)} messages):",
+                "-" * 20,
+            ]
             for i, msg in enumerate(user_messages):
                 role = str(msg.get('role', '')).upper()
                 content = msg.get('content', '')
+                body_lines.append(f"{i+1}. {role}:")
                 if isinstance(content, str):
-                    content_preview = content[:200] + "..." if len(content) > 200 else content
+                    body_lines.append(content)
                 else:
-                    content_preview = str(content)[:200] + "..."
-                print(f"{i+1}. {role}: {content_preview}")
-            print("-"*20)
-
-            print(f"\n⚙️  API Parameters:")
-            print(f"   max_tokens: {max_tokens}")
-            print(f"   timeout: {self.timeout}s")
-            print("="*20 + "\n")
+                    try:
+                        body_lines.append(json.dumps(content, ensure_ascii=True))
+                    except Exception:
+                        body_lines.append(str(content))
+                body_lines.append("-" * 20)
+            body_lines.extend(
+                [
+                    "API Parameters:",
+                    f"   max_tokens: {max_tokens}",
+                    f"   timeout: {self.timeout}s",
+                ]
+            )
+            self._emit_raw_block("\n".join(body_lines))
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             response = self.client.messages.create(
@@ -228,27 +250,38 @@ Generate the SQL query:"""
             )
 
             if self.verbose:
-                print("="*20)
-                print("🔍 VERBOSE: Anthropic API Response")
-                print("="*20)
-                print("\n📊 Response Status: success")
-
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: Anthropic API Response", "=" * 20]))
+                body_lines = [
+                    "Response Status: success",
+                ]
                 usage = response.usage
-                print("📈 Token Usage:")
-                print(f"   Input tokens: {usage.input_tokens}")
-                print(f"   Output tokens: {usage.output_tokens}")
-
+                body_lines.extend(
+                    [
+                        "Token Usage:",
+                        f"   Input tokens: {usage.input_tokens}",
+                        f"   Output tokens: {usage.output_tokens}",
+                    ]
+                )
                 if hasattr(usage, 'cache_creation_input_tokens') and usage.cache_creation_input_tokens:
-                    print("💾 Prompt Cache:")
-                    print(f"   Cache creation tokens: {usage.cache_creation_input_tokens}")
+                    body_lines.extend(
+                        [
+                            "Prompt Cache:",
+                            f"   Cache creation tokens: {usage.cache_creation_input_tokens}",
+                        ]
+                    )
                 if hasattr(usage, 'cache_read_input_tokens') and usage.cache_read_input_tokens:
-                    print(f"   Cache read tokens: {usage.cache_read_input_tokens}")
+                    body_lines.append(f"   Cache read tokens: {usage.cache_read_input_tokens}")
 
-                print("\n💬 RAW RESPONSE:")
-                print("-"*20)
-                print(response.content[0].text)
-                print("-"*20)
-                print("="*20 + "\n")
+                body_lines.extend(
+                    [
+                        "RAW RESPONSE:",
+                        "-" * 20,
+                        response.content[0].text,
+                        "-" * 20,
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             text = response.content[0].text.strip()
 
@@ -328,3 +361,38 @@ Generate the SQL query:"""
             sql = sql.split(';')[0] + ';'
 
         return sql.strip()
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()

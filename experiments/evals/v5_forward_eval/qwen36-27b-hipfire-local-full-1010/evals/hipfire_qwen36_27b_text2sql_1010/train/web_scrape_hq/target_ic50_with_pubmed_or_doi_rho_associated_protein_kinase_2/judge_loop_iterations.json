@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for the compound target CHEMBL2973 (Rho-associated protein kinase 2). Filters: The activity type must be IC50, and the standard units must be nM. The target organism must be 'Homo sapiens'. Output columns: compound_chembl_id (ChEMBL ID of the compound), canonical_smiles (from compound structures), pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, target_pref_name (target name), and target_organism. Join activities, assays, target_dictionary, molecule_dictionary, compound_structures, and docs tables appropriately. Do not limit the number of rows.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, td.pref_name AS target_pref_name, td.organism AS target_organism FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON act.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL2973' AND act.standard_type = 'IC50' AND act.standard_units = 'nM' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 7242,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

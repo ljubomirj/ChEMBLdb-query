@@ -1,0 +1,26 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity data for compound CHEMBL3716726 and its salt forms against target CHEMBL375. First, identify the parent compound CHEMBL3716726 and find all related molecules (salts, derivatives) using the molecule_hierarchy table. Then, retrieve activities where standard_type is 'IC50' and the target is CHEMBL375. Output columns should include: compound chembl_id (from molecule_dictionary), compound pref_name, canonical_smiles (from compound_structures), assay chembl_id, assay description, target pref_name, standard_value, standard_units, standard_relation, and document chembl_id (for literature reference). Ensure all requested fields are explicitly returned for each activity row. Do not limit the number of rows returned.",
+    "sql": "WITH parent_mol AS (\n    SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL3716726'\n),\ntarget_mols AS (\n    SELECT mh.molregno\n    FROM molecule_hierarchy mh, parent_mol p\n    WHERE mh.parent_molregno = p.molregno OR mh.molregno = p.molregno\n)\nSELECT\n    md.chembl_id AS compound_chembl_id,\n    md.pref_name AS compound_pref_name,\n    cs.canonical_smiles,\n    ass.chembl_id AS assay_chembl_id,\n    ass.description AS assay_description,\n    td.pref_name AS target_pref_name,\n    a.standard_value,\n    a.standard_units,\n    a.standard_relation,\n    d.chembl_id AS document_chembl_id\nFROM activities a\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN target_mols tm ON cr.molregno = tm.molregno\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE a.standard_type = 'IC50'\n  AND td.chembl_id = 'CHEMBL375'\nORDER BY compound_chembl_id, assay_chembl_id, document_chembl_id",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 14\n19 | 0 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n31 | 0 | 0 | MULTI-INDEX OR\n32 | 31 | 0 | INDEX 1\n39 | 32 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n44 | 31 | 0 | INDEX 2\n51 | 44 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n62 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n68 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n77 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n85 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n94 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n103 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n130 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 8,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_pref_name",
+      "canonical_smiles",
+      "assay_chembl_id",
+      "assay_description",
+      "target_pref_name",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "document_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

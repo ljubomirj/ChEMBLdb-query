@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the preferred names and ChEMBL IDs of all unique compounds reported in the document with ChEMBL ID 'CHEMBL5728930'. Join the documents table on its chembl_id to compound records via doc_id, then to molecule dictionary via molregno. Return only the compound identifiers and names without any additional filtering or row limits.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5728930'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct preferred names and ChEMBL IDs of all compounds reported in the document with ChEMBL ID 'CHEMBL5728930'. Use the join path: start with the 'docs' table filtered by chembl_id = 'CHEMBL5728930', join to 'compound_records' on doc_id, then join to 'molecule_dictionary' on molregno. Return only the 'pref_name' and 'chembl_id' columns from the molecule_dictionary table. Do not apply any row limits or additional filters.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5728930'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

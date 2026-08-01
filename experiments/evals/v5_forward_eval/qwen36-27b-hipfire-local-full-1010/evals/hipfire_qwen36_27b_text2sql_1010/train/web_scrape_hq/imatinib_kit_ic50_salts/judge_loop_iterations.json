@@ -1,0 +1,83 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for compound CHEMBL941 and all its related forms (parent and salts) by joining molecule_hierarchy where parent_molregno or molregno matches CHEMBL941's molregno. Filter activities for standard_type = 'IC50' and standard_units = 'nM'. Restrict to assays with chembl_id = 'CHEMBL1936'. Join activities to compound_records on record_id, to docs on doc_id, to assays on assay_id, and to target_dictionary on assays.tid. Return exactly: compound_chembl_id (molecule_dictionary.chembl_id), canonical_smiles (compound_structures.canonical_smiles), compound_key (compound_records.compound_key), pubmed_id_or_doi (compute as docs.pubmed_id if not null else docs.doi), assay_description (assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (all from activities), target_chembl_id (assays.chembl_id), target_name (target_dictionary.pref_name), target_organism (target_dictionary.organism). Do not apply any row limit.",
+    "sql": "WITH related_mols AS (\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  JOIN molecule_dictionary parent ON mh.parent_molregno = parent.molregno\n  WHERE parent.chembl_id = 'CHEMBL941'\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  a.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities act\nJOIN related_mols rm ON act.molregno = rm.molregno\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON act.molregno = cs.molregno\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN docs d ON act.doc_id = d.doc_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE\n  a.chembl_id = 'CHEMBL1936'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 9\n19 | 0 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n24 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n29 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n54 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n73 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n79 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity records for compound CHEMBL941 and all its related forms (parent and salts). First, determine the molregno for CHEMBL941 from molecule_dictionary. Then, find all molregno from molecule_hierarchy where parent_molregno matches the CHEMBL941 molregno, and include the CHEMBL941 molregno itself. Filter activities where activities.molregno is in this set. Filter activities where standard_type = 'IC50' and standard_units = 'nM'. Filter assays where chembl_id = 'CHEMBL1936'. Join activities to molecule_dictionary on molregno to get compound_chembl_id. Join to compound_structures on molregno to get canonical_smiles. Join to compound_records on record_id to get compound_key. Join to docs on doc_id to get pubmed_id_or_doi (use pubmed_id if not null, else doi). Join to assays on assay_id to get description and chembl_id. Join to target_dictionary on assays.tid to get pref_name and organism. Return exactly: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not apply any row limit.",
+    "sql": "WITH parent_mol AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL941'), related_mols AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno IN (SELECT molregno FROM parent_mol) UNION SELECT molregno FROM molecule_hierarchy WHERE active_molregno IN (SELECT molregno FROM parent_mol) UNION SELECT molregno FROM parent_mol) SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, a.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities act JOIN related_mols rm ON act.molregno = rm.molregno JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON act.molregno = cs.molregno JOIN compound_records cr ON act.record_id = cr.record_id JOIN docs d ON act.doc_id = d.doc_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE a.chembl_id = 'CHEMBL1936' AND act.standard_type = 'IC50' AND act.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 23\n2 | 0 | 0 | CO-ROUTINE related_mols\n4 | 2 | 0 | COMPOUND QUERY\n5 | 4 | 0 | LEFT-MOST SUBQUERY\n8 | 5 | 96 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n12 | 5 | 0 | LIST SUBQUERY 2\n16 | 12 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n25 | 12 | 0 | CREATE BLOOM FILTER\n39 | 4 | 0 | UNION USING TEMP B-TREE\n41 | 39 | 229 | SCAN molecule_hierarchy\n46 | 39 | 0 | LIST SUBQUERY 4\n50 | 46 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n59 | 46 | 0 | CREATE BLOOM FILTER\n71 | 4 | 0 | UNION USING TEMP B-TREE\n74 | 71 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n102 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n107 | 0 | 64 | SEARCH act USING INDEX fk_act_assay_id (assay_id=?)\n119 | 0 | 0 | BLOOM FILTER ON rm (molregno=?)\n130 | 0 | 54 | SEARCH rm USING AUTOMATIC COVERING INDEX (molregno=?)\n137 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n144 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n154 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n164 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n170 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve activity records for compound CHEMBL941 and all its related forms (parent and salts). First, determine the molregno for CHEMBL941 from molecule_dictionary. Then, find all molregno from molecule_hierarchy where parent_molregno matches the CHEMBL941 molregno, and include the CHEMBL941 molregno itself. Filter activities where activities.molregno is in this set. Filter activities where standard_type = 'IC50' and standard_units = 'nM'. Filter assays where the associated target's ChEMBL ID (target_dictionary.chembl_id) equals 'CHEMBL1936'. Join activities to molecule_dictionary on molregno to get compound_chembl_id. Join to compound_structures on molregno to get canonical_smiles. Join to compound_records on record_id to get compound_key. Join to docs on doc_id to get pubmed_id_or_doi (compute as docs.pubmed_id if not null, else docs.doi). Join to assays on assay_id to get description. Join to target_dictionary on assays.tid to get chembl_id, pref_name, and organism. Return exactly: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not apply any row limit.",
+    "sql": "WITH parent_mol AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL941'), related_mols AS (SELECT molregno FROM parent_mol UNION SELECT molregno FROM molecule_hierarchy WHERE parent_molregno IN (SELECT molregno FROM parent_mol)) SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities act JOIN related_mols rm ON act.molregno = rm.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON act.molregno = cs.molregno JOIN compound_records cr ON act.record_id = cr.record_id JOIN docs d ON act.doc_id = d.doc_id WHERE act.standard_type = 'IC50' AND act.standard_units = 'nM' AND td.chembl_id = 'CHEMBL1936'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE related_mols\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n19 | 16 | 96 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n23 | 16 | 0 | LIST SUBQUERY 3\n27 | 23 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n36 | 23 | 0 | CREATE BLOOM FILTER\n70 | 0 | 143 | SCAN rm\n73 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n78 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n85 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n92 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n109 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n118 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n124 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 43,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

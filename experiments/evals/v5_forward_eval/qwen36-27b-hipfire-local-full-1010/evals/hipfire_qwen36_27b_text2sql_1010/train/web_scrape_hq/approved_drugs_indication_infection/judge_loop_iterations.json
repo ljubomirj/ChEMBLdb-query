@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID (chembl_id), preferred name (pref_name), canonical SMILES (canonical_smiles), and indication details (mesh_heading and efo_term) for all approved drugs indicated for infection. Approved drugs are defined as having max_phase >= 4 in molecule_dictionary. Filter the drug indications to include only those where the mesh_heading or efo_term contains the term 'infection'. Join molecule_dictionary, drug_indication, and compound_structures on molregno. Return distinct results for each drug-indication combination.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase >= 4 AND (di.mesh_heading LIKE '%infection%' OR di.efo_term LIKE '%infection%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1314,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

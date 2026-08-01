@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records where organism is 'Mus musculus', ordered by met_id ASC. Join metabolism.substrate_record_id to compound_records.record_id, then to molecule_dictionary.molregno for the substrate compound name (pref_name), and to compound_structures.molregno for the canonical SMILES as the substrate structure. Also join metabolism.drug_record_id to compound_records and molecule_dictionary for the parent compound name. Return the canonical SMILES, substrate compound name, parent compound name, met_conversion, pathway_key, and enzyme_name. Limit the result to 200 rows.",
+    "sql": "SELECT\n  cs.canonical_smiles AS substrate_structure,\n  md_sub.pref_name AS compound_name,\n  md_par.pref_name AS parent_compound_name,\n  m.met_conversion AS metabolic_conversion,\n  m.pathway_key AS pathway,\n  m.enzyme_name AS enzyme\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id\nLEFT JOIN molecule_dictionary md_par ON cr_par.molregno = md_par.molregno\nWHERE m.organism = 'Mus musculus'\nORDER BY m.met_id ASC\nLIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n15 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n56 | 0 | 47 | SEARCH md_par USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 54,
+    "res_columns": [
+      "substrate_structure",
+      "compound_name",
+      "parent_compound_name",
+      "metabolic_conversion",
+      "pathway",
+      "enzyme"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

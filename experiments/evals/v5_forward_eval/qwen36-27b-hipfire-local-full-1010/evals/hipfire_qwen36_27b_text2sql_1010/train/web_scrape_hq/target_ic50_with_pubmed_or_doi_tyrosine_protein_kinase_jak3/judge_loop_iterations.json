@@ -1,0 +1,45 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for compounds tested against the human protein JAK3 (target CHEMBL2148). The activity type must be IC50 with values in nM. For each activity record, return the following columns: the compound's ChEMBL ID (from molecule_dictionary), the canonical SMILES (from compound_structures), the compound_key (from compound_records), the PubMed ID or DOI of the source document (prefer PubMed ID if available, otherwise DOI; from docs), the assay description (from assays), and the target name and organism (from target_dictionary). Do not aggregate or group the results; return one row per activity measurement. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL2148' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 11901,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity records for compounds tested against the human protein JAK3 (target CHEMBL2148). The activity type must be IC50 with values in nM. For each activity record, return the following columns: the IC50 activity value (standard_value), the compound's ChEMBL ID (from molecule_dictionary), the canonical SMILES (from compound_structures), the compound_key (from compound_records), the PubMed ID or DOI of the source document (prefer PubMed ID if available, otherwise DOI; from docs), the assay description (from assays), and the target name and organism (from target_dictionary). Do not aggregate or group the results; return one row per activity measurement. Do not limit the number of rows returned.",
+    "sql": "SELECT a.standard_value, md.chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL2148' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 11901,
+    "res_columns": [
+      "standard_value",
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

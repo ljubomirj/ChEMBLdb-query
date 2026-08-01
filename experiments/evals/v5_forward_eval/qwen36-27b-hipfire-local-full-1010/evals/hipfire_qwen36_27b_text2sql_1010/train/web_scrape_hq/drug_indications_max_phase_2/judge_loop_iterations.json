@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve drug indications recorded at clinical phase 2 for drugs that are fully approved at phase 4. Join molecule_dictionary and drug_indication on molregno. Filter for molecule_dictionary.max_phase = 4 AND drug_indication.max_phase_for_ind = 2. Output columns: pref_name (drug name), efo_term and mesh_heading (indication terms), and max_phase_for_ind. Return distinct rows.",
+    "sql": "SELECT DISTINCT md.pref_name, di.efo_term, di.mesh_heading, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 2",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13180,
+    "res_columns": [
+      "pref_name",
+      "efo_term",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

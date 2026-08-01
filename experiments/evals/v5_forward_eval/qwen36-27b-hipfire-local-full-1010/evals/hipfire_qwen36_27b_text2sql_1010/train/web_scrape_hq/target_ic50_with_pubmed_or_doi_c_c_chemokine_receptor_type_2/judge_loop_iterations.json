@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity data for compounds tested against the human target 'C-C chemokine receptor type 2'. For each result, return the following columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, target_pref_name, and organism. Constraints: 1) The activity type must be IC50 and units must be nM. 2) The target organism must be 'Homo sapiens'. 3) Only include rows where the compound has a valid SMILES (canonical_smiles is not null) AND a valid PubMed ID or DOI exists. 4) The target name should match 'C-C chemokine receptor type 2' (or similar pref_name).",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name, td.organism AS organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND td.pref_name = 'C-C chemokine receptor type 2' AND td.organism = 'Homo sapiens' AND cs.canonical_smiles IS NOT NULL AND COALESCE(d.pubmed_id, d.doi) IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n52 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n59 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 2412,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity data for CHEMBL3183703 and its salt/derivative forms against the target NACHT, LRR and PYD domains-containing protein 3 (CHEMBL1741208). Use molecule_hierarchy to find the parent_molregno of CHEMBL3183703, then select all molregno values sharing that parent. Join with activities filtered by standard_type = 'IC50'. Join assays to target_dictionary where chembl_id = 'CHEMBL1741208'. Return md.chembl_id, md.pref_name, cs.canonical_smiles, a.standard_value, a.standard_units, a.standard_relation, a.assay_id, ass.description, ass.assay_type, docs.doi, docs.pubmed_id, docs.year, docs.title. Do not apply unit or relation filters. Include all matching rows.",
+    "sql": "WITH target_parent AS (\n  SELECT mh.parent_molregno\n  FROM molecule_dictionary md\n  JOIN molecule_hierarchy mh ON md.molregno = mh.molregno\n  WHERE md.chembl_id = 'CHEMBL3183703'\n),\ntarget_molecules AS (\n  SELECT DISTINCT md.molregno\n  FROM molecule_dictionary md\n  JOIN molecule_hierarchy mh ON md.molregno = mh.molregno\n  JOIN target_parent tp ON mh.parent_molregno = tp.parent_molregno\n)\nSELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation,\n  a.assay_id,\n  ass.description,\n  ass.assay_type,\n  docs.doi,\n  docs.pubmed_id,\n  docs.year,\n  docs.title\nFROM target_molecules tm\nJOIN activities a ON tm.molregno = a.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON tm.molregno = md.molregno\nLEFT JOIN compound_structures cs ON tm.molregno = cs.molregno\nJOIN docs ON a.doc_id = docs.doc_id\nWHERE\n  a.standard_type = 'IC50'\n  AND td.chembl_id = 'CHEMBL1741208';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 13\n2 | 0 | 0 | CO-ROUTINE target_molecules\n11 | 2 | 47 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 2 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n22 | 2 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n29 | 2 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n54 | 0 | -4 | SCAN tm\n57 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n67 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n72 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n84 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n93 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n102 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 26,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "assay_id",
+      "description",
+      "assay_type",
+      "doi",
+      "pubmed_id",
+      "year",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

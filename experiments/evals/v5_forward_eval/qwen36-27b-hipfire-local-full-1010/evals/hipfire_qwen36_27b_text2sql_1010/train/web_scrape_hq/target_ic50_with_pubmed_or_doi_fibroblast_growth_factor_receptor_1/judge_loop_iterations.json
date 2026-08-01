@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 values (in nM) for compounds tested on human Fibroblast Growth Factor Receptor 1 (target CHEMBL ID: CHEMBL3650). Filter for exact measurements only (standard_type = 'IC50', standard_relation = '=', standard_units = 'nM'). Only include rows where a canonical SMILES is available and at least one PubMed ID or DOI is present for the source document. Return exactly these columns: molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (coalesce pubmed_id and doi), assay_description, target_organism (from target_dictionary), and standard_value. Do not apply any row limits or ranking.",
+    "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.organism AS target_organism,\n  a.standard_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL3650'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n62 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n68 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 1945,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_organism",
+      "standard_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

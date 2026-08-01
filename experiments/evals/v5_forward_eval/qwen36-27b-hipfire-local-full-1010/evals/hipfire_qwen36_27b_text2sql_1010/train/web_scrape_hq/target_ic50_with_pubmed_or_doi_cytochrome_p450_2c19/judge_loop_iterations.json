@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values in nM for compounds tested against human Cytochrome P450 2C19. Return each compound's ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI (coalesce pubmed_id and doi, preferring pubmed_id), assay description, target name, and organism. Only include rows where a PubMed ID or DOI is available. Filter for standard_type = 'IC50', standard_units = 'nM', and standard_relation = '='. Target organism must be Homo sapiens. Join activities to assays, target_dictionary, compound_records, molecule_dictionary, compound_structures, and docs via activities.doc_id.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description,\n  td.pref_name AS target_name,\n  td.organism,\n  a.standard_value AS ic50_nM\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Cytochrome P450 2C19'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n58 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1446,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "description",
+      "target_name",
+      "organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

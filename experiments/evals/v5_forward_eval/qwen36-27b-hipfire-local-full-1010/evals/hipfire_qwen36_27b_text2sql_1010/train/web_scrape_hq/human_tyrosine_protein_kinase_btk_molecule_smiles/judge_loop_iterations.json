@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID and canonical SMILES for compounds tested against the target with ChEMBL ID 'CHEMBL5251' in assays where the organism is 'Homo sapiens'. Order the results by ChEMBL ID. Return only the requested columns without any additional columns or row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5251' AND ass.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n12 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n17 | 0 | 224 | SCAN ass\n24 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n58 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 13641,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -4,20 +4,25 @@
 This repo maintains contains a copy of the ChEMBLdb together with agentic scaffolding used to query the data using natural language.
 
 ## Global Safety & Workflow
-
 - **Never delete files without explicit user permission.** No `rm -rf`, `git reset --hard`, `git clean -fd`, or any destructive DB commands unless the user confirms the exact command and scope in writing 
 - When destructive action is ever approved: restate the exact command, await confirmation, then record user text + command + time in the session notes.
 - **Learning loop (all repos):** see the copied global instructions below (from `~/.claude/CLAUDE.md`).
 - Do not edit README.LJ, never change README.LJ never write into README.LJ. But feel free to read README.LJ at will.
 
-## Global CLAUDE learning loop (copied from ~/.claude/CLAUDE.md)
-* always create a .claude/LEARNINGS.md file if it's not there. It should be checked in and then in context for any claude code sessions.
-* Log Every Friction Point: If a build fails, a test hangs, or a logic error occurs, document the root cause and the specific fix before proceeding.
-* Mandatory Update on Intervention: If you stop to ask for guidance, or if I provide a correction, you must update LEARNINGS.md with the "Signpost" (the specific instruction or realization) that prevented you from succeeding independently.
-* Iterate Toward Autonomy: Use the existing log to avoid repeating mistakes. Your goal is to reach a state where you can complete the objective without manual triggers.
+## Project learning loop (copied from ~/.claude/CLAUDE.md)
+- Always create a per project LEARNINGS.md file if it's not there. It should be checked in and then in context for any agents sessions.
+- Log Every Friction Point: If a build fails, a test hangs, or a logic error occurs, document the root cause and the specific fix before proceeding.
+- Mandatory Update on Intervention: If you stop to ask for guidance, or if I provide a correction, you must update LEARNINGS.md with the "Signpost" (the specific instruction or realization) that prevented you from succeeding independently.
+- Iterate Toward Autonomy: Use the existing log to avoid repeating mistakes. Your goal is to reach a state where you can complete the objective without manual triggers.
+- Selected maybe summarised learnings that are general enough to apply to any project - append them to a global LEARNINGS.md in the .claude system directory usually ~/.claude/LEARNINGS.md.
+
+## Memory Record Archive in Every Project Repository
+- Always create a per project MEMORY.md file in the project top level directory if it's not there. It should be checked into the project .git repo.
+- Log summary of every interaction between the agent and the user, one line per interaction. Document a summary of what the user action was and what the agent action was.
+- Make it brief but meaningful. Leave out anything uninformative that can be reasonably deduced. If the user session is the "enacted program" in a socratic dialogue human-agent, this are the comments to that enacted progeam.
+- Only ever append - never change the history.
 
 ## Project-Specific Guidance
-
 - There are agentic dirs .codex and .claude where agent related info is kept; some of it is linked with soft links, where possible e.g. CLAUDE.md and AGENTS.md, or the skills/ directory ahared between .clayde and .codex.
 - Dependencies: Python, `openai`. Use `uv` + venv; **only Python 3.13**; **never use pip** use only uv at all times.
 - Permissions: repository writing and network fetches are pre-approved; don’t worry about damaging data (under git).
@@ -31,7 +36,8 @@ This repo maintains contains a copy of the ChEMBLdb together with agentic scaffo
 - Dependencies specified in `pyproject.toml` (core, api, data, dev groups).
 
 ## Testing Guidelines
-- No formal suite yet—add smoke checks and keep outputs deterministic.
+- Add smoke checks and keep outputs deterministic.
+- A formal suite in tests/ started now and being populated.
 - If adding tests, use `pytest` under `tests/` and rely on files in `data/` (no live network).
 
 ## Commit & Pull Request Guidelines
@@ -67,3 +73,4 @@ This project includes Agent (e.g. Codex, Claude Code) skills that provide projec
   - Repeatable run labeling with consistent outputs
   - Prompt refinement guidance and validation checklist
   - Command templates and troubleshooting tips
+

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all drug-indication relationships. Return the molecule ChEMBL ID (chembl_id), molecule preferred name (pref_name), MeSH ID (mesh_id), EFO ID (efo_id), MeSH heading (mesh_heading) and EFO term (efo_term) as indication labels, and max phase for indication (max_phase_for_ind). Join the drug_indication table with molecule_dictionary on molregno. Do not apply any additional filters, ranking, or row limits.",
+    "sql": "SELECT md.chembl_id, md.pref_name, di.mesh_id, di.efo_id, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 174 | SCAN di\n6 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 59954,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "mesh_id",
+      "efo_id",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

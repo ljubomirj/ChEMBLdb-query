@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for CHEMBL1173655 (AFATINIB) and all its salt/derivative forms using the molecule_hierarchy table to map from the parent compound molregno. Include both the parent compound and its children.\n\nJoin through the explicit provenance path: compound_records on activities.record_id = compound_records.record_id, then docs on compound_records.doc_id = docs.doc_id. This ensures we capture the correct compound_key and pubmed_id_or_doi. Note that for pubmed_id_or_doi, prefer docs.pubmed_id when present; otherwise use docs.doi.\n\nFilter activities to only those with standard_type 'IC50' and standard_units 'nM'. Restrict results to target CHEMBL203 (Epidermal growth factor receptor) by joining assays and target_dictionary.\n\nReturn exactly these columns in this order:\n1. compound_chembl_id (from molecule_dictionary)\n2. canonical_smiles (from compound_structures)\n3. compound_key (from compound_records)\n4. pubmed_id_or_doi (COALESCE of docs.pubmed_id and docs.doi)\n5. assay_description (from assays)\n6. standard_type (from activities)\n7. standard_relation (from activities)\n8. standard_value (from activities)\n9. standard_units (from activities)\n10. activity_comment (from activities)\n11. target_chembl_id (from target_dictionary)\n12. target_name (from target_dictionary.pref_name)\n13. target_organism (from target_dictionary.organism)\n\nDo not add any row limits, confidence score filters, or extra metadata restrictions. Ensure joins are explicit and use LEFT JOIN for optional provenance structures like compound_structures and compound_records if they might be missing, but prioritize the explicit record_id linkage.",
+    "sql": "WITH salts AS (\n  SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL1173655'\n  UNION\n  SELECT child.molregno \n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL1173655'\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units,\n  a.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM salts s\nJOIN activities a ON a.molregno = s.molregno\nJOIN compound_records cr ON cr.record_id = a.record_id\nLEFT JOIN compound_structures cs ON cs.molregno = cr.molregno\nJOIN molecule_dictionary md ON md.molregno = cr.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE td.pref_name = 'Epidermal growth factor receptor'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:35b-a3b",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE salts\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n22 | 16 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n27 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n33 | 16 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 32 | SCAN s\n66 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n77 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n83 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n92 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n99 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n105 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n114 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n145 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 117,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:35b-a3b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

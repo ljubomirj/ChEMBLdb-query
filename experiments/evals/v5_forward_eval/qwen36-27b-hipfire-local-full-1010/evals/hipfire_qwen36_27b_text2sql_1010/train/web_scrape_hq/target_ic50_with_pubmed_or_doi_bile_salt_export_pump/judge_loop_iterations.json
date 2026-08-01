@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity data (standard_value in nM, standard_relation '=') for the target with ChEMBL ID CHEMBL6020 (human bile salt export pump). For each result, return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), pubmed_id_or_doi (prefer pubmed_id from docs, fallback to doi if pubmed_id is null), standard_value, standard_units, assay_description (from assays), and target information (pref_name, chembl_id from target_dictionary). Join activities -> assays -> target_dictionary to filter by tid corresponding to CHEMBL6020. Join activities -> compound_records -> molecule_dictionary for compound info. Left join compound_structures for SMILES. Left join docs for pubmed_id/doi. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, td.chembl_id AS target_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL6020' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n44 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n59 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 620,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

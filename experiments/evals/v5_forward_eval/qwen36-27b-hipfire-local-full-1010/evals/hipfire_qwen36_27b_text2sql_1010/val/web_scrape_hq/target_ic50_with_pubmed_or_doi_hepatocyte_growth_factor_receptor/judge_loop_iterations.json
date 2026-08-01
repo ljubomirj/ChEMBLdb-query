@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values in nM for compounds tested against the target with chembl_id 'CHEMBL3717'. Output columns: exact IC50 value (standard_value in nM), canonical SMILES, compound key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay description, and target preferred name. Join activities with assays, target_dictionary, compound_structures, compound_records, and docs. Apply filters: target_dictionary.chembl_id = 'CHEMBL3717', activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', compound_structures.canonical_smiles IS NOT NULL, and (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). Do not apply a LIMIT.",
+    "sql": "SELECT a.standard_value, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_details FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL3717' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 4464,
+    "res_columns": [
+      "standard_value",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_details"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

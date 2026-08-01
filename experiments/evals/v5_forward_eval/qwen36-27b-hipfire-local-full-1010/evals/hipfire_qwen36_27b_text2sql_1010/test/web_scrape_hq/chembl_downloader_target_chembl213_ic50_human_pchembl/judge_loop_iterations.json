@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL213 (Beta-1 adrenergic receptor). Return the following columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. Filter for standard_type='IC50', target CHEMBL213, organism 'Homo sapiens', and standard_relation '='. Order by molecule_chembl_id ASC then assay_chembl_id ASC. Limit to 1000 rows.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM target_dictionary td JOIN assays ON td.tid = assays.tid JOIN activities a ON assays.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL213' AND td.tax_id = 9606 AND a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, assays.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 583,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

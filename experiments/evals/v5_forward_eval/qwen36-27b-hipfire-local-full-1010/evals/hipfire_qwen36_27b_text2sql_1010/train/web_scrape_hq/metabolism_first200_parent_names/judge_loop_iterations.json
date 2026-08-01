@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exactly 200 rows from the metabolism table. The join path for the substrate compound must be: metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno. The substrate_compound_name must be extracted from compound_records.compound_name. The parent_compound_name must be derived from molecule_dictionary.pref_name by joining through molecule_hierarchy.parent_molregno (linking via metabolism.drug_record_id or similar parent reference if available, or joining molecule_hierarchy on the drug_record to find its parent). Do not substitute molecule_dictionary.pref_name for the substrate_compound_name. Do not deduplicate rows. Return exactly the following columns: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key.",
+    "sql": "SELECT cs.canonical_smiles, cr.compound_name AS substrate_compound_name, md.pref_name AS parent_compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 200,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

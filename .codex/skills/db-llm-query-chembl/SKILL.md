@@ -32,7 +32,7 @@ uv run python src/db_llm_query.py -q "..."
 
 Notes:
 - Default SQL model list is `expensive` if neither `--sql-model` nor `--sql-model-list` is provided.
-- Default `--min-context` is `300000` for OpenRouter model filtering.
+- Default `--min-context` is `100000` for OpenRouter model filtering.
 - Default `--filter-profile` is `strict` (publication + confidence = 9 + single protein).
 - Use `--run-label` to stamp all outputs and logs with a stable ID.
 
@@ -84,7 +84,7 @@ Note: The excerpt above is illustrative. Actual columns and values depend on the
 ```bash
 uv run python src/db_llm_query.py \
   --sql-model-list expensive \
-  --min-context 300000 \
+  --min-context 100000 \
   --filter-profile strict \
   --run-label "run_strict_$(date +%Y%m%d_%H%M%S)" \
   -f csv \

@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds tested against the human target 'cellular tumor antigen p53' (ChEMBL target ID: CHEMBL4096). Return each compound's preferred name (pref_name), ChEMBL ID (chembl_id), and canonical SMILES. Include all compounds with any recorded activity for this target, applying no filters on activity type, value, relation, or confidence score. Do not limit the number of results.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4096'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 36444,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

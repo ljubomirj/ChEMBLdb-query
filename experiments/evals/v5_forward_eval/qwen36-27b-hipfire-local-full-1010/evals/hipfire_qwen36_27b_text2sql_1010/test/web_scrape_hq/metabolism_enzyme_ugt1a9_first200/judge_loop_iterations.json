@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records involving the enzyme UGT1A9. Join the metabolism table with compound_structures (via substrate_record_id) to get canonical SMILES for the substrate. Join with molecule_dictionary to get the substrate preferred name. Include columns: canonical_smiles, pref_name, met_conversion, pathway_key. Filter by target_dictionary.pref_name = 'UGT1A9'. Limit to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE td.pref_name = 'UGT1A9' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 metabolism records for the enzyme UGT1A9. Join the metabolism table with compound_records using substrate_record_id, then join compound_records with compound_structures to retrieve canonical SMILES, and with molecule_dictionary to retrieve the compound preferred name. Return columns: canonical_smiles, pref_name, met_conversion, pathway_key. Filter records where metabolism.enzyme_name contains 'UGT1A9' or where the associated target_dictionary.pref_name (joined via enzyme_tid = tid) contains 'UGT1A9'. Limit the result to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE m.enzyme_name LIKE '%UGT1A9%' OR td.pref_name LIKE '%UGT1A9%' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 126 | SCAN m\n13 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n26 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n33 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 13,
+    "res_columns": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

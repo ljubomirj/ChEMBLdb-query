@@ -1,0 +1,71 @@
+{
+  "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/approved_drugs_mechanism_antagonist/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/approved_drugs_mechanism_antagonist/result.generated.csv",
+    "row_count": 498,
+    "column_names": [
+      "compound_pref_name",
+      "compound_chembl_id",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 476,
+    "actual_rows": 498,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "actual_cols": [
+      "compound_pref_name",
+      "compound_chembl_id",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "missing_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_name"
+    ],
+    "extra_cols": [
+      "compound_pref_name",
+      "compound_chembl_id",
+      "target_pref_name"
+    ],
+    "status": "partial",
+    "score": 0.457329,
+    "column_recall": 0.125,
+    "row_ratio": 0.955823
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_mechanism_antagonist",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "judge_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    }
+  }
+}

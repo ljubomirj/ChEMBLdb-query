@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the enzyme 'P450 reductase'. Join `metabolism` with `target_dictionary` on `enzyme_tid = tid`, filtering where `target_dictionary.pref_name = 'P450 reductase'`. Join `metabolism.substrate_record_id` to `compound_records` (aliased as `cr_sub`) to obtain the substrate name (`cr_sub.compound_name`) and its `molregno`. Then join `cr_sub.molregno` to `compound_structures` to retrieve the substrate structure (`compound_structures.canonical_smiles`). Join `metabolism.drug_record_id` to `compound_records` (aliased as `cr_drug`) to obtain the parent compound name (`cr_drug.compound_name`). Select the following columns: substrate structure (canonical_smiles), substrate name, parent compound name, metabolic conversion (`metabolism.met_conversion`), pathway (`metabolism.pathway_key`), and organism (`metabolism.organism`). Order by `metabolism.met_id` ascending and limit the result to 200 rows. Do not apply any additional filters.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, cr_sub.compound_name AS substrate_name, cr_drug.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno JOIN compound_records cr_drug ON m.drug_record_id = cr_drug.record_id WHERE td.pref_name = 'P450 reductase' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n13 | 0 | 121 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n25 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 47 | SEARCH cr_drug USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 metabolism records for the enzyme 'P450 reductase'. Filter the metabolism table where enzyme_name contains 'P450 reductase' (case-insensitive). Join metabolism.substrate_record_id to compound_records (aliased as cr_sub) to obtain the substrate name (cr_sub.compound_name) and its molregno. LEFT JOIN cr_sub.molregno to compound_structures to retrieve the substrate structure (compound_structures.canonical_smiles). Join metabolism.drug_record_id to compound_records (aliased as cr_drug) to obtain the parent compound name (cr_drug.compound_name). Select the following columns: substrate structure (canonical_smiles), substrate name, parent compound name, metabolic conversion (metabolism.met_conversion), pathway (metabolism.pathway_key), and organism (metabolism.organism). Order by metabolism.met_id ascending and limit the result to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, cr_sub.compound_name AS substrate_name, cr_drug.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id LEFT JOIN compound_structures cs ON cr_sub.molregno = cs.molregno JOIN compound_records cr_drug ON m.drug_record_id = cr_drug.record_id WHERE LOWER(m.enzyme_name) LIKE '%p450 reductase%' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n18 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n25 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n34 | 0 | 47 | SEARCH cr_drug USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 11,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

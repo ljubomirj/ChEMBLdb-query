@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values in nM for compounds tested against human Collagenase 3 (target ChEMBL ID: CHEMBL280). Return the following columns: activities.standard_value as ic50_nM, molecule_dictionary.chembl_id as compound_chembl_id, compound_structures.canonical_smiles as smiles, COALESCE(docs.pubmed_id, docs.doi) as pubmed_id_or_doi, assays.description as assay_description, target_dictionary.pref_name as target_name, target_dictionary.chembl_id as target_chembl_id, and target_dictionary.organism as target_organism. Apply filters: activities.standard_type = 'IC50', activities.standard_units = 'nM', activities.standard_relation = '=', target_dictionary.chembl_id = 'CHEMBL280', and target_dictionary.organism = 'Homo sapiens'. Join activities with assays on assay_id, assays with target_dictionary on tid, activities with docs on doc_id, and activities with compound_structures and molecule_dictionary on molregno. Do not apply any row limits. Return distinct rows if necessary to avoid duplicates from joins.",
+    "sql": "SELECT DISTINCT a.standard_value AS ic50_nM, md.chembl_id AS compound_chembl_id, cs.canonical_smiles AS smiles, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, td.organism AS target_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN docs d ON a.doc_id = d.doc_id JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND td.chembl_id = 'CHEMBL280' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n49 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n56 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n82 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3002,
+    "res_columns": [
+      "ic50_nM",
+      "compound_chembl_id",
+      "smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_chembl_id",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct preferred names and ChEMBL IDs of all molecules reported in the document with chembl_id 'CHEMBL5726773'. Join the docs table to compound_records on doc_id, and then to molecule_dictionary on molregno. Filter where docs.chembl_id = 'CHEMBL5726773'. Return molecule_dictionary.pref_name and molecule_dictionary.chembl_id.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5726773'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct preferred names and ChEMBL IDs of all molecules reported in the document with chembl_id 'CHEMBL5726773'. Join the docs table to compound_records on doc_id, and then to molecule_dictionary on molregno. Filter where docs.chembl_id = 'CHEMBL5726773'. Return molecule_dictionary.pref_name and molecule_dictionary.chembl_id.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5726773'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1057,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

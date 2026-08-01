@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct compound identifiers (chembl_id, pref_name) for all compounds tested against the human protein target 'TAR DNA-binding protein 43'. Do not apply any confidence score, document type, or unit filters. Return only the requested columns.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.pref_name = 'TAR DNA-binding protein 43' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve distinct compound identifiers (`chembl_id`, `pref_name`) for all compounds tested against the human protein target 'TAR DNA-binding protein 43'. Match the target using `target_dictionary.pref_name = 'TAR DNA-binding protein 43'` (or aliases like 'TARDBP' or 'TDP-43') and ensure `target_dictionary.organism = 'Homo sapiens'`. Join `activities` to `assays` on `assay_id`, then to `target_dictionary` on `tid`, and `molecule_dictionary` on `molregno`. Do not apply confidence score, document type, DOI, or unit filters. Return only `chembl_id` and `pref_name`.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.pref_name IN ('TAR DNA-binding protein 43', 'TARDBP', 'TDP-43') AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct compound identifiers (chembl_id, pref_name) for all compounds tested against the human protein target 'TAR DNA-binding protein 43'. Match the target using target_dictionary.pref_name = 'TAR DNA-binding protein 43' and target_dictionary.organism = 'Homo sapiens'. Join activities to assays on assay_id, then to target_dictionary on tid, and molecule_dictionary on molregno. Do not apply confidence score, document type, DOI, or unit filters. Return only chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.pref_name = 'TAR DNA-binding protein 43' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct compound identifiers (chembl_id, pref_name) for all compounds tested against the human protein target 'TAR DNA-binding protein 43'. Use target_dictionary.pref_name = 'TAR DNA-binding protein 43' and target_dictionary.organism = 'Homo sapiens' as the primary filter. If this returns no results, expand the filter to target_dictionary.pref_name IN ('TARDBP', 'TDP-43', 'TAR DNA-binding protein 43') AND target_dictionary.organism = 'Homo sapiens'. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to molecule_dictionary on molregno. Ensure the WHERE clause filters are strictly applied to avoid returning the entire compound set. Do not apply confidence score, document type, DOI, or unit filters. Return only chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.pref_name IN ('TAR DNA-binding protein 43', 'TDP-43', 'TARDBP') AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct compound identifiers (chembl_id, pref_name) for compounds tested against the human protein 'TAR DNA-binding protein 43'. Filter target_dictionary where organism = 'Homo sapiens' and LOWER(pref_name) LIKE '%tar%' AND (LOWER(pref_name) LIKE '%dbp%' OR LOWER(pref_name) LIKE '%tdp-43%' OR LOWER(pref_name) LIKE '%tar dna-binding protein 43%'). This ensures robust case-insensitive matching against variations like TARDBP, TDP-43, or TAR DNA-binding protein 43. Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to molecule_dictionary on molregno. Do not apply confidence score, document type, or unit filters. Return only chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.organism = 'Homo sapiens' AND (td.pref_name LIKE '%TARDBP%' OR td.pref_name LIKE '%TDP-43%' OR td.pref_name LIKE '%TAR DNA-binding protein 43%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n43 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve distinct compound identifiers (chembl_id, pref_name) for all compounds tested against the human protein target 'TAR DNA-binding protein 43'. First, identify the target tid(s) from target_dictionary where organism = 'Homo sapiens' and pref_name matches variations like 'TARDBP', 'TDP-43', or 'TAR DNA-binding protein 43' (use LIKE with wildcards to match variations). Then, select compounds where assays.tid matches these tid(s). Join activities to assays on assay_id and to molecule_dictionary on molregno. Do not apply confidence score, document type, DOI, or unit filters. Return only chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.tid IN (SELECT tid FROM target_dictionary WHERE organism = 'Homo sapiens' AND (pref_name LIKE '%TARDBP%' OR pref_name LIKE '%TDP-43%' OR pref_name LIKE '%TAR DNA-binding protein 43%'))",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 225 | SCAN md USING INDEX idx_moldict_chembl_id\n11 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n18 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | LIST SUBQUERY 1\n38 | 34 | 57 | SEARCH target_dictionary USING INDEX idx_td_org (organism=?)\n56 | 34 | 0 | CREATE BLOOM FILTER",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

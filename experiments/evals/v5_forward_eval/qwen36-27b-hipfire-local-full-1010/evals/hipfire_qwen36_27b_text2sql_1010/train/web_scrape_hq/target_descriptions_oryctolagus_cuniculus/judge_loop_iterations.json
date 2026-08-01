@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct target names (pref_name from the target_dictionary table) for all assays where the assay organism is exactly 'Oryctolagus cuniculus'. Join the assays table with the target_dictionary table on the tid column. Do not apply any additional filters on target type, confidence score, or document metadata. Return only the distinct target names as the output.",
+    "sql": "SELECT DISTINCT td.pref_name\nFROM assays a\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE a.assay_organism = 'Oryctolagus cuniculus'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 230,
+    "res_columns": [
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

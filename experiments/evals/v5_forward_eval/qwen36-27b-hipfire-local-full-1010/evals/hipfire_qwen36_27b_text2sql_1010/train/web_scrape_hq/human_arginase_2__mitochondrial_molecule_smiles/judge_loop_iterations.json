@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for distinct compounds tested in assays targeting 'Arginase 2 (mitochondrial)' in Homo sapiens. Filter by target_dictionary.pref_name = 'Arginase 2 (mitochondrial)' and assays.assay_organism = 'Homo sapiens'. Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Return each compound exactly once.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'Arginase 2 (mitochondrial)' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n24 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n34 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n64 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for distinct compounds tested against the target 'Arginase 2 (mitochondrial)' in Homo sapiens. Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter using target_dictionary.pref_name = 'Arginase 2 (mitochondrial)' and target_dictionary.organism = 'Homo sapiens'. Do not filter on assays.assay_organism. Return each compound exactly once.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'Arginase 2 (mitochondrial)' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct ChEMBL IDs and canonical SMILES for compounds tested against a target named 'Arginase 2' (match using target_dictionary.pref_name LIKE '%Arginase 2%') in Homo sapiens. Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter using target_dictionary.pref_name LIKE '%Arginase 2%' AND target_dictionary.organism = 'Homo sapiens'. Return each compound exactly once with columns chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name LIKE '%Arginase 2%' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct ChEMBL IDs and canonical SMILES for compounds tested against arginase targets in Homo sapiens. Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter using LOWER(target_dictionary.pref_name) LIKE '%arginase%' AND LOWER(target_dictionary.organism) LIKE '%homo sapiens%'. Return each compound exactly once with columns chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE LOWER(td.pref_name) LIKE '%arginase%' AND LOWER(td.organism) LIKE '%homo sapiens%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 221 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n54 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 9440,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct ChEMBL IDs and canonical SMILES for compounds tested against human arginase 2 (mitochondrial). Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter using (LOWER(target_dictionary.pref_name) LIKE '%arginase 2 (mitochondrial)%' OR LOWER(target_dictionary.pref_name) LIKE '%arginase-2 (mitochondrial)%') AND target_dictionary.organism = 'Homo sapiens'. Return each compound exactly once with columns chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE (LOWER(td.pref_name) LIKE '%arginase 2 (mitochondrial)%' OR LOWER(td.pref_name) LIKE '%arginase-2 (mitochondrial)%') AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n56 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for distinct compounds tested against the target 'Arginase 2' in Homo sapiens. Join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter using target_dictionary.pref_name = 'Arginase 2' and target_dictionary.organism = 'Homo sapiens'. Return each compound exactly once with columns chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE (LOWER(td.pref_name) LIKE '%arginase 2%' OR LOWER(td.pref_name) LIKE '%arginase-2%') AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n56 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 9233,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

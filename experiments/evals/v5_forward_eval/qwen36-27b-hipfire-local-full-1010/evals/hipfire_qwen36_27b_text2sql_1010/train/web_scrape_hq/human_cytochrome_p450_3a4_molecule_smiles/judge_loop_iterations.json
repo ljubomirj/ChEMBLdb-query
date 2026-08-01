@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Find all distinct compounds tested against the human protein target 'Cytochrome P450 3A4'. Return the ChEMBL ID (molecule_dictionary.chembl_id) and canonical SMILES (compound_structures.canonical_smiles). Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures. Filter where target_dictionary.pref_name = 'Cytochrome P450 3A4' and target_dictionary.organism = 'Homo sapiens'. Use DISTINCT to ensure unique rows. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'Cytochrome P450 3A4' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n47 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 35011,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

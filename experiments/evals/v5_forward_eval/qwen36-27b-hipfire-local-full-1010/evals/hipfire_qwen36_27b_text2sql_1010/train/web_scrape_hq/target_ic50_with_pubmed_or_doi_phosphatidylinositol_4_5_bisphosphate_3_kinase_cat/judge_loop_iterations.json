@@ -1,0 +1,61 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against the human target 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha'. Return the following columns: compound_chembl_id, canonical_smiles, pubmed_id_or_doi (preferring pubmed_id, fallback to doi), assay_description, and target_pref_name. Include rows only where the compound has a valid canonical_smiles and a valid pubmed_id_or_doi. The activity must be exact IC50 values (standard_relation = '=') in nM. Filter for human organism (tax_id = 9606).",
+    "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_pref_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha'\n  AND td.tax_id = 9606\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND cs.canonical_smiles IS NOT NULL\n  AND COALESCE(d.pubmed_id, d.doi) IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against the human target 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha'. Return columns: compound_chembl_id, canonical_smiles, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, target_pref_name, and standard_value. Only include rows where canonical_smiles IS NOT NULL and COALESCE(pubmed_id, doi) IS NOT NULL. Filter for standard_type = 'IC50', standard_units = 'nM', and standard_relation = '='. Crucially, join the docs table using assays.doc_id = docs.doc_id (do not use activities.doc_id). Filter for human organism (td.tax_id = 9606). Use exact match for target name: td.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha'.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON ass.doc_id = d.doc_id WHERE td.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha' AND td.tax_id = 9606 AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND cs.canonical_smiles IS NOT NULL AND COALESCE(d.pubmed_id, d.doi) IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n49 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name",
+      "standard_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against the human target 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha'. Return columns: compound_chembl_id, canonical_smiles, pubmed_id_or_doi (coalesce pubmed_id and doi), assay_description, target_pref_name, and standard_value. Filter conditions: 1) Target matching: Use td.pref_name LIKE '%Phosphatidylinositol%3-kinase%alpha%' to handle punctuation variations, AND td.tax_id = 9606. 2) Activity: a.standard_type = 'IC50', a.standard_units = 'nM', a.standard_relation = '='. 3) Data availability: cs.canonical_smiles IS NOT NULL AND COALESCE(d.pubmed_id, d.doi) IS NOT NULL. Join docs using activities.doc_id = docs.doc_id. Ensure distinct rows per compound/activity combination if needed, but primarily return the activity rows matching the criteria.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_pref_name, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.pref_name LIKE '%Phosphatidylinositol%3-kinase%alpha%' AND td.tax_id = 9606 AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND cs.canonical_smiles IS NOT NULL AND COALESCE(d.pubmed_id, d.doi) IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n59 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n83 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5015,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_pref_name",
+      "standard_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

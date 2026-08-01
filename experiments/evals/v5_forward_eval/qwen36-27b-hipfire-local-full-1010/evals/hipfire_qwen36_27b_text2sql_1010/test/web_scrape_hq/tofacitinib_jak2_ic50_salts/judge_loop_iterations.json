@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity details for compound CHEMBL221959 (TOFACITINIB) and all its salts/derivatives against target CHEMBL2971 (Tyrosine-protein kinase JAK2). Use molecule_hierarchy to expand CHEMBL221959 to include the parent and all children (salts). Match FAQ salts join semantics exactly: 1) Define the compound set by joining molecule_dictionary (parent) -> molecule_hierarchy (children via parent_molregno) -> molecule_dictionary (child). 2) Join molecule_dictionary (child) to compound_records on molregno. 3) Join compound_records.record_id to activities.record_id. 4) Join docs via compound_records.doc_id. Do NOT use activities.molregno for the activity join. Do NOT use assays.doc_id for the publication join. Filter activities by standard_type = 'IC50' and standard_units = 'nM'. Filter assays by tid corresponding to target CHEMBL2971. Return exactly: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures joined via molecule_dictionary.molregno), compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), and target_organism (from target_dictionary.organism). Do not limit the number of rows.",
+    "sql": "WITH related_mols AS (\n  SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL221959'\n  UNION\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  JOIN molecule_dictionary p ON mh.parent_molregno = p.molregno\n  WHERE p.chembl_id = 'CHEMBL221959'\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM related_mols rm\nJOIN molecule_dictionary md ON rm.molregno = md.molregno\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN activities act ON cr.record_id = act.record_id\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL2971'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE related_mols\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n21 | 16 | 47 | SEARCH p USING INDEX idx_moldict_chembl_id (chembl_id=?)\n26 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n56 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n61 | 0 | 32 | SCAN rm\n64 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n71 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n80 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n86 | 0 | 58 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n96 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n105 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 111,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

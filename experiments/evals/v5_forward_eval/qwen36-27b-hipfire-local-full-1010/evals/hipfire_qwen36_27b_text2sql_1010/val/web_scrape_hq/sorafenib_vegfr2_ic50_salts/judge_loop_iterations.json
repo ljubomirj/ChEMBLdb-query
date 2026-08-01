@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity details for compound CHEMBL1336 (SORAFENIB) and all its salt/derivative forms by using the molecule_hierarchy table to map the parent compound and all related forms. The activities must be against target CHEMBL279 (Vascular endothelial growth factor receptor 2). Filter the activities to only include those with standard_type = 'IC50' and standard_units = 'nM'. Return exactly the following columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    cr.compound_key,\n    COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n    a.description AS assay_description,\n    act.standard_type,\n    act.standard_relation,\n    act.standard_value,\n    act.standard_units,\n    act.activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM molecule_hierarchy mh\nJOIN molecule_dictionary md ON md.molregno = mh.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nJOIN compound_records cr ON cr.molregno = md.molregno\nJOIN activities act ON act.record_id = cr.record_id\nJOIN assays a ON a.assay_id = act.assay_id\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN docs d ON d.doc_id = cr.doc_id\nWHERE\n    (\n        md.chembl_id = 'CHEMBL1336'\n        OR mh.parent_molregno IN (\n            SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL1336'\n        )\n    )\n    AND td.chembl_id = 'CHEMBL279'\n    AND act.standard_type = 'IC50'\n    AND act.standard_units = 'nM';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 12\n18 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n23 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?)\n57 | 0 | 0 | LIST SUBQUERY 1\n61 | 57 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n70 | 57 | 0 | CREATE BLOOM FILTER\n78 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n87 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n93 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n123 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 112,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

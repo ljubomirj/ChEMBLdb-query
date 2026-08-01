@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Return distinct target names (target_dictionary.pref_name) for assays where assays.assay_organism equals 'Bos taurus'. Join assays and target_dictionary on tid. Output only the distinct target names column. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT td.pref_name FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Bos taurus'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 285,
+    "res_columns": [
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

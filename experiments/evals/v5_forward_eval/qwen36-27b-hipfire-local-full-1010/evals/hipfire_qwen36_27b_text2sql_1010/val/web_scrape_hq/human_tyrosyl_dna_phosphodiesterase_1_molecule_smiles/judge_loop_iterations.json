@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return distinct compounds (molecule_dictionary.chembl_id, molecule_dictionary.pref_name) that have activity data against the target 'Tyrosyl-DNA phosphodiesterase 1' (CHEMBL1075138). Join target_dictionary to assays on tid, assays to activities on assay_id, and activities to molecule_dictionary on molregno. Filter where target_dictionary.chembl_id = 'CHEMBL1075138'. Do not apply extra filters on activity units, relations, or confidence scores.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1075138'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 196756,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

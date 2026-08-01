@@ -1,0 +1,47 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for IC50 values (in nM) against the human target 'Glycogen synthase kinase-3beta' (GSK3B). For each qualifying activity record, return: 1) compound_chembl_id, 2) canonical SMILES, 3) compound_key (from compound_records), 4) pubmed_id_or_doi (prefer pubmed_id, fallback to doi from docs), 5) assay_description, and 6) target details (including target name and tax_id to confirm human). Join activities with assays, target_dictionary, molecule_dictionary, compound_structures, compound_records, and docs. Filter for standard_type='IC50', standard_units='nM', and target organism 'Homo sapiens'. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.standard_value, a.standard_relation, a.standard_units, ass.description AS assay_description, td.pref_name AS target_name, td.tax_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id WHERE td.pref_name = 'Glycogen synthase kinase-3beta' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n61 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "assay_description",
+      "target_name",
+      "tax_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values for the human target 'Glycogen synthase kinase-3beta'. To ensure robust matching, use `td.pref_name LIKE '%Glycogen synthase kinase-3%'` or `td.chembl_id = 'CHEMBL210'` combined with `td.organism = 'Homo sapiens'`. Return the following columns for each qualifying activity: 1) ic50_value (from a.standard_value), 2) compound_chembl_id, 3) canonical_smiles, 4) compound_key, 5) pubmed_id_or_doi (coalesce pubmed_id and doi from docs), 6) assay_description, and 7) target_name. Filter activities for standard_type='IC50' and standard_units='nM'. Join activities, assays, target_dictionary, molecule_dictionary, compound_structures, compound_records, and docs. Return all matching rows without applying a row limit.",
+    "sql": "SELECT a.standard_value AS ic50_value, md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id WHERE td.pref_name LIKE '%Glycogen synthase kinase-3%' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n62 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 7522,
+    "res_columns": [
+      "ic50_value",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

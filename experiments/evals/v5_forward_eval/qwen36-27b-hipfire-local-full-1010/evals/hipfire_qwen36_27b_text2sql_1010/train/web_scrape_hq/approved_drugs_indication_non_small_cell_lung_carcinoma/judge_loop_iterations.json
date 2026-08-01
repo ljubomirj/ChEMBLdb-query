@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs (max_phase = 4) indicated for 'non-small cell lung carcinoma'. Join drug_indication, molecule_dictionary, and compound_structures on molregno. Filter where drug_indication.efo_term or drug_indication.mesh_heading matches 'non-small cell lung carcinoma'. Return columns: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id, drug_indication.efo_term as indication_label, and drug_indication.max_phase_for_ind. Do not apply row limits.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (LOWER(di.efo_term) = 'non-small cell lung carcinoma' OR LOWER(di.mesh_heading) = 'non-small cell lung carcinoma')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 221,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

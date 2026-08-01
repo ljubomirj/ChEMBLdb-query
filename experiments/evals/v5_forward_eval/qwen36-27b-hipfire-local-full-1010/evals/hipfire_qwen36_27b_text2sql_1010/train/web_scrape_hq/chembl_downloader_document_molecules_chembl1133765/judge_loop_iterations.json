@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds reported in the document with ChEMBL ID 'CHEMBL1133765'. Join docs (filtered by chembl_id = 'CHEMBL1133765') to compound_records on doc_id, then join molecule_dictionary on molregno, and compound_structures on molregno. Return molecule_dictionary.chembl_id as ChEMBL_ID, molecule_dictionary.pref_name as Name, molecule_dictionary.max_phase as Max_Phase, molecule_dictionary.molecule_type as Molecule_Type, and compound_structures.canonical_smiles as Canonical_SMILES. Order the results by ChEMBL_ID.",
+    "sql": "SELECT DISTINCT md.chembl_id AS ChEMBL_ID, md.pref_name AS Name, md.max_phase AS Max_Phase, md.molecule_type AS Molecule_Type, cs.canonical_smiles AS Canonical_SMILES FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1133765' ORDER BY ChEMBL_ID",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n50 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n51 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 268,
+    "res_columns": [
+      "ChEMBL_ID",
+      "Name",
+      "Max_Phase",
+      "Molecule_Type",
+      "Canonical_SMILES"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

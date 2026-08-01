@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records involving UGT enzymes. Join the metabolism table with target_dictionary on enzyme_tid = tid and filter for targets where pref_name contains 'UGT'. For each record, return the substrate's canonical SMILES (obtained by joining metabolism.substrate_record_id to compound_records.record_id, then to molecule_dictionary.molregno, and finally to compound_structures.molregno for canonical_smiles), the substrate compound name (molecule_dictionary.pref_name), the metabolic conversion (metabolism.met_conversion), the pathway key (metabolism.pathway_key), and the organism (metabolism.organism). Order by met_id ASC and limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, md.pref_name AS compound_name, m.met_conversion, m.pathway_key AS pathway, m.organism FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name LIKE '%UGT%' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n13 | 0 | 131 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n26 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n33 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "substrate_structure",
+      "compound_name",
+      "met_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 metabolism records involving UGT enzymes. Filter directly on the metabolism.enzyme_name column, matching records that contain 'UGT' or 'UDP-glucuronosyltransferase' (case-insensitive). Do not filter using target_dictionary. For each matching record, join compound_records on substrate_record_id = record_id to retrieve the substrate compound name from molecule_dictionary.pref_name. Join compound_structures on molregno to obtain the canonical_smiles as the substrate structure. Return the canonical_smiles, compound name, met_conversion, pathway_key, and organism. Order the results by met_id in ascending order and limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name AS compound_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.enzyme_name LIKE '%UGT%' OR m.enzyme_name LIKE '%UDP-glucuronosyltransferase%' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 90,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

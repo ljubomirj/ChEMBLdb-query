@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Return the distinct canonical_smiles of all compounds that have activity records against the human protein target 'Histone acetyltransferase KAT2A' in assays conducted in Homo sapiens. Join the activities table with the assays table on assay_id, then join assays with target_dictionary on tid. Filter rows where target_dictionary.pref_name equals 'Histone acetyltransferase KAT2A' and assays.assay_organism equals 'Homo sapiens'. Finally, join the activities table with compound_structures on molregno to retrieve the canonical_smiles. Output only the canonical_smiles column. Do not apply a row limit.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'Histone acetyltransferase KAT2A' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 224 | SCAN ass\n14 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n22 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n32 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13913,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

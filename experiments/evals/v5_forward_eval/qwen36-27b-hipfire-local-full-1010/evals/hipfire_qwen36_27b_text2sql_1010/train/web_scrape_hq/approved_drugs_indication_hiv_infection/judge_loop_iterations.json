@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all drugs with a max_phase of 4 (approved) that have an indication for HIV infection. For each drug, return the following columns: chembl_id (from molecule_dictionary), pref_name (from molecule_dictionary), canonical_smiles (from compound_structures), efo_id (from drug_indication), mesh_heading or efo_term as the indication label (from drug_indication), and max_phase (from molecule_dictionary). The indication should be linked via the drug_indication table, which connects to compound_records or molecule_dictionary. Ensure the drug is marked as approved (max_phase = 4). Join molecule_dictionary with compound_structures on molregno. Join molecule_dictionary with drug_indication on molregno (or via record_id if necessary, but typically drug_indication links to molregno). Filter the results to include only those indications related to HIV. Specifically, look for efo_term containing 'HIV' or mesh_heading containing 'HIV'. Return one row per drug-indication combination.",
+    "sql": "SELECT md.chembl_id, md.pref_name AS name, cs.canonical_smiles AS smiles, di.efo_id, COALESCE(di.efo_term, di.mesh_heading) AS indication_label, md.max_phase FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.efo_term LIKE '%HIV%' OR di.mesh_heading LIKE '%HIV%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 311,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

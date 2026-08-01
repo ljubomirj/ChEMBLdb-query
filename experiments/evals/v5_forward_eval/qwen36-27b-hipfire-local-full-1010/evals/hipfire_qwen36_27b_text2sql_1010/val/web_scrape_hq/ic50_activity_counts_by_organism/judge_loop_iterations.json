@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Count the number of IC50 activity records grouped by the assay organism. Join the activities and assays tables on assay_id. Filter the activities to only include those where standard_type is 'IC50'. Group by assays.assay_organism. Return the organism name and the count of activity records. Exclude any entries where the organism name is NULL or an empty string.",
+    "sql": "SELECT a.assay_organism, COUNT(*) AS count_of_records FROM activities act JOIN assays a ON act.assay_id = a.assay_id WHERE act.standard_type = 'IC50' AND a.assay_organism IS NOT NULL AND a.assay_organism != '' GROUP BY a.assay_organism",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n9 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n14 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n24 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY",
+    "res_row_count": 1265,
+    "res_columns": [
+      "assay_organism",
+      "count_of_records"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

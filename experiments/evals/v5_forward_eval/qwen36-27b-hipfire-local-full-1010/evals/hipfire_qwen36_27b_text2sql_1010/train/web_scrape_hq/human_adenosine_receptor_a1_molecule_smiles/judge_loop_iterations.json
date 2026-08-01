@@ -1,0 +1,104 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds that were tested in assays targeting the human adenosine A1 receptor (Homo sapiens). For each qualifying compound, return the compound's ChEMBL ID, preferred name, and canonical SMILES. Ensure the results are distinct, showing each compound only once. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'Adenosine A1 receptor' AND (ass.assay_organism = 'Homo sapiens' OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n45 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find distinct compounds tested in human (Homo sapiens) assays targeting the adenosine A1 receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Use a flexible pattern match on target_dictionary.pref_name (e.g., LIKE '%Adenosine A1%' OR LIKE '%Adenosine A(1)%') to handle naming variations. Filter assays where assay_organism = 'Homo sapiens'. Join activities to compound_records on record_id, then to molecule_dictionary on molregno, and finally to compound_structures on molregno. Return chembl_id, pref_name, and canonical_smiles for each qualifying compound. Ensure the output is distinct and do not apply any row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND (td.pref_name LIKE '%Adenosine A1%' OR td.pref_name LIKE '%Adenosine A(1)%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n13 | 0 | 224 | SCAN ass\n18 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n44 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n50 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n56 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n81 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find distinct compounds tested in human (Homo sapiens) assays targeting the adenosine A1 receptor. Join activities to assays on assay_id. Filter assays where assay_tax_id = 9606. Join assays to target_dictionary on tid. Filter target_dictionary where tax_id = 9606 AND (pref_name LIKE '%Adenosine A1%' OR pref_name LIKE '%Adenosine A(1)%'). Join activities to molecule_dictionary on molregno. Join molecule_dictionary to compound_structures on molregno. Return chembl_id, pref_name, and canonical_smiles for each qualifying compound. Ensure the output is distinct and do not apply any row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_tax_id = 9606 AND td.tax_id = 9606 AND (td.pref_name LIKE '%Adenosine A1%' OR td.pref_name LIKE '%Adenosine A(1)%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n46 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n52 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n59 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find distinct compounds tested in human (Homo sapiens) assays targeting the human adenosine A1 receptor. Join activities to assays on assay_id. Filter assays where assay_organism = 'Homo sapiens'. Join assays to target_dictionary on tid. Filter target_dictionary where tax_id = 9606 and pref_name = 'Adenosine A1 receptor'. Join activities to molecule_dictionary on molregno. Join molecule_dictionary to compound_structures on molregno. Return chembl_id, pref_name, and canonical_smiles for each qualifying compound. Ensure the output is distinct and do not apply any row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND td.tax_id = 9606 AND td.pref_name LIKE '%Adenosine A1%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n27 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n46 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n53 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n71 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find distinct compounds tested in assays targeting the human adenosine A1 receptor. Join activities to assays on assay_id. Join assays to target_dictionary on tid. Filter target_dictionary where tax_id = 9606 AND pref_name LIKE '%Adenosine A1%'. Do NOT filter on assays.assay_organism or assays.assay_tax_id. Join activities to molecule_dictionary on molregno. Join molecule_dictionary to compound_structures on molregno. Return molecule_dictionary.pref_name, molecule_dictionary.chembl_id, and compound_structures.canonical_smiles. Ensure the output is distinct.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.tax_id = 9606 AND td.pref_name LIKE '%Adenosine A1%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find distinct compounds tested in assays targeting the human adenosine A1 receptor. Join activities to assays on assay_id. Join assays to target_dictionary on tid. Filter target_dictionary where tax_id = 9606 AND (pref_name LIKE '%Adenosine%1%' OR pref_name LIKE '%Adenosine A1%'). Do not filter on assay_organism or assay_tax_id. Join activities to molecule_dictionary on molregno. Join molecule_dictionary to compound_structures on molregno. Return molecule_dictionary.chembl_id, molecule_dictionary.pref_name, and compound_structures.canonical_smiles. Ensure the output is distinct.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.tax_id = 9606 AND (td.pref_name LIKE '%Adenosine%1%' OR td.pref_name LIKE '%Adenosine A1%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n54 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11564,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

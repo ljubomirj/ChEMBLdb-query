@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Identify compounds that demonstrate selectivity for CDK2 over CDK1. Specifically, find compounds with IC50 values below 1000 nM against CDK2 AND IC50 values above 10000 nM against CDK1. Return the following columns for each qualifying compound: the compound's preferred name (pref_name), the canonical SMILES string for its structure, the IC50 value against CDK2, and the IC50 value against CDK1. Ensure that the activity data used corresponds to the specific targets CDK2 and CDK1 respectively. Do not limit the number of rows returned.",
+    "sql": "WITH cdk2_hits AS (\n    SELECT a.molregno, a.standard_value AS IC50_CDK2\n    FROM activities a\n    JOIN assays ass ON a.assay_id = ass.assay_id\n    JOIN target_dictionary td ON ass.tid = td.tid\n    WHERE td.pref_name = 'CDK2'\n      AND a.standard_type = 'IC50'\n      AND a.standard_units = 'nM'\n      AND a.standard_value < 1000\n),\ncdk1_hits AS (\n    SELECT a.molregno, a.standard_value AS IC50_CDK1\n    FROM activities a\n    JOIN assays ass ON a.assay_id = ass.assay_id\n    JOIN target_dictionary td ON ass.tid = td.tid\n    WHERE td.pref_name = 'CDK1'\n      AND a.standard_type = 'IC50'\n      AND a.standard_units = 'nM'\n      AND a.standard_value > 10000\n)\nSELECT\n    md.pref_name,\n    cs.canonical_smiles,\n    c2.IC50_CDK2,\n    c1.IC50_CDK1\nFROM cdk2_hits c2\nJOIN cdk1_hits c1 ON c2.molregno = c1.molregno\nJOIN molecule_dictionary md ON c2.molregno = md.molregno\nJOIN compound_structures cs ON c2.molregno = cs.molregno",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 9\n17 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n61 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n77 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n84 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n92 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "IC50_CDK2",
+      "IC50_CDK1"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find compounds that demonstrate selectivity for Cyclin-dependent kinase 2 over Cyclin-dependent kinase 1. Specifically, identify compounds with IC50 values below 1000 nM against 'Cyclin-dependent kinase 2' AND IC50 values above 10000 nM against 'Cyclin-dependent kinase 1'. Return the compound's preferred name (pref_name), the canonical SMILES string for its structure, the IC50 value against Cyclin-dependent kinase 2, and the IC50 value against Cyclin-dependent kinase 1. Do not limit the number of rows returned.",
+    "sql": "WITH cdk2_hits AS (SELECT a.molregno, a.standard_value AS IC50_CDK2 FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Cyclin-dependent kinase 2' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value < 1000), cdk1_hits AS (SELECT a.molregno, a.standard_value AS IC50_CDK1 FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Cyclin-dependent kinase 1' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value > 10000) SELECT md.pref_name, cs.canonical_smiles, c2.IC50_CDK2, c1.IC50_CDK1 FROM cdk2_hits c2 JOIN cdk1_hits c1 ON c2.molregno = c1.molregno JOIN molecule_dictionary md ON c2.molregno = md.molregno JOIN compound_structures cs ON c2.molregno = cs.molregno",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 9\n17 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n61 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n77 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n84 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n92 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 48,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "IC50_CDK2",
+      "IC50_CDK1"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

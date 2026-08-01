@@ -1,0 +1,33 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity records for dapagliflozin (CHEMBL429910) and all its salt/derivative forms against the target sodium/glucose cotransporter 2 (CHEMBL3884). Join `activities` with `assays`, `target_dictionary`, `molecule_hierarchy`, `molecule_dictionary`, `compound_structures`, and `docs`. Use `activities.molregno = molecule_hierarchy.molregno` and `molecule_hierarchy.parent_molregno = molecule_dictionary.molregno` to match the parent compound and all its salts. Filter for `activities.standard_type = 'IC50'`, `target_dictionary.chembl_id = 'CHEMBL3884'`, and `molecule_dictionary.chembl_id = 'CHEMBL429910'`. Return compound identifiers (`molecule_dictionary.chembl_id`, `molecule_dictionary.pref_name`), structures (`compound_structures.canonical_smiles`, `compound_structures.standard_inchi_key`), activity values (`activities.standard_value`, `activities.standard_units`, `activities.standard_relation`), assay details (`assays.assay_id`, `assays.description`, `assays.assay_type`, `assays.bao_format`), and literature references (`docs.doc_id`, `docs.chembl_id`, `docs.year`, `docs.doi`, `docs.pubmed_id`, `docs.title`). Do not apply row limits.",
+    "sql": "SELECT\n    md2.chembl_id AS compound_chembl_id,\n    md2.pref_name AS compound_name,\n    cs.canonical_smiles,\n    cs.standard_inchi_key,\n    a.standard_value,\n    a.standard_units,\n    a.standard_relation,\n    ass.assay_id,\n    ass.description AS assay_description,\n    ass.assay_type,\n    ass.bao_format,\n    d.doc_id,\n    d.chembl_id AS doc_chembl_id,\n    d.year,\n    d.doi,\n    d.pubmed_id,\n    d.title\nFROM molecule_dictionary md\nJOIN molecule_hierarchy mh ON mh.parent_molregno = md.molregno\nJOIN molecule_dictionary md2 ON md2.molregno = mh.molregno\nJOIN activities a ON a.molregno = mh.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN compound_structures cs ON cs.molregno = mh.molregno\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nWHERE md.chembl_id = 'CHEMBL429910'\n    AND td.chembl_id = 'CHEMBL3884'\n    AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n17 | 0 | 47 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n22 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n27 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n33 | 0 | 47 | SEARCH md2 USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n53 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n62 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n70 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 43,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles",
+      "standard_inchi_key",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "assay_id",
+      "assay_description",
+      "assay_type",
+      "bao_format",
+      "doc_id",
+      "doc_chembl_id",
+      "year",
+      "doi",
+      "pubmed_id",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

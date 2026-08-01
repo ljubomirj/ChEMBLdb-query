@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values in nM for compounds tested against the human leucine-rich repeat serine/threonine-protein kinase (CHEMBL1075104). Return the compound's ChEMBL ID, canonical SMILES, PubMed ID or DOI, assay description, and target information. Do not apply row limits.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, a.standard_value AS ic50_nM FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL1075104' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 4331,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

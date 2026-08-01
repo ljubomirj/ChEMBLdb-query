@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact activity values and canonical SMILES for compounds tested in assay CHEMBL1614342. Filter activities by assay CHEMBL ID 'CHEMBL1614342'. For exact activity values, only include rows where the standard relation is '=' and the standard value is not null. Return the columns: standard_type, standard_relation, standard_value, standard_units, and canonical_smiles. Do not apply any additional filters or ranking.",
+    "sql": "SELECT a.standard_type, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614342' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 18599,
+    "res_columns": [
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

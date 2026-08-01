@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values for compounds tested in assay CHEMBL1054504. Return the molecule ChEMBL ID (molecule_dictionary.chembl_id), standard_type, standard_value, and standard_units. Filter activities where assays.chembl_id = 'CHEMBL1054504' and activities.standard_relation = '='. Do not apply any row limits.",
+    "sql": "SELECT md.chembl_id, a.standard_type, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1054504' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 13327,
+    "res_columns": [
+      "chembl_id",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

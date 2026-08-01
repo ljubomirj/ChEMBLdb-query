@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Find all approved drugs that have a mechanism of action classified as 'BLOCKER'. For each drug, return the following: ChEMBL ID (from molecule_dictionary), molecule name (pref_name), canonical SMILES (from compound_structures), mechanism details (including mechanism_of_action text, action_type, and target name from drug_mechanism joined with target_dictionary), and target information (target name and tax_id from target_dictionary). A drug is considered approved if its max_phase in molecule_dictionary is 4. Ensure the mechanism action_type is exactly 'BLOCKER'.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, dm.mechanism_of_action, dm.action_type, td.pref_name AS target_name, td.tax_id FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND dm.action_type = 'BLOCKER'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n50 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 117,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "action_type",
+      "target_name",
+      "tax_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

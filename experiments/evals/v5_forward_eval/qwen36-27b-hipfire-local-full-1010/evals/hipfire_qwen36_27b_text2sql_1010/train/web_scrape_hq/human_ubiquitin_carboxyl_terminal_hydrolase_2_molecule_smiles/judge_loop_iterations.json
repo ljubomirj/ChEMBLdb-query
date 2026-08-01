@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for all compounds that have activity data against the target with ChEMBL ID CHEMBL1293227 (human ubiquitin carboxyl-terminal hydrolase 2). Join the activities table with the target_dictionary to filter by the specific target ID, and join with compound_structures to obtain the canonical SMILES. Return distinct rows to avoid duplicates if a compound has multiple activity entries for the same target.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1293227'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n26 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n35 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 8125,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

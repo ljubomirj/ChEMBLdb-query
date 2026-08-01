@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct pairs of target_dictionary.tid and target_dictionary.pref_name for activities where the standard_type is 'Ki' and the standard_relation is '='. Join activities to assays on assay_id, and assays to target_dictionary on tid. Do not apply any row limits, document type filters, confidence score filters, or target type restrictions. Return only the tid and pref_name columns.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'Ki' AND a.standard_relation = '=';",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n15 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3255,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

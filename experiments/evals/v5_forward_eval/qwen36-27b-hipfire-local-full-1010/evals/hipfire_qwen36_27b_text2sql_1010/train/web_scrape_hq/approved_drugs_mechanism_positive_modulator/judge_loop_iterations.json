@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs (max_phase = 4 in molecule_dictionary) whose mechanism of action has action_type = 'POSITIVE MODULATOR' in the drug_mechanism table. Join with target_dictionary to include target information. Output columns: drug preferred name, drug ChEMBL ID, target preferred name, and target ChEMBL ID. Do not apply any row limits or sorting.",
+    "sql": "SELECT DISTINCT md.pref_name AS drug_pref_name, md.chembl_id AS drug_chembl_id, td.pref_name AS target_pref_name, td.chembl_id AS target_chembl_id FROM drug_mechanism dm JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND dm.action_type = 'POSITIVE MODULATOR'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 27,
+    "res_columns": [
+      "drug_pref_name",
+      "drug_chembl_id",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

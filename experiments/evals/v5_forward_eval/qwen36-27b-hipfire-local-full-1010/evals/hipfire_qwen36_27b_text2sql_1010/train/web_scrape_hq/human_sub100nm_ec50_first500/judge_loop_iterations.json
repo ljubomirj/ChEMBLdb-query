@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Find the first 500 compounds with EC50 activity values below 100 nM against human single-protein targets. For each compound, return the canonical SMILES structure and activity details (standard_value, standard_units, standard_relation). The query should join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter for human organism (tax_id 9606) and single protein targets. Order by standard_value ascending and limit to 500 rows.",
+    "sql": "SELECT cs.canonical_smiles, a.standard_value, a.standard_units, a.standard_relation FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 AND a.standard_type = 'EC50' AND a.standard_units = 'nM' AND a.standard_relation IN ('<', '=') AND a.standard_value < 100 ORDER BY a.standard_value ASC LIMIT 500",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 500,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

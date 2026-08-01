@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds with exact IC50 activity values (in nM) against human 5-lipoxygenase. Output columns: compound_chembl_id, canonical_smiles, assay_description, pubmed_id_or_doi. Filter criteria: 1) Target: Human 5-lipoxygenase (filter assays by organism='Homo sapiens' and target name containing '5-lipoxygenase'). 2) Activity type: IC50. 3) Units: nM. 4) Exact values: standard_relation = '='. 5) Reference: Include PubMed ID or DOI from the associated document. Return distinct rows for each compound-activity pair.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  ass.description AS assay_description,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name LIKE '%5-lipoxygenase%'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n79 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4600,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "assay_description",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

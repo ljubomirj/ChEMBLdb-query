@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "List the ChEMBL IDs and canonical SMILES for all compounds associated with the document having ChEMBL ID 'CHEMBL3886604'. Join the docs table to compound_records on doc_id, then join molecule_dictionary and compound_structures on molregno. Return distinct rows with columns: molecule_dictionary.chembl_id and compound_structures.canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL3886604'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 724,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

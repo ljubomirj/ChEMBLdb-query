@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values for compounds tested in assay CHEMBL4649951. Join the assays table (filter by chembl_id = 'CHEMBL4649951') with activities and molecule_dictionary. Return the following columns: molecule_chembl_id (alias for molecule_dictionary.chembl_id), pref_name, standard_value, standard_units, standard_relation, and standard_type. Filter for exact activity values where standard_relation = '='. Do not apply any row limits.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name, a.standard_value, a.standard_units, a.standard_relation, a.standard_type FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL4649951' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 67938,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "standard_type"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 rows of activity data for target CHEMBL4187. Output columns: assay ChEMBL ID (from assays), target type (from target_dictionary), tax_id (from target_dictionary), canonical SMILES (from compound_structures), molecule ChEMBL ID (from molecule_dictionary), standard type (from activities), and pChEMBL value (from activities). Join tables: activities, assays (on assay_id), target_dictionary (on tid), molecule_dictionary (on molregno), and compound_structures (on molregno). Apply filters: target_dictionary.chembl_id = 'CHEMBL4187', activities.standard_relation = '=', and activities.pchembl_value IS NOT NULL. Order results by molecule ChEMBL ID, then assay ChEMBL ID.",
+    "sql": "SELECT assays.chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL4187' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_dictionary.chembl_id, assays.chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 236 | SEARCH activities USING INDEX idx_acc_relation (standard_relation=?)\n25 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 197,
+    "res_columns": [
+      "chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "chembl_id__dup2",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

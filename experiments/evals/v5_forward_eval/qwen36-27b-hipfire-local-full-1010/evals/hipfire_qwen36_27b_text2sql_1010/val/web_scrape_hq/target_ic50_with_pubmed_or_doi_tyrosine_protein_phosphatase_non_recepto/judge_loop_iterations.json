@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity data for compounds tested against the target 'Tyrosine-protein phosphatase non-receptor type 1' (ChEMBL ID: CHEMBL335). For each activity record, return the following columns: the standardized value (standard_value), standardized units (standard_units), the standard relation (standard_relation), the compound's canonical SMILES (from compound_structures), the publication year, the journal name, and the DOI (from the docs table). Join the activities table with the assays table to filter by the target ChEMBL ID, join with molecule_dictionary and compound_structures to get the compound structure, and join with the docs table to get the publication details. Do not limit the number of rows returned. Do not filter by confidence score or assay type unless specified. Ensure the target is identified by its ChEMBL ID 'CHEMBL335' in the target_dictionary.",
+    "sql": "SELECT a.standard_value, a.standard_units, a.standard_relation, cs.canonical_smiles, d.year, d.journal, d.doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL335' AND a.standard_type = 'IC50' AND a.standard_value IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 4584,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "canonical_smiles",
+      "year",
+      "journal",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

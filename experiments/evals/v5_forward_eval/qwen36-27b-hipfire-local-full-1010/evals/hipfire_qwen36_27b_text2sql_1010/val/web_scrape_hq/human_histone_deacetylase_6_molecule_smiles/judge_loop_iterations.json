@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct compounds tested against human histone deacetylase 6. Return the compound name and canonical SMILES. Filter the target by organism 'Homo sapiens' and target name 'histone deacetylase 6'. Ensure results only include compounds with a valid canonical SMILES. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT\n    md.pref_name,\n    cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE\n    td.organism = 'Homo sapiens'\n    AND LOWER(td.pref_name) LIKE '%histone deacetylase 6%'\n    AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n12 | 0 | 225 | SCAN md USING INDEX idx_moldict_pref_name\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n23 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n73 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13851,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

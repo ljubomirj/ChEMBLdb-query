@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct rows of approved drugs from ChEMBL. The query must join the molecule dictionary, compound structures, and drug indications. Required output columns are: preferred name (from molecule dictionary), canonical SMILES (from compound structures), max clinical phase (from molecule dictionary), indication heading (from drug indications), and first approval year (from molecule dictionary). Filter for drugs where the max clinical phase is 4 (indicating approval). Order the results by the first approval year in descending order (most recent first).",
+    "sql": "SELECT DISTINCT md.pref_name, cs.canonical_smiles, md.max_phase, di.mesh_heading, md.first_approval FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 ORDER BY md.first_approval DESC",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n41 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 29285,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mesh_heading",
+      "first_approval"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

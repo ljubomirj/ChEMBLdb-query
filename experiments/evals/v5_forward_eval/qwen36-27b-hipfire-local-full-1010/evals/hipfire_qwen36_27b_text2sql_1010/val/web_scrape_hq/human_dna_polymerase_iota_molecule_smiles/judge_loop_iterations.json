@@ -1,0 +1,66 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds that have been tested against the target 'DNA polymerase iota' (ChEMBL ID: CHEMBL5391) in Homo sapiens. For each compound, return the molecule ChEMBL ID (molecule_chembl_id) and its canonical SMILES. Ensure the results are distinct. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS molecule_chembl_id,\n    cs.canonical_smiles\nFROM target_dictionary td\nJOIN assays a ON a.tid = td.tid\nJOIN activities act ON act.assay_id = a.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL5391'\n  AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n25 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n35 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n43 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n52 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 115014,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find unique compounds tested against human DNA polymerase iota (target ChEMBL ID: CHEMBL5391) and return their ChEMBL ID and canonical SMILES. Join the tables in this exact order to ensure strict filtering: target_dictionary (filter chembl_id = 'CHEMBL5391') JOIN assays ON assays.tid = target_dictionary.tid JOIN activities ON activities.assay_id = assays.assay_id JOIN compound_structures ON compound_structures.molregno = activities.molregno JOIN molecule_dictionary ON molecule_dictionary.molregno = activities.molregno. Return DISTINCT molecule_dictionary.chembl_id AS molecule_chembl_id and compound_structures.canonical_smiles. Do not return all compounds in the database; strictly filter to only those with activity records in assays for the specified target.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN compound_structures cs ON act.molregno = cs.molregno JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL5391' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n22 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n32 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n40 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n49 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 115014,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all unique compounds that have been tested against the human target 'DNA polymerase iota' (ChEMBL ID: CHEMBL5391). To ensure strict filtering, first identify the target's tid from the target_dictionary table where chembl_id is 'CHEMBL5391' and organism is 'Homo sapiens'. Then, find all assays in the assays table that match this tid. Next, retrieve all activities associated with these assay_ids. Finally, join with molecule_dictionary and compound_structures to get the compound details. Return the molecule's ChEMBL ID (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Ensure the results are distinct. Do not limit the number of rows returned. Do not filter by activity value or relation. Do not restrict target_type. Ensure the query correctly joins target_dictionary -> assays -> activities -> molecule_dictionary -> compound_structures to avoid returning all compounds in the database.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5391' AND td.organism = 'Homo sapiens' AND td.tid IS NOT NULL AND a.tid IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n16 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n26 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n37 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n45 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n55 | 0 | 0 | BLOOM FILTER ON a (assay_id=?)\n64 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 115014,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find all unique compounds tested against the target with ChEMBL ID 'CHEMBL5391'. Return the molecule's ChEMBL ID and its canonical SMILES. Use the following explicit join path to ensure correct mapping and avoid deprecated columns: target_dictionary (filter chembl_id = 'CHEMBL5391') JOIN assays ON assays.tid = target_dictionary.tid JOIN activities ON activities.assay_id = assays.assay_id JOIN compound_records ON compound_records.record_id = activities.record_id JOIN molecule_dictionary ON molecule_dictionary.molregno = compound_records.molregno JOIN compound_structures ON compound_structures.molregno = molecule_dictionary.molregno. Return DISTINCT molecule_dictionary.chembl_id AS molecule_chembl_id and compound_structures.canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN compound_records cr ON act.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5391'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n14 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n17 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n26 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n31 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n40 | 0 | 58 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n46 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 115014,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

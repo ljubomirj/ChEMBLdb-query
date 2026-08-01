@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records for the enzyme CYP2C19. Join the metabolism table with compound_records on substrate_record_id, then join molecule_dictionary on molregno and compound_structures on molregno to retrieve the substrate compound name (pref_name) and structure (canonical_smiles). Return exactly these columns: canonical_smiles as substrate_structure, pref_name as compound_name, met_conversion, pathway_key as pathway, and organism. Filter the results where metabolism.enzyme_name = 'CYP2C19' or by joining target_dictionary on enzyme_tid and filtering target_dictionary.pref_name LIKE '%CYP2C19%'. Limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, md.pref_name AS compound_name, m.met_conversion, m.pathway_key AS pathway, m.organism FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.enzyme_name = 'CYP2C19' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 31,
+    "res_columns": [
+      "substrate_structure",
+      "compound_name",
+      "met_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

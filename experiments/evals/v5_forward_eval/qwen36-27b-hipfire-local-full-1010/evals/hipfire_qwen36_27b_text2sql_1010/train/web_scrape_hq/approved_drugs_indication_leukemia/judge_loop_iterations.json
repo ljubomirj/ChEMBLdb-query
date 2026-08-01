@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for leukemia. Return the following columns: chembl_id, pref_name (drug name), canonical_smiles, efo_id, efo_term (indication label), and max_phase. Filter the results to include only those with max_phase >= 4. Join the drug_indication table to get the indication details, ensuring the indication term matches 'leukemia' or related terms. Use LEFT JOIN for structures to include drugs even if SMILES is missing, but since SMILES is requested, likely INNER JOIN or handle NULLs. Actually, the prompt asks for SMILES, so ensure it's retrieved. Filter by max_phase >= 4 to ensure 'approved' status. The indication filter should likely be on drug_indication.mesh_heading or efo_term containing 'leukemia'.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, md.max_phase FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase >= 4 AND (LOWER(di.efo_term) LIKE '%leukemia%' OR LOWER(di.mesh_heading) LIKE '%leukemia%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n16 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1087,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

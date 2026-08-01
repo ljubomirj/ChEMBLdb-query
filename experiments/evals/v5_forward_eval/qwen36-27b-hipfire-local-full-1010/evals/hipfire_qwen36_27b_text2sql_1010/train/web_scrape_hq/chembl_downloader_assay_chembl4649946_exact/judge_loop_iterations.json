@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values for compounds tested in assay CHEMBL4649946. Join the assays table (filter by chembl_id = 'CHEMBL4649946') with the activities table. Filter activities to only include exact measurements where standard_relation = '='. For each result, return the standard_value, standard_units, standard_type, the canonical SMILES from compound_structures, and the ChEMBL ID from molecule_dictionary. Join molecule_dictionary and compound_structures on molregno. Return distinct rows for each compound-activity combination.",
+    "sql": "SELECT DISTINCT act.standard_value, act.standard_units, act.standard_type, cs.canonical_smiles, md.chembl_id FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL4649946' AND act.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH act USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 8854,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "canonical_smiles",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for the human target CHEMBL1938211 (Lysine-specific demethylase 6B). Return the first 1000 rows ordered by molecule ChEMBL ID and then by assay ChEMBL ID. The query must join activities with assays, target_dictionary, compound_structures, and molecule_dictionary. Filter for rows where: 1) The target_dictionary.chembl_id is 'CHEMBL1938211', 2) The target_dictionary.organism is 'Homo sapiens' (tax_id 9606), 3) The activities.standard_relation is '=', 4) The activities.pchembl_value is NOT NULL. Output columns: assays.chembl_id (as assay_chembl_id), target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id (as molecule_chembl_id), activities.standard_type, and activities.pchembl_value. Apply a LIMIT of 1000 to the final result set.",
+    "sql": "SELECT a_chembl.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type AS standard_type, act.pchembl_value AS pchembl_value FROM activities act JOIN assays a_chembl ON act.assay_id = a_chembl.assay_id JOIN target_dictionary td ON a_chembl.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON act.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1938211' AND td.organism = 'Homo sapiens' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 236 | SEARCH act USING INDEX idx_acc_relation (standard_relation=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH a_chembl USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 291,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity data for the human target CHEMBL1938211 (Lysine-specific demethylase 6B), ensuring target_dictionary.organism is 'Homo sapiens'. Filter specifically for IC50 activity rows where the standard relation is exactly '=' and the pChEMBL value is not null. Join the activities, assays, target_dictionary, molecule_dictionary, and compound_structures tables. Return the following columns: assays.chembl_id (aliased as assay_chembl_id), target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id (aliased as molecule_chembl_id), activities.standard_type, and activities.pchembl_value. Order the results by molecule_chembl_id and then by assay_chembl_id. Limit the final result set to the first 1000 rows.",
+    "sql": "SELECT a_chembl.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type AS standard_type, act.pchembl_value AS pchembl_value FROM activities act JOIN assays a_chembl ON act.assay_id = a_chembl.assay_id JOIN target_dictionary td ON a_chembl.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON act.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1938211' AND td.organism = 'Homo sapiens' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL AND act.standard_type = 'IC50' ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n39 | 0 | 47 | SEARCH a_chembl USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 289,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

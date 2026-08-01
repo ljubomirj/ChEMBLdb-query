@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 500 distinct compounds with Kd values strictly below 100 nM against human single-protein targets. For each compound, return its ChEMBL ID, preferred name, and canonical SMILES. Filter the activities for standard_type = 'Kd', standard_units = 'nM', standard_value < 100, and standard_relation IN ('=', '<'). Join assays to enforce assay_organism = 'Homo sapiens' and join target_dictionary to enforce target_type = 'SINGLE PROTEIN'. Join molecule_dictionary for compound identifiers and names, and compound_structures for the SMILES. Ensure the output uses DISTINCT to return unique compounds and applies a LIMIT of 500.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  a.standard_type = 'Kd'\n  AND a.standard_units = 'nM'\n  AND a.standard_value < 100\n  AND a.standard_relation IN ('=', '<')\n  AND ass.assay_organism = 'Homo sapiens'\n  AND td.target_type = 'SINGLE PROTEIN'\nLIMIT 500",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n33 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n67 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 500,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b/result.generated.csv",
+    "row_count": 5768,
+    "column_names": [
+      "ic50_nM",
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id",
+      "doi"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 5852,
+    "actual_rows": 5768,
+    "expected_cols": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "actual_cols": [
+      "ic50_nm",
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id",
+      "doi"
+    ],
+    "missing_cols": [
+      "compound_chembl_id",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "extra_cols": [
+      "ic50_nm",
+      "chembl_id",
+      "pubmed_id",
+      "doi"
+    ],
+    "status": "partial",
+    "score": 0.486566,
+    "column_recall": 0.153846,
+    "row_ratio": 0.985646
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "judge_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct canonical SMILES of compounds that have been tested in assays targeting the human protein 'Cytochrome P450 2C19'. Filter assays where the target dictionary pref_name is exactly 'Cytochrome P450 2C19' and organism is 'Homo sapiens'. Return only the canonical_smiles column.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE td.pref_name = 'Cytochrome P450 2C19'\n  AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 23184,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

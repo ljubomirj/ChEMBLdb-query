@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES for all compounds tested against the target with ChEMBL ID 'CHEMBL2842'. Join the activities table to the assays table, then to the target_dictionary table, filtering where chembl_id = 'CHEMBL2842'. Join to the compound_structures table to obtain the canonical_smiles. Return only the canonical_smiles column as distinct values. Do not apply any row limits or ranking.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2842'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 10263,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

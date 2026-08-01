@@ -1,0 +1,32 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES for all distinct compounds tested against the human protein Janus kinase 3. Filter the target_dictionary table for pref_name = 'Janus kinase 3' and organism = 'Homo sapiens'. Join activities, assays, target_dictionary, and compound_structures using molregno. Return only the canonical SMILES column, ensuring each compound appears exactly once.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.pref_name = 'Janus kinase 3' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the canonical SMILES for all distinct compounds tested against the human protein JAK3. Filter the target_dictionary table for pref_name containing 'JAK3' or 'Janus kinase 3' and organism = 'Homo sapiens'. Join activities, assays, target_dictionary, compound_records, and compound_structures. Use the join path: activities.record_id = compound_records.record_id, then compound_records.molregno = compound_structures.molregno. Return only the canonical SMILES column, ensuring each compound appears exactly once.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE td.organism = 'Homo sapiens' AND (td.pref_name = 'Janus kinase 3' OR td.pref_name LIKE '%JAK3%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n15 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n21 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n47 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11658,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

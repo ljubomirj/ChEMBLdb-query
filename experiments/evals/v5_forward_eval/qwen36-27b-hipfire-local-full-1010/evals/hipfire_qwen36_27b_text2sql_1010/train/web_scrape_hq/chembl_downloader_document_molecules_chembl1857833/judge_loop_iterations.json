@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds reported in the document with ChEMBL ID 'CHEMBL1857833'. Return the compound preferred names (pref_name) and their ChEMBL IDs (chembl_id from molecule_dictionary). Join the docs table (filtered by chembl_id = 'CHEMBL1857833') to the activities table on doc_id, and then to the molecule_dictionary table on molregno. Return each compound only once, with no ranking or row limits.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs d JOIN activities a ON d.doc_id = a.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1857833'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4912,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

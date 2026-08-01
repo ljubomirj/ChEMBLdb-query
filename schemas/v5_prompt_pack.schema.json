@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/v5_prompt_pack.schema.json",
+  "title": "V5 Prompt Pack",
+  "type": "object",
+  "required": ["version", "system", "pf", "pb"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^v5(\\.|$)"
+    },
+    "system": {
+      "type": "object",
+      "required": ["about_block"],
+      "additionalProperties": false,
+      "properties": {
+        "about_block": {"type": "string", "minLength": 1},
+        "schema_block_path": {"type": "string"},
+        "hint_block_path": {"type": "string"},
+        "examples_block": {"type": "string"}
+      }
+    },
+    "pf": {
+      "type": "object",
+      "required": ["up", "sql", "judge"],
+      "additionalProperties": false,
+      "properties": {
+        "up": {"type": "string", "minLength": 1},
+        "sql": {"type": "string", "minLength": 1},
+        "judge": {"type": "string", "minLength": 1}
+      }
+    },
+    "pb": {
+      "type": "object",
+      "required": ["sql_to_up", "up_to_uq"],
+      "additionalProperties": false,
+      "properties": {
+        "sql_to_up": {"type": "string", "minLength": 1},
+        "up_to_uq": {"type": "string", "minLength": 1},
+        "res_sql_to_intent": {"type": "string"}
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "judge_threshold": {"type": "number"},
+        "uq_up_echo_penalty_threshold": {"type": "number"},
+        "uq_up_echo_penalty_weight": {"type": "number"}
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records involving CYP3A enzymes. Return the substrate canonical SMILES (structure), substrate compound name, metabolic conversion, pathway key, and organism. Filter the metabolism table where enzyme_name LIKE '%CYP3A%'. Join metabolism with compound_records on substrate_record_id to obtain the compound name, and join compound_records with compound_structures on molregno to obtain the canonical SMILES. Limit the result to exactly 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS structure, cr.compound_name AS compound_name, m.met_conversion AS metabolic_conversion, m.pathway_key AS pathway, m.organism AS organism FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE m.enzyme_name LIKE '%CYP3A%' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 126 | SCAN m\n12 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 200,
+    "res_columns": [
+      "structure",
+      "compound_name",
+      "metabolic_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

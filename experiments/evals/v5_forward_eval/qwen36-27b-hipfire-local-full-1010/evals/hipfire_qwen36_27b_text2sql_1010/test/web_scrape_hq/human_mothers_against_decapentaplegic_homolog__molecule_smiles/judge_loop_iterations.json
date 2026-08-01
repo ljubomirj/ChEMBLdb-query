@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return the ChEMBL ID and canonical SMILES for all unique compounds tested against the target with ChEMBL ID CHEMBL1293258. Output exactly two columns: compound_chembl_id and canonical_smiles. Do not apply row limits or extra filters.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1293258'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 64025,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

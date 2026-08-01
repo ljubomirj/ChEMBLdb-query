@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the enzyme CYP2E1. Filter the `metabolism` table by joining with `target_dictionary` on `enzyme_tid = tid` and selecting rows where `target_dictionary.pref_name` contains 'CYP2E1'. Join `compound_records` on `substrate_record_id = record_id` to obtain the substrate name (`compound_name`). Join `compound_structures` on `molregno` to obtain the substrate structure (`canonical_smiles`). Return exactly these columns: `canonical_smiles`, `compound_name`, `met_conversion`, `pathway_key`, and `organism`. Limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE td.pref_name LIKE '%CYP2E1%' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n11 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 metabolism records for the enzyme CYP2E1. Join the `metabolism` table with `target_dictionary` on `metabolism.enzyme_tid = target_dictionary.tid`. Filter for CYP2E1 by matching `target_dictionary.pref_name` using a flexible pattern such as `LIKE '%CYP2E1%'` or `LIKE '%2E1%'`. Join `compound_records` on `metabolism.substrate_record_id = compound_records.record_id` to obtain the substrate name (`compound_name`). LEFT JOIN `compound_structures` on `compound_records.molregno = compound_structures.molregno` to obtain the substrate structure (`canonical_smiles`). Return exactly these columns: `canonical_smiles`, `compound_name`, `metabolism.met_conversion`, `metabolism.pathway_key`, and `metabolism.organism`. Limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN target_dictionary td ON m.enzyme_tid = td.tid JOIN compound_records cr ON m.substrate_record_id = cr.record_id LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE td.pref_name LIKE '%CYP2E1%' OR td.pref_name LIKE '%2E1%' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n11 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n24 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 13,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

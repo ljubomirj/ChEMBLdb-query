@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the compound names, exact activity values (standard_value and standard_units), and assay description for all compounds tested in assay CHEMBL1054500. Only include rows with exact activity measurements (standard_relation = '='). Do not apply any additional filters on document type, confidence score, or target type. Return all matching rows without any row limits.",
+    "sql": "SELECT cr.compound_name, a.standard_value, a.standard_units, ass.description AS assay_description FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_records cr ON a.record_id = cr.record_id WHERE ass.chembl_id = 'CHEMBL1054500' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 13533,
+    "res_columns": [
+      "compound_name",
+      "standard_value",
+      "standard_units",
+      "assay_description"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

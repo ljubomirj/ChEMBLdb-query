@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID, preferred name, canonical SMILES, and indication details (MeSH heading and EFO term) for all approved drugs indicated for multiple myeloma. Join molecule_dictionary, drug_indication, and compound_structures on molregno. Filter for approved status (max_phase >= 4). Filter indications where mesh_heading or efo_term contains 'multiple myeloma' (case-insensitive). Return all matching rows without ranking or limits.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase >= 4 AND (LOWER(di.mesh_heading) LIKE '%multiple myeloma%' OR LOWER(di.efo_term) LIKE '%multiple myeloma%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n16 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 172,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

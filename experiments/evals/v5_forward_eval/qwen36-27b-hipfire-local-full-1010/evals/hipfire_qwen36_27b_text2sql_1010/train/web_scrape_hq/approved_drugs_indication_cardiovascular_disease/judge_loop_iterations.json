@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID (chembl_id), molecule name (pref_name), canonical SMILES (canonical_smiles), and indication details (mesh_heading, efo_term) for all approved drugs indicated for cardiovascular disease. Filter molecule_dictionary where max_phase = 4. Filter drug_indication where mesh_heading or efo_term contains 'cardiovascular' (case-insensitive). Join molecule_dictionary with drug_indication on molregno, and molecule_dictionary with compound_structures on molregno. Return one row per compound-indication match.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%cardiovascular%' OR di.efo_term LIKE '%cardiovascular%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 205,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

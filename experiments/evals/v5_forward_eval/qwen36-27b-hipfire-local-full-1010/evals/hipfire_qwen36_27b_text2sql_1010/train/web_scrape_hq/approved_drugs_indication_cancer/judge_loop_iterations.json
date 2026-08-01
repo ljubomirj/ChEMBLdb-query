@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs indicated for cancer. Output columns: ChEMBL ID (`chembl_id`), preferred name (`pref_name`), canonical SMILES (`canonical_smiles`), MeSH heading (`mesh_heading`), and EFO term (`efo_term`). Filter for approved drugs where `max_phase >= 4` or `therapeutic_flag = 1` in `molecule_dictionary`. Filter indications to cancer-related terms by checking if `mesh_heading` or `efo_term` contains 'cancer', 'neoplasm', 'carcinoma', 'tumor', 'leukemia', 'lymphoma', 'sarcoma', or 'myeloma' (case-insensitive). Join `molecule_dictionary`, `drug_indication`, and `compound_structures` on `molregno`. Return one row per drug-indication combination.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE (md.max_phase >= 4 OR md.therapeutic_flag = 1) AND (LOWER(di.mesh_heading) LIKE '%cancer%' OR LOWER(di.mesh_heading) LIKE '%neoplasm%' OR LOWER(di.mesh_heading) LIKE '%carcinoma%' OR LOWER(di.mesh_heading) LIKE '%tumor%' OR LOWER(di.mesh_heading) LIKE '%leukemia%' OR LOWER(di.mesh_heading) LIKE '%lymphoma%' OR LOWER(di.mesh_heading) LIKE '%sarcoma%' OR LOWER(di.mesh_heading) LIKE '%myeloma%' OR LOWER(di.efo_term) LIKE '%cancer%' OR LOWER(di.efo_term) LIKE '%neoplasm%' OR LOWER(di.efo_term) LIKE '%carcinoma%' OR LOWER(di.efo_term) LIKE '%tumor%' OR LOWER(di.efo_term) LIKE '%leukemia%' OR LOWER(di.efo_term) LIKE '%lymphoma%' OR LOWER(di.efo_term) LIKE '%sarcoma%' OR LOWER(di.efo_term) LIKE '%myeloma%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n73 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n84 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n103 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9392,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

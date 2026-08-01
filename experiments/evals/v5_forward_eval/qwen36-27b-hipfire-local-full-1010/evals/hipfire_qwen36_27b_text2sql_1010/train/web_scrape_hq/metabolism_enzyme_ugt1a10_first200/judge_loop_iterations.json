@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the enzyme is UDP-glucuronosyltransferase 1A10 (UGT1A10). For each record, include: the canonical SMILES of the substrate compound, the preferred name of the substrate compound, the preferred name of the parent compound (drug), the metabolic conversion description (met_conversion), the pathway key (pathway_key), and the organism. Join the metabolism table with compound_structures and molecule_dictionary to get structure and names. Filter by enzyme name containing 'UGT1A10' or 'UDP-glucuronosyltransferase 1A10'. Order by met_id and limit to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, md_sub.pref_name AS substrate_name, md_parent.pref_name AS parent_compound_name, m.met_conversion AS metabolic_conversion, m.pathway_key AS pathway, m.organism FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno LEFT JOIN compound_records cr_parent ON m.drug_record_id = cr_parent.record_id LEFT JOIN molecule_dictionary md_parent ON cr_parent.molregno = md_parent.molregno WHERE m.enzyme_name LIKE '%UGT1A10%' ORDER BY m.met_id LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n15 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n21 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n38 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cr_parent USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n57 | 0 | 47 | SEARCH md_parent USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 13,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_compound_name",
+      "metabolic_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

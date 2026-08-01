@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES strings for all unique compounds that have been tested in assays targeting the 5-hydroxytryptamine receptor 2A (target CHEMBL224) where the assay organism is Homo sapiens. Ensure the results are distinct by molecule.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN compound_structures cs ON act.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL224' AND a.assay_organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n14 | 0 | 224 | SCAN a\n21 | 0 | 64 | SEARCH act USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7058,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

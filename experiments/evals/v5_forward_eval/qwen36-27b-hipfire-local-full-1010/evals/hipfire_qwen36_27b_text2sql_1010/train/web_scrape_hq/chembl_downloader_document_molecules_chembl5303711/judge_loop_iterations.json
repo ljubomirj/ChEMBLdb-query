@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Identify all compounds (molecules) reported in the document with chembl_id 'CHEMBL5303711'. Return the following columns: molecule_chembl_id (the public ChEMBL ID for the compound), pref_name (preferred name of the compound), canonical_smiles (canonical SMILES string of the compound), and the document's chembl_id to confirm the source. Use an inner join from docs to compound_records on doc_id, then to molecule_dictionary on molregno, and left join to compound_structures on molregno to get the SMILES. Do not apply any filters on doc_type, confidence_score, target_type, or units. Do not limit the number of rows.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, d.chembl_id AS document_chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5303711'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 1551,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "document_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human target CHEMBL3869 (Matrix metalloproteinase-14), which is a single protein. The query must join activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Filter for: standard_type = 'IC50', standard_relation = '=', pChEMBL value IS NOT NULL, and target_dictionary.chembl_id = 'CHEMBL3869'. Return these columns: assay_chembl_id (from assays), target_type (from target_dictionary), tax_id (from target_dictionary), canonical_smiles (from compound_structures), molecule_chembl_id (from molecule_dictionary), standard_type (from activities), and pchembl_value (from activities). Order the results by molecule_chembl_id ASC, then assay_chembl_id ASC. Limit the output to 1000 rows.",
+    "sql": "SELECT DISTINCT\n    a.assay_chembl_id AS assay_chembl_id,\n    td.target_type AS target_type,\n    td.tax_id AS tax_id,\n    cs.canonical_smiles AS canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    a.standard_type AS standard_type,\n    a.pchembl_value AS pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE\n    td.chembl_id = 'CHEMBL3869'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n    AND td.tax_id = 9606\nORDER BY\n    md.chembl_id ASC,\n    a.assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: no such column: a.assay_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_chembl_id",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human single-protein target CHEMBL3869 (Matrix metalloproteinase-14). Join tables: activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Apply filters: target_dictionary.chembl_id = 'CHEMBL3869', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL, and target_dictionary.tax_id = 9606. Return these exact columns with aliases: assays.chembl_id AS assay_chembl_id, target_dictionary.target_type AS target_type, target_dictionary.tax_id AS tax_id, compound_structures.canonical_smiles AS canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type AS standard_type, and activities.pchembl_value AS pchembl_value. Order the results by molecule_chembl_id ASC, then assay_chembl_id ASC. Limit the output to 1000 rows.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value AS pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL3869' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n80 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n81 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 780,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

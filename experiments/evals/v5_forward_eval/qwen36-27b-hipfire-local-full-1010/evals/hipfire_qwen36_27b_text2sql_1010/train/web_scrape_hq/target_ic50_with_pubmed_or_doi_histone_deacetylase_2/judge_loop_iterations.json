@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct IC50 activity records (in nM) for the target 'Histone deacetylase 2' (CHEMBL1937) in Homo sapiens. For each record, return the compound's ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, target name, and organism. Filter for exact IC50 values (standard_relation = '=') with standard_units = 'nM'. Join activities, assays, target_dictionary, molecule_dictionary, compound_structures, compound_records, and docs. Use docs.pubmed_id or docs.doi for the publication identifier. Ensure distinct rows based on the output columns.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, td.organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL1937' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n23 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n67 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n89 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3351,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

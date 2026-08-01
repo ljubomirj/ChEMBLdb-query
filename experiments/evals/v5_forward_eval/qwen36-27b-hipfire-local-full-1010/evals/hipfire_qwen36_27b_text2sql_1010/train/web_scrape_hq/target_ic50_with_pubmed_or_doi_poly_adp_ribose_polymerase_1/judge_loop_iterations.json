@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values (in nM) for compounds tested against the human target 'Poly [ADP-ribose] polymerase 1' (ChEMBL ID CHEMBL3105). For each activity, return the following columns: the ChEMBL ID of the compound (from molecule_dictionary), the canonical SMILES (from compound_structures), the exact standard_value and standard_units from the activities table, and the PubMed ID or DOI from the docs table (use pubmed_id if available, otherwise doi). Ensure the activity standard_type is 'IC50', standard_units is 'nM', and standard_relation is '='. Join activities with assays to filter by target_dictionary.chembl_id = 'CHEMBL3105', and join with molecule_dictionary and compound_structures on molregno. Join with docs via compound_records.doc_id to retrieve publication identifiers. Do not limit the number of rows.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, a.standard_value, a.standard_units, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL3105' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n44 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n60 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 4152,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

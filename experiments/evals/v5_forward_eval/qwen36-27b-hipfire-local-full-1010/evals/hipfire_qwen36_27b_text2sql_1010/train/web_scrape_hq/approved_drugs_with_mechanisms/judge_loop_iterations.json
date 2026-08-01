@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs with max_phase = 4. Perform an INNER JOIN between molecule_dictionary, drug_mechanism, and compound_structures on molregno. LEFT JOIN drug_mechanism to target_dictionary on tid. Filter strictly for max_phase = 4. Return DISTINCT rows containing exactly these columns: chembl_id (from molecule_dictionary), pref_name (from molecule_dictionary), canonical_smiles (from compound_structures), max_phase, mechanism_of_action (from drug_mechanism), action_type (from drug_mechanism), target_chembl_id (from target_dictionary), target_name (from target_dictionary). Allow target_chembl_id and target_name to be NULL.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary md INNER JOIN drug_mechanism dm ON md.molregno = dm.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2959,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

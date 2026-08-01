@@ -10,8 +10,12 @@ from typing import Optional
 from .base import Text2SQLProvider
 from .local_llm import LocalLLMProvider
 from .openrouter import OpenRouterProvider, RECOMMENDED_MODELS
+from .openai_direct import OpenAIProvider
+from .lmstudio_direct import LlamaCppProvider, MlxLMProvider
+from .gemini_direct import GeminiProvider
 from .env import load_dotenv_once
 from .cerebras import CerebrasProvider
+from .zai import ZAIProvider
 from .deepseek import DeepSeekProvider
 
 # Try to import Anthropic provider (optional dependency)
@@ -28,6 +32,11 @@ __all__ = [
     'Text2SQLProvider',
     'LocalLLMProvider',
     'OpenRouterProvider',
+    'OpenAIProvider',
+    'GeminiProvider',
+    'LlamaCppProvider',
+    'MlxLMProvider',
+    'ZAIProvider',
     'CerebrasProvider',
     'DeepSeekProvider',
     'AnthropicProvider',
@@ -47,7 +56,7 @@ def create_provider(
     Factory function to create appropriate text-to-SQL provider.
 
     Args:
-        provider: Provider type - 'auto', 'anthropic', 'openrouter', 'cerebras', 'deepseek', or 'local'
+        provider: Provider type - 'auto', 'anthropic', 'openai', 'gemini', 'llamacpp', 'mlxlm', 'openrouter', 'zai', 'cerebras', 'deepseek', or 'local'
         model: Model identifier (provider-specific)
         verbose: If True, enable verbose output for debugging
         **kwargs: Additional provider-specific configuration
@@ -59,17 +68,29 @@ def create_provider(
         ValueError: If provider type is unknown
 
     Examples:
-        >>> # Auto-detect (prefers Anthropic for Claude, OpenRouter otherwise)
+        >>> # Auto-detect (prefers Anthropic for Claude, OpenRouter otherwise, then Z.AI)
         >>> provider = create_provider('auto')
 
         >>> # Force Anthropic direct API for Claude models
         >>> provider = create_provider('anthropic', model='claude-sonnet-4.5')
 
+        >>> # Force OpenAI direct API with specific model
+        >>> provider = create_provider('openai', model='gpt-5.1-codex')
+
         >>> # Force OpenRouter with specific model
         >>> provider = create_provider('openrouter', model='openai/gpt-5.1-codex-mini', temperature=1.0)
 
-        >>> # Force Cerebras with specific model
-        >>> provider = create_provider('cerebras', model='zai-glm-4.7')
+        >>> # Force Gemini direct API with specific model
+        >>> provider = create_provider('gemini', model='gemini-3-flash-preview')
+
+        >>> # Force llama.cpp OpenAI-compatible endpoint
+        >>> provider = create_provider('llamacpp', model='minimax-m2.1')
+
+        >>> # Force mlx-lm OpenAI-compatible endpoint
+        >>> provider = create_provider('mlxlm', model='glm-4.7-flash')
+
+        >>> # Force Z.AI with specific model
+        >>> provider = create_provider('zai', model='glm-4.7')
 
         >>> # Force DeepSeek with specific model
         >>> provider = create_provider('deepseek', model='deepseek-reasoner')
@@ -82,7 +103,7 @@ def create_provider(
     """
     load_dotenv_once()
     if not provider:
-        provider = (os.getenv('TEXT2SQL_PROVIDER') or '').strip().lower() or 'openrouter'
+        provider = (os.getenv('TEXT2SQL_PROVIDER') or '').strip().lower()
 
     def _is_claude_model(model_name: Optional[str]) -> bool:
         """Check if model is a Claude model."""
@@ -108,6 +129,48 @@ def create_provider(
                 verbose=verbose,
                 **kwargs
             )
+        elif os.getenv('OPENAI_API_KEY'):
+            logger.info("Auto-selecting OpenAI (API key found)")
+            return OpenAIProvider(
+                model=model or 'gpt-5.1-codex',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('LLAMACPP_BASE_URL') or os.getenv('LLAMACPP_API_KEY'):
+            logger.info("Auto-selecting llama.cpp (local OpenAI-compatible endpoint)")
+            return LlamaCppProvider(
+                model=model or 'minimax-m2.1',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('MLXLM_BASE_URL') or os.getenv('MLXLM_API_KEY'):
+            logger.info("Auto-selecting mlx-lm (local OpenAI-compatible endpoint)")
+            return MlxLMProvider(
+                model=model or 'minimax-m2.1',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('GEMINI_API_KEY'):
+            logger.info("Auto-selecting Gemini (API key found)")
+            return GeminiProvider(
+                model=model or 'gemini-3-flash-preview',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('CEREBRAS_API_KEY'):
+            logger.info("Auto-selecting Cerebras (API key found)")
+            return CerebrasProvider(
+                model=model or 'zai-glm-4.7',
+                verbose=verbose,
+                **kwargs
+            )
+        elif os.getenv('ZAI_API_KEY'):
+            logger.info("Auto-selecting Z.AI (API key found)")
+            return ZAIProvider(
+                model=model or 'glm-4.7',
+                verbose=verbose,
+                **kwargs
+            )
         else:
             logger.info("Auto-selecting Local LLM (no API keys found)")
             return LocalLLMProvider(
@@ -119,7 +182,7 @@ def create_provider(
         if not HAS_ANTHROPIC:
             raise ValueError(
                 "Anthropic provider not available. "
-                "Install with: pip install anthropic"
+                "Install with: uv sync"
             )
         return AnthropicProvider(
             model=model or 'claude-sonnet-4.5',
@@ -130,6 +193,40 @@ def create_provider(
     elif provider == 'openrouter':
         return OpenRouterProvider(
             model=model or 'openai/gpt-5.1-codex-mini',
+            verbose=verbose,
+            **kwargs
+        )
+
+    elif provider == 'openai':
+        return OpenAIProvider(
+            model=model or 'gpt-5.1-codex',
+            verbose=verbose,
+            **kwargs
+        )
+
+    elif provider == 'llamacpp':
+        return LlamaCppProvider(
+            model=model or 'minimax-m2.1',
+            verbose=verbose,
+            **kwargs
+        )
+    elif provider == 'mlxlm':
+        return MlxLMProvider(
+            model=model or 'minimax-m2.1',
+            verbose=verbose,
+            **kwargs
+        )
+
+    elif provider == 'gemini':
+        return GeminiProvider(
+            model=model or 'gemini-3-flash-preview',
+            verbose=verbose,
+            **kwargs
+        )
+
+    elif provider == 'zai':
+        return ZAIProvider(
+            model=model or 'glm-4.7',
             verbose=verbose,
             **kwargs
         )
@@ -157,5 +254,5 @@ def create_provider(
     else:
         raise ValueError(
             f"Unknown provider: {provider}. "
-            f"Choose from: 'auto', 'anthropic', 'openrouter', 'cerebras', 'deepseek', 'local'"
+            f"Choose from: 'auto', 'anthropic', 'openai', 'gemini', 'llamacpp', 'mlxlm', 'openrouter', 'zai', 'cerebras', 'deepseek', 'local'"
         )

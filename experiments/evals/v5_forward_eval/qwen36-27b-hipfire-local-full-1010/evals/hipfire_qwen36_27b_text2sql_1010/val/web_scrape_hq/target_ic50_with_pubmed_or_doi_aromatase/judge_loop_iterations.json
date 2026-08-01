@@ -1,0 +1,25 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values (standard_relation='=', standard_value IS NOT NULL, standard_units='nM') for compounds tested against human Aromatase (target chembl_id='CHEMBL1978', organism='Homo sapiens'). Include only compounds that have a canonical SMILES. Return: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, target_name, target_organism, standard_value, standard_units. Join activities -> assays (for tid, description), target_dictionary (for name, organism), compound_structures (for smiles), compound_records (for compound_key, doc_id), docs (for pubmed_id, doi). Filter: activities.standard_type='IC50', activities.standard_relation='=', activities.standard_units='nM', target_dictionary.chembl_id='CHEMBL1978', target_dictionary.organism='Homo sapiens', compound_structures.canonical_smiles IS NOT NULL. Use LEFT JOIN for docs so rows are kept even if pubmed/doi missing, but if neither pubmed_id nor doi is present, exclude the row (as requested: 'including... PubMed ID or DOI'). Actually, re-read: 'including only those with ... a PubMed ID or DOI'. So filter: (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). Return distinct rows by compound_chembl_id + assay context if needed, but prompt says 'list each compound's ...', implying one row per activity record is fine as long as it meets criteria. Do not limit rows.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON cr.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND td.chembl_id = 'CHEMBL1978' AND td.organism = 'Homo sapiens' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n62 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n68 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 3984,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

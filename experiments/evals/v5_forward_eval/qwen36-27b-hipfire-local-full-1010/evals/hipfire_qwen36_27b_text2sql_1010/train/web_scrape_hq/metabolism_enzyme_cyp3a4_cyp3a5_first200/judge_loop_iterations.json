@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the enzyme is CYP3A4 or CYP3A5. For each record, return the substrate compound name, parent compound name, canonical SMILES, metabolic conversion, pathway key, and organism. Filter the metabolism table on enzyme_name IN ('CYP3A4', 'CYP3A5'). Join metabolism to compound_records via substrate_record_id to get the substrate name, and via drug_record_id to get the parent name. Join compound_structures on the substrate's molregno to obtain the canonical SMILES. Output columns should be: substrate_name, parent_name, canonical_smiles, metabolic_conversion (from met_conversion), pathway (from pathway_key), and organism. Limit to 200 rows.",
+    "sql": "SELECT sub_md.pref_name AS substrate_name, par_md.pref_name AS parent_name, cs.canonical_smiles, m.met_conversion AS metabolic_conversion, m.pathway_key AS pathway, m.organism FROM metabolism m JOIN compound_records sub_cr ON m.substrate_record_id = sub_cr.record_id JOIN molecule_dictionary sub_md ON sub_cr.molregno = sub_md.molregno JOIN compound_structures cs ON sub_cr.molregno = cs.molregno JOIN compound_records par_cr ON m.drug_record_id = par_cr.record_id JOIN molecule_dictionary par_md ON par_cr.molregno = par_md.molregno WHERE m.enzyme_name IN ('CYP3A4', 'CYP3A5') LIMIT 200;",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 126 | SCAN m\n18 | 0 | 47 | SEARCH sub_cr USING INDEX pk_comp_rec_recid (record_id=?)\n25 | 0 | 47 | SEARCH sub_md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 47 | SEARCH par_cr USING INDEX pk_comp_rec_recid (record_id=?)\n52 | 0 | 47 | SEARCH par_md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 188,
+    "res_columns": [
+      "substrate_name",
+      "parent_name",
+      "canonical_smiles",
+      "metabolic_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

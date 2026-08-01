@@ -1,0 +1,28 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for human Metabotropic glutamate receptor 5 (CHEMBL3227). Output columns: molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_name, organism. Filter conditions: standard_type = 'IC50', standard_units = 'nM', target_dictionary.chembl_id = 'CHEMBL3227', target_dictionary.organism = 'Homo sapiens'. Additionally, filter to only include rows where canonical_smiles IS NOT NULL and (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL). For pubmed_id_or_doi, use COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi). Join activities with assays, target_dictionary, compound_structures, compound_records, docs, and molecule_dictionary as needed.",
+    "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  ac.standard_type,\n  ac.standard_relation,\n  ac.standard_value,\n  ac.standard_units,\n  ac.activity_comment,\n  td.pref_name AS target_name,\n  td.organism\nFROM activities ac\nJOIN assays a ON ac.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_records cr ON ac.record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN docs d ON ac.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL3227'\n  AND td.organism = 'Homo sapiens'\n  AND ac.standard_type = 'IC50'\n  AND ac.standard_units = 'nM'\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n66 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 1747,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

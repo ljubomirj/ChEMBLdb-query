@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows for the human single-protein target CHEMBL274 (C-C chemokine receptor type 5). Return exactly these columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Apply filters for standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Order results by molecule_chembl_id ASC, then assay_chembl_id ASC. Limit to 1000 rows.",
+    "sql": "SELECT\n  a.chembl_id AS assay_chembl_id,\n  td.target_type AS target_type,\n  td.tax_id AS tax_id,\n  cs.canonical_smiles AS canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  ac.standard_type AS standard_type,\n  ac.pchembl_value AS pchembl_value\nFROM target_dictionary td\nJOIN assays a ON td.tid = a.tid\nJOIN activities ac ON a.assay_id = ac.assay_id\nJOIN molecule_dictionary md ON ac.molregno = md.molregno\nJOIN compound_structures cs ON ac.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL274'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.tax_id = 9606\n  AND ac.standard_type = 'IC50'\n  AND ac.standard_relation = '='\n  AND ac.pchembl_value IS NOT NULL\nORDER BY\n  molecule_chembl_id ASC,\n  assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

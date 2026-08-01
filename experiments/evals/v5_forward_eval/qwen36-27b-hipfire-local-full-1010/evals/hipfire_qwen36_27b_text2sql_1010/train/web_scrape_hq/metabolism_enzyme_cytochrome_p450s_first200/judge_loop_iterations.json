@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records where the enzyme_name contains 'Cytochrome P450'. Join metabolism.substrate_record_id to compound_records.record_id, then to molecule_dictionary.molregno and compound_structures.molregno to obtain substrate details. Return the canonical_smiles as the substrate structure, molecule_dictionary.pref_name as the compound name, metabolism.met_conversion, metabolism.pathway_key, and metabolism.organism. Limit the final result to exactly 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.enzyme_name LIKE '%Cytochrome P450%' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 29,
+    "res_columns": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

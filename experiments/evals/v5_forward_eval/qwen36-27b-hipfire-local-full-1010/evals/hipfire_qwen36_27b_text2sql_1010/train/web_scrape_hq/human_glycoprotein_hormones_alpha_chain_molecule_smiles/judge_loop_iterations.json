@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES for all distinct molecules tested against the human target 'Glycoprotein hormones alpha chain' (target CHEMBL ID: CHEMBL2146305). Return only the canonical_smiles column. Include all tested compounds regardless of activity type, units, or values, and do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN compound_structures cs ON act.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2146305'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 29263,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

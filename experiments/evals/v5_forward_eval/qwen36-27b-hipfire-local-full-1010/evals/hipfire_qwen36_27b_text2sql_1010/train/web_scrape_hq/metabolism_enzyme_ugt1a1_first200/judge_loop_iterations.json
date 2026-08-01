@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exactly 200 metabolism records for the enzyme 'UGT1A1'. For each record, return the substrate's canonical SMILES, the substrate's preferred name, the metabolic conversion (met_conversion), the pathway key (pathway_key), and the organism. Join the metabolism table with compound_records on substrate_record_id, then join molecule_dictionary and compound_structures on molregno to obtain the compound name and structure. Filter where metabolism.enzyme_name = 'UGT1A1'. Apply LIMIT 200.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE m.enzyme_name = 'UGT1A1' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 10,
+    "res_columns": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

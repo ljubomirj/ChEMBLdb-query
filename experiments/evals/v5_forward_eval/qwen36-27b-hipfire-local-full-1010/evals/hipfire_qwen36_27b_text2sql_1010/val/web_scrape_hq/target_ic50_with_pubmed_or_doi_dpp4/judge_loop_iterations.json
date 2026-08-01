@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity data in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Filter for assays where target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Return exactly these columns: canonical_smiles, compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. For pubmed_id_or_doi, prioritize pubmed_id when both pubmed_id and doi are available, otherwise use doi. Only include rows where canonical_smiles is not null and at least one of pubmed_id or doi is present. Join docs using activities.doc_id = docs.doc_id. Left join compound_records using activities.record_id = compound_records.record_id to retrieve compound_key. Apply DISTINCT to the final projection over exactly the specified columns to avoid duplicate rows from many-to-many joins.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles AS canonical_smiles,\n    cr.compound_key AS compound_key,\n    CASE WHEN d.pubmed_id IS NOT NULL THEN CAST(d.pubmed_id AS TEXT) ELSE d.doi END AS pubmed_id_or_doi,\n    ass.description AS assay_description,\n    a.standard_type AS standard_type,\n    a.standard_relation AS standard_relation,\n    a.standard_value AS standard_value,\n    a.standard_units AS standard_units,\n    a.activity_comment AS activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n    td.chembl_id = 'CHEMBL284'\n    AND td.target_type = 'SINGLE PROTEIN'\n    AND td.organism = 'Homo sapiens'\n    AND a.standard_type = 'IC50'\n    AND a.standard_units = 'nM'\n    AND cs.canonical_smiles IS NOT NULL\n    AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n71 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n110 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4992,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

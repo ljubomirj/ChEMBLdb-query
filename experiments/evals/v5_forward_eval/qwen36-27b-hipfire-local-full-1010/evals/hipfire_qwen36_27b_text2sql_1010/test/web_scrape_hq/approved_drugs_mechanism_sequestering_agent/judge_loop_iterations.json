@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs (therapeutic_flag = 1) whose mechanism of action is classified as a sequestering agent (action_type = 'SEQUESTERING AGENT' in drug_mechanism). Join molecule_dictionary (on molregno), drug_mechanism, and target_dictionary (on tid). Return molecule chembl_id, molecule preferred name, target chembl_id, target preferred name, and action_type. Do not apply row limits or extra filters.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_pref_name, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name, dm.action_type FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.therapeutic_flag = 1 AND dm.action_type = 'SEQUESTERING AGENT'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 144 | SCAN dm\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 28,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "target_chembl_id",
+      "target_pref_name",
+      "action_type"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

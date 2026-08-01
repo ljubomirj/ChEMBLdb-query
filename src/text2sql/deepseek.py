@@ -6,6 +6,8 @@ DeepSeek API-based Text-to-SQL provider (OpenAI-compatible).
 import os
 import re
 import logging
+import hashlib
+import json
 from typing import Optional
 
 import requests
@@ -24,7 +26,7 @@ class DeepSeekProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'deepseek-reasoner',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
         base_url: Optional[str] = None,
         temperature: float = 1.0,
@@ -98,7 +100,7 @@ Generate the SQL query:"""
                 {'role': 'user', 'content': user_prompt}
             ]
 
-        raw = self.generate_text(messages, temperature=self.temperature, max_tokens=15000)
+        raw = self.generate_text(messages, temperature=self.temperature, max_tokens=4096)
         if raw is None:
             return None
         return self._clean_sql(raw)
@@ -109,6 +111,7 @@ Generate the SQL query:"""
         *,
         temperature: float = 0.1,
         max_tokens: int = 4096,
+        response_format: Optional[dict] = None,
     ) -> Optional[str]:
         """
         Generate free-form text using DeepSeek chat completions.
@@ -117,6 +120,7 @@ Generate the SQL query:"""
             logger.error("DeepSeek API key not available", exc_info=True)
             return None
 
+        _ = response_format
         request_payload = {
             'model': self.model,
             'messages': messages,
@@ -125,27 +129,53 @@ Generate the SQL query:"""
         }
 
         if self.verbose:
-            print("\n" + "="*20)
-            print("🔍 VERBOSE: DeepSeek API Request")
-            print("="*20)
-            print(f"\n📍 Endpoint: {self.base_url}/chat/completions")
-            print(f"🤖 Model: {self.model}")
-            print(f"\n💬 CONVERSATION ({len(messages)} messages):")
-            print("-"*20)
+            def _hash_system_content(content: object) -> str:
+                if isinstance(content, list):
+                    parts: list[str] = []
+                    for item in content:
+                        if isinstance(item, dict) and 'text' in item:
+                            parts.append(str(item.get('text', '')))
+                        else:
+                            parts.append(str(item))
+                    text = "".join(parts)
+                else:
+                    text = str(content)
+                return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+            def _render_content(content: object) -> str:
+                if isinstance(content, str):
+                    return content
+                try:
+                    return json.dumps(content, ensure_ascii=True)
+                except Exception:
+                    return str(content)
+
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: DeepSeek API Request", "=" * 20]))
+            body_lines = [
+                f"Endpoint: {self.base_url}/chat/completions",
+                f"Model: {self.model}",
+                f"CONVERSATION ({len(messages)} messages):",
+                "-" * 20,
+            ]
             for i, msg in enumerate(messages):
                 role = str(msg.get('role', '')).upper()
                 content = msg.get('content', '')
-                if isinstance(content, str):
-                    preview = content[:200] + "..." if len(content) > 200 else content
+                if role == 'SYSTEM':
+                    body_lines.append(f"{i+1}. SYSTEM_SHA256: {_hash_system_content(content)}")
                 else:
-                    preview = str(content)[:200] + "..."
-                print(f"{i+1}. {role}: {preview}")
-            print("-"*20)
-            print(f"\n⚙️  API Parameters:")
-            print(f"   temperature: {request_payload['temperature']}")
-            print(f"   max_tokens: {request_payload['max_tokens']}")
-            print(f"   timeout: {self.timeout}s")
-            print("="*20 + "\n")
+                    body_lines.append(f"{i+1}. {role}:")
+                    body_lines.append(_render_content(content))
+                body_lines.append("-" * 20)
+            body_lines.extend(
+                [
+                    "API Parameters:",
+                    f"   temperature: {request_payload['temperature']}",
+                    f"   max_tokens: {request_payload['max_tokens']}",
+                    f"   timeout: {self.timeout}s",
+                ]
+            )
+            self._emit_raw_block("\n".join(body_lines))
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             response = requests.post(
@@ -160,19 +190,31 @@ Generate the SQL query:"""
             data = response.json()
 
             if self.verbose:
-                print("="*20)
-                print("🔍 VERBOSE: DeepSeek API Response")
-                print("="*20)
-                print(f"\n📊 Response Status: {response.status_code}")
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: DeepSeek API Response", "=" * 20]))
+                body_lines = [
+                    f"Response Status: {response.status_code}",
+                ]
                 if 'usage' in data:
                     usage = data['usage']
-                    print(f"📈 Token Usage:")
-                    print(f"   Prompt tokens: {usage.get('prompt_tokens', 0)}")
-                    print(f"   Completion tokens: {usage.get('completion_tokens', 0)}")
-                    print(f"   Total tokens: {usage.get('total_tokens', 0)}")
+                    body_lines.extend(
+                        [
+                            "Token Usage:",
+                            f"   Prompt tokens: {usage.get('prompt_tokens', 0)}",
+                            f"   Completion tokens: {usage.get('completion_tokens', 0)}",
+                            f"   Total tokens: {usage.get('total_tokens', 0)}",
+                        ]
+                    )
                 raw_content = data.get('choices', [{}])[0].get('message', {}).get('content', '')
-                print(f"\n💬 RAW RESPONSE:\n{'-'*20}\n{raw_content}\n{'-'*20}")
-                print("="*20 + "\n")
+                body_lines.extend(
+                    [
+                        "RAW RESPONSE:",
+                        "-" * 20,
+                        raw_content,
+                        "-" * 20,
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             if 'usage' in data:
                 usage = data['usage']
@@ -228,3 +270,38 @@ Generate the SQL query:"""
             sql = sql.split(';')[0] + ';'
 
         return sql.strip()
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()

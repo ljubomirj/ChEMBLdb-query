@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows matching the following criteria. Target: Human single-protein target CHEMBL2150837 (ATPase family AAA domain-containing protein 2). Activity Type: IC50. Value Constraint: Exact standard relation '=' with non-null pChEMBL values. Output Columns: Assay ChEMBL ID, Target Type, Tax ID, Canonical SMILES, Molecule ChEMBL ID, Standard Type, pChEMBL Value. Ordering: Sort by Molecule ChEMBL ID, then by Assay ChEMBL ID. Limit: 1000 rows.",
+    "sql": "SELECT\n  ass.chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM assays ass\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL2150837'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY\n  md.chembl_id,\n  ass.chembl_id\nLIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 279,
+    "res_columns": [
+      "chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "chembl_id__dup2",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

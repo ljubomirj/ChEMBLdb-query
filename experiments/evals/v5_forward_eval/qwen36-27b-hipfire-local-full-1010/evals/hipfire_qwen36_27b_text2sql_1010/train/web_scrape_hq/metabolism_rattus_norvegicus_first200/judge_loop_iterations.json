@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the organism 'Rattus norvegicus'. For each record, return the following information: 1) The substrate compound name (pref_name), 2) The substrate structure (canonical_smiles or inchi_key), 3) The metabolic conversion description (met_conversion), and 4) Enzyme information (enzyme_name). Join the metabolism table with compound_records and compound_structures to retrieve the substrate details. Filter the results where the organism is 'Rattus norvegicus'. Limit the output to 200 rows.",
+    "sql": "SELECT md.pref_name, cs.canonical_smiles, m.met_conversion, m.enzyme_name FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE m.organism = 'Rattus norvegicus' ORDER BY m.met_id LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 101,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "met_conversion",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

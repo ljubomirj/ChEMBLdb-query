@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/v5_case_manifest.schema.json",
+  "title": "V5 Case Manifest",
+  "type": "object",
+  "required": ["case_id", "corpus", "db_path", "artifacts", "metadata"],
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "corpus": {"type": "string", "minLength": 1},
+    "split": {"type": ["string", "null"], "enum": ["train", "val", "test", null]},
+    "db_path": {"type": "string", "minLength": 1},
+    "artifacts": {
+      "type": "object",
+      "required": ["uq_surface"],
+      "additionalProperties": false,
+      "properties": {
+        "uq_surface": {"type": "string", "minLength": 1},
+        "up_exec": {"type": ["string", "null"]},
+        "sql_gold": {"type": ["string", "null"]},
+        "res_gold": {"type": ["string", "null"]},
+        "uq_benchmark_spec": {"type": ["string", "null"]},
+        "res_gold_presentation": {"type": ["string", "null"]},
+        "source_sql": {"type": ["string", "null"]},
+        "sqlite_sql": {"type": ["string", "null"]},
+        "documentation": {"type": ["string", "null"]}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["family", "origin"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {"type": "string", "minLength": 1},
+        "origin": {"type": "string", "minLength": 1},
+        "source_title": {"type": ["string", "null"]},
+        "source_url": {"type": ["string", "null"]},
+        "realism_level": {
+          "type": "string",
+          "enum": ["realistic_surface", "templated_surface", "benchmark_spec_only"]
+        },
+        "ambiguity_level": {
+          "type": "string",
+          "enum": ["unambiguous", "mildly_ambiguous", "requires_domain_assumption"]
+        },
+        "size_class": {"type": ["string", "null"]},
+        "expected_output_columns": {"type": "array", "items": {"type": "string"}},
+        "sort_keys": {"type": "array", "items": {"type": "string"}},
+        "tags": {"type": "array", "items": {"type": "string"}},
+        "allows_multiple_sql_forms": {"type": "boolean"},
+        "requires_schema_alias_fidelity": {"type": "boolean"},
+        "normalize": {"type": "object"},
+        "column_rename_map": {"type": "object", "additionalProperties": {"type": "string"}},
+        "float_cols": {"type": "array", "items": {"type": "string"}},
+        "int_cols": {"type": "array", "items": {"type": "string"}},
+        "float_tol": {"type": "number"},
+        "notes": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

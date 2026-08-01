@@ -3,6 +3,32 @@ Database: database/latest/chembl_36/chembl_36_sqlite/chembl_36.db
 
 This file includes full contents of small lookup tables for prompt context.
 
+## Query-writing reminders
+
+- Return only the columns the user asked for. Do not add extra SELECT columns "for convenience", because `DISTINCT` applies to the full selected row and extra columns can inflate row counts.
+- When the user asks for distinct molecule identifiers plus canonical SMILES, keep the DISTINCT projection to those requested output columns only unless an extra column is explicitly requested.
+- If the requested output is a deduplicated listing over a many-to-many join, preserve `SELECT DISTINCT` when needed. Do not drop `DISTINCT` if the requested output columns can otherwise repeat across joined rows.
+- If the user explicitly asks for `DISTINCT` rows or says to return each qualifying compound once only, preserve that set semantics in the final projection. Do not replace it with a join between raw activity hit tables that can multiply rows.
+- When the requested output column name ends with `_chembl_id`, return the public ChEMBL identifier from a `chembl_id` column. Do not return internal numeric keys such as `molregno`, `tid`, `record_id`, or `doc_id` under a `_chembl_id` alias.
+- If the request asks to keep the main entity rows even when an optional joined table may be missing data, preserve `LEFT JOIN` semantics. Do not silently convert an optional join into an `INNER JOIN` just because some requested columns come from the optional table.
+- If the request says a relationship is mandatory for inclusion but a different table is optional for projection, preserve both semantics explicitly. Example: molecules must have a `compound_records` row via INNER JOIN, while `compound_structures` may still need LEFT JOIN so missing structures do not drop otherwise valid molecules.
+- When an activity query says compounds were tested in assays from an organism, filter on `assays.assay_organism`. Do not silently replace that with `target_dictionary.organism`; they are not interchangeable.
+- If the requested output schema includes raw activity metadata columns such as `bao_endpoint`, `standard_relation`, `standard_value`, `standard_units`, `assay_type`, `organism`, or `tid`, return those exact raw columns. Do not substitute lookup descriptions like `assay_desc` or swap in `assay_organism` when `target_dictionary.organism` was requested.
+- When the request says "exact" activity values, interpret that as `activities.standard_relation = '='`. If the source example or user wording implies measured numeric values, also exclude rows where `activities.standard_value IS NULL` or `activities.standard_relation IS NULL`.
+- Preserve explicit sample-size or row-limit intent from the example or user question. If the request is framed as an example extraction with a fixed row cap, keep that cap in the SQL.
+- When a requested field is `pubmed_id_or_doi`, prefer `pubmed_id` first when both `pubmed_id` and `doi` are present; use the DOI only as fallback.
+- For provenance-rich activity queries that request both `compound_key` and `pubmed_id_or_doi`, join `docs` from `activities.doc_id = docs.doc_id` unless the question explicitly says to follow the FAQ salts pattern. If `compound_key` is optional provenance for the activity row, use `LEFT JOIN compound_records ON activities.record_id = compound_records.record_id` rather than deriving the document through `compound_records.doc_id`.
+- In provenance-rich activity queries that request exact output columns and `DISTINCT`, keep the final `SELECT DISTINCT` over exactly those requested columns. Do not drop `DISTINCT` just because the joins already look specific; many-to-many joins can still produce duplicate projected rows.
+- For exact selectivity queries of the form "target A over target B", compute compound sets first and then intersect them, or deduplicate each target-specific hit set before joining. Joining raw activity rows across both targets can overcount compounds and is incorrect when the request wants one row per qualifying compound.
+- For metabolism queries asking for the parent or substrate compound name together with `met_conversion` and `pathway_key`, join `metabolism.substrate_record_id -> compound_records.record_id`. Using `metabolite_record_id` changes the semantics to the metabolite rather than the source compound.
+- For FAQ-style parent-and-salts activity queries, preserve the original join semantics: filter the compound set by `molecule_dictionary.chembl_id`, then join `molecule_dictionary -> compound_records` on `molregno`, `compound_records.record_id -> activities.record_id`, and `compound_records.doc_id -> docs.doc_id`. Do not replace that with a broader `activities.molregno` join or with `assays.doc_id`.
+- For curated PK queries from source description `Curated Drug Pharmacokinetic Data`, do not collapse the query to a generic `activities` filter by `src_id`. Preserve the `source -> compound_records -> docs -> activities` path, then join `activity_properties` and `assay_parameters` so dataset, dose, route, regimen, and related PK context fields can be pivoted into the final output.
+- In those curated PK queries, `dataset` comes from `assay_parameters` where `standard_type = 'DATASET'`, while the assay description comes from `assays.description`. Do not try to source `dataset` or assay description from `activity_properties`.
+- In those curated PK queries, use the raw `activity_properties.standard_type` codes exactly as stored: `DOSED_COMPOUND_NAME`, `DOSE`, `DOSAGE_FORM`, `REGIMEN`, `ROUTE`, `GENDER`, `AGE_RANGE`, `HEALTH_STATUS`, and `TISSUE`. Do not humanize them to forms like `Dosed Compound` or `Age Range`.
+- In those curated PK queries, render `DOSED_COMPOUND_NAME`, `DOSE`, `DOSAGE_FORM`, and `REGIMEN` from `COALESCE(CAST(standard_value AS TEXT), standard_text_value)` plus `standard_units` when present. For `ROUTE`, `GENDER`, `AGE_RANGE`, `HEALTH_STATUS`, and `TISSUE`, use `COALESCE(CAST(standard_value AS TEXT), standard_text_value)` without inventing humanized field names.
+- Output fully executable SQLite SQL. Do not emit bind parameters, placeholders, templating syntax, or variables such as `:name`, `?`, `$1`, `{{value}}`, or `<value>`.
+- If the request asks for a known output schema, keep that schema. Do not collapse the final projection down to a smaller subset of columns unless the request explicitly narrows it.
+
 ## Table: assay_type
 Row count: 6
 Columns:
@@ -320,4 +346,7 @@ Full contents:
 | RDKit 2022.09.4 | NULL | RDKit version used for standardisation and salt stripping of chemical structures (https://www.rdkit.org/) |
 | Swiss-Prot 2025_03 | NULL | UniProtKB version used for component_sequences data (https://www.expasy.org/resources/uniprotkb) |
 | UBERON 2024-03-22 | NULL | UBERON version used for tissues (http://obophenotype.github.io/uberon/) |
-
+- For activity-row extraction requests derived from a published source SQL, preserve row multiplicity. Do not add `DISTINCT` unless the request explicitly asks for distinct rows.
+- If a request names `target_dictionary.tax_id` semantics explicitly, do not substitute `assays.assay_tax_id` or any assay-side taxonomy column.
+- If a request names an exact output alias such as `target_description`, preserve that alias exactly in the final SELECT. Do not substitute a semantically similar name like `description`.
+- When a source-derived benchmark requires structures and the source SQL uses `JOIN compound_structures`, preserve that as an INNER JOIN. Do not relax it to a LEFT JOIN unless the request explicitly allows null structures.

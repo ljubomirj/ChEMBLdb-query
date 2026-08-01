@@ -36,6 +36,7 @@ class Text2SQLProvider(ABC):
         *,
         temperature: float = 0.1,
         max_tokens: int = 4096,
+        response_format: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
         """
         Generate free-form text completion for a chat-style messages array.

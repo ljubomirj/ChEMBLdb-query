@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 values for compounds tested against the human protein B-RAF (target CHEMBL5145). For each activity, return the compound's ChEMBL ID, the standard IC50 value and its units, the canonical SMILES string, and the associated literature reference details including DOI, PubMed ID, publication year, and article title. Filter activities by standard_type = 'IC50'. Join activities with assays to match the target CHEMBL5145, then join with compound_structures for the canonical SMILES and with the docs table for publication metadata. Do not apply filters on confidence score, document type, or publication year.",
+    "sql": "SELECT md.chembl_id, a.standard_value, a.standard_units, cs.canonical_smiles, d.doi, d.pubmed_id, d.year, d.title FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL5145' AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 11013,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles",
+      "doi",
+      "pubmed_id",
+      "year",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

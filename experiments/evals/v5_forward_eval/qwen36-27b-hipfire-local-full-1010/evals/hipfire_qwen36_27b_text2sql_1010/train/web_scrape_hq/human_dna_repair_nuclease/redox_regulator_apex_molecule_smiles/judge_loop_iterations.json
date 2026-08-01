@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds that have been tested against the target APEX1 (CHEMBL5619), which is a human DNA repair nuclease/redox regulator. Return the compound name (pref_name), the ChEMBL ID (chembl_id), and the canonical SMILES for each compound. Do not apply any additional filters on activity type, units, or relations. Do not limit the number of results.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON td.tid = a.tid JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON act.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5619'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n26 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n35 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 36902,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

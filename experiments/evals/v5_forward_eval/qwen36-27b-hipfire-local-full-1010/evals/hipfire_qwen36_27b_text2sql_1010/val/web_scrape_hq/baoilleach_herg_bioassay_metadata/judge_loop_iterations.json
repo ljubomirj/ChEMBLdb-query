@@ -1,0 +1,26 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, and doi for bioassays where assay_type is 'B' and tid is 165. Join the assays table with target_dictionary to get target_name and target_organism, and with docs to get journal, year, volume, first_page, and doi. Ensure exact column aliases: assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi.",
+    "sql": "SELECT a.chembl_id AS assay_chembl_id, a.tid, a.description AS assay_description, td.pref_name AS target_name, td.organism AS target_organism, d.journal, d.year, d.volume, d.first_page, d.doi FROM assays a JOIN target_dictionary td ON a.tid = td.tid JOIN docs d ON a.doc_id = d.doc_id WHERE a.assay_type = 'B' AND a.tid = 165",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n15 | 0 | 204 | SEARCH a USING INDEX idx_assay_assay_id (assay_type=?)\n22 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 3536,
+    "res_columns": [
+      "assay_chembl_id",
+      "tid",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "journal",
+      "year",
+      "volume",
+      "first_page",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

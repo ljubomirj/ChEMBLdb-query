@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values for the compound selonsertib and all its salt forms (including the parent compound) tested against the target Mitogen-activated protein kinase kinase kinase 5 (CHEMBL5285). Resolve the parent-child relationship using the molecule_hierarchy table to include both the parent compound and its derivatives. Return the compound preferred name (pref_name), standard_value, standard_units, and standard_relation. Filter the activities to only include records with standard_type = 'IC50'. Do not apply any row limits.",
+    "sql": "WITH parent_comp AS (\n  SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'selonsertib'\n),\nrelated_compounds AS (\n  SELECT mh.molregno\n  FROM molecule_hierarchy mh\n  JOIN parent_comp p ON mh.parent_molregno = p.molregno\n  UNION\n  SELECT molregno FROM parent_comp\n)\nSELECT DISTINCT\n  md.pref_name,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation\nFROM activities a\nJOIN related_compounds rc ON a.molregno = rc.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE\n  td.chembl_id = 'CHEMBL5285'\n  AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE related_compounds\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n9 | 4 | 229 | SCAN mh\n11 | 4 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 3 | 0 | UNION USING TEMP B-TREE\n27 | 25 | 229 | SCAN molecule_dictionary\n51 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n56 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n61 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n71 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n82 | 0 | 0 | BLOOM FILTER ON rc (molregno=?)\n93 | 0 | 54 | SEARCH rc USING AUTOMATIC COVERING INDEX (molregno=?)\n111 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 179,
+    "res_columns": [
+      "pref_name",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

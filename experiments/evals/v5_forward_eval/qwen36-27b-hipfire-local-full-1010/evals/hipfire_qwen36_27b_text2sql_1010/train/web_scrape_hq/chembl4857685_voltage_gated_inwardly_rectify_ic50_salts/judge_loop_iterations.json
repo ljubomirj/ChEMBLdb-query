@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 activities for the compound CHEMBL4857685 and its salt forms against the target CHEMBL240 (voltage-gated inwardly rectifying potassium channel KCNH2). First, identify the parent compound using its ChEMBL ID (CHEMBL4857685) and find all associated salt forms or derivatives using the molecule hierarchy. Then, join these compounds with the activities table to find IC50 measurements where the assay target is CHEMBL240. Return the ChEMBL ID of the compound, the standard value, the standard units, and the standard relation for each activity. Do not limit the number of rows returned.",
+    "sql": "WITH parent_compound AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL4857685'), related_compounds AS (SELECT molregno FROM parent_compound UNION SELECT mh.molregno FROM molecule_hierarchy mh JOIN parent_compound pc ON mh.parent_molregno = pc.molregno), target_info AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL240') SELECT DISTINCT md.chembl_id, a.standard_value, a.standard_units, a.standard_relation FROM related_compounds rc JOIN molecule_dictionary md ON rc.molregno = md.molregno JOIN activities a ON rc.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_info ti ON ass.tid = ti.tid WHERE a.standard_type = 'IC50' ORDER BY md.chembl_id, a.standard_value, a.standard_relation",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE related_compounds\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n21 | 16 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n26 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n52 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n57 | 0 | 32 | SCAN rc\n60 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n70 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n82 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n106 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n107 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 21,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

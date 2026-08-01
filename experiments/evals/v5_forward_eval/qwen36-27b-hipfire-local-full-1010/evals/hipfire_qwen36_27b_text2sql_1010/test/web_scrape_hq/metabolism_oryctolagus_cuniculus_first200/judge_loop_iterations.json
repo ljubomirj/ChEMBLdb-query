@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the organism 'Oryctolagus cuniculus'. Return the canonical SMILES of the substrate as 'substrate_structure', the substrate name from compound_records as 'compound_name', the drug/parent name from compound_records as 'parent_compound_name', the metabolic conversion ('met_conversion'), pathway key ('pathway'), and enzyme name ('enzyme'). Join the metabolism table to compound_records via substrate_record_id (then to molecule_dictionary and compound_structures for the structure) for substrate details, and via drug_record_id for parent details. Filter on metabolism.organism = 'Oryctolagus cuniculus'. Limit the output to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, substrate_cr.compound_name AS compound_name, parent_cr.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key AS pathway, m.enzyme_name AS enzyme FROM metabolism m JOIN compound_records substrate_cr ON m.substrate_record_id = substrate_cr.record_id JOIN molecule_dictionary md ON substrate_cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records parent_cr ON m.drug_record_id = parent_cr.record_id WHERE m.organism = 'Oryctolagus cuniculus' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n17 | 0 | 47 | SEARCH substrate_cr USING INDEX pk_comp_rec_recid (record_id=?)\n24 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 47 | SEARCH parent_cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 6,
+    "res_columns": [
+      "substrate_structure",
+      "compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway",
+      "enzyme"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

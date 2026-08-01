@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the enzyme is CYP2C8. For each record, include the substrate's canonical SMILES, the substrate compound name, the parent drug name (if available), the metabolic conversion description, the pathway key, and the organism name. Join the metabolism table with compound_structures and molecule_dictionary to retrieve structure and name details for the substrate. Order the results by met_id ascending and limit to 200 rows.",
+    "sql": "SELECT cs.canonical_smiles AS substrate_structure, md_sub.pref_name AS substrate_compound_name, md_drug.pref_name AS parent_drug_name, m.met_conversion AS metabolic_conversion, m.pathway_key AS pathway, m.organism AS organism FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno LEFT JOIN compound_records cr_drug ON m.drug_record_id = cr_drug.record_id LEFT JOIN molecule_dictionary md_drug ON cr_drug.molregno = md_drug.molregno WHERE m.enzyme_name = 'CYP2C8' ORDER BY m.met_id ASC LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n15 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cr_drug USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n56 | 0 | 47 | SEARCH md_drug USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 19,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_compound_name",
+      "parent_drug_name",
+      "metabolic_conversion",
+      "pathway",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

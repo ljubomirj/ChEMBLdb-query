@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Find all distinct molecules reported in the document with ChEMBL ID 'CHEMBL5729539'. Return the molecule preferred name (pref_name) and molecule ChEMBL ID (alias as molecule_chembl_id). Join compound_records to docs on doc_id to filter by docs.chembl_id = 'CHEMBL5729539', then join molecule_dictionary on molregno to retrieve molecule details. Ensure the output contains distinct molecules only, with no additional filters or ranking applied.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id AS molecule_chembl_id FROM compound_records cr JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729539'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all distinct molecules reported in the document with ChEMBL ID 'CHEMBL5729539'. Return the molecule preferred name (pref_name) and molecule ChEMBL ID (alias as molecule_chembl_id). Join compound_records to docs on doc_id to filter by docs.chembl_id = 'CHEMBL5729539', then join molecule_dictionary on molregno to retrieve molecule details. Ensure the output contains distinct molecules only, with no additional filters or ranking applied. Output valid SQLite SQL without syntax errors.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id AS molecule_chembl_id FROM compound_records cr JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729539'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 822,
+    "res_columns": [
+      "pref_name",
+      "molecule_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

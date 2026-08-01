@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values (standard_relation must be '=' and standard_value must be in nM) for compounds tested against the human target 'Bromodomain-containing protein 4'. For each activity row, return the compound's ChEMBL ID, canonical SMILES, the exact standard_value (in nM), and either the PubMed ID or DOI from the source document. If both PubMed ID and DOI are present for a document, prefer the PubMed ID. Do not filter by assay confidence score or target type beyond the specific protein name. Return all matching rows without row limits.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  a.standard_value,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Bromodomain-containing protein 4'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 11707,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

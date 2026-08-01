@@ -1,0 +1,54 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for the human glucocorticoid receptor (Homo sapiens). For each record, return the compound's ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI (prefer PubMed ID if available), assay description, standard type, standard relation, standard value, standard units, activity comment, target name, and organism. Filter to include only records where the compound has a canonical SMILES and the associated document has a PubMed ID or DOI. Do not impose a limit on the number of rows returned.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.pref_name AS target_name, td.organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs ON a.doc_id = docs.doc_id WHERE td.pref_name = 'Glucocorticoid Receptor' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND cs.canonical_smiles IS NOT NULL AND (docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n58 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity records for the human glucocorticoid receptor. Match the target name using a case-insensitive pattern like LOWER(td.pref_name) LIKE '%glucocorticoid receptor%' and filter organism to 'Homo sapiens'. For each qualifying activity, return: compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI (prefer PubMed ID if available), assay description, standard type, standard relation, standard value, standard units, activity comment, target name, and organism. Filter to standard_type = 'IC50' and standard_units = 'nM'. Only include rows where the compound has a canonical SMILES and the associated document has a PubMed ID or DOI. Join path: activities JOIN assays ON assay_id, assays JOIN target_dictionary ON tid, activities JOIN compound_records ON record_id, compound_records JOIN molecule_dictionary ON molregno, molecule_dictionary JOIN compound_structures ON molregno, activities JOIN docs ON doc_id. Do not limit rows.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.pref_name AS target_name, td.organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE LOWER(td.pref_name) LIKE '%glucocorticoid receptor%' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND cs.canonical_smiles IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n58 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 3438,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

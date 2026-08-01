@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records for the enzyme CYP2B6 (Cytochrome P450 2B6). Join metabolism with target_dictionary on enzyme_tid to filter by pref_name = 'Cytochrome P450 2B6'. Join compound_records (aliased as substrate_rec) on substrate_record_id to obtain the compound_name and molregno, then join compound_structures on molregno to retrieve canonical_smiles as the substrate structure. Also join compound_records (aliased as drug_rec) on drug_record_id to retrieve the compound_name as the parent compound. Return the canonical SMILES (substrate_structure), substrate compound name, parent compound name, met_conversion, pathway_key, and organism. Order by met_id ascending and limit to 200 rows.",
+    "sql": "SELECT\n  cs.canonical_smiles AS substrate_structure,\n  sub_rec.compound_name AS substrate_compound_name,\n  drug_rec.compound_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism m\nJOIN target_dictionary td ON m.enzyme_tid = td.tid\nJOIN compound_records sub_rec ON m.substrate_record_id = sub_rec.record_id\nJOIN compound_structures cs ON sub_rec.molregno = cs.molregno\nJOIN compound_records drug_rec ON m.drug_record_id = drug_rec.record_id\nWHERE td.pref_name = 'Cytochrome P450 2B6'\nORDER BY m.met_id ASC\nLIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n13 | 0 | 121 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n25 | 0 | 47 | SEARCH sub_rec USING INDEX pk_comp_rec_recid (record_id=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 47 | SEARCH drug_rec USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 28,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

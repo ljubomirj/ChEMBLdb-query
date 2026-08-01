@@ -1,0 +1,137 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct canonical SMILES for all compounds tested against the human adenosine A2A receptor. Filter the target_dictionary table where pref_name = 'Adenosine A2A receptor' and organism = 'Homo sapiens'. Join activities to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno. Return only the distinct canonical_smiles values. Do not apply any row limits or additional filters.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM assays a\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN activities act ON a.assay_id = act.assay_id\nJOIN compound_structures cs ON act.molregno = cs.molregno\nWHERE td.pref_name = 'Adenosine A2A receptor'\n  AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct canonical SMILES for all compounds tested against the human adenosine A2a receptor. Filter the target_dictionary table where LOWER(pref_name) = 'adenosine a2a receptor' and LOWER(organism) = 'homo sapiens'. Join activities to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON act.molregno = cs.molregno WHERE LOWER(td.pref_name) = 'adenosine a2a receptor' AND LOWER(td.organism) = 'homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n38 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to compound_records on record_id, then to compound_structures on molregno. Join activities to assays on assay_id, then to target_dictionary on tid. Filter target_dictionary where LOWER(pref_name) = 'adenosine a2a receptor' AND LOWER(organism) = 'homo sapiens'. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities act JOIN compound_records cr ON act.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE LOWER(td.pref_name) = 'adenosine a2a receptor' AND LOWER(td.organism) = 'homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 230 | SCAN cs USING INDEX idx_cmpdstr_smiles\n15 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n21 | 0 | 58 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n27 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n46 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Join activities to compound_records on record_id, then to compound_structures on molregno. Filter target_dictionary where LOWER(pref_name) LIKE '%adenosine a2a receptor%' AND LOWER(organism) LIKE '%homo sapiens%'. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE LOWER(td.pref_name) LIKE '%adenosine a2a receptor%' AND LOWER(td.organism) LIKE '%homo sapiens%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n40 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Join activities to compound_records on record_id, then to compound_structures on molregno. Filter target_dictionary where LOWER(pref_name) LIKE '%adenosine a2a%' AND LOWER(organism) LIKE '%homo sapiens%'. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE LOWER(td.pref_name) LIKE '%adenosine a2a%' AND LOWER(td.organism) LIKE '%homo sapiens%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n15 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n21 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n48 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Join activities directly to compound_structures on molregno. Filter target_dictionary where tax_id = 9606 (for Homo sapiens) and LOWER(pref_name) LIKE '%adenosine a2a%'. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE td.tax_id = 9606\n  AND LOWER(td.pref_name) LIKE '%adenosine a2a%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n38 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to compound_structures on molregno. Join activities to assays on assay_id, then to target_dictionary on tid. Filter target_dictionary where td.tax_id = 9606 AND (LOWER(td.pref_name) LIKE '%adenosine a2a%' OR LOWER(td.pref_name) LIKE '%adenosine a2%'). Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE (LOWER(td.pref_name) LIKE '%adenosine a2a%' OR LOWER(td.pref_name) LIKE '%a2a adenosine%') AND td.tax_id = 9606",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n15 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n21 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Join activities to compound_structures on molregno. Filter where LOWER(td.pref_name) LIKE '%adenosine a2a%' AND (td.organism = 'Homo sapiens' OR assays.assay_organism = 'Homo sapiens' OR td.tax_id = 9606). Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE LOWER(td.pref_name) LIKE '%adenosine a2a%' AND (td.organism = 'Homo sapiens' OR ass.assay_organism = 'Homo sapiens' OR td.tax_id = 9606)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 228 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve the distinct canonical SMILES for compounds tested against the human adenosine A2a receptor. Join activities to assays on assay_id, then to target_dictionary on tid. Join activities to compound_records on record_id, then to compound_structures on molregno. Filter target_dictionary where LOWER(pref_name) LIKE '%adenosine a2a%'. Return only the distinct canonical_smiles values. Do not apply any row limits.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE LOWER(td.pref_name) LIKE '%adenosine a2%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n15 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n21 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n44 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 1923,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

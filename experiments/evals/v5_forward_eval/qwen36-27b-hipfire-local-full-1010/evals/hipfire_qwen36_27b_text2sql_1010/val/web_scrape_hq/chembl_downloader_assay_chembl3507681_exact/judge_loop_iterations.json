@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values and chemical structures for compounds tested in assay CHEMBL3507681. Output columns: compound_chembl_id, standard_value, standard_units, canonical_smiles, standard_inchi_key. Filter by assays.chembl_id = 'CHEMBL3507681' and activities.standard_relation = '='. Order by standard_value ASC.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, a.standard_value, a.standard_units, cs.canonical_smiles, cs.standard_inchi_key FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL3507681' AND a.standard_relation = '=' ORDER BY a.standard_value ASC",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 68620,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles",
+      "standard_inchi_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 values measured in nM for compounds tested against JAK2 (target pref_name = 'Janus kinase 2'). Join the activities table with assays to obtain the assay description, with target_dictionary to verify the target name, with molecule_dictionary to get the ChEMBL ID, with compound_structures to retrieve the canonical SMILES, and with docs to obtain the PubMed ID or DOI. Filter for standard_type = 'IC50', standard_units = 'nM', and standard_relation = '=' to ensure exact measurements. Output columns: ChEMBL ID, canonical SMILES, assay description, target name, IC50 value, and a combined identifier field using COALESCE(pubmed_id, doi). Only include rows where a PubMed ID or DOI is available.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, ass.description AS assay_description, td.pref_name AS target_name, a.standard_value AS ic50_nM, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.pref_name = 'Janus kinase 2' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "assay_description",
+      "target_name",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve exact IC50 values measured in nM for compounds tested against the target with pref_name exactly 'Janus kinase 2'. Use the canonical join path: activities -> compound_records (via record_id) -> molecule_dictionary (via molregno) for the molecule name/ChEMBL ID, activities -> compound_structures (via record_id -> molregno) for the canonical SMILES, activities -> assays (via assay_id) for the assay description and target ID, assays -> target_dictionary (via tid) for the target name, and activities -> docs (via doc_id) for the publication identifier. Filter for standard_type = 'IC50', standard_units = 'nM', and standard_relation = '=' to ensure exact measurements. Include a combined identifier field using COALESCE(pubmed_id, doi) from the docs table. Only include rows where this combined identifier is not null. Output columns: ChEMBL ID (from molecule_dictionary), canonical SMILES, assay description, target name, IC50 value (standard_value), and the combined PubMed ID or DOI.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, ass.description AS assay_description, td.pref_name AS target_name, a.standard_value AS ic50_nM, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN docs d ON a.doc_id = d.doc_id WHERE td.pref_name = 'Janus kinase 2' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n45 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "assay_description",
+      "target_name",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve exact IC50 values measured in nM for compounds tested against targets where the pref_name contains 'Janus kinase 2' or 'JAK2'. Join activities to compound_records (via record_id), then to molecule_dictionary (via molregno) for the ChEMBL ID. Join activities to compound_structures (via molregno) for the canonical SMILES. Join activities to assays (via assay_id) for the assay description, and assays to target_dictionary (via tid) for the target name. Join activities to docs (via doc_id) for the publication identifier. Filter for standard_type = 'IC50', standard_units = 'nM', and standard_relation = '=' to ensure exact measurements. Filter the target using td.pref_name LIKE '%Janus kinase 2%' OR td.pref_name LIKE '%JAK2%'. Include a combined identifier field using COALESCE(d.pubmed_id, d.doi). Only include rows where this combined identifier is not null and a.standard_value IS NOT NULL. Output columns: ChEMBL ID, canonical SMILES, assay description, target name, IC50 value (standard_value), and the combined PubMed ID or DOI.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, ass.description AS assay_description, td.pref_name AS target_name, a.standard_value AS ic50_nM, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN docs d ON a.doc_id = d.doc_id WHERE (td.pref_name LIKE '%Janus kinase 2%' OR td.pref_name LIKE '%JAK2%') AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n58 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n71 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 3746,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "assay_description",
+      "target_name",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

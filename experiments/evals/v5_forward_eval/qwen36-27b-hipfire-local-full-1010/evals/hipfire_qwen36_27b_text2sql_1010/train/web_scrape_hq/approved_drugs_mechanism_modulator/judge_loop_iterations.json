@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs (molecule_dictionary.therapeutic_flag = 1) where the mechanism action type is exactly 'MODULATOR' (drug_mechanism.action_type = 'MODULATOR'). Return columns: drug_name (molecule_dictionary.pref_name), canonical_smiles (compound_structures.canonical_smiles), mechanism_of_action (drug_mechanism.mechanism_of_action), action_type (drug_mechanism.action_type), target_name (target_dictionary.pref_name), target_chembl_id (target_dictionary.chembl_id). Join drug_mechanism with molecule_dictionary, compound_structures, and target_dictionary. Do not apply row limits.",
+    "sql": "SELECT md.pref_name AS drug_name, cs.canonical_smiles, dm.mechanism_of_action, dm.action_type, td.pref_name AS target_name, td.chembl_id AS target_chembl_id FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.therapeutic_flag = 1 AND dm.action_type = 'MODULATOR'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 144 | SCAN dm\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 33,
+    "res_columns": [
+      "drug_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "action_type",
+      "target_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

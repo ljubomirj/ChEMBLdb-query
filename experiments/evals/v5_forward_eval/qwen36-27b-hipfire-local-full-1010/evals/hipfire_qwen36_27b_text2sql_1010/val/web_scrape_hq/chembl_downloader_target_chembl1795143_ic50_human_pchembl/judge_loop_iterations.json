@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 1000 activity records for the target CHEMBL1795143 (Poly(ADP-ribose) glycohydrolase). Return exactly these columns: assay_chembl_id, target_type (from target_dictionary), tax_id (from target_dictionary), canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. Apply filters: target_dictionary.chembl_id = 'CHEMBL1795143', standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Order the results by molecule_chembl_id and assay_chembl_id. Limit the output to 1000 rows.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, a.molregno AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1795143' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY a.molregno, ass.chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 650,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve up to 1000 activity records for the target CHEMBL1795143. Return exactly these columns: assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id, do not use the internal molregno), standard_type (from activities.standard_type), and pchembl_value (from activities.pchembl_value). Apply the following filters: target_dictionary.chembl_id = 'CHEMBL1795143', activities.standard_type = 'IC50', activities.standard_relation = '=', and activities.pchembl_value IS NOT NULL. Order the results by molecule_chembl_id ascending, then assay_chembl_id ascending. Limit the output to 1000 rows. Join target_dictionary, assays, activities, molecule_dictionary, and compound_structures appropriately to satisfy the column requirements.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1795143' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 650,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

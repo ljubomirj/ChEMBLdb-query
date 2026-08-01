@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity records against the target CHEMBL4005. Return the following columns: compound chembl_id, canonical_smiles, assay chembl_id, assay description, assay_type, pubmed_id, and doi. Filter activities by standard_type = 'IC50' and target_dictionary.chembl_id = 'CHEMBL4005'. Join activities with molecule_dictionary, compound_structures, assays, and docs. Do not apply a row limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, ass.chembl_id AS assay_chembl_id, ass.description AS assay_description, ass.assay_type, d.pubmed_id, d.doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL4005' AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 9899,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "assay_chembl_id",
+      "assay_description",
+      "assay_type",
+      "pubmed_id",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds reported in the document with ChEMBL ID 'CHEMBL5726716'. Return the compound's preferred name, compound ChEMBL ID, and the document title. Join `docs` to `compound_records` on `doc_id`, and `compound_records` to `molecule_dictionary` on `molregno`. Filter exactly on `docs.chembl_id = 'CHEMBL5726716'`.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, d.title FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5726716'}",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: unrecognized token: \"}\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"}\"",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all distinct compounds reported in the document with ChEMBL ID 'CHEMBL5726716'. Return the compound's preferred name, the compound's ChEMBL ID, and the document title. Join `docs` to `compound_records` on `doc_id`, and `compound_records` to `molecule_dictionary` on `molregno`. Filter exactly on `docs.chembl_id = 'CHEMBL5726716'`.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, d.title FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5726716'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

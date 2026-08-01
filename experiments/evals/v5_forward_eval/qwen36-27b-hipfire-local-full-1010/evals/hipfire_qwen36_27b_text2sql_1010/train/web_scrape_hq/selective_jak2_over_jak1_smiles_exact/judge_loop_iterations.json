@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Identify compounds selective for target CHEMBL2971 (JAK2) over target CHEMBL2835 (JAK1) with IC50 < 50 nM against JAK2 and IC50 > 200 nM against JAK1. Filter activities to standard_relation = '=' and standard_units = 'nM'. Return exactly two columns: compound_chembl_id (sourced from molecule_dictionary.chembl_id) and canonical_smiles. Use set semantics to return each qualifying compound exactly once, avoiding multiplicative joins over raw activity rows.",
+    "sql": "WITH jak2_hits AS (SELECT DISTINCT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL2971' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value < 50), jak1_hits AS (SELECT DISTINCT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL2835' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value > 200) SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM jak2_hits j2 JOIN jak1_hits j1 ON j2.molregno = j1.molregno JOIN molecule_dictionary md ON j2.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 16\n2 | 0 | 0 | CO-ROUTINE jak2_hits\n10 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n15 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n46 | 0 | 0 | MATERIALIZE jak1_hits\n55 | 46 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n60 | 46 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n71 | 46 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n89 | 46 | 0 | USE TEMP B-TREE FOR DISTINCT\n96 | 0 | 101 | SCAN j2\n99 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n112 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n125 | 0 | 0 | BLOOM FILTER ON j1 (molregno=?)\n134 | 0 | 48 | SEARCH j1 USING AUTOMATIC COVERING INDEX (molregno=?)\n149 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 192,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

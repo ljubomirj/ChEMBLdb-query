@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human target CHEMBL1293292 (ATP-sensitive inward rectifier potassium channel 1). The query must join activities with assays, target_dictionary, and compound_structures. Filter for: 1) target CHEMBBL1293292, 2) organism Homo sapiens (tax_id 9606), 3) standard_type = 'IC50', 4) standard_relation = '=', 5) pChEMBL value IS NOT NULL. Return columns: assay ChEMBL ID, target type (from target_dictionary), tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order results by molecule ChEMBL ID then assay ChEMBL ID. Limit to 1000 rows.",
+    "sql": "SELECT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, ac.standard_type, ac.pchembl_value FROM assays a JOIN target_dictionary td ON a.tid = td.tid JOIN activities ac ON a.assay_id = ac.assay_id JOIN compound_structures cs ON ac.molregno = cs.molregno JOIN molecule_dictionary md ON ac.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1293292' AND td.tax_id = 9606 AND ac.standard_type = 'IC50' AND ac.standard_relation = '=' AND ac.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH ac USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n39 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n48 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

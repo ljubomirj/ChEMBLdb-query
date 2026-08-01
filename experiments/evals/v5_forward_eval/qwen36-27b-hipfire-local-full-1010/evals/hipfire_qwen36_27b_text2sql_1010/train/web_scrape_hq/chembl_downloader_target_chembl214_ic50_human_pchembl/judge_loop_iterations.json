@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 1000 activity rows for the human single-protein target CHEMBL214 (5-hydroxytryptamine receptor 1A). Filter for exact IC50 measurements where the standard relation is '=', and the pChEMBL value is not null. Ensure the organism is Homo sapiens (tax_id 9606) and the target type is 'SINGLE PROTEIN'. Return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID, then by assay ChEMBL ID. Limit the output to 1000 rows.",
+    "sql": "SELECT\n  ass.chembl_id,\n  tt.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN target_type tt ON td.target_type = tt.target_type\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL214'\n  AND tt.target_type = 'SINGLE PROTEIN'\n  AND td.tax_id = 9606\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY\n  md.chembl_id,\n  ass.chembl_id\nLIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 28 | SEARCH tt USING COVERING INDEX pk_tt_tt (target_type=?)\n18 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n38 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n83 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 615,
+    "res_columns": [
+      "chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "chembl_id__dup2",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

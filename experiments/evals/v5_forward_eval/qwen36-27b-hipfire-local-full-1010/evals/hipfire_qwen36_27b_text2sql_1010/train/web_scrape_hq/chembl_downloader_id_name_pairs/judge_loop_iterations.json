@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL identifiers (chembl_id) and preferred names (pref_name) for molecules that have both a valid structure in the compound_structures table and a non-null preferred name in the molecule_dictionary table. Join molecule_dictionary and compound_structures on molregno. Filter for records where pref_name IS NOT NULL. Return only the requested columns without any ranking or row limits.",
+    "sql": "SELECT md.chembl_id, md.pref_name FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.pref_name IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 2\n3 | 0 | 229 | SCAN md\n7 | 0 | 45 | SEARCH cs USING COVERING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 42299,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

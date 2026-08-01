@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values and chemical structures for compounds tested in assay CHEMBL1614364. Return the compound ChEMBL ID, compound name, exact standard value, standard relation, standard units, standard type, and canonical SMILES. Filter strictly on assays.chembl_id = 'CHEMBL1614364'. Ensure exact activity values are selected (standard_relation = '=' and standard_value IS NOT NULL). Join activities to compound_structures using a LEFT JOIN so that compounds without structures are not dropped, but join to molecule_dictionary and compound_records using INNER JOINs to resolve identifiers. Do not apply any additional filters on confidence score, assay type, organism, or data validity unless explicitly stated. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, a.standard_value AS standard_value, a.standard_relation AS standard_relation, a.standard_units AS standard_units, a.standard_type AS standard_type, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614364' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n16 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n26 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n39 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 12273,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "standard_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

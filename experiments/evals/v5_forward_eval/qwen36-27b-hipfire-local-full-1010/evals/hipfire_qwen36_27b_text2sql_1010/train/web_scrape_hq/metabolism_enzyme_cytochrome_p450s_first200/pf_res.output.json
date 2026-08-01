@@ -1,0 +1,66 @@
+{
+  "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/metabolism_enzyme_cytochrome_p450s_first200/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/metabolism_enzyme_cytochrome_p450s_first200/result.generated.csv",
+    "row_count": 29,
+    "column_names": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 28,
+    "actual_rows": 29,
+    "expected_cols": [
+      "canonical_smiles",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "enzyme_name"
+    ],
+    "actual_cols": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "missing_cols": [
+      "substrate_compound_name",
+      "parent_compound_name",
+      "enzyme_name"
+    ],
+    "extra_cols": [
+      "pref_name"
+    ],
+    "status": "partial",
+    "score": 0.729064,
+    "column_recall": 0.571429,
+    "row_ratio": 0.965517
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "metabolism_enzyme_cytochrome_p450s_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "judge_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    }
+  }
+}

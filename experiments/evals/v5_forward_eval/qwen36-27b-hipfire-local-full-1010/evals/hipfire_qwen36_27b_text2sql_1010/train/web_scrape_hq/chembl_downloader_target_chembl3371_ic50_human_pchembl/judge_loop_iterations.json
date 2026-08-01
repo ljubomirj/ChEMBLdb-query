@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for the human single-protein target CHEMBL3371. Apply filters: target_dictionary.chembl_id = 'CHEMBL3371', target_dictionary.target_type = 'SINGLE PROTEIN', activities.standard_type = 'IC50', activities.standard_relation = '=', and activities.pchembl_value IS NOT NULL. Join activities with assays, target_dictionary, molecule_dictionary, and compound_structures. Return exactly these columns: assay_chembl_id (from assays), target_type (from target_dictionary), tax_id (from target_dictionary), canonical_smiles (from compound_structures), molecule_chembl_id (from molecule_dictionary), standard_type (from activities), and pchembl_value (from activities). Order by molecule_chembl_id ascending, then assay_chembl_id ascending. Limit to the first 1000 rows.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id AS tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON activities.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL3371' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_dictionary.chembl_id ASC, assays.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n39 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n48 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

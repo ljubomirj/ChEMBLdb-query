@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 values in nM for compounds tested against human Mitogen-activated protein kinase 14. Required output columns: molecule ChEMBL ID, canonical SMILES, compound key, PubMed ID, DOI, assay description, target preferred name, target organism, and exact IC50 value in nM. Apply filters: target preferred name equals 'Mitogen-activated protein kinase 14', target organism equals 'Homo sapiens', activity standard type equals 'IC50', standard relation equals '=', and standard units equal 'nM'. Join tables: activities, assays, target_dictionary, compound_records, molecule_dictionary, compound_structures, and docs. Do not apply any ranking or row limits.",
+    "sql": "SELECT md.chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, td.pref_name AS target_preferred_name, td.organism AS target_organism, a.standard_value AS exact_ic50_nm FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE td.pref_name = 'Mitogen-activated protein kinase 14' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n47 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n63 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 6285,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_preferred_name",
+      "target_organism",
+      "exact_ic50_nm"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

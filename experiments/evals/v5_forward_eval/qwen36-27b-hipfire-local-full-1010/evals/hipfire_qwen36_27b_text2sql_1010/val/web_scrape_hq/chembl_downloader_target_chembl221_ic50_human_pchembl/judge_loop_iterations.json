@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for the human target CHEMBL221 (Prostaglandin G/H synthase 1). Return the first 1000 rows ordered by molecule ChEMBL ID and then by assay ChEMBL ID. The results must include only rows with an exact standard relation ('=') and a non-null pChEMBL value. The output columns should be: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+    "sql": "SELECT ass.chembl_id AS \"assay ChEMBL ID\", td.target_type AS \"target type\", td.tax_id AS \"tax_id\", cs.canonical_smiles AS \"canonical SMILES\", md.chembl_id AS \"molecule ChEMBL ID\", a.standard_type AS \"standard type\", a.pchembl_value AS \"pChEMBL value\" FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL221' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 236 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n25 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay ChEMBL ID",
+      "target type",
+      "tax_id",
+      "canonical SMILES",
+      "molecule ChEMBL ID",
+      "standard type",
+      "pChEMBL value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity data for the human single-protein target CHEMBL221 (Prostaglandin G/H synthase 1). Filter strictly for IC50 activity (standard_type = 'IC50'). Only include rows where the standard relation is exactly '=' and the pChEMBL value is not null. Return the first 1000 rows ordered by molecule ChEMBL ID and then by assay ChEMBL ID. The output columns must be exactly: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+    "sql": "SELECT ass.chembl_id AS \"assay ChEMBL ID\", td.target_type AS \"target type\", td.tax_id AS \"tax_id\", cs.canonical_smiles AS \"canonical SMILES\", md.chembl_id AS \"molecule ChEMBL ID\", a.standard_type AS \"standard type\", a.pchembl_value AS \"pChEMBL value\" FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL221' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay ChEMBL ID",
+      "target type",
+      "tax_id",
+      "canonical SMILES",
+      "molecule ChEMBL ID",
+      "standard type",
+      "pChEMBL value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

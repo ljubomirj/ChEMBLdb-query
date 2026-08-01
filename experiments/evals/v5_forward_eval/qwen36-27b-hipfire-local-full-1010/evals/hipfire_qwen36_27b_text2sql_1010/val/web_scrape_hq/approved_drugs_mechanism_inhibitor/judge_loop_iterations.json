@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs whose mechanism of action is an inhibitor, including compound details (name, ChEMBL ID) and target details (target name, target ChEMBL ID). Filter for molecules where max_phase is 4 (approved) and action_type is 'INHIBITOR'. Return distinct combinations of drug and target.",
+    "sql": "SELECT DISTINCT\n    md.pref_name,\n    md.chembl_id AS compound_chembl_id,\n    td.pref_name AS target_name,\n    td.chembl_id AS target_chembl_id\nFROM drug_mechanism dm\nJOIN molecule_dictionary md ON dm.molregno = md.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nWHERE dm.action_type = 'INHIBITOR'\n    AND md.max_phase = 4",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1570,
+    "res_columns": [
+      "pref_name",
+      "compound_chembl_id",
+      "target_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

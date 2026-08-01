@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows for target CHEMBL2163183 (NAD-dependent protein deacylase sirtuin-5, mitochondrial) where the standard_type is 'IC50', standard_relation is '=', and pchembl_value is not null. Return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID. Limit the output to exactly 1000 rows.",
+    "sql": "SELECT DISTINCT\n  a.assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  a.molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE\n  td.chembl_id = 'CHEMBL2163183'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY\n  a.molecule_chembl_id,\n  a.assay_chembl_id\nLIMIT 1000;",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "ERROR: no such column: a.assay_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_chembl_id",
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Fetch exactly 1000 activity rows for the target CHEMBL2163183. Join the activities table with assays (on assay_id), target_dictionary (on assays.tid), molecule_dictionary (on activities.molregno), and compound_structures (on activities.molregno). Return the following columns with these exact aliases: assays.chembl_id as assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id as molecule_chembl_id, activities.standard_type, and activities.pchembl_value. Filter for activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Filter the target by target_dictionary.chembl_id = 'CHEMBL2163183'. Order the results by molecule_chembl_id ASC, then assay_chembl_id ASC. Limit the output to exactly 1000 rows.",
+    "sql": "SELECT\n   ass.chembl_id AS assay_chembl_id,\n   td.target_type,\n   td.tax_id,\n   cs.canonical_smiles,\n   md.chembl_id AS molecule_chembl_id,\n   a.standard_type,\n   a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE\n   td.chembl_id = 'CHEMBL2163183'\n   AND a.standard_type = 'IC50'\n   AND a.standard_relation = '='\n   AND a.pchembl_value IS NOT NULL\nORDER BY\n   molecule_chembl_id ASC,\n   assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 574,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

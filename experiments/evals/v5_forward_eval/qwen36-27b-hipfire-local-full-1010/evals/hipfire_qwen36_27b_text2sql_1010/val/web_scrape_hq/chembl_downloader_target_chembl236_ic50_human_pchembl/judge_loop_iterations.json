@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 1000 activity rows with a non-null pChEMBL value for the target CHEMBL236 (Delta-type opioid receptor). Return: assay ChEMBL ID (from assays), target type (from target_dictionary), tax_id (from target_dictionary), canonical SMILES (from compound_structures), molecule ChEMBL ID (from molecule_dictionary), standard type (from activities), and pChEMBL value (from activities). Order by molecule ChEMBL ID ascending, then assay ChEMBL ID ascending. Limit the output to 1000 rows.",
+    "sql": "SELECT\n  ass.chembl_id AS \"assay ChEMBL ID\",\n  td.target_type AS \"target type\",\n  td.tax_id AS \"tax_id\",\n  cs.canonical_smiles AS \"canonical SMILES\",\n  md.chembl_id AS \"molecule ChEMBL ID\",\n  a.standard_type AS \"standard type\",\n  a.pchembl_value AS \"pChEMBL value\"\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL236'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n16 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n22 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n27 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR LAST TERM OF ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay ChEMBL ID",
+      "target type",
+      "tax_id",
+      "canonical SMILES",
+      "molecule ChEMBL ID",
+      "standard type",
+      "pChEMBL value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve up to 1000 activity rows where the standard type is exactly 'IC50' and the pChEMBL value is not null, for the target with ChEMBL ID 'CHEMBL236'. Return the assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Limit the output to 1000 rows.",
+    "sql": "SELECT ass.chembl_id AS 'assay ChEMBL ID', td.target_type AS 'target type', td.tax_id AS 'tax_id', cs.canonical_smiles AS 'canonical SMILES', md.chembl_id AS 'molecule ChEMBL ID', a.standard_type AS 'standard type', a.pchembl_value AS 'pChEMBL value' FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL236' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n35 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n44 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay ChEMBL ID",
+      "target type",
+      "tax_id",
+      "canonical SMILES",
+      "molecule ChEMBL ID",
+      "standard type",
+      "pChEMBL value"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exactly 200 rows. Return exactly these columns: canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, pathway_key. Start from the metabolism table. Perform an INNER JOIN on metabolism.substrate_record_id = compound_records.record_id (alias as cr_substrate). Perform an INNER JOIN on cr_substrate.molregno = compound_structures.molregno to fetch canonical_smiles and substrate_compound_key (cr_substrate.compound_key). Perform a LEFT JOIN on metabolism.metabolite_record_id = compound_records.record_id (alias as cr_metabolite) to fetch metabolite_compound_key (cr_metabolite.compound_key). Map met_conversion and pathway_key from the metabolism table. Apply LIMIT 200.",
+    "sql": "SELECT\n  cs.canonical_smiles,\n  m.substrate_record_id,\n  m.metabolite_record_id,\n  cr_sub.compound_key AS substrate_compound_key,\n  cr_met.compound_key AS metabolite_compound_key,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nINNER JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nINNER JOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_met ON m.metabolite_record_id = cr_met.record_id\nLIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n11 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n25 | 0 | 47 | SEARCH cr_met USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 200,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_record_id",
+      "metabolite_record_id",
+      "substrate_compound_key",
+      "metabolite_compound_key",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 200 metabolism records where the organism is 'Canis lupus familiaris'. For each record, return the metabolism ID (met_id), substrate canonical SMILES, substrate preferred name, metabolic conversion (met_conversion), pathway key (pathway_key), pathway ID (pathway_id), and enzyme name (enzyme_name). Join the metabolism table with compound_records on substrate_record_id = record_id, then join compound_records with molecule_dictionary and compound_structures on molregno to retrieve the substrate's preferred name and canonical SMILES. Filter the metabolism table by organism = 'Canis lupus familiaris'. Order by met_id and apply a LIMIT of 200.",
+    "sql": "SELECT m.met_id, cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key, m.pathway_id, m.enzyme_name FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.organism = 'Canis lupus familiaris' ORDER BY m.met_id LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 5,
+    "res_columns": [
+      "met_id",
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "pathway_id",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

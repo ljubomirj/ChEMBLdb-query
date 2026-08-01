@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the organism 'Callithrix jacchus'. For each record, return the substrate compound name, parent compound name, substrate canonical SMILES, parent canonical SMILES, conversion details, pathway key, and enzyme name. Join the metabolism table with compound_records and compound_structures using substrate and parent record IDs to obtain the compound names and SMILES. Filter strictly by organism = 'Callithrix jacchus'.",
+    "sql": "SELECT cr_sub.compound_name AS substrate_compound_name, cr_par.compound_name AS parent_compound_name, cs_sub.canonical_smiles AS substrate_smiles, cs_par.canonical_smiles AS parent_smiles, m.met_conversion AS conversion_details, m.pathway_key AS pathway, m.enzyme_name AS enzyme_name FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs_sub ON cr_sub.molregno = cs_sub.molregno JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id JOIN compound_structures cs_par ON cr_par.molregno = cs_par.molregno WHERE m.organism = 'Callithrix jacchus' LIMIT 200",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 126 | SCAN m\n15 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n22 | 0 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?)\n29 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?)\n36 | 0 | 47 | SEARCH cs_par USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 14,
+    "res_columns": [
+      "substrate_compound_name",
+      "parent_compound_name",
+      "substrate_smiles",
+      "parent_smiles",
+      "conversion_details",
+      "pathway",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase >= 4) whose mechanism of action is an antagonist (action_type = 'ANTAGONIST'). Return distinct rows containing the compound preferred name, compound ChEMBL ID, target preferred name, and target ChEMBL ID. Join molecule_dictionary, target_dictionary, and drug_mechanism tables. Do not apply any row limits or ranking.",
+    "sql": "SELECT DISTINCT md.pref_name AS compound_pref_name, md.chembl_id AS compound_chembl_id, td.pref_name AS target_pref_name, td.chembl_id AS target_chembl_id FROM molecule_dictionary md JOIN drug_mechanism dm ON dm.molregno = md.molregno JOIN target_dictionary td ON td.tid = dm.tid WHERE md.max_phase >= 4 AND dm.action_type = 'ANTAGONIST'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 498,
+    "res_columns": [
+      "compound_pref_name",
+      "compound_chembl_id",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -6,6 +6,8 @@ OpenRouter API-based Text-to-SQL provider.
 import os
 import re
 import logging
+import hashlib
+import json
 from typing import Optional
 import requests
 
@@ -25,8 +27,9 @@ class OpenRouterProvider(Text2SQLProvider):
         self,
         api_key: Optional[str] = None,
         model: str = 'openai/gpt-5.1-codex-mini',
-        timeout: int = 30,
+        timeout: int = 180,
         verbose: bool = False,
+        base_url: Optional[str] = None,
         temperature: float = 1.0,
     ):
         """
@@ -43,7 +46,12 @@ class OpenRouterProvider(Text2SQLProvider):
         self.timeout = timeout
         self.verbose = verbose
         self.temperature = float(temperature)
-        self.base_url = 'https://openrouter.ai/api/v1'
+        self.base_url = base_url or os.getenv('OPENROUTER_BASE_URL') or 'https://openrouter.ai/api/v1'
+        if self.base_url:
+            cleaned = self.base_url.rstrip('/')
+            if not cleaned.endswith('/v1'):
+                cleaned = f"{cleaned}/v1"
+            self.base_url = cleaned
 
         if not self.api_key:
             logger.warning("OpenRouter API key not found. Set OPENROUTER_API_KEY environment variable.")
@@ -141,6 +149,7 @@ Generate the SQL query:"""
         *,
         temperature: float = 0.1,
         max_tokens: int = 4096,
+        response_format: Optional[dict] = None,
     ) -> Optional[str]:
         """
         Generate free-form text using OpenRouter chat completions.
@@ -152,42 +161,72 @@ Generate the SQL query:"""
             return None
 
         messages = self._with_prompt_caching(messages)
+        input_items = [self._message_to_input_item(m) for m in messages]
 
         request_payload = {
             'model': self.model,
-            'messages': messages,
-            'temperature': float(temperature),
-            'max_tokens': int(max_tokens),
+            'input': input_items,
+            'max_output_tokens': int(max_tokens),
         }
+        if temperature is not None:
+            request_payload['temperature'] = float(temperature)
+        if response_format:
+            request_payload['response_format'] = response_format
 
         if self.verbose:
-            print("\n" + "="*20)
-            print("🔍 VERBOSE: OpenRouter API Request")
-            print("="*20)
-            print(f"\n📍 Endpoint: {self.base_url}/chat/completions")
-            print(f"🤖 Model: {self.model}")
+            def _hash_system_content(content: object) -> str:
+                if isinstance(content, list):
+                    parts: list[str] = []
+                    for item in content:
+                        if isinstance(item, dict) and 'text' in item:
+                            parts.append(str(item.get('text', '')))
+                        else:
+                            parts.append(str(item))
+                    text = "".join(parts)
+                else:
+                    text = str(content)
+                return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
-            print(f"\n💬 CONVERSATION ({len(messages)} messages):")
-            print("-"*20)
+            def _render_content(content: object) -> str:
+                if isinstance(content, str):
+                    return content
+                try:
+                    return json.dumps(content, ensure_ascii=True)
+                except Exception:
+                    return str(content)
+
+            self._log_lines(logging.INFO, "\n".join(["", "=" * 20, "VERBOSE: OpenRouter API Request", "=" * 20]))
+            body_lines = [
+                f"Endpoint: {self.base_url}/responses",
+                f"Model: {self.model}",
+                f"CONVERSATION ({len(input_items)} messages):",
+                "-" * 20,
+            ]
             for i, msg in enumerate(messages):
                 role = str(msg.get('role', '')).upper()
                 content = msg.get('content', '')
-                if isinstance(content, str):
-                    preview = content[:200] + "..." if len(content) > 200 else content
+                if role == 'SYSTEM':
+                    body_lines.append(f"{i+1}. SYSTEM_SHA256: {_hash_system_content(content)}")
                 else:
-                    preview = str(content)[:200] + "..."
-                print(f"{i+1}. {role}: {preview}")
-            print("-"*20)
-
-            print(f"\n⚙️  API Parameters:")
-            print(f"   temperature: {request_payload['temperature']}")
-            print(f"   max_tokens: {request_payload['max_tokens']}")
-            print(f"   timeout: {self.timeout}s")
-            print("="*20 + "\n")
+                    body_lines.append(f"{i+1}. {role}:")
+                    body_lines.append(_render_content(content))
+                body_lines.append("-" * 20)
+            body_lines.extend(
+                [
+                    "API Parameters:",
+                    f"   temperature: {request_payload.get('temperature', '<omitted>')}",
+                    f"   max_output_tokens: {request_payload['max_output_tokens']}",
+                    f"   timeout: {self.timeout}s",
+                ]
+            )
+            if response_format:
+                body_lines.append(f"   response_format: {_render_content(response_format)}")
+            self._emit_raw_block("\n".join(body_lines))
+            self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
         try:
             response = requests.post(
-                f'{self.base_url}/chat/completions',
+                f'{self.base_url}/responses',
                 headers={
                     'Authorization': f'Bearer {self.api_key}',
                     'HTTP-Referer': 'https://github.com/ljubomirj',
@@ -201,23 +240,38 @@ Generate the SQL query:"""
             data = response.json()
 
             if self.verbose:
-                print("="*20)
-                print("🔍 VERBOSE: OpenRouter API Response")
-                print("="*20)
-                print(f"\n📊 Response Status: {response.status_code}")
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, "VERBOSE: OpenRouter API Response", "=" * 20]))
+                body_lines = [
+                    f"Response Status: {response.status_code}",
+                ]
                 if 'usage' in data:
                     usage = data['usage']
-                    print(f"📈 Token Usage:")
-                    print(f"   Prompt tokens: {usage.get('prompt_tokens', 0)}")
-                    print(f"   Completion tokens: {usage.get('completion_tokens', 0)}")
-                    print(f"   Total tokens: {usage.get('total_tokens', 0)}")
+                    body_lines.extend(
+                        [
+                            "Token Usage:",
+                            f"   Input tokens: {usage.get('input_tokens', usage.get('prompt_tokens', 0))}",
+                            f"   Output tokens: {usage.get('output_tokens', usage.get('completion_tokens', 0))}",
+                        ]
+                    )
                     if 'cache_creation_input_tokens' in usage:
-                        print(f"💾 Prompt Cache:")
-                        print(f"   Cache creation tokens: {usage.get('cache_creation_input_tokens', 0)}")
-                        print(f"   Cache read tokens: {usage.get('cache_read_input_tokens', 0)}")
-                raw_content = data.get('choices', [{}])[0].get('message', {}).get('content', '')
-                print(f"\n💬 RAW RESPONSE:\n{'-'*20}\n{raw_content}\n{'-'*20}")
-                print("="*20 + "\n")
+                        body_lines.extend(
+                            [
+                                "Prompt Cache:",
+                                f"   Cache creation tokens: {usage.get('cache_creation_input_tokens', 0)}",
+                                f"   Cache read tokens: {usage.get('cache_read_input_tokens', 0)}",
+                            ]
+                        )
+                raw_content = self._extract_output_text(data) or ''
+                body_lines.extend(
+                    [
+                        "RAW RESPONSE:",
+                        "-" * 20,
+                        raw_content,
+                        "-" * 20,
+                    ]
+                )
+                self._emit_raw_block("\n".join(body_lines))
+                self._log_lines(logging.INFO, "\n".join(["=" * 20, ""]))
 
             # Log token usage for cost tracking
             if 'usage' in data:
@@ -231,13 +285,17 @@ Generate the SQL query:"""
                     elif cache_create > 0:
                         cache_info = f" | 💾 Cache created: {cache_create} tokens"
 
+                input_tokens = usage.get('input_tokens', usage.get('prompt_tokens', 0))
+                output_tokens = usage.get('output_tokens', usage.get('completion_tokens', 0))
+                total_tokens = usage.get('total_tokens', input_tokens + output_tokens)
                 logger.info(
-                    f"OpenRouter API call: {usage.get('prompt_tokens', 0)} prompt + "
-                    f"{usage.get('completion_tokens', 0)} completion = "
-                    f"{usage.get('total_tokens', 0)} total tokens{cache_info}"
+                    f"OpenRouter API call: {input_tokens} input + "
+                    f"{output_tokens} output = "
+                    f"{total_tokens} total tokens{cache_info}"
                 )
 
-            return data['choices'][0]['message']['content'].strip()
+            content = self._extract_output_text(data)
+            return content.strip() if content else ""
 
         except requests.exceptions.Timeout as e:
             logger.error(f"OpenRouter API timeout: {e}", exc_info=True)
@@ -291,6 +349,50 @@ Generate the SQL query:"""
             logger.warning("Failed to enable OpenRouter prompt caching; continuing.", exc_info=True)
             return messages
 
+    def _message_to_input_item(self, msg: dict) -> dict:
+        role = msg.get('role', 'user')
+        content = msg.get('content', '')
+        parts: list[dict] = []
+        if isinstance(content, list):
+            for part in content:
+                if isinstance(part, dict) and 'text' in part:
+                    parts.append({'type': 'input_text', 'text': self._sanitize_text(str(part.get('text', '')))})
+                elif isinstance(part, str):
+                    parts.append({'type': 'input_text', 'text': self._sanitize_text(part)})
+                else:
+                    parts.append({'type': 'input_text', 'text': self._sanitize_text(str(part))})
+        elif isinstance(content, str):
+            parts.append({'type': 'input_text', 'text': self._sanitize_text(content)})
+        else:
+            parts.append({'type': 'input_text', 'text': self._sanitize_text(str(content))})
+        return {'role': role, 'content': parts}
+
+    def _extract_output_text(self, data: dict) -> Optional[str]:
+        if not isinstance(data, dict):
+            return None
+        output_text = data.get('output_text')
+        if isinstance(output_text, str) and output_text:
+            return self._sanitize_text(output_text.strip())
+        outputs = data.get('output')
+        if not isinstance(outputs, list):
+            return None
+        chunks: list[str] = []
+        for item in outputs:
+            if not isinstance(item, dict):
+                continue
+            if item.get('type') == 'message':
+                content = item.get('content', [])
+                if isinstance(content, list):
+                    for part in content:
+                        if not isinstance(part, dict):
+                            continue
+                        if part.get('type') in {'output_text', 'text'} and 'text' in part:
+                            chunks.append(self._sanitize_text(str(part.get('text', ''))))
+            elif item.get('type') == 'output_text' and 'text' in item:
+                chunks.append(self._sanitize_text(str(item.get('text', ''))))
+        text = "\n".join(s for s in chunks if s)
+        return text.strip() if text else None
+
     def _clean_sql(self, sql: str) -> str:
         """
         Clean up generated SQL.
@@ -332,6 +434,46 @@ Generate the SQL query:"""
 
         return sql.strip()
 
+    def _sanitize_text(self, text: str) -> str:
+        if not isinstance(text, str):
+            text = str(text)
+        return text.encode('utf-8', 'replace').decode('utf-8')
+
+    @staticmethod
+    def _log_lines(level: int, message: str) -> None:
+        text = str(message)
+        lines = text.splitlines()
+        if text.endswith("\n"):
+            lines.append("")
+        if not lines:
+            lines = [""]
+        for line in lines:
+            logger.log(level, line)
+
+    @staticmethod
+    def _emit_raw_block(text: str) -> None:
+        if text is None:
+            return
+        sanitized = text.encode('utf-8', 'replace').decode('utf-8')
+        if not sanitized.endswith("\n"):
+            sanitized += "\n"
+        root = logging.getLogger()
+        stream = None
+        for handler in root.handlers:
+            stream = getattr(handler, "stream", None)
+            if stream is not None:
+                break
+        if stream is None:
+            import sys as _sys
+            stream = _sys.stderr
+        try:
+            stream.write(sanitized)
+            stream.flush()
+        except Exception:
+            import sys as _sys
+            _sys.stderr.write(sanitized)
+            _sys.stderr.flush()
+
 
 # Recommended models and their characteristics
 # Updated 2025-12-04 based on OpenRouter programming models
@@ -367,18 +509,23 @@ RECOMMENDED_MODELS = {
         'cost_per_query_usd': 0.00026,
         'description': 'Good balance of cost and quality'
     },
-    'claude-3.5-sonnet': {
-        'id': 'anthropic/claude-3.5-sonnet',
+    'claude-sonnet-4.5': {
+        'id': 'anthropic/claude-sonnet-4.5',
         'cost_per_query_usd': 0.0015,
         'description': 'Premium quality, very reliable'
+    },
+    'claude-haiku-4.5': {
+        'id': 'anthropic/claude-haiku-4.5',
+        'cost_per_query_usd': 0.0005,
+        'description': 'Fast, low-cost Claude; great for quick SQL drafts'
     },
     'grok-code-fast': {
         'id': 'x-ai/grok-code-fast-1',
         'cost_per_query_usd': 0.0025,
         'description': 'xAI coding model, fast and accurate'
     },
-    'claude-opus-4': {
-        'id': 'anthropic/claude-opus-4-20250514',
+    'claude-opus-4.5': {
+        'id': 'anthropic/claude-opus-4.5',
         'cost_per_query_usd': 0.0075,
         'description': 'Highest quality, most expensive, best for critical queries'
     }

@@ -1,0 +1,222 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase 1' (FAAH). For each result, return the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value (IC50 value), standard_units (should be nM), assay_description (from assays), target_pref_name (from target_dictionary), pubmed_id_or_doi (prefer pubmed_id from docs, fallback to doi if pubmed_id is null). Join activities to assays, target_dictionary, molecule_dictionary, compound_structures, compound_records, and docs. Filter for standard_type = 'IC50' and standard_units = 'nM'. Ensure the target organism is Homo sapiens (tax_id = 9606) and target pref_name is 'Fatty acid amide hydrolase 1'.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.pref_name = 'Fatty acid amide hydrolase 1' AND td.tax_id = 9606",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n59 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n66 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase' (FAAH). For each result, return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value (IC50), standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi). Join path: activities -> assays -> target_dictionary, molecule_dictionary, compound_structures, compound_records, and docs. Crucially, join docs using compound_records.doc_id = docs.doc_id to prevent filtering out rows where activities.doc_id is NULL. Filter for standard_type = 'IC50' and standard_units = 'nM'. Match the target using target_dictionary.pref_name LIKE '%Fatty acid amide hydrolase%' and target_dictionary.organism = 'Homo sapiens'. Return all matching rows without a row limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_records cr ON a.record_id = cr.record_id JOIN docs d ON cr.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.pref_name LIKE '%Fatty acid amide hydrolase%' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n60 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n66 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase' (FAAH). The query must return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi). \n\nCrucially, to avoid zero-row results due to strict joins or name mismatches:\n1. Use LEFT JOIN for compound_records and docs to ensure activity rows are preserved even if document or record metadata is missing.\n2. For the target filter, use a broad pattern match on target_dictionary.pref_name LIKE '%Fatty acid amide hydrolase%' OR target_dictionary.pref_name LIKE '%FAAH%'. Do not strictly enforce organism = 'Homo sapiens' unless necessary, as it may filter out valid entries if the organism field is null or slightly different. Alternatively, check target_dictionary.chembl_id if available, or rely on the name pattern.\n3. Ensure the join path is: activities -> assays -> target_dictionary, molecule_dictionary, compound_structures. Then LEFT JOIN compound_records and docs.\n4. Filter for activities.standard_type = 'IC50' and activities.standard_units = 'nM'.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON cr.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (td.pref_name LIKE '%Fatty acid amide hydrolase%' OR td.pref_name LIKE '%FAAH%')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n61 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n69 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase 1' (FAAH). For each result, return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi). Join path: activities -> assays -> target_dictionary, molecule_dictionary, compound_structures, compound_records, docs. Crucially, to avoid zero rows: 1. Match the target using a broad pattern: LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(target_dictionary.pref_name) LIKE '%faah%' OR target_dictionary.pref_name LIKE '%Fatty acid amide hydrolase 1%'. 2. Filter for target_dictionary.organism = 'Homo sapiens' (or tax_id = 9606). 3. Use LEFT JOIN for compound_records and docs to preserve activity rows even if document metadata is missing. 4. Keep JOIN for compound_structures to ensure SMILES are available. 5. Filter for activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON cr.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(td.pref_name) LIKE '%faah%') AND (td.tax_id = 9606 OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n47 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n63 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n71 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase 1' (FAAH). Return DISTINCT rows with the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: Start from activities. LEFT JOIN assays ON activities.assay_id = assays.assay_id. LEFT JOIN target_dictionary ON assays.tid = target_dictionary.tid. LEFT JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno. LEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno. LEFT JOIN compound_records ON activities.record_id = compound_records.record_id. LEFT JOIN docs ON activities.doc_id = docs.doc_id. Filters: activities.standard_type = 'IC50' AND activities.standard_units = 'nM'. Target match: (LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(target_dictionary.pref_name) LIKE '%faah%') AND (target_dictionary.tax_id = 9606 OR target_dictionary.organism = 'Homo sapiens'). Do not use LIMIT. Ensure all joins except activities are LEFT JOINs to prevent zero-row results from missing metadata. Return all matching rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a LEFT JOIN assays ass ON a.assay_id = ass.assay_id LEFT JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON cr.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(td.pref_name) LIKE '%faah%') AND (td.tax_id = 9606 OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?) LEFT-JOIN\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n59 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n68 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n76 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n121 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase' (FAAH). Return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: activities -> assays -> target_dictionary, molecule_dictionary, compound_structures, compound_records, docs. Crucially, join docs using activities.doc_id = docs.doc_id as specified in the schema hints. Filter for activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Match the target using (LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(target_dictionary.pref_name) LIKE '%faah%') AND target_dictionary.tax_id = 9606. Use LEFT JOIN for compound_structures and compound_records to preserve activity rows even if metadata is missing, but keep INNER JOIN for docs to ensure provenance. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(td.pref_name) LIKE '%faah%') AND (td.tax_id = 9606 OR td.organism = 'Homo sapiens')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n47 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n63 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n71 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve IC50 activity values for compounds tested against the human target 'Fatty acid amide hydrolase 1' (FAAH). Use target_dictionary.chembl_id = 'CHEMBL2091' to reliably identify the target. Return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: Start from activities. JOIN assays ON activities.assay_id = assays.assay_id. JOIN target_dictionary ON assays.tid = target_dictionary.tid. JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno. LEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno. LEFT JOIN compound_records ON activities.record_id = compound_records.record_id. LEFT JOIN docs ON activities.doc_id = docs.doc_id. Filters: activities.standard_type = 'IC50', activities.standard_units = 'nM', target_dictionary.chembl_id = 'CHEMBL2091'. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.chembl_id = 'CHEMBL2091'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n60 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase' (FAAH). Return the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: Start from activities. JOIN assays ON activities.assay_id = assays.assay_id. JOIN target_dictionary ON assays.tid = target_dictionary.tid. JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno. LEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno. LEFT JOIN compound_records ON activities.record_id = compound_records.record_id. LEFT JOIN docs ON compound_records.doc_id = docs.doc_id. Filters: activities.standard_type = 'IC50' AND activities.standard_units = 'nM'. Target match: LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%' AND target_dictionary.organism = 'Homo sapiens'. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%' AND td.organism = 'Homo sapiens'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n57 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n65 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the human target 'Fatty acid amide hydrolase 1' (FAAH). Return the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: Start from activities. JOIN assays ON activities.assay_id = assays.assay_id. JOIN target_dictionary ON assays.tid = target_dictionary.tid. JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno. LEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno. LEFT JOIN compound_records ON activities.record_id = compound_records.record_id. LEFT JOIN docs ON activities.doc_id = docs.doc_id. Filters: activities.standard_type = 'IC50' AND activities.standard_units = 'nM'. Target match: LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%'. Do not filter on organism or tax_id to avoid zero-row results due to inconsistent metadata. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve IC50 activity values (in nM) for compounds tested against the target 'Fatty acid amide hydrolase' (FAAH). Return: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), standard_value, standard_units, assay_description (from assays), target_pref_name (from target_dictionary), and pubmed_id_or_doi (COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi)). Join path: activities -> assays -> target_dictionary, molecule_dictionary, compound_structures, compound_records, docs. Specifically: JOIN assays ON activities.assay_id = assays.assay_id, JOIN target_dictionary ON assays.tid = target_dictionary.tid, JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno, LEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno, LEFT JOIN compound_records ON activities.record_id = compound_records.record_id, LEFT JOIN docs ON activities.doc_id = docs.doc_id. Filters: activities.standard_type = 'IC50' AND activities.standard_units = 'nM'. Target match: LOWER(target_dictionary.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(target_dictionary.pref_name) LIKE '%faah%' OR target_dictionary.chembl_id = 'CHEMBL2091'. Do not filter on organism or tax_id. Return all matching rows without a limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, a.standard_value, a.standard_units, ass.description AS assay_description, td.pref_name AS target_pref_name, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND (LOWER(td.pref_name) LIKE '%fatty acid amide hydrolase%' OR LOWER(td.pref_name) LIKE '%faah%' OR td.chembl_id = 'CHEMBL2091')",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n45 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n61 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n69 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_value",
+      "standard_units",
+      "assay_description",
+      "target_pref_name",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  }
+]

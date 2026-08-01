@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List distinct approved drugs indicated for neoplasm. For each drug, return the following columns: molecule_chembl_id, molecule_name, canonical_smiles, drugind_id, mesh_id, mesh_heading, and max_phase. Join the drug_indications table to filter for indications where the mesh_heading contains 'neoplasm'. Join the molecule_dictionary to filter for approved drugs (max_phase = 4) and to retrieve the molecule name. Join the compound_structures table to retrieve the canonical SMILES. The output should be distinct rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS name, cs.canonical_smiles AS structure, di.mesh_id AS indication_id, di.mesh_heading AS indication_label, di.max_phase_for_ind AS max_phase FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.mesh_heading LIKE '%neoplasm%'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3722,
+    "res_columns": [
+      "molecule_chembl_id",
+      "name",
+      "structure",
+      "indication_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

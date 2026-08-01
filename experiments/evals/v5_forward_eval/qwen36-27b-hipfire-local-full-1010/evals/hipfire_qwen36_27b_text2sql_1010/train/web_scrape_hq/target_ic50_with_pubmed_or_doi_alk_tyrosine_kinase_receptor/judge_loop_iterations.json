@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 values (in nM) for compounds tested against the human ALK tyrosine kinase receptor (target CHEMBL4247). For each result, return the compound's ChEMBL ID, canonical SMILES, PubMed ID (or DOI if PubMed ID is unavailable), and the IC50 value. Join activities with assays filtered by tid for CHEMBL4247, activities with standard_type IC50 and standard_units nM, compound_structures for SMILES, and docs for provenance (pubmed_id or doi).",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.standard_value AS ic50_nM FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL4247' AND a.standard_type = 'IC50' AND a.standard_units = 'nM'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n81 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4026,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

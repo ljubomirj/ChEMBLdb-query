@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values for compounds tested against the target 'Acetylcholinesterase' (ChEMBL ID: CHEMBL220). For each activity record, return the compound's canonical SMILES structure and the PubMed ID or DOI of the source publication. Do not filter by unit or confidence score. Return all matching rows.",
+    "sql": "SELECT a.standard_value, a.standard_units, cs.canonical_smiles, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL220' AND a.standard_type = 'IC50'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n21 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 9692,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "canonical_smiles",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

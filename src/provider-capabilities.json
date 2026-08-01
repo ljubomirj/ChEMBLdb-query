@@ -1,0 +1,120 @@
+{
+  "_meta": {
+    "description": "Provider/Model capabilities registry for ChEMBL text2SQL pipeline",
+    "last_updated": "2026-07-11",
+    "methodology": "Context limits determined by API probing with binary search. Pricing from provider published rates. Speed measured during probe calls.",
+    "update_policy": "Updated on-demand at run start. Unknown values use reasonable defaults (3.5 chars/token, 128K context). Don't spend time perfecting — soldier on.",
+    "notes": "OpenCode Go has significantly lower context limits than direct APIs. Always probe the actual endpoint."
+  },
+  "deepseek-v4-flash": {
+    "models": {
+      "deepseek-chat": {
+        "contextWindow": 1048565,
+        "maxOutputTokens": 8192,
+        "reasoning": false,
+        "pricing": {
+          "input_per_mtok": 0.27,
+          "input_cached_per_mtok": 0.07,
+          "output_per_mtok": 1.10
+        },
+        "speed_tok_per_sec": null,
+        "notes": "Tested via api.deepseek.com. Context limit confirmed at 1,048,565 tokens (3.3M chars of 'x' failed, 2.7M chars succeeded)."
+      }
+    },
+    "endpoints": {
+      "api.deepseek.com": {
+        "type": "direct",
+        "base_url": "https://api.deepseek.com",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "effective_context_tokens": 1048565,
+        "status": "confirmed"
+      },
+      "opencode.ai/zen/go/v1": {
+        "type": "proxy",
+        "effective_context_tokens": 50000,
+        "status": "confirmed",
+        "notes": "Proxy limit, NOT model limit. Direct API handles 1M tokens."
+      }
+    }
+  },
+  "deepseek-v4-pro": {
+    "models": {
+      "deepseek-chat": {
+        "contextWindow": 1048565,
+        "maxOutputTokens": 8192,
+        "reasoning": false,
+        "pricing": {
+          "input_per_mtok": 0.27,
+          "input_cached_per_mtok": 0.07,
+          "output_per_mtok": 1.10
+        },
+        "speed_tok_per_sec": null,
+        "notes": "Same model endpoint as flash via api.deepseek.com (deepseek-chat routes to V4)"
+      }
+    },
+    "endpoints": {
+      "api.deepseek.com": {
+        "type": "direct",
+        "base_url": "https://api.deepseek.com",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "effective_context_tokens": 1048565,
+        "status": "confirmed"
+      },
+      "opencode.ai/zen/go/v1": {
+        "type": "proxy",
+        "effective_context_tokens": 50000,
+        "status": "confirmed",
+        "notes": "Proxy limit. Direct API handles 1M tokens."
+      }
+    }
+  },
+  "glm-4.7": {
+    "models": {
+      "glm-4.7-flash": {
+        "contextWindow": 128000,
+        "maxOutputTokens": 4096,
+        "reasoning": false,
+        "pricing": {
+          "input_per_mtok": 0.10,
+          "input_cached_per_mtok": null,
+          "output_per_mtok": 0.10
+        },
+        "speed_tok_per_sec": null,
+        "notes": "Previous baseline. 34.65% pass rate on v5.1010 benchmark."
+      }
+    },
+    "endpoints": {
+      "api.z.ai/api/anthropic": {
+        "type": "direct",
+        "base_url": "https://api.z.ai/api/anthropic",
+        "api_key_env": "ZAI_ANTHROPIC_AUTH_TOKEN",
+        "effective_context_tokens": 128000,
+        "status": "estimated"
+      }
+    }
+  },
+  "qwen3.6-27b": {
+    "models": {
+      "qwen3.6-27b": {
+        "contextWindow": 262144,
+        "maxOutputTokens": 8192,
+        "reasoning": true,
+        "pricing": {
+          "input_per_mtok": 0.0,
+          "input_cached_per_mtok": 0.0,
+          "output_per_mtok": 0.0
+        },
+        "speed_tok_per_sec": 42,
+        "notes": "Local hipfire on RX 7900 XTX. Free to run. 262K context, 42 tok/s."
+      }
+    },
+    "endpoints": {
+      "localhost:8081": {
+        "type": "local",
+        "engine": "hipfire",
+        "effective_context_tokens": 262144,
+        "status": "confirmed"
+      }
+    }
+  }
+}

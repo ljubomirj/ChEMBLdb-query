@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve DISTINCT rows containing exactly these columns: chembl_id (from molecule_dictionary), pref_name (from molecule_dictionary), canonical_smiles (from compound_structures), indication_curie (alias for drug_indication.efo_id), indication_label (alias for drug_indication.efo_term), and max_phase_for_ind (from drug_indication). Filter for records where max_phase_for_ind = 4, and require both efo_id and efo_term to be non-null. Join molecule_dictionary, compound_structures, and drug_indication on molregno. Return only the specified columns in the exact order requested.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE di.max_phase_for_ind = 4 AND di.efo_id IS NOT NULL AND di.efo_term IS NOT NULL",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6706,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

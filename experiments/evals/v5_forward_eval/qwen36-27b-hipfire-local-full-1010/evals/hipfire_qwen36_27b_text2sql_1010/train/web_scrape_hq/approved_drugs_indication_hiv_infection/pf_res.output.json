@@ -1,0 +1,71 @@
+{
+  "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/approved_drugs_indication_hiv_infection/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/LJ-amdgpu-7900xtx/artifacts/7900xtx-rocm-speed/hipfire-qwen36-27b-text2sql-1010-20260719_231825/evals/hipfire_qwen36_27b_text2sql_1010/train/web_scrape_hq/approved_drugs_indication_hiv_infection/result.generated.csv",
+    "row_count": 311,
+    "column_names": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 218,
+    "actual_rows": 311,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "missing_cols": [
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "max_phase_for_ind"
+    ],
+    "extra_cols": [
+      "name",
+      "smiles",
+      "efo_id",
+      "max_phase"
+    ],
+    "status": "partial",
+    "score": 0.480386,
+    "column_recall": 0.333333,
+    "row_ratio": 0.700965
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_hiv_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "judge_provider": {
+      "provider": "llamacpp",
+      "model": "qwen3.6:27b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    }
+  }
+}

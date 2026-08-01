@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct target names (pref_name) and ChEMBL identifiers (chembl_id) for all assays involving the organism 'Staphylococcus aureus'. Join the assays table with the target_dictionary table using the target ID (tid). Do not apply any row limits or additional filters on target type or confidence scores.",
+    "sql": "SELECT DISTINCT td.pref_name, td.chembl_id FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Staphylococcus aureus'",
+    "sql_model": "llamacpp/qwen3.6:27b",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n23 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 110,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "llamacpp/qwen3.6:27b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]
