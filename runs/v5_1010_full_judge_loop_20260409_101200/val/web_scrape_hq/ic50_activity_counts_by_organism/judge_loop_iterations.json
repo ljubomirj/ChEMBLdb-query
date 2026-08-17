@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "List the number of IC50 activity records for each target organism. For each distinct organism, count the activities where the standard_type is 'IC50' (indicating IC50 activity). The result should include the organism name and the count of such activities, with no additional filtering or limits. Return the organism name (e.g., from assays.assay_organism or target_dictionary.organism) and the count, ordered by the count descending.",
+    "sql": "WITH target_counts AS (\n  SELECT \n    t.organism AS organism_name,\n    COUNT(a.activity_id) AS activity_count\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary t ON ass.tid = t.tid\n  WHERE a.standard_type = 'IC50' \n    AND a.standard_units = 'nM'\n  GROUP BY t.organism\n)\nSELECT organism_name, activity_count\nFROM target_counts\nORDER BY activity_count DESC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n2 | 0 | 0 | CO-ROUTINE target_counts\n13 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 2 | 42 | SEARCH t USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n33 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n71 | 0 | 82 | SCAN target_counts\n79 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 793,
+    "res_columns": [
+      "organism_name",
+      "activity_count"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_renin.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_renin",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activities for target CHEMBL286. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno as an INNER JOIN to require canonical SMILES. Join docs on doc_id to obtain PubMed IDs or DOIs. Join compound_records on record_id to retrieve compound_key. Filter by target chembl_id CHEMBL286 and standard_type IC50. Keep all activity rows without deduplication. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activities for target CHEMBL286. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno as an INNER JOIN to require canonical SMILES. Join docs on doc_id to obtain PubMed IDs or DOIs. Join compound_records on record_id to retrieve compound_key. Filter by target chembl_id CHEMBL286 and standard_type IC50. Keep all activity rows without deduplication. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

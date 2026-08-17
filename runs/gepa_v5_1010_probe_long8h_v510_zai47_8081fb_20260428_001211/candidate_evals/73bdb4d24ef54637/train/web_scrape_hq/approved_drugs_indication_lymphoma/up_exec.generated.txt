@@ -1,0 +1,7 @@
+1. Objective: Retrieve approved drugs (max_phase_for_ind = 4) indicated for lymphoma, returning their identifiers, names, structures, and indication details.
+
+2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (mapped from efo_id), indication_label (mapped from efo_term), max_phase_for_ind.
+
+3. Source: molecule_dictionary, drug_indication, compound_structures.
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno to retrieve canonical SMILES. Filter drug_indication where max_phase_for_ind = 4 and mesh_heading contains 'lymphoma' (case-insensitive). Sort by chembl_id.

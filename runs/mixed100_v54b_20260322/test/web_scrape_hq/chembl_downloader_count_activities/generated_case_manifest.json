@@ -1,0 +1,55 @@
+{
+  "case_id": "chembl_downloader_count_activities",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/chembl_downloader_count_activities/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/test/web_scrape_hq/chembl_downloader_count_activities/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/test/web_scrape_hq/chembl_downloader_count_activities/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/chembl_downloader_count_activities/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/chembl_downloader_count_activities/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/test/web_scrape_hq/chembl_downloader_count_activities/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/chembl_downloader_count_activities/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "explicit_from_source_description",
+    "source_title": "chembl_downloader COUNT_ACTIVITIES_SQL",
+    "source_url": "https://chembl-downloader.readthedocs.io/en/stable/api/chembl_downloader.queries.COUNT_ACTIVITIES_SQL.html",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "activity_count"
+    ],
+    "sort_keys": [
+      "activity_count"
+    ],
+    "tags": [
+      "other",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "count": "activity_count",
+      "total_activities": "activity_count",
+      "count(*)": "activity_count",
+      "activity_count": "activity_count"
+    },
+    "float_cols": [],
+    "int_cols": [
+      "activity_count"
+    ],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

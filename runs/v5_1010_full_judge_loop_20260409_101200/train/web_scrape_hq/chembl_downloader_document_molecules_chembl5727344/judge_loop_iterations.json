@@ -1,0 +1,150 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound identifiers (CHEMBL IDs) and associated standard values for activities reported in document CHEMBL5727344. Document identifier must be exact: docs.chembl_id = 'CHEMBL5727344'. Return columns: molecule_chembl_id, pref_name, assay_id, standard_type, standard_value, standard_units, activity_comment. Activity rows must be joined from activities to docs via a.doc_id = docs.doc_id. Do not filter on activity type, assay type, target, organism, or confidence score. Include all rows regardless of relation or flag.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id, md.pref_name, a.assay_id, a.standard_type, a.standard_value, a.standard_units, a.activity_comment\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound identifiers (CHEMBL IDs) and associated standard values for activities reported in document CHEMBL5727344. Document identifier must be exact: docs.chembl_id = 'CHEMBL5727344'. Return columns: molecule_chembl_id, pref_name, assay_id, standard_type, standard_value, standard_units, activity_comment. Activity rows must be joined from activities to docs via a.doc_id = docs.doc_id. Join molecule_dictionary via a.molregno = md.molregno. Do not filter on activity type, assay type, target, organism, or confidence score. Include all rows regardless of relation or flag.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id, md.pref_name, a.assay_id, a.standard_type, a.standard_value, a.standard_units, a.activity_comment\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all activity records (including molecule identifiers, assay details, standard values and units) that were reported in document CHEMBL5727344. Return the following columns exactly: molecule_chembl_id, pref_name, assay_id, standard_type, standard_value, standard_units, activity_comment. Join activities to docs via a.doc_id = docs.doc_id, and join molecule_dictionary via a.molregno = md.molregno. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters or limits are required.",
+    "sql": "SELECT DISTINCT a.molregno, md.pref_name, a.assay_id, a.standard_type, a.standard_value, a.standard_units, a.activity_comment\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6348,
+    "res_columns": [
+      "molregno",
+      "pref_name",
+      "assay_id",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "activity_comment"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compound identifiers (CHEMBL IDs) and associated standard values for activities reported in document CHEMBL5727344. Exact filter: docs.chembl_id = 'CHEMBL5727344'. Return the following columns exactly: molecule_chembl_id, pref_name, assay_id, standard_type, standard_value, standard_units, activity_comment. Join activities to docs via a.doc_id = docs.doc_id, and join molecule_dictionary via a.molregno = md.molregno. Do not filter on target type, activity type, assay type, organism, or confidence score. No additional limits or filters beyond the document identifier.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, a.assay_id, a.standard_type, a.standard_value, a.standard_units, a.activity_comment\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6348,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "assay_id",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "activity_comment"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve a list of compound identifiers reported in document CHEMBL5727344. The identifier should be returned as molecule_chembl_id (the public ChEMBL identifier) together with the associated compound name (pref_name). The list must be distinct (one row per compound). The compound must have at least one activity record that is linked to the document via activities.doc_id = docs.doc_id. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters (assay type, target, organism, confidence score, etc.) and no activity columns (standard_type, standard_value, etc.) should be returned. The result should only contain molecule_chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve a list of compound identifiers reported in document CHEMBL5727344. The identifier should be returned as molecule_chembl_id (the public ChEMBL identifier) together with the associated compound name (pref_name). The list must be distinct (one row per compound). The compound must have at least one activity record that is linked to the document via activities.doc_id = docs.doc_id. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters (assay type, target, organism, confidence score, etc.) and no activity columns (standard_type, standard_value, etc.) should be returned. The result should only contain molecule_chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.45,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve a list of compound identifiers reported in document CHEMBL5727344. The identifier should be returned as molecule_chembl_id (the public ChEMBL identifier) together with the associated compound name (pref_name). The list must be distinct (one row per compound). The compound must have at least one activity record that is linked to the document via activities.doc_id = docs.doc_id. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters (assay type, target, organism, confidence score, etc.) and no activity columns (standard_type, standard_value, etc.) should be returned. The result should only contain molecule_chembl_id and pref_name.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve a list of compound identifiers reported in document CHEMBL5727344. Return molecule_chembl_id and pref_name for each compound. The compound must have at least one activity record linked to the document via activities.doc_id = docs.doc_id. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters, no activity columns, and no limits. Return a distinct list (one row per compound).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve a list of compound identifiers reported in document CHEMBL5727344. Return molecule_chembl_id (the public ChEMBL identifier) and pref_name for each compound. The compound must have at least one activity record linked to the document via activities.doc_id = docs.doc_id. Use an exact filter docs.chembl_id = 'CHEMBL5727344'. No other filters, no activity columns, and no limits. Return a distinct list (one row per compound).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5727344'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

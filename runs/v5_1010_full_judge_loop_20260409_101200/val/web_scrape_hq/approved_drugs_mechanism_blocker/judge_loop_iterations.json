@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "Return a list of all approved drugs that have a mechanism of action classified as 'BLOCKER'. For each drug, provide the following details: the ChEMBL ID, the preferred name, the canonical SMILES (structure), the full mechanism of action description, and the target's preferred name and ChEMBL ID. Approved drugs are defined as those with max_phase = 4 in the molecule_dictionary table.",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  dm.mechanism_of_action,\n  td.pref_name AS target_name,\n  td.chembl_id AS target_chembl_id\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4 AND dm.action_type = 'BLOCKER';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 144 | SCAN dm\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 123,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

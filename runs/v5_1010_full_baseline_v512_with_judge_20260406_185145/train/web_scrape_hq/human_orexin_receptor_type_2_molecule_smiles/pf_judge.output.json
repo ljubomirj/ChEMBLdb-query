@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_orexin_receptor_type_2_molecule_smiles.json",
+  "case_id": "human_orexin_receptor_type_2_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current SQL query correctly implements the user's request for compounds with canonical SMILES tested against human Orexin receptor type 2 (CHEMBL4792) with IC50 potency values in nM. The query joins the necessary tables (activities, assays, target_dictionary, compound_records, molecule_dictionary, compound_structures) with appropriate filters for assay organism (Homo sapiens), activity type (IC50), standard relation (=), standard value not null, standard units (nM), and molecule type (Small molecule). The SELECT DISTINCT ensures unique molecule identifiers with their canonical SMILES, and the ORDER BY molecule_chembl_id provides consistent ordering. The result set of 1454 rows with sample data shows valid ChEMBL identifiers and SMILES strings, confirming the query returns relevant results without duplication or incorrect joins. All required filters are correctly applied, and the output columns match the requested molecule_chembl_id and canonical_smiles.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current SQL query correctly implements the user's request for compounds with canonical SMILES tested against human Orexin receptor type 2 (CHEMBL4792) with IC50 potency values in nM. The query joins the necessary tables (activities, assays, target_dictionary, compound_records, molecule_dictionary, compound_structures) with appropriate filters for assay organism (Homo sapiens), activity type (IC50), standard relation (=), standard value not null, standard units (nM), and molecule type (Small molecule). The SELECT DISTINCT ensures unique molecule identifiers with their canonical SMILES, and the ORDER BY molecule_chembl_id provides consistent ordering. The result set of 1454 rows with sample data shows valid ChEMBL identifiers and SMILES strings, confirming the query returns relevant results without duplication or incorrect joins. All required filters are correctly applied, and the output columns match the requested molecule_chembl_id and canonical_smiles.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_orexin_receptor_type_2_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_orexin_receptor_type_2_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_orexin_receptor_type_2_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

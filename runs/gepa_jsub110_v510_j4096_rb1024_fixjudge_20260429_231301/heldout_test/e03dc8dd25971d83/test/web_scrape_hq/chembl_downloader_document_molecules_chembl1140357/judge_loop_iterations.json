@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Select distinct chembl_id, compound_name, and canonical_smiles for molecules linked to document CHEMBL1140357. Source molecules from compound_records joined to docs, and join compound_structures to obtain canonical_smiles. Filter by docs.chembl_id = 'CHEMBL1140357' and require canonical_smiles to be not null. Sort rows by chembl_id, compound_name, and canonical_smiles in ascending order.",
+    "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1140357' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id ASC, cr.compound_name ASC, cs.canonical_smiles ASC",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieved 100 distinct rows from document CHEMBL1140357. The SQL correctly joins docs, compound_records, molecule_dictionary, and compound_structures, filters by the document's chembl_id, enforces non-null canonical_smiles, and sorts by the requested columns. The result set contains the exact columns requested (chembl_id, compound_name, canonical_smiles) and appears complete for the document. The execution plan shows efficient index usage with a final distinct operation, which is appropriate given the join structure.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

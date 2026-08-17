@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl3371_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl3371_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query was designed to retrieve IC50 activity rows for human single-protein target CHEMBL3371 (5\u2011hydroxytryptamine receptor 6) with exact standard relation '=', non\u2011null pChEMBL values, and ordered by molecule and assay identifiers. The sample output shows zero rows, which indicates that either (1) no activities for this target have the exact relation '=', (2) the target tid 3371 does not have any human\u2011organism assays with IC50 activities, or (3) the join conditions are too restrictive (e.g., the target may be linked via a different tid or the assay organism filter may be mismatched). The schema inspection confirms that the target_dictionary.tid = 3371 is correct for the human 5\u2011HT6 receptor, and the organism filter uses the assay_organism column, which is appropriate. However, the lack of rows suggests that the exact relation filter may be too strict; many IC50 entries use the standard_relation '>' or '<' rather than '='. The query also correctly joins activities \u2192 assays \u2192 target_dictionary and includes the LEFT JOIN to compound_structures for canonical SMILES. The column list matches the requested output, and the ordering and limit are applied as required. The only issue is the zero\u2011row result, which is likely due to data sparsity rather than a SQL error.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query was designed to retrieve IC50 activity rows for human single-protein target CHEMBL3371 (5\u2011hydroxytryptamine receptor 6) with exact standard relation '=', non\u2011null pChEMBL values, and ordered by molecule and assay identifiers. The sample output shows zero rows, which indicates that either (1) no activities for this target have the exact relation '=', (2) the target tid 3371 does not have any human\u2011organism assays with IC50 activities, or (3) the join conditions are too restrictive (e.g., the target may be linked via a different tid or the assay organism filter may be mismatched). The schema inspection confirms that the target_dictionary.tid = 3371 is correct for the human 5\u2011HT6 receptor, and the organism filter uses the assay_organism column, which is appropriate. However, the lack of rows suggests that the exact relation filter may be too strict; many IC50 entries use the standard_relation '>' or '<' rather than '='. The query also correctly joins activities \u2192 assays \u2192 target_dictionary and includes the LEFT JOIN to compound_structures for canonical SMILES. The column list matches the requested output, and the ordering and limit are applied as required. The only issue is the zero\u2011row result, which is likely due to data sparsity rather than a SQL error.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3371_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3371_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3371_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

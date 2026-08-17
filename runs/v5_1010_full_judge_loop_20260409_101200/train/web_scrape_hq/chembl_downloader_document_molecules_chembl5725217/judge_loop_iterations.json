@@ -1,0 +1,71 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct compound identifiers and their associated document references for activities linked to document CHEMBL5725217. Include the compound's ChEMBL identifier (molecule_chembl_id), the corresponding document identifier (doc_id), and the document's title. Focus solely on activity records that are connected to the specified document via the activities.doc_id field. Ensure the output contains each molecule only once per document and contains no additional filtering beyond the document context.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id,\n       a.doc_id,\n       d.title AS document_title\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5725217';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve distinct molecule identifiers from activities linked to document CHEMBL5725217. Return the molecule's ChEMBL identifier (pref_name), the compound's record_id, and the document's title. Include only activity records that have doc_id matching CHEMBL5725217 via the activities.doc_id field. Ensure each molecule appears only once for this document. No additional filters such as year, confidence_score, target type, or units are required.",
+    "sql": "SELECT DISTINCT md.pref_name AS pref_name,\n       a.record_id,\n       d.title AS doc_title\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5725217';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct molecules and their associated document reference for document CHEMBL5725217. Return the molecule's ChEMBL identifier (chembl_id), the compound's record_id, and the document's title. Include only activity records that have doc_id matching CHEMBL5725217 via the activities.doc_id field. Ensure each molecule appears only once for this document. No additional filters such as year, confidence_score, target_type, or units are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, a.record_id, d.title AS document_title\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5725217';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct molecule identifiers and their associated document reference for activities linked to document CHEMBL5725217. Return the molecule's ChEMBL identifier (chembl_id), the record_id from the activity, and the document's title. Include only activity rows where activities.doc_id matches the document with chembl_id 'CHEMBL5725217'. Ensure each molecule appears only once per this document. No additional filters are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, a.record_id, d.title AS document_title\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5725217';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct molecules that have activity records linked to the document with chembl_id 'CHEMBL5725217'. Return the molecule's public ChEMBL identifier (chembl_id), its record_id from the activity table, and the document's title. Include only activities where activities.doc_id matches the document's doc_id and join activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno. No other filters (year, confidence_score, target_type, units, or target restrictions) should be applied. Each molecule should appear only once per document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, a.record_id, d.title AS document_title\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molregno = md.molregno\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5725217';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1155,
+    "res_columns": [
+      "chembl_id",
+      "record_id",
+      "document_title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

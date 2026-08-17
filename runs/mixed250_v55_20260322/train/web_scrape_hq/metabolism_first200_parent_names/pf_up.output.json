@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_parent_names.json",
+  "case_id": "metabolism_first200_parent_names",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 rows from the metabolism table. Join substrate compound records via metabolism.substrate_record_id to compound_records.record_id, then join compound_structures on molregno to obtain canonical_smiles. Extract substrate_compound_name from compound_records.compound_name. Retrieve parent_compound_name by joining molecule_hierarchy from the substrate molregno to parent_molregno, then joining molecule_dictionary on pref_name. Include met_conversion and pathway_key from the metabolism table. Do not deduplicate rows. Return exactly canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 rows from the metabolism table. Join substrate compound records via metabolism.substrate_record_id to compound_records.record_id, then join compound_structures on molregno to obtain canonical_smiles. Extract substrate_compound_name from compound_records.compound_name. Retrieve parent_compound_name by joining molecule_hierarchy from the substrate molregno to parent_molregno, then joining molecule_dictionary on pref_name. Include met_conversion and pathway_key from the metabolism table. Do not deduplicate rows. Return exactly canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key."
+    }
+  }
+}

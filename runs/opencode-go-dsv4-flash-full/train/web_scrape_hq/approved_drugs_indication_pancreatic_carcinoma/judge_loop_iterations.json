@@ -1,0 +1,34 @@
+[
+  {
+    "n": 1,
+    "up": "List the approved drugs (i.e., those with a max clinical phase of 4) that have an indication for pancreatic carcinoma. For each drug, return its preferred name and ChEMBL identifier. Use the drug_indication table to match the disease term ('pancreatic carcinoma' can appear in mesh_heading or efo_term) and the molecule_dictionary table to obtain the drug name and approval status.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%pancreatic carcinoma%' OR di.efo_term LIKE '%pancreatic carcinoma%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 191,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List the approved drugs (those with a maximum clinical phase of 4) that have an approved indication for pancreatic carcinoma. For each drug, return its preferred name and ChEMBL identifier. Use the drug_indication table to find indications; match the disease terms in mesh_heading or efo_term that include 'pancreatic carcinoma' or 'Pancreatic Neoplasms' or similar variations indicating pancreatic cancer. Only include indications where the maximum development phase for that indication is 4 (drug_indication.max_phase_for_ind = 4), indicating regulatory approval for that condition. Also ensure the drug itself is approved by checking molecule_dictionary.max_phase = 4. Return distinct drugs.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 4 AND (di.mesh_heading LIKE '%pancreatic carcinoma%' OR di.mesh_heading LIKE '%pancreatic neoplasms%' OR di.mesh_heading LIKE '%pancreatic cancer%' OR di.mesh_heading LIKE '%pancreatic tumor%' OR di.mesh_heading LIKE '%pancreatic neoplasm%' OR di.mesh_heading LIKE '%pancreatic adenocarcinoma%' OR di.efo_term LIKE '%pancreatic carcinoma%' OR di.efo_term LIKE '%pancreatic neoplasms%' OR di.efo_term LIKE '%pancreatic cancer%' OR di.efo_term LIKE '%pancreatic tumor%' OR di.efo_term LIKE '%pancreatic neoplasm%' OR di.efo_term LIKE '%pancreatic adenocarcinoma%')",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 0 | SCAN di\n45 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n61 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

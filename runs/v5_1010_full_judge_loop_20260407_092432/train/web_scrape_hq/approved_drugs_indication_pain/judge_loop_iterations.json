@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all approved drugs indicated for 'pain'. Return the following columns for each drug: ChEMBL ID, drug name (pref_name), canonical SMILES, indication ID, indication label (mesh_heading), and max phase. A drug is considered approved if max_phase = 4.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_id AS indication_id, di.mesh_heading AS indication_label, md.max_phase FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND LOWER(di.mesh_heading) LIKE '%pain%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 521,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

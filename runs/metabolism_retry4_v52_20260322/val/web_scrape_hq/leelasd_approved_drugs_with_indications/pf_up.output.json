@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.2.yaml",
+  "prompt_pack_version": "v5.2",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval from molecule_dictionary. Inner join drug_indication on molecule_dictionary.molregno = drug_indication.molregno to get indication headings. Inner join compound_structures on molecule_dictionary.molregno = compound_structures.molregno to get canonical SMILES. Filter molecule_dictionary.max_phase = 4 for approved drugs. Return DISTINCT rows over the requested output columns. Sort by first_approval descending (most recent first).\"}\n```",
+    "parsed_json": {
+      "up": "Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval from molecule_dictionary. Inner join drug_indication on molecule_dictionary.molregno = drug_indication.molregno to get indication headings. Inner join compound_structures on molecule_dictionary.molregno = compound_structures.molregno to get canonical SMILES. Filter molecule_dictionary.max_phase = 4 for approved drugs. Return DISTINCT rows over the requested output columns. Sort by first_approval descending (most recent first)."
+    }
+  }
+}

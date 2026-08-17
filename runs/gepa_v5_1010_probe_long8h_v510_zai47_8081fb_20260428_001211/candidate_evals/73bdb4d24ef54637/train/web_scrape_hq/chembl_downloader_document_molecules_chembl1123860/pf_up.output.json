@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123860.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123860",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Extract distinct molecules associated with a specific document, ensuring structures are present and sorting by the requested fields.\n\n2. Output: chembl_id, compound_name, canonical_smiles\n\n3. Source: docs, compound_records, molecule_dictionary, compound_structures\n\n4. Logic: \n   - Filter docs where chembl_id = 'CHEMBL1123860'.\n   - Join compound_records on docs.doc_id = compound_records.doc_id.\n   - Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno.\n   - Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno (INNER JOIN to enforce canonical_smiles availability).\n   - Return DISTINCT rows for the specified output columns.\n   - Order by chembl_id, compound_name, canonical_smiles.",
+    "parsed_json": {
+      "up": "1. Objective: Extract distinct molecules associated with a specific document, ensuring structures are present and sorting by the requested fields.\n\n2. Output: chembl_id, compound_name, canonical_smiles\n\n3. Source: docs, compound_records, molecule_dictionary, compound_structures\n\n4. Logic: \n   - Filter docs where chembl_id = 'CHEMBL1123860'.\n   - Join compound_records on docs.doc_id = compound_records.doc_id.\n   - Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno.\n   - Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno (INNER JOIN to enforce canonical_smiles availability).\n   - Return DISTINCT rows for the specified output columns.\n   - Order by chembl_id, compound_name, canonical_smiles."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1614236_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1614236_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT cs.canonical_smiles AS canonical_smiles, md.chembl_id AS chembl_id, act.standard_type AS standard_type, act.standard_relation AS standard_relation, act.standard_value AS standard_value, act.standard_units AS standard_units\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN molecule_dictionary md ON act.molregno = md.molregno\\nJOIN compound_structures cs ON md.molregno = cs.molregno\\nWHERE a.chembl_id = 'CHEMBL1614236'\\n  AND act.standard_value IS NOT NULL\\n  AND act.standard_relation = '='\\nORDER BY canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles AS canonical_smiles, md.chembl_id AS chembl_id, act.standard_type AS standard_type, act.standard_relation AS standard_relation, act.standard_value AS standard_value, act.standard_units AS standard_units\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.chembl_id = 'CHEMBL1614236'\n  AND act.standard_value IS NOT NULL\n  AND act.standard_relation = '='\nORDER BY canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units;"
+    }
+  }
+}

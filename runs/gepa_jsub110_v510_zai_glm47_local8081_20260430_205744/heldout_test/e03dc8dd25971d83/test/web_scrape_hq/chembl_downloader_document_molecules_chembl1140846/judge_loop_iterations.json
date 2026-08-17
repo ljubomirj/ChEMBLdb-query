@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles. Source: docs, molecule_dictionary, compound_records, compound_structures. Join: docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: docs.chembl_id = 'CHEMBL1140846'.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles FROM docs JOIN compound_records ON docs.doc_id = compound_records.doc_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE docs.chembl_id = 'CHEMBL1140846'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 0 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 233,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves molecules reported in document CHEMBL1140846 with all requested attributes (ChEMBL ID, name, max phase, type, SMILES). The execution plan shows efficient index usage across all tables. The result set contains 233 rows with the correct columns. The sample data shows diverse compounds including drugs, solvents, and intermediates, which is consistent with a comprehensive document listing. The query correctly joins docs -> compound_records -> molecule_dictionary -> compound_structures and filters by the specific document ChEMBL ID.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

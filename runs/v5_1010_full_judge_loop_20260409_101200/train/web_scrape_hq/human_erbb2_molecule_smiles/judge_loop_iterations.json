@@ -1,0 +1,60 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct molecule ChEMBL IDs (chembl_id) and canonical SMILES for compounds that were tested in assays where the target is the Receptor tyrosine-protein kinase erbB-2 (chembl_id = 'CHEMBL1824'), the assays were performed in Homo sapiens (assay_organism = 'Homo sapiens'), and the result set should return exactly the columns: molecule_chembl_id and canonical_smiles. Ensure that each qualifying molecule appears only once in the output (i.e., distinct rows on the combination of these two columns).",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL1824' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve distinct molecule ChEMBL IDs (molecule_chembl_id) and canonical SMILES for compounds that were tested in assays where the target is the Receptor tyrosine-protein kinase erbB-2 (chembl_id = 'CHEMBL1824'), the assays were performed in Homo sapiens (assay_organism = 'Homo sapiens'), and the result set should return exactly the columns: molecule_chembl_id and canonical_smiles. Ensure that each qualifying molecule appears only once in the output (i.e., distinct rows on the combination of these two columns).",
+    "sql": "WITH hits AS ( SELECT DISTINCT a.molregno, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1824' AND ass.assay_organism = 'Homo sapiens' ) SELECT md.chembl_id AS molecule_chembl_id, md.canonical_smiles AS canonical_smiles FROM hits h JOIN molecule_dictionary md ON h.molregno = md.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct molecule ChEMBL IDs (molecule_chembl_id) and canonical SMILES for compounds that were tested in assays where the target is the Receptor tyrosine-protein kinase erbB-2 (CHEMBL1824), the assays were performed in Homo sapiens (assay_organism = 'Homo sapiens'), and the result set should return exactly the columns: molecule_chembl_id and canonical_smiles. Ensure that each qualifying molecule appears only once in the output (i.e., distinct rows on the combination of these two columns).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1824' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2953,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct molecule_chembl_id and canonical_smiles for compounds that were tested in assays where the target is the Receptor tyrosine-protein kinase erbB-2 (CHEMBL1824), the assays were performed in Homo sapiens (assay_organism = 'Homo sapiens'), and the result set should return exactly the columns: molecule_chembl_id and canonical_smiles. Ensure that each qualifying molecule appears only once in the output (i.e., distinct rows on the combination of these two columns). No additional filters, limits, or extra columns should be applied.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1824' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2953,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

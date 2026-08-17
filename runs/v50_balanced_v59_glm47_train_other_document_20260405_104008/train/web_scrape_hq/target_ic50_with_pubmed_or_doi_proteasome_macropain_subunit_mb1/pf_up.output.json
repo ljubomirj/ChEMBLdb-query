@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_proteasome_macropain_subunit_mb1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_proteasome_macropain_subunit_mb1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activity rows for target CHEMBL4662. Join activities to assays and target_dictionary to filter by target ChEMBL ID. Join molecule_dictionary and compound_structures to retrieve compound identifiers and canonical SMILES. Join docs to retrieve PubMed ID. Join compound_records to retrieve compound key. Return all specified columns including assay description, target details, and activity metadata. Keep every qualifying activity row without deduplication. Sort by compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activity rows for target CHEMBL4662. Join activities to assays and target_dictionary to filter by target ChEMBL ID. Join molecule_dictionary and compound_structures to retrieve compound identifiers and canonical SMILES. Join docs to retrieve PubMed ID. Join compound_records to retrieve compound key. Return all specified columns including assay description, target details, and activity metadata. Keep every qualifying activity row without deduplication. Sort by compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism."
+    }
+  }
+}

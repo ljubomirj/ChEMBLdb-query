@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_be160d9b879dac6f.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts.json",
+  "case_id": "chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "be160d9b879dac6f",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT \n  child.chembl_id AS compound_chembl_id, \n  compound_structures.canonical_smiles, \n  compound_records.compound_key, \n  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, \n  assays.description AS assay_description, \n  activities.standard_type, \n  activities.standard_relation, \n  activities.standard_value, \n  activities.standard_units, \n  activities.activity_comment, \n  target_dictionary.chembl_id AS target_chembl_id, \n  target_dictionary.pref_name AS target_name, \n  target_dictionary.organism AS target_organism\nFROM molecule_dictionary parent\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\nJOIN compound_structures ON child.molregno = compound_structures.molregno\nJOIN compound_records ON child.molregno = compound_records.molregno\nJOIN activities ON compound_records.record_id = activities.record_id\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN docs ON compound_records.doc_id = docs.doc_id\nJOIN target_dictionary ON activities.tid = target_dictionary.tid\nWHERE parent.chembl_id = 'CHEMBL3182437'\n  AND target_dictionary.chembl_id = 'CHEMBL3430885'\n  AND activities.standard_type = 'IC50'\nORDER BY \n  child.chembl_id ASC, \n  compound_structures.canonical_smiles ASC, \n  compound_records.compound_key ASC, \n  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) ASC, \n  assays.description ASC, \n  activities.standard_type ASC, \n  activities.standard_relation ASC, \n  activities.standard_value ASC, \n  activities.standard_units ASC, \n  activities.activity_comment ASC, \n  target_dictionary.chembl_id ASC, \n  target_dictionary.pref_name ASC, \n  target_dictionary.organism ASC\n```",
+    "parsed_json": {
+      "sql": "SELECT \n  child.chembl_id AS compound_chembl_id, \n  compound_structures.canonical_smiles, \n  compound_records.compound_key, \n  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, \n  assays.description AS assay_description, \n  activities.standard_type, \n  activities.standard_relation, \n  activities.standard_value, \n  activities.standard_units, \n  activities.activity_comment, \n  target_dictionary.chembl_id AS target_chembl_id, \n  target_dictionary.pref_name AS target_name, \n  target_dictionary.organism AS target_organism\nFROM molecule_dictionary parent\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\nJOIN compound_structures ON child.molregno = compound_structures.molregno\nJOIN compound_records ON child.molregno = compound_records.molregno\nJOIN activities ON compound_records.record_id = activities.record_id\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN docs ON compound_records.doc_id = docs.doc_id\nJOIN target_dictionary ON activities.tid = target_dictionary.tid\nWHERE parent.chembl_id = 'CHEMBL3182437'\n  AND target_dictionary.chembl_id = 'CHEMBL3430885'\n  AND activities.standard_type = 'IC50'\nORDER BY \n  child.chembl_id ASC, \n  compound_structures.canonical_smiles ASC, \n  compound_records.compound_key ASC, \n  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) ASC, \n  assays.description ASC, \n  activities.standard_type ASC, \n  activities.standard_relation ASC, \n  activities.standard_value ASC, \n  activities.standard_units ASC, \n  activities.activity_comment ASC, \n  target_dictionary.chembl_id ASC, \n  target_dictionary.pref_name ASC, \n  target_dictionary.organism ASC"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/all_single_protein_targets_accession_sequence.json",
+  "case_id": "all_single_protein_targets_accession_sequence",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"sql\": \"SELECT\\n  td.chembl_id AS target_chembl_id,\\n  td.pref_name AS target_name,\\n  td.target_type AS target_type,\\n  cs.accession AS protein_accession,\\n  cs.sequence AS protein_sequence\\nFROM target_dictionary td\\nJOIN target_components tc ON tc.tid = td.tid\\nJOIN component_sequences cs ON cs.component_id = tc.component_id\\nWHERE td.target_type = 'SINGLE PROTEIN'\\nORDER BY target_chembl_id, target_name, target_type, protein_accession, protein_sequence\"}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.target_type AS target_type,\n  cs.accession AS protein_accession,\n  cs.sequence AS protein_sequence\nFROM target_dictionary td\nJOIN target_components tc ON tc.tid = td.tid\nJOIN component_sequences cs ON cs.component_id = tc.component_id\nWHERE td.target_type = 'SINGLE PROTEIN'\nORDER BY target_chembl_id, target_name, target_type, protein_accession, protein_sequence"
+    }
+  }
+}

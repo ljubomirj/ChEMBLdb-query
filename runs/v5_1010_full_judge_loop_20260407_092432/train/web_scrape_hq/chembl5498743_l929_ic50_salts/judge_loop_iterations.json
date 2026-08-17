@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Show all IC50 activity records for CHEMBL5498743 and its salt forms against target CHEMBL612267. Include the compound ChEMBL ID, canonical SMILES, standard relation, standard value, standard units, assay ChEMBL ID, assay description, and the document PubMed ID or DOI.",
+    "sql": "WITH target_assays AS (SELECT assay_id FROM assays WHERE tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL612267')), compound_set AS (SELECT molregno, chembl_id, pref_name FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5498743' UNION SELECT child.molregno, child.chembl_id, child.pref_name FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL5498743'), documents AS (SELECT doc_id, pubmed_id, doi FROM docs) SELECT DISTINCT cs.molregno, cs.chembl_id, cs.canonical_smiles, a.standard_relation, a.standard_value, a.standard_units, assays.chembl_id AS assay_chembl_id, assays.description, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM compound_set JOIN activities a ON a.molregno = compound_set.molregno JOIN target_assays ta ON a.assay_id = ta.assay_id JOIN compound_structures cs ON cs.molregno = compound_set.molregno JOIN assays ON assays.assay_id = a.assay_id LEFT JOIN documents d ON d.doc_id = a.doc_id WHERE a.standard_type = 'IC50'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Show all IC50 activity records for CHEMBL5498743 and its salt forms against target CHEMBL612267. Include the compound ChEMBL ID, canonical SMILES, standard relation, standard value, standard units, assay ChEMBL ID, assay description, and the document PubMed ID or DOI.",
+    "sql": "WITH target_assays AS (\n    SELECT assay_id\n    FROM assays\n    WHERE tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL612267')\n), compound_set AS (\n    SELECT parent.molregno, parent.chembl_id, parent.pref_name\n    FROM molecule_dictionary parent\n    WHERE parent.chembl_id = 'CHEMBL5498743'\n    UNION\n    SELECT child.molregno, child.chembl_id, child.pref_name\n    FROM molecule_dictionary parent\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n    JOIN molecule_dictionary child ON child.molregno = mh.molregno\n    WHERE parent.chembl_id = 'CHEMBL5498743'\n)\nSELECT DISTINCT\n    cs.molregno,\n    md.chembl_id,\n    cs.canonical_smiles,\n    a.standard_relation,\n    a.standard_value,\n    a.standard_units,\n    assays.chembl_id AS assay_chembl_id,\n    assays.description,\n    COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM compound_set md\nJOIN activities a ON a.molregno = md.molregno\nJOIN target_assays ta ON a.assay_id = ta.assay_id\nJOIN compound_structures cs ON cs.molregno = md.molregno\nJOIN assays ON assays.assay_id = a.assay_id\nLEFT JOIN docs d ON d.doc_id = a.doc_id\nWHERE a.standard_type = 'IC50'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n18 | 3 | 0 | UNION USING TEMP B-TREE\n25 | 18 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n30 | 18 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n36 | 18 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n67 | 0 | 32 | SCAN md\n70 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n80 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n92 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n104 | 0 | 0 | SCALAR SUBQUERY 1\n109 | 104 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n118 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n127 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n157 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "canonical_smiles",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "assay_chembl_id",
+      "description",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

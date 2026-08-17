@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4513219_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query successfully returns activity data for assay CHEMBL4513219. The result set is large (68,570 rows), which is consistent with a high-throughput screening assay. The columns match the user's request for exact activity values (standard_type, standard_relation, standard_value, standard_units) along with compound identifiers (canonical_smiles, chembl_id). The sample rows show valid data with standard_relation '=' and non-null standard_values as requested. The query correctly joins molecule_dictionary, compound_structures, activities, and assays tables, and applies the appropriate filters.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query successfully returns activity data for assay CHEMBL4513219. The result set is large (68,570 rows), which is consistent with a high-throughput screening assay. The columns match the user's request for exact activity values (standard_type, standard_relation, standard_value, standard_units) along with compound identifiers (canonical_smiles, chembl_id). The sample rows show valid data with standard_relation '=' and non-null standard_values as requested. The query correctly joins molecule_dictionary, compound_structures, activities, and assays tables, and applies the appropriate filters.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/pf_judge.generated_artifact_record.json"
+  }
+}

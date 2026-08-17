@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_isocitrate_dehydrogenase_nadp_cytoplasmic.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_isocitrate_dehydrogenase_nadp_cytoplasmic",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "90b70d5a632eff22",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound ChEMBL IDs, canonical SMILES, compound keys, PubMed IDs or DOIs, assay descriptions, activity standard types, relations, values, units, comments, target ChEMBL IDs, target names, and target organisms. Join molecule_dictionary to compound_records, then docs, then activities, then assays, then target_dictionary. Join compound_structures to molecule_dictionary to obtain canonical SMILES. Filter for activities with standard_type equal to IC50 and standard_units equal to nM. Filter for target_dictionary.pref_name equal to 'Isocitrate dehydrogenase [NADP] cytoplasmic' and target_dictionary.organism equal to 'Homo sapiens'. Return all columns without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound ChEMBL IDs, canonical SMILES, compound keys, PubMed IDs or DOIs, assay descriptions, activity standard types, relations, values, units, comments, target ChEMBL IDs, target names, and target organisms. Join molecule_dictionary to compound_records, then docs, then activities, then assays, then target_dictionary. Join compound_structures to molecule_dictionary to obtain canonical SMILES. Filter for activities with standard_type equal to IC50 and standard_units equal to nM. Filter for target_dictionary.pref_name equal to 'Isocitrate dehydrogenase [NADP] cytoplasmic' and target_dictionary.organism equal to 'Homo sapiens'. Return all columns without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

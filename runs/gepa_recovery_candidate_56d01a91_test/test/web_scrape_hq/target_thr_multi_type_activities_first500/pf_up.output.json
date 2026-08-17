@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_thr_multi_type_activities_first500.json",
+  "case_id": "target_thr_multi_type_activities_first500",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 500 exact activity measurements for compounds tested against thyroid hormone receptor CHEMBL1862. Join molecule_dictionary to activities, then to assays, then to target_dictionary filtering by target chembl_id CHEMBL1862. Join compound_structures as an INNER JOIN to require canonical_smiles. Filter to exact measurements where standard_relation is '='. Return columns chembl_id, canonical_smiles, standard_type, standard_value, standard_units. Sort by potency ascending (standard_value). Limit to 500 rows. Do not deduplicate.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 500 exact activity measurements for compounds tested against thyroid hormone receptor CHEMBL1862. Join molecule_dictionary to activities, then to assays, then to target_dictionary filtering by target chembl_id CHEMBL1862. Join compound_structures as an INNER JOIN to require canonical_smiles. Filter to exact measurements where standard_relation is '='. Return columns chembl_id, canonical_smiles, standard_type, standard_value, standard_units. Sort by potency ascending (standard_value). Limit to 500 rows. Do not deduplicate."
+    }
+  }
+}

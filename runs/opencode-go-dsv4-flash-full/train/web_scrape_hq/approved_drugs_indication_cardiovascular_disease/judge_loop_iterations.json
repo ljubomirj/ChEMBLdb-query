@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for cardiovascular disease, returning one row per indication. Required columns: molecule_dictionary.chembl_id (as ChEMBL ID), molecule_dictionary.pref_name (as drug name), compound_structures.canonical_smiles (as structure), drug_indication.mesh_heading, drug_indication.efo_term, drug_indication.max_phase_for_ind. Filter to approved drugs (molecule_dictionary.max_phase = 4) where the indication description (mesh_heading or efo_term) contains the word 'cardiovascular' (case-insensitive). Use INNER JOIN from molecule_dictionary to drug_indication on molregno, and INNER JOIN from molecule_dictionary to compound_structures on molregno. Return all matching rows without any limit.",
+    "sql": "SELECT md.chembl_id AS \"ChEMBL ID\", md.pref_name AS \"drug name\", cs.canonical_smiles AS \"structure\", di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%cardiovascular%' OR di.efo_term LIKE '%cardiovascular%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 205,
+    "res_columns": [
+      "ChEMBL ID",
+      "drug name",
+      "structure",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "List all approved drugs (max_phase = 4) that are indicated for cardiovascular disease. For each drug, return the ChEMBL ID (chembl_id from molecule_dictionary), drug name (pref_name from molecule_dictionary), canonical SMILES (canonical_smiles from compound_structures), and indication details: mesh_heading, efo_term, and max_phase_for_ind (all from drug_indication). Only include indications that are themselves approved (max_phase_for_ind = 4). The indication must be a cardiovascular disease; apply a broad, case\u2011insensitive filter: the mesh_heading or efo_term should contain at least one of the following terms: 'cardiovascular', 'heart', 'cardiac', 'myocardial', 'hypertension', 'arrhythmia', 'atherosclerosis', 'stroke', 'coronary', 'vascular', 'atrial fibrillation', 'heart failure', 'peripheral vascular'. Use INNER JOIN from molecule_dictionary to drug_indication on molregno, and INNER JOIN from molecule_dictionary to compound_structures on molregno. Return all matching rows without any limit. Do not add any extra filters (e.g., no unit restrictions, no relation restrictions, no confidence_score filter).",
+    "sql": "SELECT md.chembl_id AS \"ChEMBL ID\", md.pref_name AS \"drug name\", cs.canonical_smiles AS \"structure\", di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 4 AND (LOWER(di.mesh_heading) LIKE '%cardiovascular%' OR LOWER(di.mesh_heading) LIKE '%heart%' OR LOWER(di.mesh_heading) LIKE '%cardiac%' OR LOWER(di.mesh_heading) LIKE '%myocardial%' OR LOWER(di.mesh_heading) LIKE '%hypertension%' OR LOWER(di.mesh_heading) LIKE '%arrhythmia%' OR LOWER(di.mesh_heading) LIKE '%atherosclerosis%' OR LOWER(di.mesh_heading) LIKE '%stroke%' OR LOWER(di.mesh_heading) LIKE '%coronary%' OR LOWER(di.mesh_heading) LIKE '%vascular%' OR LOWER(di.mesh_heading) LIKE '%atrial fibrillation%' OR LOWER(di.mesh_heading) LIKE '%heart failure%' OR LOWER(di.mesh_heading) LIKE '%peripheral vascular%' OR LOWER(di.efo_term) LIKE '%cardiovascular%' OR LOWER(di.efo_term) LIKE '%heart%' OR LOWER(di.efo_term) LIKE '%cardiac%' OR LOWER(di.efo_term) LIKE '%myocardial%' OR LOWER(di.efo_term) LIKE '%hypertension%' OR LOWER(di.efo_term) LIKE '%arrhythmia%' OR LOWER(di.efo_term) LIKE '%atherosclerosis%' OR LOWER(di.efo_term) LIKE '%stroke%' OR LOWER(di.efo_term) LIKE '%coronary%' OR LOWER(di.efo_term) LIKE '%vascular%' OR LOWER(di.efo_term) LIKE '%atrial fibrillation%' OR LOWER(di.efo_term) LIKE '%heart failure%' OR LOWER(di.efo_term) LIKE '%peripheral vascular%')",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n114 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n123 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 587,
+    "res_columns": [
+      "ChEMBL ID",
+      "drug name",
+      "structure",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.6,
+    "judge_decision": false
+  }
+]

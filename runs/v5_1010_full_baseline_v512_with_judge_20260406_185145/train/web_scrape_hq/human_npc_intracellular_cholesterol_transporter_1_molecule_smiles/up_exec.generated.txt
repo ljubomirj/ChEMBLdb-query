@@ -1,0 +1,9 @@
+Select molecule_chembl_id as compound_chembl_id, compound_structures.canonical_smiles as canonical_smiles
+Join molecule_dictionary m on m.molregno = a.molregno
+Join activities a on a.molregno = m.molregno and a.assay_id = a.assay_id
+Join assays a on a.assay_id = a.assay_id
+Join target_dictionary t on t.tid = a.tid
+Filter t.pref_name = 'Niemann-Pick C1 intracellular cholesterol transporter 1' and a.assay_type = 'B' and a.standard_relation = '=' and a.standard_value is not null
+Join compound_structures cs on cs.molregno = m.molregno
+Order by compound_chembl_id
+Limit 2000

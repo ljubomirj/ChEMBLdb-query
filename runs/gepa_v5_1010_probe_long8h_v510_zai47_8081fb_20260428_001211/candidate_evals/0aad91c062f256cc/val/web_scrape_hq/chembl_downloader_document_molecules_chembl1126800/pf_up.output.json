@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_0aad91c062f256cc.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1126800.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1126800",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "0aad91c062f256cc",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: molecule_dictionary.chembl_id AS molecule_chembl_id, molecule_dictionary.pref_name AS molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles\\nSource: docs, compound_records, molecule_dictionary, compound_structures\\nJoin: docs.doc_id = compound_records.doc_id, compound_records.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno\\nFilter: docs.chembl_id IS 'CHEMBL1126800'\\nSort: molecule_chembl_id ASC\\nLimit: NULL\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: molecule_dictionary.chembl_id AS molecule_chembl_id, molecule_dictionary.pref_name AS molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles\nSource: docs, compound_records, molecule_dictionary, compound_structures\nJoin: docs.doc_id = compound_records.doc_id, compound_records.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno\nFilter: docs.chembl_id IS 'CHEMBL1126800'\nSort: molecule_chembl_id ASC\nLimit: NULL"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/data1/data/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/data1/data/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_ugt1a9_first200.json",
+  "case_id": "metabolism_enzyme_ugt1a9_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT cs.canonical_smiles, cr_sub.compound_name AS substrate_compound_name, cr_drug.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m LEFT JOIN compound_structures cs ON cs.molregno = (SELECT molregno FROM compound_records WHERE record_id = m.substrate_record_id) LEFT JOIN compound_records cr_sub ON cr_sub.record_id = m.substrate_record_id LEFT JOIN compound_records cr_drug ON cr_drug.record_id = m.drug_record_id WHERE m.enzyme_name = 'UGT1A9' ORDER BY cs.canonical_smiles ASC, cr_sub.compound_name ASC, cr_drug.compound_name ASC, m.met_conversion ASC, m.pathway_key ASC, m.organism ASC, m.enzyme_name ASC LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT cs.canonical_smiles, cr_sub.compound_name AS substrate_compound_name, cr_drug.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m LEFT JOIN compound_structures cs ON cs.molregno = (SELECT molregno FROM compound_records WHERE record_id = m.substrate_record_id) LEFT JOIN compound_records cr_sub ON cr_sub.record_id = m.substrate_record_id LEFT JOIN compound_records cr_drug ON cr_drug.record_id = m.drug_record_id WHERE m.enzyme_name = 'UGT1A9' ORDER BY cs.canonical_smiles ASC, cr_sub.compound_name ASC, cr_drug.compound_name ASC, m.met_conversion ASC, m.pathway_key ASC, m.organism ASC, m.enzyme_name ASC LIMIT 200"
+    }
+  }
+}

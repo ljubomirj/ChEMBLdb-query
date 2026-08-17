@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_aa2acc16d807b785.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_neuropeptide_s_receptor_molecule_smiles.json",
+  "case_id": "human_neuropeptide_s_receptor_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "aa2acc16d807b785",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN activities act ON md.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5162' AND a.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN activities act ON md.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5162' AND a.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id"
+    }
+  }
+}

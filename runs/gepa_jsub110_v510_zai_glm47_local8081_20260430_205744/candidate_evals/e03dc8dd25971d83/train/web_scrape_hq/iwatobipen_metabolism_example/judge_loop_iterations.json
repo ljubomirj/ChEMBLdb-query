@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Select: canonical_smiles, compound_name (from substrate_record_id join), met_conversion, pathway_key. Source: metabolism, compound_records, compound_structures. Join: metabolism.substrate_record_id = compound_records.record_id AND compound_records.molregno = compound_structures.molregno. Sort: None. Limit: 200 rows.",
+    "sql": "SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno LIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SCAN m\n9 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n16 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 200,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly implements the requested join path (metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno) and returns the first 200 rows without deduplication. The output includes all four requested columns: canonical_smiles, compound_name (from substrate), met_conversion, and pathway_key. The execution plan shows efficient index usage and the result set contains 200 rows as expected.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

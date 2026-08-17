@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of compounds tested in assay CHEMBL1741325 that have an exact activity measurement (standard_relation '='). For each matching compound, include its canonical SMILES structure and the exact activity details (standard_type, standard_value, and standard_units).",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, a.standard_type, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1741325' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7295,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

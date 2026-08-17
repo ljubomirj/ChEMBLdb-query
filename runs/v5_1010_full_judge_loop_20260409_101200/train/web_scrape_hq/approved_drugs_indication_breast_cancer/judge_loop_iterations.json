@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for breast cancer. For each drug, return the following details: the ChEMBL ID, the preferred name, the canonical SMILES structure, the MeSH heading for the indication, the MeSH ID, and the EFO term. Ensure that only approved drugs (max_phase = 4) with a breast cancer indication (mesh_heading contains 'breast cancer' or similar, or efo_term related to breast cancer) are included.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.mesh_id, di.efo_term FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%Breast%' OR di.efo_term LIKE '%breast%');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n17 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n26 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 700,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

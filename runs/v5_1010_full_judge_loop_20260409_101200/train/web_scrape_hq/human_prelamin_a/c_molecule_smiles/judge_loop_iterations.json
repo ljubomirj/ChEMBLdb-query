@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds that have been tested in assays against the target with ChEMBL ID CHEMBL1293235 (Prelamin-A/C), where the assay organism is human. For each qualifying compound, return its ChEMBL ID, preferred name, and canonical SMILES structure.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293235') AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n22 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n32 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 0 | SCALAR SUBQUERY 1\n55 | 50 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)",
+    "res_row_count": 36195,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

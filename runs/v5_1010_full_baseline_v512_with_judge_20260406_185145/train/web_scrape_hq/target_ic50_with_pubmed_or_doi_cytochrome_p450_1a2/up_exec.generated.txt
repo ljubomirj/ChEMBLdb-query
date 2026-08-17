@@ -1,0 +1,13 @@
+Select molecule_chembl_id as compound_chembl_id, compound_structures.canonical_smiles, compound_records.compound_key, COALESCE(docs.pubmed_id, docs.doi) as pubmed_id_or_doi, assays.description as assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, target_dictionary.organism as target_organism
+Join activities on activities.record_id = compound_records.record_id
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = activities.molregno
+Join compound_records on compound_records.record_id = activities.record_id
+Join docs on docs.doc_id = compound_records.doc_id
+Filter target_dictionary.pref_name = 'Cytochrome P450 1A2'
+Filter activities.standard_type = 'IC50'
+Filter activities.standard_relation = '='
+Filter activities.standard_units = 'nM'
+Filter target_dictionary.organism = 'Homo sapiens'
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

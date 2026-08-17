@@ -19,7 +19,7 @@ from typing import List, Dict, Any
 # Configuration
 DB_PATH = Path("/Users/ljubomir/ChEMBLdb-query/database/latest/chembl_36/chembl_36_sqlite/chembl_36.db")
 FIXTURES_BASE = Path("/Users/ljubomir/ChEMBLdb-query/tests/fixtures")
-CASES_FILE = Path("/Users/ljubomir/ChEMBLdb-query/tests/cases/web_scrape_hq_cases.json")
+CASES_FILE = Path("/Users/ljubomir/ChEMBLdb-query/cases/registries/archive/web_scrape_hq_cases.json")
 
 # Existing cases to avoid duplicates
 with open(CASES_FILE) as f:

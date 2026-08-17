@@ -1,0 +1,32 @@
+[
+  {
+    "n": 1,
+    "up": "Return all IC50 activity values (with units) for CHEMBL3338195 and all its salt forms tested against the HepG2 cell line target CHEMBL395. Include the molecule ChEMBL ID for each compound.",
+    "sql": "WITH main_mol AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL3338195'), related_mols AS (SELECT parent_molregno FROM main_mol UNION SELECT parent_molregno FROM molecule_hierarchy mh JOIN main_mol mm ON mh.molregno = mm.molregno UNION SELECT molregno FROM molecule_hierarchy mh JOIN main_mol mm ON mh.parent_molregno = mm.molregno UNION SELECT molregno FROM main_mol) SELECT DISTINCT md.chembl_id, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN related_mols rm ON a.molregno = rm.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL395' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: ambiguous column name: molregno",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "ambiguous column name: molregno",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "For CHEMBL3338195 and all its salt forms, return the ChEMBL ID of the molecule and the IC50 activity values (with standard_units) from assays run against the target CHEMBL395.",
+    "sql": "WITH base_mol AS (\n    SELECT molregno\n    FROM molecule_dictionary\n    WHERE chembl_id = 'CHEMBL3338195'\n),\nall_related AS (\n    -- Include the parent itself\n    SELECT molregno FROM base_mol\n    UNION\n    -- Include all children (salts) where the input molecule is the parent\n    SELECT mh.molregno\n    FROM molecule_hierarchy mh\n    JOIN base_mol bm ON mh.parent_molregno = bm.molregno\n)\nSELECT \n    md.chembl_id, \n    a.standard_value, \n    a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN all_related arm ON a.molregno = arm.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL395'\n    AND a.standard_type = 'IC50'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n2 | 0 | 0 | CO-ROUTINE all_related\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n21 | 16 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n26 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n50 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n55 | 0 | 32 | SCAN arm\n58 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n77 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 6,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

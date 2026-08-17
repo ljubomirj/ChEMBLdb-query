@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows for the human single-protein target CHEMBL1955 (Vascular endothelial growth factor receptor 3) where the standard type is IC50, the standard relation is exactly '=', and the pChEMBL value is not null. The output should include assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1955') SELECT assays.chembl_id AS assay_chembl_id, target.target_type, target.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target ON assays.tid = target.tid JOIN molecule_dictionary md ON activities.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY md.chembl_id, assays.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 572,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

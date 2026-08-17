@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles.json",
+  "case_id": "human_cytochrome_p450_3a4_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 19,582 compounds tested against human Cytochrome P450 3A4 with their ChEMBL IDs and canonical SMILES. The query correctly joins activities, assays, target_dictionary, compound_records, and molecule_dictionary, filtering for target_dictionary.pref_name = 'Cytochrome P450 3A4' and assay_organism = 'Homo sapiens'. The LEFT JOIN to compound_structures ensures canonical SMILES are included. The sample rows show valid ChEMBL IDs and SMILES. However, the result includes many compounds without activity data (e.g., CHEMBL10, CHEMBL1000) that may not have been tested for activity against the target, only associated via the assay. The query does not filter for activities with a standard_relation of '=' or '>' (indicating IC50 values) or pchembl_value, which would ensure potency data. The user likely expects compounds with measured activity (e.g., IC50), not just any association. The result may overcount compounds without activity values. The sample rows include compounds with SMILES but no activity context, suggesting the query is too broad. The task is to judge if this is sufficient for the user's intent (compounds tested against the target with IDs and SMILES). While the query meets the literal request, it may not align with the implied intent of 'tested' (i.e., having activity data). The row count is high, and the sample rows lack activity context, indicating potential noise. The decision is whether to stop iterating or refine further.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 19,582 compounds tested against human Cytochrome P450 3A4 with their ChEMBL IDs and canonical SMILES. The query correctly joins activities, assays, target_dictionary, compound_records, and molecule_dictionary, filtering for target_dictionary.pref_name = 'Cytochrome P450 3A4' and assay_organism = 'Homo sapiens'. The LEFT JOIN to compound_structures ensures canonical SMILES are included. The sample rows show valid ChEMBL IDs and SMILES. However, the result includes many compounds without activity data (e.g., CHEMBL10, CHEMBL1000) that may not have been tested for activity against the target, only associated via the assay. The query does not filter for activities with a standard_relation of '=' or '>' (indicating IC50 values) or pchembl_value, which would ensure potency data. The user likely expects compounds with measured activity (e.g., IC50), not just any association. The result may overcount compounds without activity values. The sample rows include compounds with SMILES but no activity context, suggesting the query is too broad. The task is to judge if this is sufficient for the user's intent (compounds tested against the target with IDs and SMILES). While the query meets the literal request, it may not align with the implied intent of 'tested' (i.e., having activity data). The row count is high, and the sample rows lack activity context, indicating potential noise. The decision is whether to stop iterating or refine further.",
+      "score": 0.65,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

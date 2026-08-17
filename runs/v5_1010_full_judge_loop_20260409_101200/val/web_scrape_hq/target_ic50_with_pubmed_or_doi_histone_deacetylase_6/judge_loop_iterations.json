@@ -1,0 +1,66 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact IC50 activity values (in nM) for compounds tested in the HDAC6 assay with ChEMBL ID CHEMBL1865. Only include activities that are exact (standard_relation = '='), have a numeric standard_value, are in nM units, and are associated with a document that has a PubMed ID. Exclude rows where the standard_value is NULL. For each matching activity, list the following columns: the compound's ChEMBL ID (molecule_dictionary.chembl_id), its canonical SMILES (from compound_structures), the compound key (from compound_records), the document's PubMed ID (from docs), the assay description (from assays), and the target's preferred name and organism (from target_dictionary). Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nWHERE\n  ass.chembl_id = 'CHEMBL1865'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n28 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n42 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n60 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n69 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n95 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "For the target HDAC6 (ChEMBL ID CHEMBL1865), return the exact IC50 activity values (in nM) for compounds that have a canonical SMILES and are from a PubMed-indexed document. For each matching activity, list the compound's ChEMBL ID, canonical SMILES, compound key, PubMed ID (use DOI only if PubMed ID is missing), assay description, and target name and organism.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nWHERE\n  td.chembl_id = 'CHEMBL1865'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n68 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n95 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5359,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "For the target HDAC6 (ChEMBL ID CHEMBL1865), return the exact IC50 activity values (in nM) for compounds that have a canonical SMILES and are from a PubMed-indexed document. For each matching activity, list the compound's ChEMBL ID, canonical SMILES, compound key, PubMed ID (use DOI only if PubMed ID is missing), assay description, target name and organism, and the IC50 activity value in nM.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism,\n  a.standard_value AS ic50_nM\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nWHERE\n  td.chembl_id = 'CHEMBL1865'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n68 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n96 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5376,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

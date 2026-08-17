@@ -1,0 +1,111 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and SMILES of compounds that were tested in assays performed on human protein targets, specifically for human tyrosine\u2011protein kinase JAK1 (CHEMBL2835), in assays that target Homo sapiens, without imposing additional filters on assay type, standard relations, units, activity values, or document types. The query should join the activities table with the assays, molecule structures, and target information, and return each matching compound\u2019s public ChEMBL identifier and its canonical SMILES.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL2835' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL IDs (chembl_id) and canonical SMILES for compounds that have been tested in assays performed on human protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835) in assays whose target is Homo sapiens. Return each matching compound once, without applying any additional filters (e.g., activity type, standard units, activity values, document types, confidence scores). The result should include the compound\u2019s public ChEMBL identifier (from compound_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles), and ensure only assays whose assay_organism equals 'Homo sapiens' are considered.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2835' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find the public ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested in assays performed on human (Homo sapiens) protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835). Return one row per qualifying compound (no additional filters, no activity type restrictions, no unit restrictions, and no document type restrictions). The query must ensure that only activities linked to the target JAK1 in human assays contribute to the result, and the output must include the compound's ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles).",
+    "sql": "WITH JAK1_Assays AS (\n  SELECT a.molregno\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL2835' AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles\nFROM JAK1_Assays ja\nJOIN molecule_dictionary md ON ja.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find the public ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested in assays performed on human (Homo sapiens) protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835). Return one row per qualifying compound (no additional filters, no activity type restrictions, no unit restrictions, and no document type restrictions). The query must ensure that only activities linked to the target JAK1 in human assays contribute to the result, and the output must include the compound's ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles).",
+    "sql": "WITH JAK1_target AS (\n  SELECT td.tid\n  FROM target_dictionary td\n  WHERE td.chembl_id = 'CHEMBL2835'\n)\nSELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN JAK1_target jt ON ass.tid = jt.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find the public ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested in assays performed on human (Homo sapiens) protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835). Return one row per qualifying compound (no additional filters, no activity type restrictions, no unit restrictions, and no document type restrictions). The query must ensure that only activities linked to the target JAK1 in human assays contribute to the result, and the output must include the compound's ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles).",
+    "sql": "WITH JAK1 AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2835') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN JAK1 j ON ass.tid = j.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find the public ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested in assays performed on human (Homo sapiens) protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835). Return one row per qualifying compound (no additional filters, no activity type restrictions, no unit restrictions, and no document type restrictions). The query must ensure that only activities linked to the target JAK1 in human assays contribute to the result, and the output must include the compound's ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles).",
+    "sql": "WITH JAK1 AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2835') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN JAK1 j ON ass.tid = j.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Find the public ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested in assays performed on human (Homo sapiens) protein targets, specifically for the human tyrosine\u2011protein kinase JAK1 (CHEMBL2835). Return one row per qualifying compound (no additional filters, no activity type restrictions, no unit restrictions, and no document type restrictions). The query must ensure that only activities linked to the target JAK1 in human assays contribute to the result, and the output must include the compound's ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles).",
+    "sql": "WITH JAK1 AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2835') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN JAK1 j ON ass.tid = j.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13287,
+    "res_columns": [
+      "chembl_id",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

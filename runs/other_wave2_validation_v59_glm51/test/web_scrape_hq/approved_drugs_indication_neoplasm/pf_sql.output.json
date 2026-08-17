@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_neoplasm.json",
+  "case_id": "approved_drugs_indication_neoplasm",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.mesh_heading AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary md\nJOIN drug_indication di ON di.molregno = md.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE md.max_phase = 4\n  AND di.mesh_heading LIKE '%neoplasm%'\nORDER BY\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.mesh_heading,\n  di.max_phase_for_ind;\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.mesh_heading AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary md\nJOIN drug_indication di ON di.molregno = md.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE md.max_phase = 4\n  AND di.mesh_heading LIKE '%neoplasm%'\nORDER BY\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.mesh_heading,\n  di.max_phase_for_ind;"
+    }
+  }
+}

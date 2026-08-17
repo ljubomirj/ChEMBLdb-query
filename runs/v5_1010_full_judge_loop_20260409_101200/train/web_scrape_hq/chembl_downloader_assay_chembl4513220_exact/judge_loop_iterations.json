@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact activity values, activity metadata (standard relation, units, assay type, target CHEMBL ID, organism), and canonical SMILES for all compounds tested in assay CHEMBL4513220. Include all activity rows, even if standard_value or relation are null. Do not deduplicate.",
+    "sql": "SELECT\n  a.standard_value,\n  a.standard_relation,\n  a.standard_units,\n  a.standard_type,\n  ass.assay_type,\n  td.chembl_id AS target_chembl_id,\n  ass.assay_organism,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nLEFT JOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE ass.chembl_id = 'CHEMBL4513220';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 64811,
+    "res_columns": [
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "standard_type",
+      "assay_type",
+      "target_chembl_id",
+      "assay_organism",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

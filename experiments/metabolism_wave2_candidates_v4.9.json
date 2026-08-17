@@ -1,0 +1,221 @@
+{
+  "total_candidates": 27,
+  "candidates": [
+    {
+      "case_id": "metabolism_homo_sapiens_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Homo sapiens",
+      "organism": "Homo sapiens",
+      "row_count": 200,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Homo sapiens'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_rattus_norvegicus_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Rattus norvegicus",
+      "organism": "Rattus norvegicus",
+      "row_count": 101,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Rattus norvegicus'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_mus_musculus_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Mus musculus",
+      "organism": "Mus musculus",
+      "row_count": 54,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Mus musculus'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_callithrix_jacchus_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Callithrix jacchus",
+      "organism": "Callithrix jacchus",
+      "row_count": 14,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Callithrix jacchus'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_macaca_fascicularis_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Macaca fascicularis",
+      "organism": "Macaca fascicularis",
+      "row_count": 11,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Macaca fascicularis'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_oryctolagus_cuniculus_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Oryctolagus cuniculus",
+      "organism": "Oryctolagus cuniculus",
+      "row_count": 6,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Oryctolagus cuniculus'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_canis_lupus_familiaris_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for organism=Canis lupus familiaris",
+      "organism": "Canis lupus familiaris",
+      "row_count": 5,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.organism = 'Canis lupus familiaris'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp3a4_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP3A4",
+      "enzyme_name": "CYP3A4",
+      "row_count": 174,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP3A4'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2c9_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2C9",
+      "enzyme_name": "CYP2C9",
+      "row_count": 59,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2C9'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp3a_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP3A",
+      "enzyme_name": "CYP3A",
+      "row_count": 53,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP3A'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2d6_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2D6",
+      "enzyme_name": "CYP2D6",
+      "row_count": 53,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2D6'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2c19_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2C19",
+      "enzyme_name": "CYP2C19",
+      "row_count": 31,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2C19'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp1a2_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP1A2",
+      "enzyme_name": "CYP1A2",
+      "row_count": 31,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP1A2'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cytochrome_p450s_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=Cytochrome P450s",
+      "enzyme_name": "Cytochrome P450s",
+      "row_count": 28,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'Cytochrome P450s'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2b6_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2B6",
+      "enzyme_name": "CYP2B6",
+      "row_count": 28,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2B6'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_p450_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=P450",
+      "enzyme_name": "P450",
+      "row_count": 20,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'P450'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp3a4_cyp3a5_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP3A4/CYP3A5",
+      "enzyme_name": "CYP3A4/CYP3A5",
+      "row_count": 22,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP3A4/CYP3A5'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2c8_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2C8",
+      "enzyme_name": "CYP2C8",
+      "row_count": 19,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2C8'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_ugt_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=UGT",
+      "enzyme_name": "UGT",
+      "row_count": 16,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'UGT'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp3a5_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP3A5",
+      "enzyme_name": "CYP3A5",
+      "row_count": 14,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP3A5'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_ugt1a9_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=UGT1A9",
+      "enzyme_name": "UGT1A9",
+      "row_count": 13,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'UGT1A9'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_ugt1a10_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=UGT1A10",
+      "enzyme_name": "UGT1A10",
+      "row_count": 13,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'UGT1A10'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2e1_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2E1",
+      "enzyme_name": "CYP2E1",
+      "row_count": 13,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2E1'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp2a6_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP2A6",
+      "enzyme_name": "CYP2A6",
+      "row_count": 12,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP2A6'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_p450_reductase_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=P450 reductase",
+      "enzyme_name": "P450 reductase",
+      "row_count": 11,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'P450 reductase'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_cyp3a4_3a5_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=CYP3A4/3A5",
+      "enzyme_name": "CYP3A4/3A5",
+      "row_count": 11,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'CYP3A4/3A5'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    },
+    {
+      "case_id": "metabolism_enzyme_ugt1a1_first200",
+      "template": "metabolism_first_n_with_parent_name_enrichment",
+      "description": "First 200 metabolism records for enzyme=UGT1A1",
+      "enzyme_name": "UGT1A1",
+      "row_count": 10,
+      "sql": "SELECT cs.canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       md.pref_name AS parent_compound_name,\n       m.met_conversion,\n       m.pathway_key,\n       m.organism,\n       m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md ON mh.parent_molregno = md.molregno\nWHERE m.enzyme_name = 'UGT1A1'\n  AND cs.canonical_smiles IS NOT NULL\nLIMIT 200"
+    }
+  ]
+}

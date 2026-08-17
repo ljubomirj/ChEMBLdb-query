@@ -1,0 +1,17 @@
+SELECT 
+  assays.chembl_id AS assay_chembl_id, 
+  assays.tid, 
+  assays.description AS assay_description, 
+  target_dictionary.pref_name AS target_name, 
+  target_dictionary.organism AS target_organism, 
+  docs.journal, 
+  docs.year, 
+  docs.volume, 
+  docs.first_page, 
+  docs.doi
+FROM assays
+JOIN target_dictionary ON assays.tid = target_dictionary.tid
+JOIN docs ON assays.doc_id = docs.doc_id
+WHERE assays.assay_type = 'B' 
+  AND assays.tid = 165
+ORDER BY assays.chembl_id ASC, assays.tid ASC, docs.journal ASC, docs.year ASC, docs.doi ASC

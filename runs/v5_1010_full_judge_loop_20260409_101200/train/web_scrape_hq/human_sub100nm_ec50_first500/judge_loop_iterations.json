@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 500 distinct compounds from the ChEMBL database that have an EC50 activity measurement below 100 nM against a target of type 'SINGLE PROTEIN' from Homo sapiens (tax_id 9606). For each compound, return the ChEMBL identifier, canonical SMILES, EC50 value, EC50 units, and the target ChEMBL identifier.",
+    "sql": "WITH ranked_activities AS (SELECT a.molregno, cs.canonical_smiles, a.standard_value, a.standard_units, td.chembl_id AS target_chembl_id, ROW_NUMBER() OVER (PARTITION BY a.molregno ORDER BY a.standard_value ASC) AS rn FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'EC50' AND a.standard_units = 'nM' AND a.standard_value < 100 AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606) SELECT molregno AS molecule_chembl_id, canonical_smiles, standard_value AS ec50_value, standard_units AS ec50_units, target_chembl_id FROM ranked_activities WHERE rn = 1 LIMIT 500;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE ranked_activities\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n15 | 5 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 5 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 5 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 5 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 5 | 0 | USE TEMP B-TREE FOR ORDER BY\n78 | 2 | 130 | SCAN (subquery-3)\n130 | 0 | 130 | SCAN ranked_activities",
+    "res_row_count": 500,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "ec50_value",
+      "ec50_units",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

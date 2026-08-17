@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs whose mechanism of action is an antagonist. For each drug, return the following details: the ChEMBL ID of the drug (molecule_chembl_id), the drug's preferred name (pref_name), the ChEMBL ID of the target (target_chembl_id), and the target's preferred name (target_pref_name). A drug is considered approved if its maximum phase (max_phase) is equal to 4. The mechanism of action is considered an antagonist if the action_type is 'ANTAGONIST'.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name FROM drug_mechanism dm JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE dm.action_type = 'ANTAGONIST' AND md.max_phase = 4",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 498,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "target_chembl_id",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

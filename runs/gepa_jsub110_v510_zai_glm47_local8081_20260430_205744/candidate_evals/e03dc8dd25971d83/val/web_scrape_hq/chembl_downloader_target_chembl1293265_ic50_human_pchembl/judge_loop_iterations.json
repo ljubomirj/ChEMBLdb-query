@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows for target CHEMBL1293265. Select assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Source activities, assays, target_dictionary, molecule_dictionary, and compound_structures. Join activities to assays on assay_id, assays to target_dictionary on tid, activities to molecule_dictionary on molregno, and molecule_dictionary to compound_structures on molregno. Filter by target ChEMBL ID 'CHEMBL1293265', standard type 'IC50', standard relation '=', and pChEMBL value not null. Sort by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. Limit to 1000 rows.",
+    "sql": "SELECT\n  a.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value\nFROM activities act\nINNER JOIN assays a\n  ON act.assay_id = a.assay_id\nINNER JOIN target_dictionary td\n  ON a.tid = td.tid\nINNER JOIN molecule_dictionary md\n  ON act.molregno = md.molregno\nINNER JOIN compound_structures cs\n  ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1293265'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC, a.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 58,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully returned 58 rows of IC50 activity data for the specified target (CHEMBL1293265). All requested columns are present: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. The filters were correctly applied: standard_type is 'IC50', standard_relation is '=', and pchembl_value is not null. The results are ordered by molecule_chembl_id and assay_chembl_id as requested. The row count (58) is well below the requested limit of 1000, indicating all available data for this target has been returned. The target_type is correctly identified as 'SINGLE PROTEIN' and tax_id as 9606 (Homo sapiens), matching the user's request for a human single-protein target.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

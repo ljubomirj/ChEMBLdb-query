@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) whose mechanism of action is classified as MODULATOR. For each drug, include the drug name (pref_name), ChEMBL ID (chembl_id), canonical SMILES, mechanism description, target ChEMBL ID (target_chembl_id), and target preferred name (target_pref_name).",
+    "sql": "SELECT DISTINCT\n  md.pref_name,\n  md.chembl_id,\n  cs.canonical_smiles,\n  dm.mechanism_of_action,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON dm.molregno = md.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND dm.action_type = 'MODULATOR';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 35,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_chembl_id",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs (max_phase = 4) whose mechanism of action is classified as MODULATOR. For each drug, include the drug name (pref_name), ChEMBL ID (chembl_id), canonical SMILES, mechanism description, target ChEMBL ID (target_chembl_id), and target preferred name (target_pref_name). Include all specific modulator subtypes (e.g., 'POSITIVE MODULATOR', 'NEGATIVE MODULATOR', 'POSITIVE ALLOSTERIC MODULATOR', 'NEGATIVE ALLOSTERIC MODULATOR').",
+    "sql": "SELECT DISTINCT\n  md.pref_name,\n  md.chembl_id,\n  cs.canonical_smiles,\n  dm.mechanism_of_action,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON dm.molregno = md.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND dm.action_type LIKE '%MODULATOR%';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n53 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 126,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_chembl_id",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

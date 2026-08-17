@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds that have been reported in the document with the ChEMBL identifier CHEMBL5727344. Document CHEMBL5727344 is a data source record, so we need to retrieve the compound keys (compound identifiers) linked to this specific document ID. The query should return each compound's identifier from the compound_records table, which stores the association between documents and compounds. No filtering on assay data, target descriptions, or other activity details is required because the user is only interested in the compounds listed in the document. The output should include the compound keys (compound_key) and the associated record ID, which uniquely identifies the compound in the ChEMBL database. No ranking, limits, or additional filters (e.g., activity values, assay types, target types, organism, or taxonomic identifiers) are specified in the user request.",
+    "sql": "SELECT DISTINCT compound_records.compound_key, compound_records.record_id\nFROM docs\nJOIN compound_records ON docs.doc_id = compound_records.doc_id\nWHERE docs.chembl_id = 'CHEMBL5727344';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n11 | 0 | 75 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n24 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 815,
+    "res_columns": [
+      "compound_key",
+      "record_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

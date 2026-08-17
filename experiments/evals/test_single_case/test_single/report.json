@@ -1,0 +1,40 @@
+{
+  "ts_utc": "2026-03-17T23:19:11Z",
+  "eval_label": "test_single",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.6.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.4_final.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic"
+  ],
+  "splits": {
+    "test": {
+      "n_cases": 1,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_single_protein_targets_accession_sequence",
+          "uq": "Retrieve target ChEMBL ID, target name, target type, protein accession, and protein sequence for human single-protein targets only. Keep only targets with target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Return exactly target_chembl_id, target_name, target_type, protein_accession, and protein_sequence.",
+          "run_exit_code": 1,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/test_single_case/test_single/test/web_scrape_hq/human_single_protein_targets_accession_sequence/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/test_single_case/test_single/test/web_scrape_hq/human_single_protein_targets_accession_sequence/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "status": "run_failed",
+          "score": 0.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 0,
+    "pass_rate": 0.0,
+    "mean_score": 0.0
+  }
+}

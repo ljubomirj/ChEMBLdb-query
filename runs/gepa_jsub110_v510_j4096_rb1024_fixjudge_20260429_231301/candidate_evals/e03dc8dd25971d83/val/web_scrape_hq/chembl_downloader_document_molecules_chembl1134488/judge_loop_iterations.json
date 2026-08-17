@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Select: chembl_id, compound_name, canonical_smiles. Source: molecule_dictionary, compound_records, compound_structures, docs. Join: molecule_dictionary.molregno = compound_records.molregno, compound_records.doc_id = docs.doc_id, molecule_dictionary.molregno = compound_structures.molregno. Filter: docs.chembl_id = 'CHEMBL1134488', compound_structures.canonical_smiles IS NOT NULL. Sort: chembl_id ASC, compound_name ASC, canonical_smiles ASC. Deduplication: Return distinct rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON md.molregno = cr.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1134488' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id ASC, cr.compound_name ASC, cs.canonical_smiles ASC",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly retrieves distinct molecules from document CHEMBL1134488 with chembl_id, compound_name, and canonical_smiles. The join path (docs -> compound_records -> molecule_dictionary -> compound_structures) is appropriate, the filter for non-null canonical_smiles is applied, and the results are ordered as requested. The execution plan shows efficient index usage and the result set contains 100 rows with the expected columns.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

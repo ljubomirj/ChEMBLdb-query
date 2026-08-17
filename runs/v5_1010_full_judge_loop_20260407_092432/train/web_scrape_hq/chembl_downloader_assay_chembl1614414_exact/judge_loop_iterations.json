@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Return all activity records for assay CHEMBL1614414, including the exact activity values, the compound ChEMBL IDs, and the canonical SMILES strings.",
+    "sql": "SELECT DISTINCT a.standard_value, a.standard_relation, a.standard_type, a.standard_units, md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614414' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n25 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 8361,
+    "res_columns": [
+      "standard_value",
+      "standard_relation",
+      "standard_type",
+      "standard_units",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

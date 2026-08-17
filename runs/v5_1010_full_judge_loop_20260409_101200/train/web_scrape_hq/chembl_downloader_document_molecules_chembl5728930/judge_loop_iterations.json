@@ -1,0 +1,72 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all records (including compound keys, doc IDs, and associated compounds) from document CHEMBL5728930. Include only rows where the `docs.chembl_id` equals 'CHEMBL5728930' and return the `record_id`, `compound_key`, `compound_name`, and `doc_id` for each matching activity row. Do not filter by assay type, confidence score, or target type, and do not impose any row limits or additional constraints beyond the specified document identifier.",
+    "sql": "SELECT DISTINCT r.record_id, c.compound_key, c.compound_name, d.doc_id FROM compound_records r JOIN docs d ON r.doc_id = d.doc_id JOIN compound_dictionary c ON r.molregno = c.molregno WHERE d.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound identifiers and associated document metadata for activities reported in the specific document with ChEMBL identifier CHEMBL5728930. The query should return one row per distinct compound, listing the compound's internal record identifier (record_id), the unique compound key (compound_key), the human\u2011readable compound name (compound_name), and the identifier of the source document (doc_id). Ensure the document filter uses docs.chembl_id = 'CHEMBL5728930'. No other filters, joins, or constraints should be applied; results should not be limited or ranked unless explicitly requested in the user question.",
+    "sql": "SELECT DISTINCT r.record_id, c.compound_key, c.pref_name, d.doc_id FROM compound_records r JOIN docs d ON r.doc_id = d.doc_id JOIN compound_dictionary c ON r.molregno = c.molregno WHERE d.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all activity records, compound identifiers and associated document metadata for the document identified by the ChEMBL ID CHEMBL5728930. The query must return one row per activity row, showing the document identifier, the record identifier, the compound key and the human\u2011readable compound name. The result set must be filtered so that only rows where `docs.chembl_id = 'CHEMBL5728930'` are included. No additional filters on assay type, target type, activity units, confidence score or document fields are required by the user; no ranking, limits or extra columns should be added.",
+    "sql": "SELECT DISTINCT r.record_id, c.compound_key, c.pref_name, d.doc_id FROM compound_records r JOIN docs d ON r.doc_id = d.doc_id JOIN compound_dictionary c ON r.molregno = c.molregno WHERE d.chembl_id = 'CHEMBL5728930'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compound identifiers and associated document metadata for activities reported in the specific document with ChEMBL identifier CHEMBL5728930. The query must return one row per activity record, showing the source document identifier (doc_id), the activity record identifier (record_id), the compound key (compound_key), and the human\u2011readable compound name (compound_name). Filter to `docs.chembl_id = 'CHEMBL5728930'`. No additional filters, joins, ranking, or limits are required beyond those specified. Output exactly the four fields: doc_id, record_id, compound_key, compound_name.",
+    "sql": "SELECT DISTINCT d.doc_id, r.record_id, c.compound_key, c.pref_name AS compound_name FROM compound_records r JOIN docs d ON r.doc_id = d.doc_id JOIN molecule_dictionary c ON r.molregno = c.molregno WHERE d.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: c.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: c.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve compound identifiers and associated document metadata for activities reported in the specific document with ChEMBL identifier CHEMBL5728930. The query must return one row per activity record, showing the source document identifier (doc_id), the activity record identifier (record_id), the compound key (compound_key), and the human\u2011readable compound name (compound_name). Filter to `docs.chembl_id = 'CHEMBL5728930'`. No additional filters, joins, ranking, or limits are required beyond those specified. Output exactly the four fields: doc_id, record_id, compound_key, compound_name.",
+    "sql": "SELECT DISTINCT d.doc_id, r.record_id, r.compound_key, c.pref_name AS compound_name FROM compound_records r JOIN docs d ON r.doc_id = d.doc_id JOIN molecule_dictionary c ON r.molregno = c.molregno WHERE d.chembl_id = 'CHEMBL5728930'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH r USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH c USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "doc_id",
+      "record_id",
+      "compound_key",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,83 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Use molecule_hierarchy parent mapping from CHEMBL2403108 to include the parent compound and all related salts: find the molregno of CHEMBL2403108 from molecule_dictionary, then select all molecules from molecule_hierarchy where parent_molregno equals that molregno (this includes the parent itself). Filter activities to standard_type = 'IC50' and standard_units = 'nM', and join to assays and target_dictionary to restrict to target CHEMBL4247. Return exactly the following columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles), compound_key (from compound_records.compound_key), pubmed_id_or_doi (from docs; prefer pubmed_id when present, otherwise doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), and target_organism (from target_dictionary.organism). Do not limit the number of rows. Ensure each qualifying activity appears as exactly one row.",
+    "sql": "WITH parent_molregno AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2403108'), hierarchy_molregnos AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno = (SELECT molregno FROM parent_molregno) UNION SELECT molregno FROM parent_molregno) SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN hierarchy_molregnos hm ON a.molregno = hm.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.chembl_id = 'CHEMBL4247'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 16\n3 | 0 | 0 | MATERIALIZE hierarchy_molregnos\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n13 | 6 | 0 | SCALAR SUBQUERY 2\n18 | 13 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n35 | 5 | 0 | UNION USING TEMP B-TREE\n38 | 35 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n68 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n73 | 0 | 0 | SCAN hm\n75 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n82 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n96 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n105 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n113 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n121 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 120,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Use molecule_hierarchy parent mapping from CHEMBL2403108 to include the parent compound and all related salts: find the molregno of CHEMBL2403108 from molecule_dictionary, then select all molecules from molecule_hierarchy where parent_molregno equals that molregno (this includes the parent because parent_molregno equals its own molregno). Filter activities to standard_type = 'IC50' and standard_units = 'nM', and join to assays and target_dictionary to restrict to target CHEMBL4247. Return exactly the following columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles), compound_key (from compound_records.compound_key), pubmed_id_or_doi (from docs; prefer pubmed_id when present, otherwise doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), and target_organism (from target_dictionary.organism). Do not limit the number of rows. Ensure each qualifying activity appears as exactly one row.",
+    "sql": "WITH parent_molregno AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2403108') SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_hierarchy mh ON a.molregno = mh.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE mh.parent_molregno = (SELECT molregno FROM parent_molregno) AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.chembl_id = 'CHEMBL4247';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 10\n17 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n25 | 0 | 0 | SCALAR SUBQUERY 2\n30 | 25 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n43 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n62 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n71 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n79 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n87 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 120,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Use molecule_hierarchy parent mapping: find the molregno of CHEMBL2403108 from molecule_dictionary, then select all molecules from molecule_hierarchy where parent_molregno equals that molregno (this includes the parent itself because its parent_molregno equals its own molregno). Filter activities to standard_type = 'IC50' and standard_units = 'nM'. Join to assays and target_dictionary to restrict to target CHEMBL4247 (using td.chembl_id = 'CHEMBL4247'). Return exactly the following columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles), compound_key (from compound_records.compound_key), pubmed_id_or_doi (from docs; prefer pubmed_id when present, else doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), and target_organism (from target_dictionary.organism). Do not limit the number of rows. Ensure each qualifying activity appears as exactly one row. Use INNER JOIN for activities, assays, target_dictionary, and molecule_hierarchy to enforce required filters, and LEFT JOIN for compound_structures, compound_records, and docs to retain activities even when optional data is missing.",
+    "sql": "WITH parent_molregno AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2403108') SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_hierarchy mh ON a.molregno = mh.molregno INNER JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE mh.parent_molregno = (SELECT molregno FROM parent_molregno) AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND td.chembl_id = 'CHEMBL4247';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 10\n17 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n25 | 0 | 0 | SCALAR SUBQUERY 2\n30 | 25 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n43 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n62 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n71 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n79 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n87 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 120,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

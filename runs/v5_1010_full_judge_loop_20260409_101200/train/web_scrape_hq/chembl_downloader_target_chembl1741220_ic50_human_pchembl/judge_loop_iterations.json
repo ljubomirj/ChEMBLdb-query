@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the target CHEMBL1741220. Return the assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only rows where the standard relation is '=' and the pChEMBL value is not null. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target_info AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1741220' LIMIT 1) SELECT DISTINCT assays.chembl_id AS assay_chembl_id, ti.target_type, ti.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM target_info ti JOIN assays ON assays.tid = ti.tid JOIN activities ON activities.assay_id = assays.assay_id JOIN molecule_dictionary md ON activities.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY md.chembl_id, assays.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE target_info\n6 | 2 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n28 | 0 | 16 | SCAN ti\n31 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n40 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n49 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n87 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 86,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

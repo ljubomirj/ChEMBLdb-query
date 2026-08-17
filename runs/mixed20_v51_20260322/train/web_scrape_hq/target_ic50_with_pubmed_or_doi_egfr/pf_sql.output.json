@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_egfr.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_egfr",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT\\n  md.chembl_id AS compound_chembl_id,\\n  cs.canonical_smiles,\\n  cr.compound_key,\\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\\n  a.description AS assay_description,\\n  act.standard_type,\\n  act.standard_relation,\\n  act.standard_value,\\n  act.standard_units,\\n  act.activity_comment,\\n  td.chembl_id AS target_chembl_id,\\n  td.pref_name AS target_name,\\n  td.organism AS target_organism\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN molecule_dictionary md ON act.molregno = md.molregno\\nJOIN compound_structures cs ON md.molregno = cs.molregno\\nJOIN compound_records cr ON act.record_id = cr.record_id\\nJOIN docs d ON act.doc_id = d.doc_id\\nWHERE td.chembl_id = 'CHEMBL203'\\n  AND act.standard_type = 'IC50'\\n  AND act.standard_units = 'nM'\\n  AND td.target_type = 'SINGLE PROTEIN'\\n  AND td.organism = 'Homo sapiens'\\n  AND cs.canonical_smiles IS NOT NULL\\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\\nORDER BY\\n  compound_chembl_id,\\n  canonical_smiles,\\n  compound_key,\\n  pubmed_id_or_doi,\\n  assay_description,\\n  standard_type,\\n  standard_relation,\\n  standard_value,\\n  standard_units,\\n  activity_comment,\\n  target_chembl_id,\\n  target_name,\\n  target_organism\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN docs d ON act.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL203'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.organism = 'Homo sapiens'\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\nORDER BY\n  compound_chembl_id,\n  canonical_smiles,\n  compound_key,\n  pubmed_id_or_doi,\n  assay_description,\n  standard_type,\n  standard_relation,\n  standard_value,\n  standard_units,\n  activity_comment,\n  target_chembl_id,\n  target_name,\n  target_organism"
+    }
+  }
+}

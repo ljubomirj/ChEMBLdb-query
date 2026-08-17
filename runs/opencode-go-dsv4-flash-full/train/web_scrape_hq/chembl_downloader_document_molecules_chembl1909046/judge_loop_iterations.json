@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "List the compounds reported in the document with ChEMBL ID 'CHEMBL1909046'. Return the following columns for each distinct compound: the compound's ChEMBL identifier (molecule_dictionary.chembl_id), the compound's preferred name (molecule_dictionary.pref_name), and the compound key used in the document (compound_records.compound_key). To retrieve this, first locate the document in the docs table using docs.chembl_id = 'CHEMBL1909046'. Then join docs.doc_id with compound_records.doc_id, and finally join compound_records.molregno with molecule_dictionary.molregno. Use SELECT DISTINCT to ensure each compound appears only once. Do not add any additional filters not explicitly requested.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cr.compound_key FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1909046';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 871,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

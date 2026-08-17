@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1139796.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1139796",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select distinct chembl_id, compound_name, and canonical_smiles for molecules linked to document CHEMBL1139796. Resolve the document via chembl_id_lookup, join compound_records on doc_id to get molregno and compound_name, join molecule_dictionary on molregno for chembl_id, and inner join compound_structures on molregno for canonical_smiles (this filters to molecules with structures). Return only the three requested columns. Order by chembl_id, then compound_name, then canonical_smiles.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct chembl_id, compound_name, and canonical_smiles for molecules linked to document CHEMBL1139796. Resolve the document via chembl_id_lookup, join compound_records on doc_id to get molregno and compound_name, join molecule_dictionary on molregno for chembl_id, and inner join compound_structures on molregno for canonical_smiles (this filters to molecules with structures). Return only the three requested columns. Order by chembl_id, then compound_name, then canonical_smiles."
+    }
+  }
+}

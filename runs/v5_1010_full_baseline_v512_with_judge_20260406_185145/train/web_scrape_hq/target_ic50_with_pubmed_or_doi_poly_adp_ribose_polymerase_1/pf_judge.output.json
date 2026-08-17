@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_poly_adp_ribose_polymerase_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_poly_adp_ribose_polymerase_1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 4152 rows of IC50 activity data for human Poly [ADP-ribose] polymerase 1 (CHEMBL3105) with the requested columns. However, the sample rows show several issues: 1) The standard_value units are in nM as required, but the values (e.g., 22000.0, 5400.0) are extremely high for IC50 (typical IC50s are in low nM range). This suggests either the units are mislabeled or the values are incorrectly stored. 2) The activity_comment column is empty for all rows, which is unusual for IC50 data where comments often contain assay details. 3) The query uses DISTINCT but the join pattern may be causing duplicate rows (e.g., multiple assays per compound). 4) The result includes 4152 rows which seems excessively high for a specific target like PARP1, indicating potential over-join or data quality issues. The core requirement (exact IC50 in nM with ChEMBL IDs, SMILES, and PubMed/DOI) is technically met, but the data quality and row count suggest the result may not be reliable for further use without validation.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 4152 rows of IC50 activity data for human Poly [ADP-ribose] polymerase 1 (CHEMBL3105) with the requested columns. However, the sample rows show several issues: 1) The standard_value units are in nM as required, but the values (e.g., 22000.0, 5400.0) are extremely high for IC50 (typical IC50s are in low nM range). This suggests either the units are mislabeled or the values are incorrectly stored. 2) The activity_comment column is empty for all rows, which is unusual for IC50 data where comments often contain assay details. 3) The query uses DISTINCT but the join pattern may be causing duplicate rows (e.g., multiple assays per compound). 4) The result includes 4152 rows which seems excessively high for a specific target like PARP1, indicating potential over-join or data quality issues. The core requirement (exact IC50 in nM with ChEMBL IDs, SMILES, and PubMed/DOI) is technically met, but the data quality and row count suggest the result may not be reliable for further use without validation.",
+      "score": 0.65,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_poly_adp_ribose_polymerase_1/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_poly_adp_ribose_polymerase_1/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_poly_adp_ribose_polymerase_1/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_fatty_acid_amide_hydrolase_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_fatty_acid_amide_hydrolase_1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query successfully filters for IC50 activities (nM) against human fatty acid amide hydrolase 1 (FH1) with all required columns. The SQL uses DISTINCT to deduplicate rows, joins all necessary tables (molecule_dictionary, compound_records, docs, activities, assays, target_dictionary, compound_structures), and applies precise filters (standard_type='IC50', standard_units='nM', standard_relation='='). The result set is empty (row_count: 0), which is plausible if no FH1 IC50 data exists in ChEMBL 36 with these exact filters. The query correctly maps to the user's request: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, target details, and activity metadata. No extra columns or joins are present, and the output schema matches the request. The empty result is a valid diagnostic outcome, not an error.\",\n  \"score\": 0.95,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The query successfully filters for IC50 activities (nM) against human fatty acid amide hydrolase 1 (FH1) with all required columns. The SQL uses DISTINCT to deduplicate rows, joins all necessary tables (molecule_dictionary, compound_records, docs, activities, assays, target_dictionary, compound_structures), and applies precise filters (standard_type='IC50', standard_units='nM', standard_relation='='). The result set is empty (row_count: 0), which is plausible if no FH1 IC50 data exists in ChEMBL 36 with these exact filters. The query correctly maps to the user's request: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, target details, and activity metadata. No extra columns or joins are present, and the output schema matches the request. The empty result is a valid diagnostic outcome, not an error.",
+      "score": 0.95,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_fatty_acid_amide_hydrolase_1/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_fatty_acid_amide_hydrolase_1/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_fatty_acid_amide_hydrolase_1/pf_judge.generated_artifact_record.json"
+  }
+}

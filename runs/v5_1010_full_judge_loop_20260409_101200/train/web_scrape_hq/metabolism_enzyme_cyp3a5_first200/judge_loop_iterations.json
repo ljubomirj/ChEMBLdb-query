@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for CYP3A5, including substrate structures (canonical SMILES), compound names (pref_name), metabolic conversions, and pathway details.",
+    "sql": "SELECT\n  cs.canonical_smiles AS substrate_structure,\n  md_s.pref_name AS substrate_name,\n  met.met_conversion,\n  met.pathway_key\nFROM metabolism met\nJOIN compound_records cr_s ON met.substrate_record_id = cr_s.record_id\nJOIN molecule_dictionary md_s ON cr_s.molregno = md_s.molregno\nLEFT JOIN compound_structures cs ON md_s.molregno = cs.molregno\nWHERE met.enzyme_name = 'CYP3A5'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN met\n13 | 0 | 47 | SEARCH cr_s USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH md_s USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 14,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

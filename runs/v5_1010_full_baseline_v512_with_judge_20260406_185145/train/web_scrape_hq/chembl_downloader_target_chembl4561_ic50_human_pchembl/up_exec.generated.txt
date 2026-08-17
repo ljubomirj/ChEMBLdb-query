@@ -1,0 +1,9 @@
+Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+Join activities on activities.standard_type = 'IC50' and activities.standard_relation = '=' and activities.pchembl_value is not null
+Join assays on activities.assay_id = assays.assay_id
+Join target_dictionary on assays.tid = target_dictionary.tid
+Join molecule_dictionary on activities.molregno = molecule_dictionary.molregno
+Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno
+Filter target_dictionary.chembl_id = 'CHEMBL4561' and target_dictionary.target_type = 'SINGLE PROTEIN' and target_dictionary.tax_id = '9606'
+Sort by molecule_chembl_id, assay_chembl_id
+Limit 1000

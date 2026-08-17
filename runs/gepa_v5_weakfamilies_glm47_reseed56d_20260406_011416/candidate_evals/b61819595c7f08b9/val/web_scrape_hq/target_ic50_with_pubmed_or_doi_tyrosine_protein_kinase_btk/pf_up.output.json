@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_b61819595c7f08b9.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_btk.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_btk",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b61819595c7f08b9",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activities for compounds tested against human BTK (CHEMBL5251) that have a canonical SMILES string and a PubMed ID or DOI. Return all qualifying activity rows without deduplication. Join molecule_dictionary to activities, then to assays and target_dictionary. Join compound_structures as an INNER JOIN to enforce presence of canonical_smiles. Join docs via activities.doc_id to obtain pubmed_id and doi. Join compound_records via activities.record_id to obtain compound_key. Filter by target_chembl_id = 'CHEMBL5251', standard_type = 'IC50', and standard_units = 'nM'. Return columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activities for compounds tested against human BTK (CHEMBL5251) that have a canonical SMILES string and a PubMed ID or DOI. Return all qualifying activity rows without deduplication. Join molecule_dictionary to activities, then to assays and target_dictionary. Join compound_structures as an INNER JOIN to enforce presence of canonical_smiles. Join docs via activities.doc_id to obtain pubmed_id and doi. Join compound_records via activities.record_id to obtain compound_key. Filter by target_chembl_id = 'CHEMBL5251', standard_type = 'IC50', and standard_units = 'nM'. Return columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

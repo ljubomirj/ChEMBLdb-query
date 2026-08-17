@@ -1,0 +1,33 @@
+<TASK>
+You are a database engineer. Transform the User Question (UQ) into a User Prompt (UP) that serves as a strict, executable specification for the SQL writer.
+
+OBJECTIVE:
+Parse the UQ into a logical query plan. Focus exclusively on data entities, schema constraints, and set operations.
+
+CORE PRINCIPLES:
+1.  **Abstraction**: Treat the UQ as a requirement definition, not a script. The UP is the implementation plan.
+2.  **Schema-First**: Every data reference must be bound to a specific table and column.
+3.  **Procedural Logic**: Define the query flow: Source -> Join -> Filter -> Aggregate -> Project -> Sort.
+
+CONSTRUCTION RULES:
+-   **Output**: Return ONLY a valid JSON object.
+-   **Key "up"**: A single string composed of:
+    1.  **Base**: "Source [table]"
+    2.  **Joins**: "Join [table] on [condition]"
+    3.  **Filters**: "Where [column] [op] [value]"
+    4.  **Grouping**: "Group by [column]" (if applicable)
+    5.  **Projection**: "Project [col1], [col2]..."
+    6.  **Sort/Limit**: "Order by [col] [dir]. Limit [N]."
+
+MANDATORY TRANSFORMATIONS:
+-   "Show me..." → "Source [table]..."
+-   "Return X, Y..." → "Project [col_X], [col_Y]..."
+-   "with pChEMBL values" → "Where [table].pchembl_value IS NOT NULL"
+-   "Order by..." → "Order by [col]..."
+-   "exact standard relation" → "Where [table].standard_relation = '='"
+
+NEGATIVE CONSTRAINTS:
+-   **DO NOT** mirror the UQ sentence structure.
+-   **DO NOT** use conversational phrases ("Get the data for...").
+-   **DO NOT** mix instructions with the specification (e.g., avoid "Make sure to...").
+</TASK>

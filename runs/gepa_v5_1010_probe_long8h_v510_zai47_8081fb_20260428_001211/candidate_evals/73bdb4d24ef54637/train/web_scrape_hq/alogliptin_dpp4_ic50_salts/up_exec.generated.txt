@@ -1,0 +1,19 @@
+1. Objective: Retrieve all IC50 bioactivity records in nM for ALOGLIPTIN (CHEMBL376359) and its salts against Dipeptidyl peptidase 4 (CHEMBL284), including the parent compound and all related salts via molecule_hierarchy parent mapping.
+
+2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary.
+
+4. Logic:
+   - Identify the parent compound by filtering molecule_dictionary where chembl_id = 'CHEMBL376359'.
+   - Include the parent and all related salts by joining molecule_hierarchy on parent_molregno = parent.molregno and joining molecule_dictionary as child on child.molregno = hierarchy.molregno.
+   - Join compound_structures on child.molregno to obtain canonical_smiles.
+   - Join compound_records on child.molregno = compound_records.molregno.
+   - Join activities on compound_records.record_id = activities.record_id.
+   - Join docs on compound_records.doc_id = docs.doc_id.
+   - Join assays on activities.assay_id = assays.assay_id.
+   - Join target_dictionary on assays.tid = target_dictionary.tid.
+   - Filter activities where standard_type = 'IC50' AND standard_units = 'nM'.
+   - Filter target_dictionary where chembl_id = 'CHEMBL284'.
+   - Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.
+   - Do not limit the number of rows.

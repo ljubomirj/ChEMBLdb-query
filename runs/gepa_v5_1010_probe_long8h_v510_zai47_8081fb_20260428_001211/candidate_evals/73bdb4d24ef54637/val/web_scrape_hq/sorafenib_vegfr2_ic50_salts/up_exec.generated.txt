@@ -1,0 +1,7 @@
+1. Objective: Retrieve IC50 bioactivity records in nM for SORAFENIB (CHEMBL1336) and all its salts against VEGFR2 (CHEMBL279), including activity provenance and target details.
+
+2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary.
+
+4. Logic: Identify the parent molecule by chembl_id 'CHEMBL1336'. Include the parent and all related salts by joining molecule_hierarchy on parent_molregno. Join compound_structures to retrieve canonical_smiles. Join compound_records on molregno, then docs on doc_id, and activities on record_id to capture bioactivity data. Filter activities where standard_type is 'IC50' and standard_units is 'nM'. Join assays on assay_id and target_dictionary on tid, filtering for target chembl_id 'CHEMBL279'. Return all matching rows without limit.

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl2778_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl2778_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result shows 205 rows of IC50 activities for the human target CHEMBL2778, filtered by standard relation '=', non-null pChEMBL values, and human organism. The query correctly joins activities, assays, target_dictionary, compound_structures, and molecule_dictionary, and selects the required columns. The sample rows display canonical SMILES, molecule_chembl_id, and pChEMBL values (labeled as 'Ki' in standard_type, but the query uses standard_type from activities, which may be 'Ki' instead of 'IC50' due to data inconsistencies). The ordering and limit are correct. However, the sample rows show 'Ki' as standard_type, not 'IC50', indicating a potential data issue where activities labeled as IC50 may have standard_type 'Ki'. The query filters on standard_relation '=', but does not enforce standard_type = 'IC50', which could include other activity types with '=' relation (e.g., Ki). The task requires IC50 activities, so the filter should include standard_type = 'IC50' to ensure exact potency type. The current result may include non-IC50 activities, reducing relevance. The row count (205) is reasonable, and the structure aligns with the task, but the lack of standard_type filter for 'IC50' is a flaw. The output columns match the request, and the ordering is correct. The decision hinges on whether the data includes IC50 activities with standard_type 'IC50' or if 'Ki' is acceptable. Given the task explicitly asks for IC50, the query should be refined to include standard_type = 'IC50'. The current result is close but not fully accurate for the task.\",\n  \"score\": 0.75,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result shows 205 rows of IC50 activities for the human target CHEMBL2778, filtered by standard relation '=', non-null pChEMBL values, and human organism. The query correctly joins activities, assays, target_dictionary, compound_structures, and molecule_dictionary, and selects the required columns. The sample rows display canonical SMILES, molecule_chembl_id, and pChEMBL values (labeled as 'Ki' in standard_type, but the query uses standard_type from activities, which may be 'Ki' instead of 'IC50' due to data inconsistencies). The ordering and limit are correct. However, the sample rows show 'Ki' as standard_type, not 'IC50', indicating a potential data issue where activities labeled as IC50 may have standard_type 'Ki'. The query filters on standard_relation '=', but does not enforce standard_type = 'IC50', which could include other activity types with '=' relation (e.g., Ki). The task requires IC50 activities, so the filter should include standard_type = 'IC50' to ensure exact potency type. The current result may include non-IC50 activities, reducing relevance. The row count (205) is reasonable, and the structure aligns with the task, but the lack of standard_type filter for 'IC50' is a flaw. The output columns match the request, and the ordering is correct. The decision hinges on whether the data includes IC50 activities with standard_type 'IC50' or if 'Ki' is acceptable. Given the task explicitly asks for IC50, the query should be refined to include standard_type = 'IC50'. The current result is close but not fully accurate for the task.",
+      "score": 0.75,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2778_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2778_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2778_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

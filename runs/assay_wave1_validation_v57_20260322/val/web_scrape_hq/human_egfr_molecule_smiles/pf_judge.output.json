@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.7.yaml",
+  "prompt_pack_version": "v5.7",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_egfr_molecule_smiles.json",
+  "case_id": "human_egfr_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request: it filters on target CHEMBL203, restricts to assays.assay_organism = 'Homo sapiens', joins compound_structures to require canonical SMILES, and returns only the two requested columns with DISTINCT. The row count (13,510) and sample rows are consistent with a well-formed result. No further iteration is needed.\",\n  \"score\": 5,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it filters on target CHEMBL203, restricts to assays.assay_organism = 'Homo sapiens', joins compound_structures to require canonical SMILES, and returns only the two requested columns with DISTINCT. The row count (13,510) and sample rows are consistent with a well-formed result. No further iteration is needed.",
+      "score": 5,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/human_egfr_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/human_egfr_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/human_egfr_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

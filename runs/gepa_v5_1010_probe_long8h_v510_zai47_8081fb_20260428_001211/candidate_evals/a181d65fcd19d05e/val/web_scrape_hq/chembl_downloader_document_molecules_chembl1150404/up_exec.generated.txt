@@ -1,0 +1,7 @@
+1. Objective: Retrieve all molecules associated with a specific document, including their identifiers, names, development phases, types, and structures, ordered by ChEMBL ID.
+
+2. Output: molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+
+3. Source: docs, compound_records, molecule_dictionary, compound_structures
+
+4. Logic: Filter docs where chembl_id = 'CHEMBL1150404'. Join compound_records on docs.doc_id = compound_records.doc_id. Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno. Left join compound_structures on molecule_dictionary.molregno = compound_structures.molregno to retain molecules even if SMILES are missing. Sort the final results by molecule_chembl_id.

@@ -1,0 +1,75 @@
+{
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/val/web_scrape_hq/leelasd_approved_drugs_with_indications/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/val/web_scrape_hq/leelasd_approved_drugs_with_indications/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/val/web_scrape_hq/leelasd_approved_drugs_with_indications/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "inferred_from_gist_title_and_sql",
+    "source_title": "Extract approved drugs from Chembl 29 local database",
+    "source_url": "https://gist.github.com/leelasd/2d9625c9bca20bc70668270e0f410daa",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mesh_heading",
+      "first_approval"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mesh_heading",
+      "first_approval"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "molecule_chembl_id": "chembl_id",
+      "pref_name": "pref_name",
+      "drug_name": "pref_name",
+      "compound_name": "pref_name",
+      "canonical_smiles": "canonical_smiles",
+      "smiles": "canonical_smiles",
+      "max_phase": "max_phase",
+      "mesh_heading": "mesh_heading",
+      "indication_label": "mesh_heading",
+      "first_approval": "first_approval"
+    },
+    "float_cols": [
+      "max_phase"
+    ],
+    "int_cols": [
+      "first_approval"
+    ],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

@@ -1,0 +1,9 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fall back to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+Join molecule_dictionary -> compound_records on molregno -> docs on record_id -> activities on record_id -> assays on assay_id -> target_dictionary on tid.
+Inner join compound_structures on molecule_dictionary.molregno to provide canonical_smiles.
+
+Filter: target_dictionary.pref_name contains 'Cytochrome P450 2D6', target_dictionary.organism = 'Homo sapiens', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.standard_value IS NOT NULL, activities.standard_units = 'nM'.
+
+Do not deduplicate; keep every qualifying activity row.
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.

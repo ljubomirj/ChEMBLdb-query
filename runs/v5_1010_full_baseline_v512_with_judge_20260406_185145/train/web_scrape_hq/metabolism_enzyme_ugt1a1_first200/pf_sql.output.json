@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_ugt1a1_first200.json",
+  "case_id": "metabolism_enzyme_ugt1a1_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  cs.canonical_smiles,\\n  sub.molregno AS substrate_compound_name,\\n  parent.molregno AS parent_compound_name,\\n  met.met_conversion,\\n  met.pathway_key,\\n  enzyme.organism,\\n  enzyme.pref_name AS enzyme_name\\nFROM metabolism met\\nJOIN compound_records cr ON met.substrate_record_id = cr.record_id\\nJOIN molecule_dictionary sub ON cr.molregno = sub.molregno\\nJOIN molecule_dictionary parent ON met.met_id = parent.molregno\\nJOIN target_dictionary enzyme ON sub.tid = enzyme.tid\\nJOIN compound_structures cs ON sub.molregno = cs.molregno\\nWHERE enzyme.pref_name = 'UGT1A1'\\n  AND enzyme.target_type = 'PROTEIN'\\n  AND enzyme.tax_id = 9606\\n  AND enzyme.organism = 'Homo sapiens'\\n  AND enzyme.tid = (SELECT tid FROM target_dictionary WHERE pref_name = 'UGT1A1' AND tax_id = 9606)\\nLIMIT 200\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  sub.molregno AS substrate_compound_name,\n  parent.molregno AS parent_compound_name,\n  met.met_conversion,\n  met.pathway_key,\n  enzyme.organism,\n  enzyme.pref_name AS enzyme_name\nFROM metabolism met\nJOIN compound_records cr ON met.substrate_record_id = cr.record_id\nJOIN molecule_dictionary sub ON cr.molregno = sub.molregno\nJOIN molecule_dictionary parent ON met.met_id = parent.molregno\nJOIN target_dictionary enzyme ON sub.tid = enzyme.tid\nJOIN compound_structures cs ON sub.molregno = cs.molregno\nWHERE enzyme.pref_name = 'UGT1A1'\n  AND enzyme.target_type = 'PROTEIN'\n  AND enzyme.tax_id = 9606\n  AND enzyme.organism = 'Homo sapiens'\n  AND enzyme.tid = (SELECT tid FROM target_dictionary WHERE pref_name = 'UGT1A1' AND tax_id = 9606)\nLIMIT 200"
+    }
+  }
+}

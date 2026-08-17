@@ -1,0 +1,49 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL2127 (Hepatic triacylglycerol lipase). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE td.chembl_id = 'CHEMBL2127' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows (ordered by molecule ChEMBL ID then assay ChEMBL ID) where the target is the single-protein protein CHEMBL2127 (Hepatic triacylglycerol lipase) in a human assay (i.e., `assays.tissue_id` or `assays.assay_organism` indicates Homo sapiens). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type (must be IC50), and pChEMBL value. Include only rows with `activities.standard_type = 'IC50'`, `activities.standard_relation = '='`, and `activities.pchembl_value` NOT NULL. Use the canonical SMILES from `compound_structures.canonical_smiles`. Ensure joins: `activities.assay_id -> assays.assay_id -> target_dictionary.tid -> target_dictionary` and `activities.molregno -> molecule_structures.molregno -> compound_structures.molregno -> molecule_dictionary.molregno`.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2127' AND ass.assay_organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: molecule_structures",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: molecule_structures",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity rows (ordered by molecule ChEMBL ID then assay ChEMBL ID) where the target is the single\u2011protein protein CHEMBL2127 (Hepatic triacylglycerol lipase) in a human assay (Homo sapiens). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type (must be IC50), and pChEMBL value. Include only rows with `activities.standard_type = 'IC50'`, `activities.standard_relation = '='`, and `activities.pchembl_value` NOT NULL. Join `activities` to `assays` (via `assay_id`), then to `target_dictionary` (via `tid`), then to `compound_structures` (via `molregno`) and `molecule_dictionary` (via `molregno`). Ensure the target type is 'SINGLE PROTEIN' and the organism is 'Homo sapiens'.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2127' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id ASC, ass.chembl_id ASC",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n77 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 62,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

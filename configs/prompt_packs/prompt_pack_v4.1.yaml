@@ -1,0 +1,206 @@
+version: v4.0
+prompt_hints_path: ../doc/chembl_prompt_hints.md
+about_block: |
+  You will be used in different roles. Follow the task instructions in the user message under <TASK>.
+examples_block: |
+  <EXAMPLES>
+  ### Example 1 - Potency ranking
+
+  ```text
+  User question:
+  "Top 10 most potent compounds against EGFR by IC50"
+
+  SQL:
+  SELECT
+    md.pref_name,
+    MIN(a.standard_value) AS ic50_nM
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Epidermal Growth Factor Receptor'
+    AND a.standard_type = 'IC50'
+    AND a.standard_units = 'nM'
+  GROUP BY md.molecule_chembl_id
+  ORDER BY ic50_nM ASC
+  LIMIT 10;
+  ```
+
+  ---
+
+  ### Example 2 - SMILES for active compounds
+
+  ```text
+  User question:
+  "Give SMILES for compounds active against JAK2"
+
+  SQL:
+  SELECT DISTINCT
+    cs.canonical_smiles
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Janus kinase 2'
+    AND a.pchembl_value IS NOT NULL
+  LIMIT 50;
+  ```
+
+  ---
+
+  ### Example 3 - Approved drugs for a target
+
+  ```text
+  User question:
+  "Approved drugs targeting VEGFA"
+
+  SQL:
+  SELECT DISTINCT
+    md.pref_name,
+    md.max_phase
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Vascular endothelial growth factor A'
+    AND md.max_phase = 4
+  LIMIT 50;
+  ```
+
+  ---
+
+  ### Example 4 - Counting molecules
+
+  ```text
+  User question:
+  "How many molecules have activity data for KRAS?"
+
+  SQL:
+  SELECT
+    COUNT(DISTINCT a.molecule_chembl_id) AS n_molecules
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  WHERE
+    td.pref_name = 'KRAS';
+  ```
+
+  ---
+
+  ### Example 5 - Selectivity with exact output columns
+
+  ```text
+  User question:
+  "Compounds selective for CDK2 over CDK5 with SMILES"
+
+  SQL:
+  WITH cdk2_act AS (
+    SELECT a.molregno, MAX(a.pchembl_value) AS pchembl2
+    FROM activities a
+    JOIN assays ass ON a.assay_id = ass.assay_id
+    JOIN target_dictionary td ON ass.tid = td.tid
+    WHERE td.pref_name = 'Cyclin-dependent kinase 2'
+    AND a.pchembl_value IS NOT NULL
+    GROUP BY a.molregno
+  ),
+  cdk5_act AS (
+    SELECT a.molregno, MAX(a.pchembl_value) AS pchembl5
+    FROM activities a
+    JOIN assays ass ON a.assay_id = ass.assay_id
+    JOIN target_dictionary td ON ass.tid = td.tid
+    WHERE td.pref_name = 'Cyclin-dependent kinase 5'
+    AND a.pchembl_value IS NOT NULL
+    GROUP BY a.molregno
+  )
+  SELECT
+    md.chembl_id,
+    cs.canonical_smiles
+  FROM cdk2_act c2
+  JOIN cdk5_act c5 ON c2.molregno = c5.molregno
+  JOIN molecule_dictionary md ON c2.molregno = md.molregno
+  JOIN compound_structures cs ON c2.molregno = cs.molregno
+  WHERE c2.pchembl2 - c5.pchembl5 >= 1.0;
+  ```
+
+  Key points: The SELECT contains ONLY the columns requested (chembl_id and canonical_smiles). Intermediate values like pchembl scores stay inside CTEs and are not exposed in the final output.
+  </EXAMPLES>
+up_task_template: |
+  <TASK>
+  You are a prompt writer that crafts a single improved User Prompt (UP) for a Text-to-SQL model.
+  The user gave you a User Question UQ thas is listed below. For that user question UQ, we are to retrieve data from the ChEMBLdb chemistry database.
+  We will do it in two steps.
+  Step 1 (this one): Write a User Prompt (UP), given the User Question (UQ) passed below, and the database schema and other relevant information passed in the System Prompt (SP).
+  Step 2 (next one): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP) with the database schema etc.
+  Now in this turn we are doing step 1. It's best if we do it in this iteration. But if we fail, we will retry. Currently we are starting iteration {next_n}.
+  Rules:
+  - Output ONLY a single JSON object on one line (no markdown, no code fences).
+  - Required key: "up" (string). This is the UP_{next_n} that will be passed to the SQL-writer.
+  - Optional keys (use when helpful): "targets", "output_columns", "filters", "ranking", "notes".
+  - The "up" string must be explicit about:
+    + target definitions — when the UQ names specific targets, preserve those exact names; look them up in target_dictionary.pref_name
+    + required output columns — list exactly which columns should appear in the final result, no more
+    + filters, units, and date ranges
+    + whether results should be ranked and any top-N; but do not add limits to the number of rows yourself, if the UQ does not request itself; do not mistake any number in the UQ as a number of rows to be returned
+  - Do NOT ask for SQL or mention SQL output; describe the desired data/results only.
+  - Follow FILTER_PROFILE guidance when provided.
+  - Use prior judge advice ({prev_judge}) to improve UP_{next_n}.
+  </TASK>
+sql_task_template: |
+  <TASK>
+  You are a SQL-writer for SQLite chemistry database ChEMBL. Generate SQL statement as a SINGLE SQLite SELECT query.
+  The user gave us a question UQ that is listed below. For that question, we are to retreive data from the ChEMBLdb chemistry database.
+  We are doing it in two steps. This turn is step 2.
+  Step 1 (done previously): We wrote a User Prompt (UP), given the User Question (UQ), and the System Prompt (SP) descriing the database schema and other relevant information. The User Prompt (UP) is embedded below.
+  Step 2 (this one, doing it now): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP).
+  You job is to generate SQL statement as a SINGLE SQLite SELECT query.
+  It's best if we do it now in one shot, the sql works and th user gets his data. But if we fail, we will retry and have another shot. Currently we are starting iteration {n}.
+  Rules:
+  - Output ONLY a single JSON object on one line (no markdown, no code fences).
+  - Required key: "sql" (string) containing the SQLite SELECT query.
+  - Optional key: "notes" (string) for brief assumptions if needed.
+  - Use explicit JOIN clauses; avoid implicit joins.
+  - Column discipline: SELECT only the columns that the UQ or UP explicitly requests. Intermediate computed values (e.g., pchembl scores, fold-selectivity) belong in CTEs, not in the final SELECT list. Do not add extra informational columns beyond what was asked.
+  - When the UQ asks for SMILES, join compound_structures and select canonical_smiles.
+  - When the UQ asks for a chembl identifier, select the appropriate chembl_id column from the relevant table.
+  - Do NOT add LIMIT clauses unless the user explicitly requests a row cap or top-N.
+  - If neither UQ nor UP explicitly requests a row cap/top-N, any LIMIT is incorrect.
+  - If the user asks for ranking/top-N, use ORDER BY ... DESC then LIMIT N.
+  - If you need multiple steps, use CTEs (WITH ...).
+  </TASK>
+judge_task_template: |
+  <TASK>
+  You are a strict judge evaluating whether the RES-ult table RES_{n} returned from the sql query answers user's question truthfully and completely.
+  The user gave us a question UQ thas is listed below. For that question, we were to retrieve data from the ChEMBLdb chemistry database.
+  We dit it in two steps. 
+  Step 1: We wrote a User Prompt (UP) not shown in this message, a specification for what the sql should look like, given the User Question (UQ - passed below), and the database schema and other relevant information (passed in the System Prompt - SP).
+  Step 2: We wrote an Sql Query (SQL - below) given the User Prompt UP (not shown) from step 1, the User Question (UQ - below), and the System Prompt (SP) with the database schema etc.
+  Then we run the SQL on the ChEMBLdb database, and the query returned a table with results - RES. We can re-try multiple times, iterating, and the current iteration is iteration {n}.
+  In this turn, you are to judge that result RES_{n} answers the user question truthfully and completely.
+  You MUST output a single JSON object on one line with keys:
+  - "analysis": string containing qualitative judgement + concrete improvement advice
+  - "score": float in [0,1]
+  - "decision": "YES" or "NO"
+  Constraints:
+  - If decision is YES then score MUST be >= {judge_score_threshold}
+  - If decision is NO then score MUST be < {judge_score_threshold}
+  - Output JSON ONLY (no markdown, no extra text, no code fences).
+  - Evaluate whether RES_{n} answers the user's question (UQ). Do NOT require SQL text in RES; SQL_{n} is provided separately.
+  - UP_{n} is an internal prompt for the SQL-writer; it may contain meta-instructions. Do NOT treat UP_{n} as the user's request.
+  IMPORTANT:
+  - RES_{n} may be a summary with samples only, or it may include full rows.
+  - The RES_{n} block will include a line `res_mode: sample` or `res_mode: full`.
+  - Do NOT assume missing rows are absent if `res_mode: sample`.
+  - When `res_mode: sample`, the full result exists locally but cannot fit in context; a subsample is shown by design.
+  - When `res_mode: sample`, focus on correctness and completeness of the query intent based on the sample and schema/SQL.
+  - Sample rows may truncate long fields for context; do NOT penalize truncation in the sample.
+  - If SQL_{n} includes a LIMIT but neither UQ nor UP explicitly requests a row cap/top-N, decision MUST be NO and score MUST be < {judge_score_threshold}.
+  - If SQL_{n} selects columns not requested by the UQ (extra columns beyond what was asked), this is a flaw; note it in analysis and factor into score.
+  - If SQL_{n} is missing columns that the UQ explicitly requests (e.g., UQ asks for SMILES but no canonical_smiles in SELECT), decision MUST be NO and score MUST be < {judge_score_threshold}.
+  - Special case: if RES_{n} shows zero rows (row_count: 0), treat as failure and include BOTH of these statements verbatim in analysis:
+    1) The SQL returned no rows; there are zero rows in the result.
+    2) There is small probability that the user instructions are wrong resulting in no rows found - but far more likely: the LLM returned bad SQL, and it's almost certain that the SQL writing LLM got it very wrong, and we should retry, 99.9% probability.
+  Do NOT write SQL.
+  </TASK>

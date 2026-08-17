@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123892.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123892",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "Objective: Retrieve all distinct molecules mentioned in document CHEMBL1123892, returning chembl_id, compound_name, and canonical_smiles. Only include molecules with canonical_smiles available. Order rows by chembl_id, compound_name, canonical_smiles.\n\nOutput: chembl_id, compound_name, canonical_smiles\n\nSource: molecule_dictionary, compound_records, docs, compound_structures\n\nLogic: Join molecule_dictionary to compound_records on molecule_dictionary.molregno = compound_records.molregno. Join compound_records to docs on compound_records.doc_id = docs.doc_id. Join compound_structures to molecule_dictionary on molecule_dictionary.molregno = compound_structures.molregno. Filter docs.chembl_id = 'CHEMBL1123892' AND compound_structures.canonical_smiles IS NOT NULL. Select DISTINCT molecule_dictionary.chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles. Order by molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles.",
+    "parsed_json": {
+      "up": "Objective: Retrieve all distinct molecules mentioned in document CHEMBL1123892, returning chembl_id, compound_name, and canonical_smiles. Only include molecules with canonical_smiles available. Order rows by chembl_id, compound_name, canonical_smiles.\n\nOutput: chembl_id, compound_name, canonical_smiles\n\nSource: molecule_dictionary, compound_records, docs, compound_structures\n\nLogic: Join molecule_dictionary to compound_records on molecule_dictionary.molregno = compound_records.molregno. Join compound_records to docs on compound_records.doc_id = docs.doc_id. Join compound_structures to molecule_dictionary on molecule_dictionary.molregno = compound_structures.molregno. Filter docs.chembl_id = 'CHEMBL1123892' AND compound_structures.canonical_smiles IS NOT NULL. Select DISTINCT molecule_dictionary.chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles. Order by molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles."
+    }
+  }
+}

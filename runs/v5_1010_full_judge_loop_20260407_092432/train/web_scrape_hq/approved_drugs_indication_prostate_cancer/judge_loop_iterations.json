@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for prostate cancer. For each drug, return the following columns: the drug's ChEMBL ID, the drug's preferred name, the canonical SMILES, and the indication details (mesh_id, mesh_heading, efo_id, and efo_term).",
+    "sql": "SELECT\n  md.chembl_id AS chembl_id,\n  md.pref_name AS pref_name,\n  cs.canonical_smiles AS canonical_smiles,\n  di.mesh_id AS mesh_id,\n  di.mesh_heading AS mesh_heading,\n  di.efo_id AS efo_id,\n  di.efo_term AS efo_term\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading = 'Prostatic Neoplasms';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n17 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 394,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for prostate cancer. For each drug, return the following columns: the drug's ChEMBL ID, the drug's preferred name, the canonical SMILES, and the indication details (mesh_id, mesh_heading, efo_id, and efo_term). Filter for approved drugs by checking that max_phase equals 4.",
+    "sql": "SELECT\n  md.chembl_id AS chembl_id,\n  md.pref_name AS pref_name,\n  cs.canonical_smiles AS canonical_smiles,\n  di.mesh_id AS mesh_id,\n  di.mesh_heading AS mesh_heading,\n  di.efo_id AS efo_id,\n  di.efo_term AS efo_term\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading = 'Prostatic Neoplasms'\n  AND md.max_phase = 4;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 276,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

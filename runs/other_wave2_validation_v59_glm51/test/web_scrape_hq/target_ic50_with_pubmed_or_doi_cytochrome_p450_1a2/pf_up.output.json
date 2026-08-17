@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_1a2.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_cytochrome_p450_1a2",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity records for the human single-protein target Cytochrome P450 1A2 identified by target ChEMBL ID CHEMBL3356. Return columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures, INNER JOIN, non-null), compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fallback docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Filter activities where standard_type = 'IC50'. Join path: activities (indexed on assay_id) -> assays on assay_id -> target_dictionary on assays.tid = target_dictionary.tid, filter target_dictionary.chembl_id = 'CHEMBL3356'. Also join activities -> compound_records on activities.record_id = compound_records.record_id -> docs on compound_records.doc_id = docs.doc_id (require non-null pubmed_id or doi). Join activities -> molecule_dictionary on activities.molregno = molecule_dictionary.molregno. INNER JOIN compound_structures on molecule_dictionary.molregno = compound_structures.molregno to ensure non-null canonical_smiles. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity records for the human single-protein target Cytochrome P450 1A2 identified by target ChEMBL ID CHEMBL3356. Return columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures, INNER JOIN, non-null), compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fallback docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Filter activities where standard_type = 'IC50'. Join path: activities (indexed on assay_id) -> assays on assay_id -> target_dictionary on assays.tid = target_dictionary.tid, filter target_dictionary.chembl_id = 'CHEMBL3356'. Also join activities -> compound_records on activities.record_id = compound_records.record_id -> docs on compound_records.doc_id = docs.doc_id (require non-null pubmed_id or doi). Join activities -> molecule_dictionary on activities.molregno = molecule_dictionary.molregno. INNER JOIN compound_structures on molecule_dictionary.molregno = compound_structures.molregno to ensure non-null canonical_smiles. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

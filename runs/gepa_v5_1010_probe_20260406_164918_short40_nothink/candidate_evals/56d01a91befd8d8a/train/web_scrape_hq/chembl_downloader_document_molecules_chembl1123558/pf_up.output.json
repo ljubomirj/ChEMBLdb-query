@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123558.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123558",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select molecule_chembl_id AS chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles AS canonical_smiles From molecule_dictionary Join compound_records On molecule_dictionary.molregno = compound_records.molregno Join docs On compound_records.doc_id = docs.doc_id Join activities On compound_records.record_id = activities.record_id Join assays On activities.assay_id = assays.assay_id Join target_dictionary On assays.tid = target_dictionary.tid Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno Where docs.chembl_id = 'CHEMBL1123558' And compound_structures.canonical_smiles Is Not Null Group By molecule_chembl_id molecule_dictionary.pref_name compound_structures.canonical_smiles Order By molecule_chembl_id molecule_dictionary.pref_name compound_structures.canonical_smiles\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id AS chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles AS canonical_smiles From molecule_dictionary Join compound_records On molecule_dictionary.molregno = compound_records.molregno Join docs On compound_records.doc_id = docs.doc_id Join activities On compound_records.record_id = activities.record_id Join assays On activities.assay_id = assays.assay_id Join target_dictionary On assays.tid = target_dictionary.tid Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno Where docs.chembl_id = 'CHEMBL1123558' And compound_structures.canonical_smiles Is Not Null Group By molecule_chembl_id molecule_dictionary.pref_name compound_structures.canonical_smiles Order By molecule_chembl_id molecule_dictionary.pref_name compound_structures.canonical_smiles"
+    }
+  }
+}

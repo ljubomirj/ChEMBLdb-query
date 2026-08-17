@@ -1,0 +1,39 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary as parent_mol
+  On parent_mol.chembl_id = 'CHEMBL1173655'
+Join molecule_hierarchy mh
+  On mh.parent_molregno = parent_mol.molregno
+Join molecule_dictionary as child_mol
+  On child_mol.molregno = mh.molregno
+Left Join compound_records as cr
+  On cr.molregno = child_mol.molregno
+Left Join docs as d
+  On d.doc_id = cr.doc_id
+Left Join activities as a
+  On a.record_id = cr.record_id
+  And a.standard_type = 'IC50'
+  And a.standard_relation = '='
+  And a.standard_units = 'nM'
+  And a.standard_value IS NOT NULL
+Left Join assays as ass
+  On ass.assay_id = a.assay_id
+Left Join target_dictionary as t
+  On t.tid = a.tid
+Left Join compound_structures as cs
+  On cs.molregno = child_mol.molregno
+Return compound_chembl_id as compound_chembl_id,
+       canonical_smiles as canonical_smiles,
+       cr.compound_key as compound_key,
+       d.pubmed_id as pubmed_id_or_doi,
+       ass.description as assay_description,
+       a.standard_type as standard_type,
+       a.standard_relation as standard_relation,
+       a.standard_value as standard_value,
+       a.standard_units as standard_units,
+       a.activity_comment as activity_comment,
+       t.chembl_id as target_chembl_id,
+       t.pref_name as target_name,
+       t.organism as target_organism
+No deduplication
+No sorting
+No limit

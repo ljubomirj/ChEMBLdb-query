@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact activity values and chemical structures for all compounds tested in the assay identified by ChEMBL ID CHEMBL4649968. For each qualifying record, return the ChEMBL identifier of the compound, its canonical SMILES string, the standard type of the activity measurement, the standard value, the standard units, and the standard relation. Ensure the join from assays to activities uses the assay ID.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, a.standard_type, a.standard_value, a.standard_units, a.standard_relation FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649968'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 8868,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

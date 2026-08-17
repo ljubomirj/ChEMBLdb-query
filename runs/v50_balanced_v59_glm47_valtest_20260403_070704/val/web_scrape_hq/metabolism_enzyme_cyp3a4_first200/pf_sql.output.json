@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_enzyme_cyp3a4_first200.json",
+  "case_id": "metabolism_enzyme_cyp3a4_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT cs.canonical_smiles, md_substrate.pref_name AS substrate_compound_name, md_parent.pref_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m JOIN compound_records cr_substrate ON m.substrate_record_id = cr_substrate.record_id JOIN molecule_dictionary md_substrate ON cr_substrate.molregno = md_substrate.molregno JOIN compound_structures cs ON md_substrate.molregno = cs.molregno LEFT JOIN molecule_hierarchy mh ON md_substrate.molregno = mh.molregno LEFT JOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno WHERE m.enzyme_name = 'CYP3A4' LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles, md_substrate.pref_name AS substrate_compound_name, md_parent.pref_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m JOIN compound_records cr_substrate ON m.substrate_record_id = cr_substrate.record_id JOIN molecule_dictionary md_substrate ON cr_substrate.molregno = md_substrate.molregno JOIN compound_structures cs ON md_substrate.molregno = cs.molregno LEFT JOIN molecule_hierarchy mh ON md_substrate.molregno = mh.molregno LEFT JOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno WHERE m.enzyme_name = 'CYP3A4' LIMIT 200"
+    }
+  }
+}

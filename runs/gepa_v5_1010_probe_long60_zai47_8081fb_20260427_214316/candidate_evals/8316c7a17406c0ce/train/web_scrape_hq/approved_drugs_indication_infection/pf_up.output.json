@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_8316c7a17406c0ce.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_infection.json",
+  "case_id": "approved_drugs_indication_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "8316c7a17406c0ce",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Return approved drugs (max_phase_for_ind = 4) associated with infection-related indications. Extract ChEMBL ID, preferred name, canonical SMILES, indication EFO ID (as indication_curie), indication label (as indication_label), and max_phase_for_ind. Join molecule_dictionary to compound_structures and drug_indication. Filter drug_indication where mesh_heading contains 'infection' (case-insensitive). Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Return approved drugs (max_phase_for_ind = 4) associated with infection-related indications. Extract ChEMBL ID, preferred name, canonical SMILES, indication EFO ID (as indication_curie), indication label (as indication_label), and max_phase_for_ind. Join molecule_dictionary to compound_structures and drug_indication. Filter drug_indication where mesh_heading contains 'infection' (case-insensitive). Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

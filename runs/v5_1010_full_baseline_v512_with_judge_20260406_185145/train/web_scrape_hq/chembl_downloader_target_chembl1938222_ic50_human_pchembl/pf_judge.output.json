@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1938222_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1938222_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query returned 0 rows, which indicates a potential issue with the query logic or data availability. The target CHEMBL1938222 (1-phosphatidylinositol 3-phosphate 5-kinase) is a human single-protein target (tid=1938222), but there may be no IC50 activities with exact standard relation '=' and non-null pChEMBL values for this target in the current ChEMBL version. The query correctly filters for human assays (assay_organism='Homo sapiens'), exact IC50 endpoint, and required joins. However, the sample rows show no data, suggesting either no matching activities exist or the target may not have IC50 data in the database. The query structure is sound, but the result set is empty, which may be accurate for this specific target and endpoint.\",\n  \"score\": 0.85,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows, which indicates a potential issue with the query logic or data availability. The target CHEMBL1938222 (1-phosphatidylinositol 3-phosphate 5-kinase) is a human single-protein target (tid=1938222), but there may be no IC50 activities with exact standard relation '=' and non-null pChEMBL values for this target in the current ChEMBL version. The query correctly filters for human assays (assay_organism='Homo sapiens'), exact IC50 endpoint, and required joins. However, the sample rows show no data, suggesting either no matching activities exist or the target may not have IC50 data in the database. The query structure is sound, but the result set is empty, which may be accurate for this specific target and endpoint.",
+      "score": 0.85,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1938222_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1938222_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1938222_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

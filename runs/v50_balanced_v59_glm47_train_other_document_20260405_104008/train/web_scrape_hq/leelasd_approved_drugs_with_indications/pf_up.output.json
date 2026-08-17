@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs from ChEMBL. Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno as an INNER JOIN to require canonical SMILES. Filter for approved drugs (therapeutic_flag = 1). Return DISTINCT rows for chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval. Sort by first_approval descending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs from ChEMBL. Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno as an INNER JOIN to require canonical SMILES. Filter for approved drugs (therapeutic_flag = 1). Return DISTINCT rows for chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval. Sort by first_approval descending."
+    }
+  }
+}

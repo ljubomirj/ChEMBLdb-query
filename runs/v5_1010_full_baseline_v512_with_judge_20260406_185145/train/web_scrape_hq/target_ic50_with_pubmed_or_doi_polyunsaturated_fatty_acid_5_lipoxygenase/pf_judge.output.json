@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_polyunsaturated_fatty_acid_5_lipoxygenase.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_polyunsaturated_fatty_acid_5_lipoxygenase",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve compounds with exact IC50 activity values (in nM) against human 5\u2011lipoxygenase, including ChEMBL ID, SMILES, compound key, PubMed/DOI, assay description, and target information. The SQL uses DISTINCT and joins across molecule_dictionary, activities, assays, target_dictionary, compound_records, docs, and compound_structures. However, the result set is empty (row_count: 0). This could be due to several reasons: (1) No activities with standard_type='IC50' and standard_units='nM' for 5\u2011lipoxygenase in the current dataset; (2) The target name '5-lipoxygenase' may not match exactly (e.g., case sensitivity or naming differences); (3) The assay may not be linked to the target via tid; (4) The join path may miss some records if any of the tables have missing data (e.g., compound_structures or docs). The query correctly filters for the required fields and uses the proper aliases, but the lack of results suggests the data may not exist in the current snapshot or the target name is slightly different (e.g., '5-lipoxygenase' vs '5-Lipoxygenase'). The query structure is sound, but the result is empty, indicating a data or naming mismatch rather than a SQL error.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve compounds with exact IC50 activity values (in nM) against human 5\u2011lipoxygenase, including ChEMBL ID, SMILES, compound key, PubMed/DOI, assay description, and target information. The SQL uses DISTINCT and joins across molecule_dictionary, activities, assays, target_dictionary, compound_records, docs, and compound_structures. However, the result set is empty (row_count: 0). This could be due to several reasons: (1) No activities with standard_type='IC50' and standard_units='nM' for 5\u2011lipoxygenase in the current dataset; (2) The target name '5-lipoxygenase' may not match exactly (e.g., case sensitivity or naming differences); (3) The assay may not be linked to the target via tid; (4) The join path may miss some records if any of the tables have missing data (e.g., compound_structures or docs). The query correctly filters for the required fields and uses the proper aliases, but the lack of results suggests the data may not exist in the current snapshot or the target name is slightly different (e.g., '5-lipoxygenase' vs '5-Lipoxygenase'). The query structure is sound, but the result is empty, indicating a data or naming mismatch rather than a SQL error.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_polyunsaturated_fatty_acid_5_lipoxygenase/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_polyunsaturated_fatty_acid_5_lipoxygenase/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_polyunsaturated_fatty_acid_5_lipoxygenase/pf_judge.generated_artifact_record.json"
+  }
+}

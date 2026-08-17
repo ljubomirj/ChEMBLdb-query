@@ -1,0 +1,6 @@
+Select: chembl_id, compound_name, canonical_smiles
+Source: molecule_dictionary, compound_records, compound_structures
+Join: Join molecule_dictionary to compound_records on molregno. Join compound_records to compound_structures on molregno.
+Filter: Filter docs.chembl_id = 'CHEMBL1123860' via compound_records.doc_id = docs.doc_id. Filter canonical_smiles IS NOT NULL.
+Sort: chembl_id ASC, compound_name ASC, canonical_smiles ASC.
+Limit: None.

@@ -1,0 +1,24 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve approved drugs from ChEMBL with preferred name, canonical SMILES, max clinical phase, mechanism of action, action type, target ChEMBL ID, and target name. Keep only approved drugs with max_phase = 4 that have both a drug_mechanism row and a compound_structures row with canonical_smiles. Return DISTINCT rows for chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, and target_name. Preserve INNER JOIN semantics from molecule_dictionary to drug_mechanism and to compound_structures, but use LEFT JOIN semantics from drug_mechanism to target_dictionary (target columns may be null).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  dm.mechanism_of_action,\n  dm.action_type,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nLEFT JOIN target_dictionary td ON dm.tid = td.tid\nWHERE md.max_phase = 4;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2959,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

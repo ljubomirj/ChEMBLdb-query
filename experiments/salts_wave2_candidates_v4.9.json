@@ -1,0 +1,165 @@
+{
+  "total_candidates": 16,
+  "candidates": [
+    {
+      "case_id": "chembl4857685_voltage_gated_inwardly_rectify_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL4857685",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL240",
+      "target_name": "Voltage-gated inwardly rectifying potassium channel KCNH2",
+      "row_count": 21,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL240'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL4857685'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "(+/_)_tylophorine_non_protein_target_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL493620",
+      "parent_name": "(+/-)-TYLOPHORINE",
+      "target_chembl_id": "CHEMBL3879801",
+      "target_name": "NON-PROTEIN TARGET",
+      "row_count": 24,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL3879801'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL493620'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "(+/_)_tylophorine_raw264.7_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL493620",
+      "parent_name": "(+/-)-TYLOPHORINE",
+      "target_chembl_id": "CHEMBL612557",
+      "target_name": "RAW264.7",
+      "row_count": 24,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL612557'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL493620'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chloroquine_plasmodium_falciparum_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL76",
+      "parent_name": "CHLOROQUINE",
+      "target_chembl_id": "CHEMBL364",
+      "target_name": "Plasmodium falciparum",
+      "row_count": 1853,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL364'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL76'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl3716726_mus_musculus_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3716726",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL375",
+      "target_name": "Mus musculus",
+      "row_count": 8,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL375'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3716726'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "dapagliflozin_sodium/glucose_cotransporter_2_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL429910",
+      "parent_name": "DAPAGLIFLOZIN",
+      "target_chembl_id": "CHEMBL3884",
+      "target_name": "Sodium/glucose cotransporter 2",
+      "row_count": 43,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL3884'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL429910'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl3183703_nacht,_lrr_and_pyd_domains_con_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3183703",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL1741208",
+      "target_name": "NACHT, LRR and PYD domains-containing protein 3",
+      "row_count": 26,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL1741208'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3183703'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl3338195_hepg2_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3338195",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL395",
+      "target_name": "HepG2",
+      "row_count": 6,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL395'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3338195'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3182437",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL3430885",
+      "target_name": "Ubiquitin carboxyl-terminal hydrolase 1/WD repeat-containing protein 48",
+      "row_count": 10,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL3430885'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3182437'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "erdafitinib_fibroblast_growth_factor_recep_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3545376",
+      "parent_name": "ERDAFITINIB",
+      "target_chembl_id": "CHEMBL2742",
+      "target_name": "Fibroblast growth factor receptor 3",
+      "row_count": 26,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL2742'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3545376'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "erdafitinib_fibroblast_growth_factor_recep_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3545376",
+      "parent_name": "ERDAFITINIB",
+      "target_chembl_id": "CHEMBL3650",
+      "target_name": "Fibroblast growth factor receptor 1",
+      "row_count": 21,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL3650'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3545376'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "erdafitinib_fibroblast_growth_factor_recep_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3545376",
+      "parent_name": "ERDAFITINIB",
+      "target_chembl_id": "CHEMBL4142",
+      "target_name": "Fibroblast growth factor receptor 2",
+      "row_count": 15,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL4142'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3545376'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "selonsertib_mitogen_activated_protein_kina_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL3916717",
+      "parent_name": "SELONSERTIB",
+      "target_chembl_id": "CHEMBL5285",
+      "target_name": "Mitogen-activated protein kinase kinase kinase 5",
+      "row_count": 208,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL5285'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL3916717'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "dapagliflozin_sodium/glucose_cotransporter_1_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL429910",
+      "parent_name": "DAPAGLIFLOZIN",
+      "target_chembl_id": "CHEMBL4979",
+      "target_name": "Sodium/glucose cotransporter 1",
+      "row_count": 27,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL4979'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL429910'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl5498743_a549_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL5498743",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL392",
+      "target_name": "A549",
+      "row_count": 5,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL392'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL5498743'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    },
+    {
+      "case_id": "chembl5498743_l929_ic50_salts",
+      "template": "faq_parent_and_salts_activity_provenance",
+      "parent_chembl_id": "CHEMBL5498743",
+      "parent_name": null,
+      "target_chembl_id": "CHEMBL612267",
+      "target_name": "L929",
+      "row_count": 5,
+      "sql": "SELECT m.chembl_id AS compound_chembl_id,\n       s.canonical_smiles,\n       r.compound_key,\n       COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n       a.description AS assay_description,\n       act.standard_type,\n       act.standard_relation,\n       act.standard_value,\n       act.standard_units,\n       act.activity_comment,\n       t.chembl_id AS target_chembl_id,\n       t.pref_name AS target_name,\n       t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE t.chembl_id = 'CHEMBL612267'\n  AND m.chembl_id IN (\n    SELECT DISTINCT m1.chembl_id\n    FROM molecule_dictionary m1\n    JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n    JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n    WHERE m2.chembl_id = 'CHEMBL5498743'\n  )\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'"
+    }
+  ]
+}

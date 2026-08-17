@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (with max_phase = 4 in molecule_dictionary) that have an agonist mechanism of action recorded in the drug_mechanism table (action_type = 'AGONIST'). For each such drug, show the drug name (pref_name), the drug's ChEMBL ID (molecule_dictionary.chembl_id), the target name (target_dictionary.pref_name), the target's ChEMBL ID (target_dictionary.chembl_id), the target organism (target_dictionary.organism), and the canonical SMILES of the drug (compound_structures.canonical_smiles). Use the following join relationships: molecule_dictionary.molregno = drug_mechanism.molregno, drug_mechanism.tid = target_dictionary.tid, and molecule_dictionary.molregno = compound_structures.molregno. Return one row per drug\u2013target pair. Do not apply any limit on the number of rows returned.",
+    "sql": "SELECT\n  md.pref_name AS drug_name,\n  md.chembl_id AS drug_chembl_id,\n  td.pref_name AS target_name,\n  td.chembl_id AS target_chembl_id,\n  td.organism AS target_organism,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND dm.action_type = 'AGONIST';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 441,
+    "res_columns": [
+      "drug_name",
+      "drug_chembl_id",
+      "target_name",
+      "target_chembl_id",
+      "target_organism",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

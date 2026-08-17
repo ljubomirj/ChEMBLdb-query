@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 distinct high-potency activity rows for Homo sapiens single-protein targets. The data should come from the activities table joined with assays and target_dictionary. Filter the results where target_dictionary.organism is 'Homo sapiens', target_type is 'SINGLE PROTEIN', activities.standard_units is 'nM', activities.standard_type is one of 'EC50', 'IC50', or 'AC50', and activities.standard_value is below 50. Return the columns activity_id, molecule_dictionary.chembl_id as molecule_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, standard_type, standard_value, and standard_units. Order the results by activity_id.",
+    "sql": "SELECT DISTINCT\n  a.activity_id,\n  md.chembl_id AS molecule_chembl_id,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  a.standard_type,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE\n  td.organism = 'Homo sapiens'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND a.standard_units = 'nM'\n  AND a.standard_type IN ('EC50', 'IC50', 'AC50')\n  AND a.standard_value < 50\nORDER BY a.activity_id\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 153 | SEARCH a USING INDEX idx_act_std_unit (standard_units=?)\n37 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n43 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n54 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n80 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n81 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 200,
+    "res_columns": [
+      "activity_id",
+      "molecule_chembl_id",
+      "target_chembl_id",
+      "target_name",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

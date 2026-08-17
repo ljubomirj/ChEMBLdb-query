@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1795177_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1795177_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query returned 0 rows. This is likely because the target CHEMBL1795177 (Histone-lysine N-methyltransferase SUV39H2) is not annotated as a human target (tax_id 9606) in the target_dictionary. The filter 'assays.assay_organism = 'Homo sapiens'' and 'td.chembl_id = 'CHEMBL1795177'' may be too restrictive. The target might be associated with a different organism or the assay may not be linked to a human assay. The join path from assays to target_dictionary uses 'a.tid = td.tid', but the target_dictionary may not have the correct mapping for this target. The result suggests the target is not present in the human assay context or the standard relation '=' and IC50 filter may be too strict.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows. This is likely because the target CHEMBL1795177 (Histone-lysine N-methyltransferase SUV39H2) is not annotated as a human target (tax_id 9606) in the target_dictionary. The filter 'assays.assay_organism = 'Homo sapiens'' and 'td.chembl_id = 'CHEMBL1795177'' may be too restrictive. The target might be associated with a different organism or the assay may not be linked to a human assay. The join path from assays to target_dictionary uses 'a.tid = td.tid', but the target_dictionary may not have the correct mapping for this target. The result suggests the target is not present in the human assay context or the standard relation '=' and IC50 filter may be too strict.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795177_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795177_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795177_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

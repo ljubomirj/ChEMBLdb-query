@@ -1,0 +1,68 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound records (compound_key, compound_name, molregno, record_id, doc_id, compound_key) for the document with chembl_id = 'CHEMBL5728495'. Return all matching compounds without further filtering; do not apply additional filters such as doc_type, DOI, year, or target-related criteria.",
+    "sql": "SELECT c.compound_key, c.compound_name, a.molregno, a.record_id, a.doc_id, a.compound_key\nFROM docs d\nJOIN compound_records a ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5728495'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: c.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: c.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound_key, compound_name, molregno, record_id, doc_id, compound_key for documents with chembl_id = 'CHEMBL5728495'. Return all matching compounds (no filters on doc_type, DOI, year, or target).",
+    "sql": "SELECT DISTINCT c.compound_key, c.compound_name, a.molregno, a.record_id, a.doc_id, a.compound_key FROM compound_records a JOIN molecule_dictionary c ON a.molregno = c.molregno WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728495')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: c.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: c.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compounds reported in document CHEMBL5728495. Return compound identifiers and names without additional filters: include compound_key, pref_name (compound_name), molregno, record_id, doc_id, and compound_key from the relevant tables. Compound names should come from molecule_dictionary.pref_name. No restrictions on doc_type, DOI, year, or target data.",
+    "sql": "SELECT DISTINCT a.compound_key, c.pref_name, a.molregno, a.record_id, a.doc_id, a.compound_key FROM compound_records a JOIN molecule_dictionary c ON a.molregno = c.molregno WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728495')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n6 | 0 | 75 | SEARCH a USING INDEX fk_comp_rec_docid (doc_id=?)\n9 | 0 | 0 | SCALAR SUBQUERY 1\n14 | 9 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n27 | 0 | 47 | SEARCH c USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "compound_key",
+      "pref_name",
+      "molregno",
+      "record_id",
+      "doc_id",
+      "compound_key__dup2"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all molecules reported in document CHEMBL5728495. Output compound_key, pref_name as compound_name, molregno, record_id, doc_id, and compound_key (the molecule's own key). No additional filters (no doc_type, DOI, year, target type, unit or relation restrictions). Use molecule_dictionary.pref_name for the compound name and join compound_records to molecule_dictionary via molregno. Return every matching row without any further processing.",
+    "sql": "SELECT a.compound_key AS compound_key, c.pref_name AS compound_name, a.molregno, a.record_id, a.doc_id, a.compound_key FROM compound_records a JOIN molecule_dictionary c ON a.molregno = c.molregno WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728495');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n5 | 0 | 75 | SEARCH a USING INDEX fk_comp_rec_docid (doc_id=?)\n8 | 0 | 0 | SCALAR SUBQUERY 1\n13 | 8 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n26 | 0 | 47 | SEARCH c USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 812,
+    "res_columns": [
+      "compound_key",
+      "compound_name",
+      "molregno",
+      "record_id",
+      "doc_id",
+      "compound_key__dup2"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

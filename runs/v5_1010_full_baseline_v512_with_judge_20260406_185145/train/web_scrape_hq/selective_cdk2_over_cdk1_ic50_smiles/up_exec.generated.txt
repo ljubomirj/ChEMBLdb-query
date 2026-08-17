@@ -1,0 +1,9 @@
+Select molecule_chembl_id as compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM
+Join activities as a1 on a1.molregno = m.molregno and a1.standard_type = 'IC50' and a1.standard_relation = '>' and a1.standard_value is not null and a1.standard_units = 'nM' and a1.value is not null and a1.units = 'nM' and a1.activity_comment is not null
+Join assays as a1_assay on a1_assay.assay_id = a1.assay_id and a1_assay.assay_type = 'B' and a1_assay.assay_organism = 'Homo sapiens'
+Join target_dictionary as t1 on t1.tid = a1_assay.tid and t1.pref_name = 'CDK2'
+Join target_dictionary as t2 on t2.tid = a1_assay.tid and t2.pref_name = 'CDK1'
+Join compound_structures as cs on cs.molregno = m.molregno
+Filter a1_standard_value1 > 1000 and a1_standard_value2 < 10000
+Return compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM
+Sort by compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM

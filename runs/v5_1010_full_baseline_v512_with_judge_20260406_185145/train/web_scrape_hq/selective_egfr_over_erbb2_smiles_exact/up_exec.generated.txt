@@ -1,0 +1,14 @@
+Select molecule_chembl_id as compound_chembl_id, compound_structures.canonical_smiles as canonical_smiles
+Join activities on activities.molregno = molecule_dictionary.molregno
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Filter activities.standard_relation = '='
+Filter activities.standard_units = 'nM'
+Filter activities.standard_value < 50
+Filter activities.standard_value > 200
+Filter activities.activity_type = 'IC50'
+Filter target_dictionary.chembl_id = 'CHEMBL203'
+Filter target_dictionary.chembl_id = 'CHEMBL1824'
+Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Return molecule_chembl_id as compound_chembl_id, canonical_smiles
+Sort by molecule_chembl_id, canonical_smiles

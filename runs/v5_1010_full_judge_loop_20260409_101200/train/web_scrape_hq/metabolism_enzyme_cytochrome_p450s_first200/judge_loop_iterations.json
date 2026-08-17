@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the enzyme is a Cytochrome P450. For each record, provide the metabolic conversion, pathway key, and organism. Additionally, include the canonical SMILES structure and preferred name of the substrate compound associated with the metabolism record.",
+    "sql": "SELECT\n  cs.canonical_smiles,\n  md_sub.pref_name AS substrate_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nJOIN compound_structures cs ON md_sub.molregno = cs.molregno\nWHERE m.enzyme_name LIKE '%Cytochrome P450%'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 29,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,27 @@
+SELECT DISTINCT
+  md.chembl_id AS compound_chembl_id,
+  cs.canonical_smiles,
+  cr.compound_key,
+  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,
+  a.description AS assay_description,
+  act.standard_type,
+  act.standard_relation,
+  act.standard_value,
+  act.standard_units,
+  act.activity_comment,
+  td.chembl_id AS target_chembl_id,
+  td.pref_name AS target_name,
+  td.organism AS target_organism
+FROM molecule_dictionary md
+JOIN activities act ON act.molregno = md.molregno
+JOIN assays a ON a.assay_id = act.assay_id
+JOIN target_dictionary td ON td.tid = a.tid
+JOIN compound_structures cs ON cs.molregno = md.molregno
+JOIN docs d ON d.doc_id = act.doc_id
+JOIN compound_records cr ON cr.record_id = act.record_id
+WHERE td.chembl_id = 'CHEMBL203'
+  AND td.target_type = 'SINGLE PROTEIN'
+  AND td.organism = 'Homo sapiens'
+  AND act.standard_type = 'IC50'
+  AND act.standard_units = 'nM'
+  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)

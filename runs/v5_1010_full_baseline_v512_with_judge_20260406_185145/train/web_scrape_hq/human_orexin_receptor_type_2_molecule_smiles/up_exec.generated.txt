@@ -1,0 +1,15 @@
+Select molecule_chembl_id, canonical_smiles
+Join activities on activities.record_id = compound_records.record_id
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = activities.molregno
+Filter target_dictionary.chembl_id = 'CHEMBL4792'
+Filter assays.assay_organism = 'Homo sapiens'
+Filter activities.type = 'IC50'
+Filter activities.standard_relation = '='
+Filter activities.standard_value IS NOT NULL
+Filter activities.standard_units = 'nM'
+Join molecule_dictionary on molecule_dictionary.molregno = activities.molregno
+Filter molecule_dictionary.molecule_type = 'Small molecule'
+Return molecule_chembl_id, canonical_smiles
+Sort by molecule_chembl_id

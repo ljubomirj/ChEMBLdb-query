@@ -1,0 +1,71 @@
+[
+  {
+    "n": 1,
+    "up": "Return the molecule identifiers from the document with chembl_id = CHEMBL5665443. Provide the molecule's ChEMBL compound ID (chembl_id), the preferred name (pref_name), and the document identifier (doc_id) for reference. Include every compound entry that appears in this document, without any additional filtering or limits; list each qualifying compound once per row.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name, a.doc_id\nFROM activities a\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nWHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5665443')\"}</think>{",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: unrecognized token: \"\"}</think>{\"",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "unrecognized token: \"\"}</think>{\"",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound identifiers for the document CHEMBL5665443. For each compound reported in this document, return the ChEMBL compound identifier (chembl_id), the preferred molecule name (pref_name), and the document identifier (doc_id) as a reference. Include one row per compound without any additional filtering or ordering.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name, a.doc_id\nFROM activities a\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN docs ON a.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL5665443'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compound identifiers for the document CHEMBL5665443. For each compound reported in this document, return the ChEMBL compound identifier (chembl_id), the preferred molecule name (pref_name), and the document identifier (doc_id) as a reference. Include one row per compound without any additional filtering or ordering.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name, a.doc_id FROM activities a JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN docs ON a.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5665443'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Return the molecule identifiers for the document with chembl_id CHEMBL5665443. Provide the compound's ChEMBL identifier (chembl_id), the preferred molecule name (pref_name), and the document identifier (doc_id) for reference. Include one row per compound reported in this document, without any additional filtering or ordering.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name, a.doc_id\nFROM activities a\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN docs ON a.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL5665443';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Return the compound identifiers for the document CHEMBL5665443. For each compound reported in this document, return the compound's ChEMBL ID (chembl_id), the preferred molecule name (pref_name), and the document identifier (doc_id) for reference. Include one row per compound without any additional filtering or ordering.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name, a.doc_id FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs ON a.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5665443';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

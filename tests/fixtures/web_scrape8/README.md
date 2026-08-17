@@ -1,0 +1,3 @@
+# web_scrape8
+
+Round eight continues the lightweight non-salts target-centric pChEMBL expansion from the public chembl_downloader get_target_sql() family.

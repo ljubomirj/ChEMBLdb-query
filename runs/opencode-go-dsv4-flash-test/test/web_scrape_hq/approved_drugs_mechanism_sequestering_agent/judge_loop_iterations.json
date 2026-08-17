@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (molecules with max_phase = 4) whose mechanism of action is classified as a sequestering agent (drug_mechanism.action_type = 'SEQUESTERING AGENT'). Include the compound details (compound name and ChEMBL ID from molecule_dictionary) and the target details (target name and ChEMBL ID from target_dictionary) for each drug-target pair. Also include the action_type from drug_mechanism to confirm. Join drug_mechanism.molregno to molecule_dictionary.molregno and drug_mechanism.tid to target_dictionary.tid. Return one row per drug-target combination.",
+    "sql": "SELECT DISTINCT md.pref_name AS compound_name, md.chembl_id AS compound_chembl_id, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, dm.action_type FROM drug_mechanism dm JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE dm.action_type = 'SEQUESTERING AGENT' AND md.max_phase = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN dm\n11 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 30,
+    "res_columns": [
+      "compound_name",
+      "compound_chembl_id",
+      "target_name",
+      "target_chembl_id",
+      "action_type"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

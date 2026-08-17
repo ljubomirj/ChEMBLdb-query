@@ -1,0 +1,7 @@
+Objective: Retrieve exact activity values for compounds tested in assay CHEMBL1054504, including canonical SMILES, ChEMBL ID, standard type, relation, value, and units, sorted by the specified keys.
+
+Output: canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units
+
+Source: assays, activities, compound_structures, molecule_dictionary
+
+Logic: Join assays to activities on assay_id, join activities to compound_structures on molregno, join compound_structures to molecule_dictionary on molregno. Filter by assays.chembl_id = 'CHEMBL1054504', activities.standard_value IS NOT NULL, and activities.standard_relation = '='. Select the required columns and sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units.

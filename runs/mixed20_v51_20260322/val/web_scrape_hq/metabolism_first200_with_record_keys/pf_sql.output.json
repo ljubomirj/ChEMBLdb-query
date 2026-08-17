@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n    cs.canonical_smiles,\\n    met.substrate_record_id,\\n    met.metabolite_record_id,\\n    cr_sub.compound_key AS substrate_compound_key,\\n    cr_met.compound_key AS metabolite_compound_key,\\n    met.met_conversion,\\n    met.pathway_key\\nFROM metabolism met\\nJOIN compound_records cr_sub ON cr_sub.record_id = met.substrate_record_id\\nJOIN compound_structures cs ON cs.molregno = cr_sub.molregno\\nLEFT JOIN compound_records cr_met ON cr_met.record_id = met.metabolite_record_id\\nORDER BY\\n    cs.canonical_smiles ASC,\\n    met.substrate_record_id ASC,\\n    met.metabolite_record_id ASC,\\n    cr_sub.compound_key ASC,\\n    cr_met.compound_key ASC,\\n    met.met_conversion ASC,\\n    met.pathway_key ASC\\nLIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n    cs.canonical_smiles,\n    met.substrate_record_id,\n    met.metabolite_record_id,\n    cr_sub.compound_key AS substrate_compound_key,\n    cr_met.compound_key AS metabolite_compound_key,\n    met.met_conversion,\n    met.pathway_key\nFROM metabolism met\nJOIN compound_records cr_sub ON cr_sub.record_id = met.substrate_record_id\nJOIN compound_structures cs ON cs.molregno = cr_sub.molregno\nLEFT JOIN compound_records cr_met ON cr_met.record_id = met.metabolite_record_id\nORDER BY\n    cs.canonical_smiles ASC,\n    met.substrate_record_id ASC,\n    met.metabolite_record_id ASC,\n    cr_sub.compound_key ASC,\n    cr_met.compound_key ASC,\n    met.met_conversion ASC,\n    met.pathway_key ASC\nLIMIT 200"
+    }
+  }
+}

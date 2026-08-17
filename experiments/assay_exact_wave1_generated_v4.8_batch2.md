@@ -1,0 +1,113 @@
+# Assay-Exact Wave 1 Generated v4.8
+
+- Prompt pack: `prompt_pack_v5.8.yaml`
+- Provider profile: `zai-glm47-glm5-local`
+- Requested batch size: 100
+- Generated: 99
+- Failures: 1
+
+## Generated cases
+
+- `chembl_downloader_assay_chembl1614249_exact` assay=`CHEMBL1614249` rows=42282 round=67
+- `chembl_downloader_assay_chembl1613914_exact` assay=`CHEMBL1613914` rows=39711 round=67
+- `chembl_downloader_assay_chembl4649964_exact` assay=`CHEMBL4649964` rows=38481 round=67
+- `chembl_downloader_assay_chembl1614257_exact` assay=`CHEMBL1614257` rows=37837 round=67
+- `chembl_downloader_assay_chembl4649945_exact` assay=`CHEMBL4649945` rows=37338 round=67
+- `chembl_downloader_assay_chembl1614441_exact` assay=`CHEMBL1614441` rows=36452 round=67
+- `chembl_downloader_assay_chembl1614544_exact` assay=`CHEMBL1614544` rows=36316 round=67
+- `chembl_downloader_assay_chembl1613842_exact` assay=`CHEMBL1613842` rows=33616 round=67
+- `chembl_downloader_assay_chembl1614236_exact` assay=`CHEMBL1614236` rows=32299 round=67
+- `chembl_downloader_assay_chembl1613836_exact` assay=`CHEMBL1613836` rows=32120 round=67
+- `chembl_downloader_assay_chembl1614146_exact` assay=`CHEMBL1614146` rows=32120 round=67
+- `chembl_downloader_assay_chembl1614161_exact` assay=`CHEMBL1614161` rows=28432 round=67
+- `chembl_downloader_assay_chembl1613769_exact` assay=`CHEMBL1613769` rows=28195 round=67
+- `chembl_downloader_assay_chembl1614174_exact` assay=`CHEMBL1614174` rows=24255 round=67
+- `chembl_downloader_assay_chembl1614038_exact` assay=`CHEMBL1614038` rows=24172 round=67
+- `chembl_downloader_assay_chembl1614502_exact` assay=`CHEMBL1614502` rows=24075 round=67
+- `chembl_downloader_assay_chembl4296187_exact` assay=`CHEMBL4296187` rows=23189 round=67
+- `chembl_downloader_assay_chembl1614079_exact` assay=`CHEMBL1614079` rows=23051 round=67
+- `chembl_downloader_assay_chembl1613838_exact` assay=`CHEMBL1613838` rows=21987 round=67
+- `chembl_downloader_assay_chembl4296188_exact` assay=`CHEMBL4296188` rows=21582 round=67
+- `chembl_downloader_assay_chembl1614250_exact` assay=`CHEMBL1614250` rows=20617 round=68
+- `chembl_downloader_assay_chembl1613918_exact` assay=`CHEMBL1613918` rows=18604 round=68
+- `chembl_downloader_assay_chembl4296802_exact` assay=`CHEMBL4296802` rows=17860 round=68
+- `chembl_downloader_assay_chembl5483194_exact` assay=`CHEMBL5483194` rows=17828 round=68
+- `chembl_downloader_assay_chembl4513082_exact` assay=`CHEMBL4513082` rows=17276 round=68
+- `chembl_downloader_assay_chembl1614410_exact` assay=`CHEMBL1614410` rows=17167 round=68
+- `chembl_downloader_assay_chembl1614361_exact` assay=`CHEMBL1614361` rows=16308 round=68
+- `chembl_downloader_assay_chembl1614275_exact` assay=`CHEMBL1614275` rows=14932 round=68
+- `chembl_downloader_assay_chembl1614052_exact` assay=`CHEMBL1614052` rows=14883 round=68
+- `chembl_downloader_assay_chembl1614280_exact` assay=`CHEMBL1614280` rows=13808 round=68
+- `chembl_downloader_assay_chembl1054500_exact` assay=`CHEMBL1054500` rows=13533 round=68
+- `chembl_downloader_assay_chembl1054502_exact` assay=`CHEMBL1054502` rows=13533 round=68
+- `chembl_downloader_assay_chembl1054505_exact` assay=`CHEMBL1054505` rows=13533 round=68
+- `chembl_downloader_assay_chembl1054501_exact` assay=`CHEMBL1054501` rows=13446 round=68
+- `chembl_downloader_assay_chembl1054503_exact` assay=`CHEMBL1054503` rows=13417 round=68
+- `chembl_downloader_assay_chembl1054504_exact` assay=`CHEMBL1054504` rows=13327 round=68
+- `chembl_downloader_assay_chembl3436042_exact` assay=`CHEMBL3436042` rows=13243 round=68
+- `chembl_downloader_assay_chembl3436043_exact` assay=`CHEMBL3436043` rows=13243 round=68
+- `chembl_downloader_assay_chembl3436044_exact` assay=`CHEMBL3436044` rows=13243 round=68
+- `chembl_downloader_assay_chembl4725213_exact` assay=`CHEMBL4725213` rows=13156 round=69
+- `chembl_downloader_assay_chembl4725214_exact` assay=`CHEMBL4725214` rows=12597 round=69
+- `chembl_downloader_assay_chembl4725212_exact` assay=`CHEMBL4725212` rows=12581 round=69
+- `chembl_downloader_assay_chembl1614281_exact` assay=`CHEMBL1614281` rows=12270 round=69
+- `chembl_downloader_assay_chembl1614364_exact` assay=`CHEMBL1614364` rows=12190 round=69
+- `chembl_downloader_assay_chembl4483864_exact` assay=`CHEMBL4483864` rows=11918 round=69
+- `chembl_downloader_assay_chembl1614031_exact` assay=`CHEMBL1614031` rows=11886 round=69
+- `chembl_downloader_assay_chembl1614103_exact` assay=`CHEMBL1614103` rows=11886 round=69
+- `chembl_downloader_assay_chembl1613910_exact` assay=`CHEMBL1613910` rows=11770 round=69
+- `chembl_downloader_assay_chembl1614234_exact` assay=`CHEMBL1614234` rows=11442 round=69
+- `chembl_downloader_assay_chembl4483863_exact` assay=`CHEMBL4483863` rows=11418 round=69
+- `chembl_downloader_assay_chembl4649950_exact` assay=`CHEMBL4649950` rows=10902 round=69
+- `chembl_downloader_assay_chembl1613992_exact` assay=`CHEMBL1613992` rows=10354 round=69
+- `chembl_downloader_assay_chembl1614076_exact` assay=`CHEMBL1614076` rows=10069 round=69
+- `chembl_downloader_assay_chembl1741322_exact` assay=`CHEMBL1741322` rows=9817 round=69
+- `chembl_downloader_assay_chembl1614531_exact` assay=`CHEMBL1614531` rows=9545 round=69
+- `chembl_downloader_assay_chembl4649958_exact` assay=`CHEMBL4649958` rows=9111 round=69
+- `chembl_downloader_assay_chembl4649959_exact` assay=`CHEMBL4649959` rows=9090 round=69
+- `chembl_downloader_assay_chembl4649963_exact` assay=`CHEMBL4649963` rows=8970 round=69
+- `chembl_downloader_assay_chembl1741323_exact` assay=`CHEMBL1741323` rows=8948 round=69
+- `chembl_downloader_assay_chembl4649944_exact` assay=`CHEMBL4649944` rows=8862 round=70
+- `chembl_downloader_assay_chembl4649947_exact` assay=`CHEMBL4649947` rows=8861 round=70
+- `chembl_downloader_assay_chembl4649946_exact` assay=`CHEMBL4649946` rows=8854 round=70
+- `chembl_downloader_assay_chembl4649968_exact` assay=`CHEMBL4649968` rows=8853 round=70
+- `chembl_downloader_assay_chembl4649969_exact` assay=`CHEMBL4649969` rows=8850 round=70
+- `chembl_downloader_assay_chembl4649970_exact` assay=`CHEMBL4649970` rows=8848 round=70
+- `chembl_downloader_assay_chembl4649953_exact` assay=`CHEMBL4649953` rows=8846 round=70
+- `chembl_downloader_assay_chembl4649956_exact` assay=`CHEMBL4649956` rows=8841 round=70
+- `chembl_downloader_assay_chembl1741324_exact` assay=`CHEMBL1741324` rows=8806 round=70
+- `chembl_downloader_assay_chembl1614227_exact` assay=`CHEMBL1614227` rows=8707 round=70
+- `chembl_downloader_assay_chembl4495582_exact` assay=`CHEMBL4495582` rows=8638 round=70
+- `chembl_downloader_assay_chembl4649966_exact` assay=`CHEMBL4649966` rows=8529 round=70
+- `chembl_downloader_assay_chembl1614414_exact` assay=`CHEMBL1614414` rows=8354 round=70
+- `chembl_downloader_assay_chembl1741325_exact` assay=`CHEMBL1741325` rows=7299 round=70
+- `chembl_downloader_assay_chembl1613808_exact` assay=`CHEMBL1613808` rows=7231 round=70
+- `chembl_downloader_assay_chembl1613886_exact` assay=`CHEMBL1613886` rows=6803 round=70
+- `chembl_downloader_assay_chembl1614108_exact` assay=`CHEMBL1614108` rows=6803 round=70
+- `chembl_downloader_assay_chembl1614521_exact` assay=`CHEMBL1614521` rows=6522 round=70
+- `chembl_downloader_assay_chembl1613996_exact` assay=`CHEMBL1613996` rows=6330 round=70
+- `chembl_downloader_assay_chembl1614428_exact` assay=`CHEMBL1614428` rows=6330 round=70
+- `chembl_downloader_assay_chembl1613797_exact` assay=`CHEMBL1613797` rows=6324 round=71
+- `chembl_downloader_assay_chembl1614331_exact` assay=`CHEMBL1614331` rows=6321 round=71
+- `chembl_downloader_assay_chembl1613995_exact` assay=`CHEMBL1613995` rows=6283 round=71
+- `chembl_downloader_assay_chembl1614481_exact` assay=`CHEMBL1614481` rows=6208 round=71
+- `chembl_downloader_assay_chembl1741321_exact` assay=`CHEMBL1741321` rows=5678 round=71
+- `chembl_downloader_assay_chembl4808149_exact` assay=`CHEMBL4808149` rows=5583 round=71
+- `chembl_downloader_assay_chembl4303805_exact` assay=`CHEMBL4303805` rows=5578 round=71
+- `chembl_downloader_assay_chembl4808150_exact` assay=`CHEMBL4808150` rows=5567 round=71
+- `chembl_downloader_assay_chembl1614263_exact` assay=`CHEMBL1614263` rows=5563 round=71
+- `chembl_downloader_assay_chembl4296190_exact` assay=`CHEMBL4296190` rows=5447 round=71
+- `chembl_downloader_assay_chembl4296189_exact` assay=`CHEMBL4296189` rows=5416 round=71
+- `chembl_downloader_assay_chembl1040694_exact` assay=`CHEMBL1040694` rows=5414 round=71
+- `chembl_downloader_assay_chembl4296186_exact` assay=`CHEMBL4296186` rows=5343 round=71
+- `chembl_downloader_assay_chembl1614240_exact` assay=`CHEMBL1614240` rows=5290 round=71
+- `chembl_downloader_assay_chembl1613970_exact` assay=`CHEMBL1613970` rows=5150 round=71
+- `chembl_downloader_assay_chembl1613930_exact` assay=`CHEMBL1613930` rows=4970 round=71
+- `chembl_downloader_assay_chembl5606461_exact` assay=`CHEMBL5606461` rows=4957 round=71
+- `chembl_downloader_assay_chembl4888486_exact` assay=`CHEMBL4888486` rows=4815 round=71
+- `chembl_downloader_assay_chembl4888487_exact` assay=`CHEMBL4888487` rows=4815 round=71
+- `chembl_downloader_assay_chembl1614213_exact` assay=`CHEMBL1614213` rows=4707 round=71
+
+## Failures
+
+- `chembl_downloader_assay_chembl1614342_exact`: PB_UP produced no uq_surface

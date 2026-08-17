@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_09db01e92e0ef593.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1163101_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1163101_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "09db01e92e0ef593",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1163101 (Serine/threonine-protein kinase/endoribonuclease IRE1), restricted to exact standard relation '=' and non-null pChEMBL values.\n\n2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\n3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures\n\n4. Logic: Filter activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Join assays on assays.assay_id = activities.assay_id and target_dictionary on target_dictionary.tid = assays.tid. Restrict to target_dictionary.chembl_id = 'CHEMBL1163101' and target_dictionary.target_type = 'SINGLE PROTEIN'. Join molecule_dictionary on molecule_dictionary.molregno = activities.molregno. Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno. Order by molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value. Limit to 1000 rows.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1163101 (Serine/threonine-protein kinase/endoribonuclease IRE1), restricted to exact standard relation '=' and non-null pChEMBL values.\n\n2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\n3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures\n\n4. Logic: Filter activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Join assays on assays.assay_id = activities.assay_id and target_dictionary on target_dictionary.tid = assays.tid. Restrict to target_dictionary.chembl_id = 'CHEMBL1163101' and target_dictionary.target_type = 'SINGLE PROTEIN'. Join molecule_dictionary on molecule_dictionary.molregno = activities.molregno. Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno. Order by molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value. Limit to 1000 rows."
+    }
+  }
+}

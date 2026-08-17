@@ -28,10 +28,10 @@ from db_llm_v5.provider import build_provider, resolve_profile, EndpointConfig, 
 
 DB_PATH = REPO_ROOT / 'database/latest/chembl_36/chembl_36_sqlite/chembl_36.db'
 CANDIDATES_PATH = REPO_ROOT / 'experiments/other_wave2_candidates_v4.9.json'
-MAIN_CASES = REPO_ROOT / 'tests/cases/web_scrape_hq_cases_v4.9_retargeted_staging.json'
+MAIN_CASES = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases_v4.9_retargeted_staging.json'
 FIXTURES_BASE = REPO_ROOT / 'tests/fixtures'
 MANIFEST_ROOT = REPO_ROOT / 'tests/v5_manifests/web_scrape_hq'
-DEFAULT_STAGE_REGISTRY = REPO_ROOT / 'tests/cases/web_scrape_hq_cases_v4.9_other_wave2_staging.json'
+DEFAULT_STAGE_REGISTRY = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases_v4.9_other_wave2_staging.json'
 DEFAULT_FRAGMENT = REPO_ROOT / 'experiments/other_wave2_registry_fragment_v4.9.json'
 DEFAULT_SUMMARY = REPO_ROOT / 'experiments/other_wave2_generated_v4.9.json'
 DEFAULT_REPORT = REPO_ROOT / 'experiments/other_wave2_generated_v4.9.md'
@@ -210,7 +210,7 @@ def build_manifest(*, case_id: str, round_num: int, fixture_dir: Path,
 
 def main() -> None:
     ap = argparse.ArgumentParser(description='Generate staged other wave-2 cases.')
-    ap.add_argument('--prompt-pack', default=str(REPO_ROOT / 'experiments/prompt_pack_v5.9.yaml'))
+    ap.add_argument('--prompt-pack', default=str(REPO_ROOT / 'configs/prompt_packs/prompt_pack_v5.9.yaml'))
     ap.add_argument('--candidates-path', default=str(CANDIDATES_PATH))
     ap.add_argument('--base-registry', default=str(MAIN_CASES))
     ap.add_argument('--limit', type=int, default=200)

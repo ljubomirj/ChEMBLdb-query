@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all approved drugs indicated for leukemia. An approved drug is defined as having max_phase_for_ind = 4 in the drug_indication table. Filter for indications where the EFO term or MeSH heading contains 'leukemia' (case-insensitive). For each qualifying drug-indication pair, return the following columns: drug ChEMBL ID (from molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), canonical SMILES (compound_structures.canonical_smiles), EFO ID (drug_indication.efo_id), indication label (drug_indication.efo_term), and maximum phase for that indication (drug_indication.max_phase_for_ind). If a drug has multiple leukemia indications (e.g., different sub-terms), list each separately. Do not limit the number of rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (LOWER(COALESCE(di.efo_term, '')) LIKE '%leukemia%' OR LOWER(COALESCE(di.mesh_heading, '')) LIKE '%leukemia%') ORDER BY drug_chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 0 | SCAN di\n24 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n58 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 138,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

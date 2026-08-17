@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Return the canonical SMILES for all unique compounds that have been tested against the target with ChEMBL ID CHEMBL2842. Each compound should be listed only once.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2842'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 227 | SCAN cs USING INDEX idx_cmpdstr_smiles\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 10263,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

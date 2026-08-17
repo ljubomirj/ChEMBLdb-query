@@ -1,0 +1,116 @@
+{
+  "ts_utc": "2026-03-19T17:50:56Z",
+  "eval_label": "eval_prompt_pack_v4.11_fix2_test_remaining_20260319",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.11.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.5_fix2_test_remaining.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--temperature",
+    "0.3",
+    "--up-temperature",
+    "0.2",
+    "--judge-temperature",
+    "0.2"
+  ],
+  "splits": {
+    "train": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 2,
+      "n_pass": 2,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_pde5_single_protein_pchembl",
+          "uq": "Show activity rows with pChEMBL values for the single-protein target CHEMBL1827 (cGMP-specific 3',5'-cyclic phosphodiesterase). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only activity rows with a non-null pChEMBL value for that target and keep the target restricted to SINGLE PROTEIN. Preserve all matching activity rows exactly as they appear in the source query: do not add DISTINCT, deduplicate rows, or add extra IC50, standard_relation, or tax_id filters.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_test_remaining/eval_prompt_pack_v4.11_fix2_test_remaining_20260319/test/web_scrape_hq/chembl_downloader_target_pde5_single_protein_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_test_remaining/eval_prompt_pack_v4.11_fix2_test_remaining_20260319/test/web_scrape_hq/chembl_downloader_target_pde5_single_protein_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL1827' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 2550,
+          "actual_rows": 2550,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_scn9a_ic50_human_pchembl",
+          "uq": "Show only IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL4296 (Sodium channel protein type 9 subunit alpha). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only activity rows with a non-null pChEMBL value, exact standard relation '=', tax_id 9606, and standard_type exactly 'IC50'. Exclude Ki, Kd, EC50, and all other activity types. Keep the activity rows as they are rather than deduplicating them, and order the rows by molecule ChEMBL ID and assay ChEMBL ID.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_test_remaining/eval_prompt_pack_v4.11_fix2_test_remaining_20260319/test/web_scrape_hq/chembl_downloader_target_scn9a_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_test_remaining/eval_prompt_pack_v4.11_fix2_test_remaining_20260319/test/web_scrape_hq/chembl_downloader_target_scn9a_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL4296' AND target_dictionary.tax_id = 9606 AND activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id",
+          "judge_text": null,
+          "expected_rows": 9643,
+          "actual_rows": 9643,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 2,
+    "n_pass": 2,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

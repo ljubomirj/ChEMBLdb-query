@@ -1,0 +1,46 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/selective_jak2_over_jak1_smiles_exact.json",
+  "case_id": "selective_jak2_over_jak1_smiles_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_dictionary.chembl_id as compound_chembl_id, compound_structures.canonical_smiles\",\n    \"From activities\",\n    \"Join assays on activities.assay_id = assays.assay_id\",\n    \"Join target_dictionary on assays.tid = target_dictionary.tid\",\n    \"Join molecule_dictionary on activities.molregno = molecule_dictionary.molregno\",\n    \"Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\",\n    \"Filter target_dictionary.chembl_id in ('CHEMBL2971', 'CHEMBL2835')\",\n    \"Filter activities.standard_relation = '='\",\n    \"Filter activities.standard_units = 'nM'\",\n    \"Filter activities.value is not null\",\n    \"Filter activities.value < 50 and activities.value > 200\",\n    \"Group by molecule_dictionary.chembl_id, compound_structures.canonical_smiles\",\n    \"Having count(distinct target_dictionary.chembl_id) = 2\",\n    \"Return compound_chembl_id, canonical_smiles\",\n    \"Sort by compound_chembl_id, canonical_smiles\",\n    \"Limit 1000\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_dictionary.chembl_id as compound_chembl_id, compound_structures.canonical_smiles",
+        "From activities",
+        "Join assays on activities.assay_id = assays.assay_id",
+        "Join target_dictionary on assays.tid = target_dictionary.tid",
+        "Join molecule_dictionary on activities.molregno = molecule_dictionary.molregno",
+        "Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno",
+        "Filter target_dictionary.chembl_id in ('CHEMBL2971', 'CHEMBL2835')",
+        "Filter activities.standard_relation = '='",
+        "Filter activities.standard_units = 'nM'",
+        "Filter activities.value is not null",
+        "Filter activities.value < 50 and activities.value > 200",
+        "Group by molecule_dictionary.chembl_id, compound_structures.canonical_smiles",
+        "Having count(distinct target_dictionary.chembl_id) = 2",
+        "Return compound_chembl_id, canonical_smiles",
+        "Sort by compound_chembl_id, canonical_smiles",
+        "Limit 1000"
+      ]
+    }
+  }
+}

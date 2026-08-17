@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_60d0526df86010da.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1054503_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1054503_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "60d0526df86010da",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n  cs.canonical_smiles,\\n  md.chembl_id,\\n  act.standard_type,\\n  act.standard_relation,\\n  act.standard_value,\\n  act.standard_units\\nFROM assays a\\nJOIN activities act\\n  ON a.assay_id = act.assay_id\\nJOIN molecule_dictionary md\\n  ON act.molregno = md.molregno\\nJOIN compound_structures cs\\n  ON md.molregno = cs.molregno\\nWHERE a.chembl_id = 'CHEMBL1054503'\\n  AND act.standard_value IS NOT NULL\\n  AND act.standard_relation = '='\\nORDER BY\\n  cs.canonical_smiles ASC,\\n  md.chembl_id ASC,\\n  act.standard_type ASC,\\n  act.standard_relation ASC,\\n  act.standard_value ASC,\\n  act.standard_units ASC;\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units\nFROM assays a\nJOIN activities act\n  ON a.assay_id = act.assay_id\nJOIN molecule_dictionary md\n  ON act.molregno = md.molregno\nJOIN compound_structures cs\n  ON md.molregno = cs.molregno\nWHERE a.chembl_id = 'CHEMBL1054503'\n  AND act.standard_value IS NOT NULL\n  AND act.standard_relation = '='\nORDER BY\n  cs.canonical_smiles ASC,\n  md.chembl_id ASC,\n  act.standard_type ASC,\n  act.standard_relation ASC,\n  act.standard_value ASC,\n  act.standard_units ASC;"
+    }
+  }
+}

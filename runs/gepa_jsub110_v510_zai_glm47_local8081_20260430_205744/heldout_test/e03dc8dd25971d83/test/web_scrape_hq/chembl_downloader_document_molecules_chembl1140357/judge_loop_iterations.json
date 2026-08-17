@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Select distinct chembl_id, compound_name, and canonical_smiles for molecules linked to document CHEMBL1140357. Source data from docs, compound_records, molecule_dictionary, and compound_structures. Join docs to compound_records on doc_id, compound_records to molecule_dictionary on molregno, and molecule_dictionary to compound_structures on molregno. Filter by docs.chembl_id = 'CHEMBL1140357' and canonical_smiles is not null. Sort rows by chembl_id, compound_name, and canonical_smiles in ascending order.",
+    "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1140357' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id ASC, cr.compound_name ASC, cs.canonical_smiles ASC",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves distinct molecules from document CHEMBL1140357 with available canonical SMILES. The execution plan shows efficient index usage on docs, compound_records, and compound_structures tables. The result set contains 100 rows with the requested columns (chembl_id, compound_name, canonical_smiles) properly sorted. The SQL correctly implements the user requirements: DISTINCT projection, INNER JOIN for structures (filtering null SMILES), and proper ordering. No issues detected.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

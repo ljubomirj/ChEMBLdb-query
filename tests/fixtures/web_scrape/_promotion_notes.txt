@@ -1,0 +1,62 @@
+Executable promotion notes
+========================
+
+Promoted into executable web_scrape_hq lane:
+- baoilleach_celegans_target_descriptions
+- baoilleach_human_cgmp_target_descriptions
+- baoilleach_human_hsp90_molecule_smiles
+- human_egfr_molecule_smiles
+- human_jak2_molecule_smiles
+- human_pde5_molecule_smiles
+- iwatobipen_ki_target_tid_pref_name
+- iwatobipen_metabolism_example
+- chembl_downloader_count_activities
+- chembl_downloader_id_name_pairs
+- chembl_downloader_drug_indications
+
+Moved into separate web_scrape_large lane:
+- chembl_downloader_all_ic50_activities: 2.45M-row IC50 result set; too large for the default promoted lane
+
+Not promoted:
+- bdsl_bacterial_bioactivity_data: duplicate of faq_bacterial_targets
+- bdsl_m2_muscarinic_receptor_compounds: duplicate of faq_m2_muscarinic_targets
+- baoilleach_human_hsp90_molecules: broader duplicate of the promoted HSP90 molecule/SMILES case
+- baoilleach_hsp90_bioactivities: `act.*` source shape is too broad for a practical first-pass LLM result comparison
+- chembl_downloader_chebi_unmapped: source relies on `chebi_par_id`, which is not present in the local ChEMBL 36 SQLite export
+- chembl_downloader_named_molecules_limit5: subset duplicate of chembl_downloader_id_name_pairs
+- chembl_downloader_scalar_activity_count: duplicate of chembl_downloader_count_activities
+
+Templated promotions:
+- `human_egfr_molecule_smiles`, `human_jak2_molecule_smiles`, and `human_pde5_molecule_smiles` were generated from the promoted HSP90 assay-organism pattern by swapping the target entity while preserving the exact two-column output shape.
+- `approved_drugs_with_mechanisms` and `approved_drugs_with_indications_and_efo` were generated from the approved-drug family by preserving the approved-drug and distinct-row semantics while changing the downstream join and output columns.
+- `all_single_protein_targets_accession_sequence` and `human_single_protein_targets_accession_sequence` were generated from the FAQ protein-target metadata pattern by narrowing target scope while preserving the exact accession/sequence output schema.
+- `target_ic50_with_pubmed_or_doi_egfr` and `target_ic50_with_pubmed_or_doi_jak2` were generated from the FAQ provenance-rich activity pattern by swapping the target entity while preserving the provenance/output-column schema.
+- `metabolism_first200_parent_names` and `metabolism_first200_with_record_keys` were generated from the promoted metabolism example by preserving the 200-row metabolism scope while adding one hierarchy-focused projection and one stable-identifier projection.
+- `imatinib_kit_ic50_salts` and `sitagliptin_dpp4_ic50_salts` were generated from the FAQ salts pattern by swapping in real parent/salt families mined from `molecule_hierarchy` while preserving the provenance-rich salts output schema.
+- `selective_cdk2_over_cdk5_smiles_exact`, `selective_egfr_over_erbb2_smiles_exact`, and `selective_jak2_over_jak1_smiles_exact` were generated from the FAQ selectivity pattern by making both targets, both IC50 thresholds, and the exact two-column output schema explicit.
+- `human_erbb2_molecule_smiles`, `human_kit_molecule_smiles`, and `human_dpp4_molecule_smiles` were generated from the promoted HSP90 assay-organism pattern by swapping in additional human single-protein targets while preserving the exact two-column output shape.
+- `target_ic50_with_pubmed_or_doi_erbb2`, `target_ic50_with_pubmed_or_doi_kit`, and `target_ic50_with_pubmed_or_doi_dpp4` were generated from the FAQ provenance-rich activity pattern by swapping in additional human single-protein targets while preserving the provenance/output-column schema and the optimized SQLite assay_id-driven execution shape.
+- `tacrine_acetylcholinesterase_ic50_salts`, `ceritinib_alk_ic50_salts`, `afatinib_egfr_ic50_salts`, `sorafenib_vegfr2_ic50_salts`, `tofacitinib_jak2_ic50_salts`, `rofecoxib_ptgs2_ic50_salts`, `alogliptin_dpp4_ic50_salts`, and `cabozantinib_met_ic50_salts` were generated from the FAQ salts pattern by swapping in additional real parent/salt families mined from `molecule_hierarchy` while preserving the provenance-rich salts output schema.
+
+Round-three public-source promotions:
+- `chembl_downloader_target_pde5_single_protein_pchembl`, `chembl_downloader_target_dpp4_ic50_human_pchembl`, `chembl_downloader_document_molecules_chembl1123859`, and `chembl_downloader_assay_chembl829152_exact` were harvested from public `chembl_downloader` source/docs in `tests/fixtures/web_scrape3`, adapted to SQLite, and promoted after exact result matching against the gold SQL.
+
+Round-four public-source promotions:
+- `baoilleach_herg_bioassay_metadata` and `baoilleach_herg_ic50_export` were harvested from Noel O'Boyle's public `chembl_mysql` gist, preserving the concrete hERG `tid=165` semantics while adapting the SQL to SQLite and current ChEMBL 36 naming.
+- `leelasd_approved_drugs_with_structures` was harvested from the public approved-drugs gist family and promoted after making the public `molecule_chembl_id` alias explicit and preserving the required `LEFT JOIN compound_structures` semantics.
+- `abhik_human_sub50nm_single_protein_first200` was promoted as a narrowed executable variant of the broad `abhik1368/chembl.sql` high-potency extract by preserving the high-potency human semantics while constraining the benchmark to the first 200 distinct single-protein activity rows and requiring public ChEMBL IDs.
+
+Round-five public-source promotions:
+- `chembl_downloader_target_ache_ic50_human_pchembl`, `chembl_downloader_target_egfr_ic50_human_pchembl`, and `chembl_downloader_target_kit_ic50_human_pchembl` were promoted from the public `chembl_downloader` target-SQL pattern as lightweight target-centric pChEMBL cases. The promotion required making target-side `tax_id` semantics explicit and forbidding accidental `DISTINCT` deduplication so row multiplicity matches the source SQL.
+
+Round-six public-source promotions:
+- `chembl_downloader_target_alk_ic50_human_pchembl`, `chembl_downloader_target_erbb2_ic50_human_pchembl`, `chembl_downloader_target_ptgs2_ic50_human_pchembl`, and `chembl_downloader_target_met_ic50_human_pchembl` were promoted from the public `chembl_downloader` target-SQL pattern as additional lightweight target-centric pChEMBL cases.
+
+Round-seven public-source promotions:
+- `chembl_downloader_assay_chembl1217643_exact`, `chembl_downloader_assay_chembl1217644_exact`, and `chembl_downloader_document_molecules_chembl1123860` were promoted from public `chembl_downloader` exact-ID query families, with the two concrete assay IDs taken from public ChEMBL MCP examples.
+
+Round-eight public-source promotions:
+- `chembl_downloader_target_d4_ic50_human_pchembl`, `chembl_downloader_target_vegfr2_ic50_human_pchembl`, and `chembl_downloader_target_jak2_ic50_human_pchembl` were promoted as additional lightweight target-centric pChEMBL cases from the public `chembl_downloader` target-SQL family.
+
+Round-nine public-source promotions:
+- `chembl_downloader_assay_chembl647319_exact`, `chembl_downloader_document_molecules_chembl1123858`, `chembl_downloader_document_molecules_chembl1123873`, `chembl_downloader_document_molecules_chembl1123890`, and `chembl_downloader_document_molecules_chembl1123892` were promoted as additional exact-ID assay/document cases from public `chembl_downloader` query families.

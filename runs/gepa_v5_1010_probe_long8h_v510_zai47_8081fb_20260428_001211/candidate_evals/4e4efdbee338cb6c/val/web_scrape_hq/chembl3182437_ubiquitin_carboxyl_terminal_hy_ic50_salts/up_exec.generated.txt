@@ -1,0 +1,18 @@
+1. Objective:
+Retrieve all IC50 activity records for the parent compound CHEMBL3182437 and all of its salt forms against the specified target CHEMBL3430885. Include compound identifiers, structures, assay details, and literature provenance.
+
+2. Output:
+compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+
+3. Source:
+molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary, docs
+
+4. Logic:
+- Filter molecule_dictionary to include the parent compound (chembl_id = 'CHEMBL3182437') and all its salt forms by joining molecule_hierarchy on parent_molregno.
+- Join compound_structures to obtain canonical_smiles.
+- Join compound_records on molregno to link to activities.
+- Join activities on record_id and filter for standard_type = 'IC50'.
+- Join assays on assay_id to obtain assay_description.
+- Join target_dictionary on tid and filter for chembl_id = 'CHEMBL3430885'.
+- Join docs on doc_id to obtain pubmed_id_or_doi (prefer pubmed_id, fallback to doi).
+- Return all matching rows without deduplication.

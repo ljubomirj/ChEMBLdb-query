@@ -1,0 +1,82 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id chembl_id, molecule_dictionary.pref_name name, compound_structures.canonical_smiles structure, drug_indication.efo_term indication_efo_term, drug_indication.mesh_heading indication_mesh_heading; Source: molecule_dictionary, compound_structures, drug_indication; Join: molecule_dictionary.molregno equals compound_structures.molregno plus molecule_dictionary.molregno equals drug_indication.molregno; Filter: molecule_dictionary.therapeutic_flag equals 1 plus molecule_dictionary.withdrawn_flag equals 0 plus drug_indication.mesh_heading equals 'Lymphoma' plus drug_indication.efo_term contains 'lymphoma'; Sort: molecule_dictionary.pref_name alphabetical; Limit: No limit",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS structure, di.efo_term AS indication_efo_term, di.mesh_heading AS indication_mesh_heading FROM molecule_dictionary md INNER JOIN compound_structures cs ON md.molregno = cs.molregno INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND md.withdrawn_flag = 0 AND di.mesh_heading = 'Lymphoma' AND di.efo_term LIKE '%lymphoma%' ORDER BY md.pref_name ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 191,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "structure",
+      "indication_efo_term",
+      "indication_mesh_heading"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The current result returns 191 rows, many of which are not approved drugs (therapeutic_flag=1 does not guarantee market approval) and includes duplicate entries for the same compound (e.g., DECITABINE appears three times with different indication terms). The filter on drug_indication.mesh_heading='Lymphoma' and efo_term LIKE '%lymphoma%' is too permissive, pulling in compounds that have a lymphoma indication among many other indications. The list also contains many non\u2011drug entities (e.g., natural products, experimental compounds) and lacks a clear cut\u2011off for true approved drugs. The output is therefore not a concise, accurate list of approved lymphoma drugs with structure and indication details.\",\n  \"score\": 0.25,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.25,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS name, compound_structures.canonical_smiles AS structure, drug_indication.efo_term AS indication_efo_term, drug_indication.mesh_heading AS indication_mesh_heading; Source: molecule_dictionary, compound_structures, drug_indication; Join: molecule_dictionary.molregno = compound_structures.molregno AND molecule_dictionary.molregno = drug_indication.molregno; Filter: molecule_dictionary.therapeutic_flag = 1 AND molecule_dictionary.withdrawn_flag = 0 AND molecule_dictionary.availability_type = 1 AND drug_indication.mesh_heading = 'Lymphoma' AND drug_indication.efo_term LIKE '%lymphoma%'; Sort: molecule_dictionary.pref_name ASC; Limit: No limit",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS structure, di.efo_term AS indication_efo_term, di.mesh_heading AS indication_mesh_heading FROM molecule_dictionary md INNER JOIN compound_structures cs ON md.molregno = cs.molregno INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND md.withdrawn_flag = 0 AND md.availability_type = 1 AND di.mesh_heading = 'Lymphoma' AND di.efo_term LIKE '%lymphoma%' ORDER BY md.pref_name ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 164,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "structure",
+      "indication_efo_term",
+      "indication_mesh_heading"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly retrieves approved (therapeutic_flag=1), non\u2011withdrawn (withdrawn_flag=0), available (availability_type=1) drugs that have a lymphoma indication. It joins molecule_dictionary to compound_structures for the canonical SMILES and to drug_indication for indication details, filtering on mesh_heading='Lymphoma' and efo_term containing 'lymphoma'. The result includes the required columns (ChEMBL ID, name, structure, indication EFO term, mesh heading) and returns 164 rows, which appears to cover all such drugs. No extra columns are present, and the join semantics are correct. The only minor nuance is the AND condition on efo_term, but the LIKE pattern should capture all relevant efo terms (e.g., 'non\u2011Hodgkin lymphoma'). Overall the output satisfies the user request.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\"Select\": \"molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS name, compound_structures.canonical_smiles AS structure, drug_indication.efo_term AS indication_efo_term, drug_indication.mesh_heading AS indication_mesh_heading\", \"Source\": \"molecule_dictionary, compound_structures, drug_indication\", \"Join\": \"molecule_dictionary.molregno = compound_structures.molregno AND molecule_dictionary.molregno = drug_indication.molregno\", \"Filter\": \"molecule_dictionary.therapeutic_flag = 1 AND molecule_dictionary.withdrawn_flag = 0 AND molecule_dictionary.availability_type = 1 AND drug_indication.mesh_heading = 'Lymphoma' AND drug_indication.efo_term LIKE '%lymphoma%'\", \"Sort\": \"molecule_dictionary.pref_name ASC\", \"Limit\": \"No limit\"}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS structure, di.efo_term AS indication_efo_term, di.mesh_heading AS indication_mesh_heading FROM molecule_dictionary md INNER JOIN compound_structures cs ON md.molregno = cs.molregno INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND md.withdrawn_flag = 0 AND md.availability_type = 1 AND di.mesh_heading = 'Lymphoma' AND di.efo_term LIKE '%lymphoma%' ORDER BY md.pref_name ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 164,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "structure",
+      "indication_efo_term",
+      "indication_mesh_heading"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters for approved (therapeutic_flag=1, withdrawn_flag=0, availability_type=1) compounds with a lymphoma indication (mesh_heading='Lymphoma' and efo_term LIKE '%lymphoma%'). It joins molecule_dictionary to compound_structures to get canonical SMILES and to drug_indication to retrieve indication details. The output includes the requested columns (ChEMBL ID, name, structure, indication EFO term, indication MeSH heading) and is ordered by name. The result set (164 rows) appears comprehensive for approved lymphoma drugs, with multiple indication rows for drugs that have different indications (e.g., pediatric vs adult lymphoma). No obvious missing columns or filters; the query respects the required semantics (approved drugs, lymphoma indication, structure). The only minor nuance is that some drugs appear multiple times due to multiple indication entries, which is acceptable because the request asked for indication details, not a deduplicated list of drugs. Overall, the result satisfies the user request.\",\n  \"score\": 0.92,\n  \"decision\": \"NO\",\n  \"reason\": \"The result is accurate and complete for the requested query; no further iteration is needed.\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.92,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "{\"Select\": \"molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS name, compound_structures.canonical_smiles AS structure, drug_indication.efo_term AS indication_efo_term, drug_indication.mesh_heading AS indication_mesh_heading\", \"Source\": \"molecule_dictionary, compound_structures, drug_indication\", \"Join\": \"molecule_dictionary.molregno = compound_structures.molregno AND molecule_dictionary.molregno = drug_indication.molregno\", \"Filter\": \"molecule_dictionary.therapeutic_flag = 1 AND molecule_dictionary.withdrawn_flag = 0 AND molecule_dictionary.availability_type = 1 AND drug_indication.mesh_heading = 'Lymphoma' AND drug_indication.efo_term LIKE '%lymphoma%'\", \"Sort\": \"molecule_dictionary.pref_name ASC\", \"Limit\": \"No limit\"}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS structure, di.efo_term AS indication_efo_term, di.mesh_heading AS indication_mesh_heading FROM molecule_dictionary md INNER JOIN compound_structures cs ON md.molregno = cs.molregno INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND md.withdrawn_flag = 0 AND md.availability_type = 1 AND di.mesh_heading = 'Lymphoma' AND di.efo_term LIKE '%lymphoma%' ORDER BY md.pref_name ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 164,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "structure",
+      "indication_efo_term",
+      "indication_mesh_heading"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly retrieves approved (therapeutic_flag=1, withdrawn_flag=0, availability_type=1) compounds with lymphoma indication (mesh_heading='Lymphoma' and efo_term LIKE '%lymphoma%'). It joins molecule_dictionary, compound_structures, and drug_indication to provide the requested columns: chembl_id, name (pref_name), structure (canonical_smiles), and indication details (efo_term, mesh_heading). The result includes multiple rows per drug when indication details differ (e.g., pediatric vs adult lymphoma), which is appropriate. All requested fields are present, filters are correct, and no extra columns are added. The row count (164) matches the expected breadth of approved lymphoma drugs in ChEMBL. No obvious omissions or mis\u2011joins are evident.\",\n  \"score\": 0.96,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": true
+  }
+]

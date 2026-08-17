@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/imatinib_kit_ic50_salts.json",
+  "case_id": "imatinib_kit_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. Start from molecule_dictionary for CHEMBL941 as parent. Join molecule_hierarchy on parent_molregno to include parent and all child salts. Join compound_records on molregno, then docs on doc_id, then activities on record_id. Join assays on assay_id, then target_dictionary on tid. Filter to standard_type IC50, standard_units nM, and target chembl_id CHEMBL1936. Derive pubmed_id_or_doi preferring pubmed_id over doi from docs. Alias molecule_dictionary.chembl_id as compound_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, target_dictionary.organism as target_organism, assays.description as assay_description. Sort by all output columns ascending. No row limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. Start from molecule_dictionary for CHEMBL941 as parent. Join molecule_hierarchy on parent_molregno to include parent and all child salts. Join compound_records on molregno, then docs on doc_id, then activities on record_id. Join assays on assay_id, then target_dictionary on tid. Filter to standard_type IC50, standard_units nM, and target chembl_id CHEMBL1936. Derive pubmed_id_or_doi preferring pubmed_id over doi from docs. Alias molecule_dictionary.chembl_id as compound_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, target_dictionary.organism as target_organism, assays.description as assay_description. Sort by all output columns ascending. No row limit."
+    }
+  }
+}

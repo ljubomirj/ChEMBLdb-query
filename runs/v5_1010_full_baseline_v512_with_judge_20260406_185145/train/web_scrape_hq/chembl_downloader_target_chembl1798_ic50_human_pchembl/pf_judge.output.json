@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1798_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1798_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1798 (Cysteinyl leukotriene receptor 1). The SQL query appears correct: it joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures, filters for exact standard relation '=' and non-null pChEMBL values, restricts to Homo sapiens, target tid 1798, and orders by molecule_chembl_id and assay_chembl_id with a limit of 1000. However, the result set is empty (row_count: 0). This could be due to:\\n\\n1. No activities for target tid 1798 with standard_relation '=' and non-null pChEMBL values.\\n2. The target tid 1798 may not correspond to CHEMBL1798 (Cysteinyl leukotriene receptor 1) in the target_dictionary, or the target may not have activities in the database.\\n3. The assay_organism filter may be too restrictive (e.g., assays may not have assay_organism set to 'Homo sapiens' for this target).\\n4. The join conditions may not align with the actual schema (e.g., assays.tid may not match target_dictionary.tid, or the target type may not be 'SINGLE PROTEIN').\\n\\nGiven the empty result, the query likely fails to capture the intended data due to schema mismatches or missing data. The task is to judge if this result is sufficient to stop iterating. Since the result is empty and the query logic appears sound but may not reflect actual data, further investigation is needed to verify data presence or adjust filters. The current result does not confirm correctness, so iteration is still required.\",\n  \"score\": 0.6,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1798 (Cysteinyl leukotriene receptor 1). The SQL query appears correct: it joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures, filters for exact standard relation '=' and non-null pChEMBL values, restricts to Homo sapiens, target tid 1798, and orders by molecule_chembl_id and assay_chembl_id with a limit of 1000. However, the result set is empty (row_count: 0). This could be due to:\n\n1. No activities for target tid 1798 with standard_relation '=' and non-null pChEMBL values.\n2. The target tid 1798 may not correspond to CHEMBL1798 (Cysteinyl leukotriene receptor 1) in the target_dictionary, or the target may not have activities in the database.\n3. The assay_organism filter may be too restrictive (e.g., assays may not have assay_organism set to 'Homo sapiens' for this target).\n4. The join conditions may not align with the actual schema (e.g., assays.tid may not match target_dictionary.tid, or the target type may not be 'SINGLE PROTEIN').\n\nGiven the empty result, the query likely fails to capture the intended data due to schema mismatches or missing data. The task is to judge if this result is sufficient to stop iterating. Since the result is empty and the query logic appears sound but may not reflect actual data, further investigation is needed to verify data presence or adjust filters. The current result does not confirm correctness, so iteration is still required.",
+      "score": 0.6,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1798_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1798_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1798_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

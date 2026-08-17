@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_ee3e4ea2a3394e29.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_dependent_dopamine_transporter.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_sodium_dependent_dopamine_transporter",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3e4ea2a3394e29",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity rows for compounds tested against human sodium-dependent dopamine transporter (CHEMBL238). Join molecule_dictionary to activities, assays, and target_dictionary. Join compound_records on activities.record_id to retrieve compound_key and docs for pubmed_id_or_doi. Join compound_structures as INNER JOIN to require canonical_smiles. Filter by target_dictionary.chembl_id = 'CHEMBL238' and activities.standard_type = 'IC50'. Return all requested columns including activity_comment and target details. Do not use DISTINCT; preserve row multiplicity. Sort by all requested output columns.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity rows for compounds tested against human sodium-dependent dopamine transporter (CHEMBL238). Join molecule_dictionary to activities, assays, and target_dictionary. Join compound_records on activities.record_id to retrieve compound_key and docs for pubmed_id_or_doi. Join compound_structures as INNER JOIN to require canonical_smiles. Filter by target_dictionary.chembl_id = 'CHEMBL238' and activities.standard_type = 'IC50'. Return all requested columns including activity_comment and target details. Do not use DISTINCT; preserve row multiplicity. Sort by all requested output columns."
+    }
+  }
+}

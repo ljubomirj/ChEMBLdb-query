@@ -1,0 +1,15 @@
+Objective: Retrieve exact activity measurements for a specific assay, including compound structures and activity details.
+
+Output: canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.
+
+Source: assays, activities, molecule_dictionary, compound_structures.
+
+Logic:
+1. Filter assays where chembl_id = 'CHEMBL1217643'.
+2. Join activities to assays via assay_id.
+3. Join molecule_dictionary to activities via molregno.
+4. Join compound_structures to molecule_dictionary via molregno.
+5. Filter activities where standard_relation = '='.
+6. Filter activities where standard_value IS NOT NULL.
+7. Filter activities where standard_relation IS NOT NULL.
+8. Sort by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.2.yaml",
+  "prompt_pack_version": "v5.2",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_herg_ic50_export.json",
+  "case_id": "baoilleach_herg_ic50_export",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT activities.activity_id, assays.chembl_id AS assay_chembl_id, activities.standard_relation, activities.standard_value, activities.standard_units, activities.standard_type, molecule_dictionary.chembl_id AS molecule_chembl_id FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno WHERE assays.tid = 165 AND activities.standard_type = 'IC50' ORDER BY activities.activity_id, assays.chembl_id, molecule_dictionary.chembl_id\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT activities.activity_id, assays.chembl_id AS assay_chembl_id, activities.standard_relation, activities.standard_value, activities.standard_units, activities.standard_type, molecule_dictionary.chembl_id AS molecule_chembl_id FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno WHERE assays.tid = 165 AND activities.standard_type = 'IC50' ORDER BY activities.activity_id, assays.chembl_id, molecule_dictionary.chembl_id"
+    }
+  }
+}

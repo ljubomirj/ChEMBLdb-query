@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT cs.canonical_smiles,\\n       mr.record_id AS substrate_record_id,\\n       m.metabolite_record_id,\\n       mr2.compound_key AS substrate_compound_key,\\n       mr2.src_compound_id AS metabolite_compound_key,\\n       m.met_conversion,\\n       m.pathway_key\\nFROM metabolism m\\nJOIN compound_records mr ON m.substrate_record_id = mr.record_id\\nJOIN compound_structures cs ON mr.molregno = cs.molregno\\nJOIN compound_records mr2 ON m.metabolite_record_id = mr2.record_id\\nLEFT JOIN compound_structures cs2 ON mr2.molregno = cs2.molregno\\nWHERE cs.canonical_smiles IS NOT NULL\\n  AND m.met_conversion IS NOT NULL\\n  AND m.pathway_key IS NOT NULL\\nLIMIT 200\"\n}",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles,\n       mr.record_id AS substrate_record_id,\n       m.metabolite_record_id,\n       mr2.compound_key AS substrate_compound_key,\n       mr2.src_compound_id AS metabolite_compound_key,\n       m.met_conversion,\n       m.pathway_key\nFROM metabolism m\nJOIN compound_records mr ON m.substrate_record_id = mr.record_id\nJOIN compound_structures cs ON mr.molregno = cs.molregno\nJOIN compound_records mr2 ON m.metabolite_record_id = mr2.record_id\nLEFT JOIN compound_structures cs2 ON mr2.molregno = cs2.molregno\nWHERE cs.canonical_smiles IS NOT NULL\n  AND m.met_conversion IS NOT NULL\n  AND m.pathway_key IS NOT NULL\nLIMIT 200"
+    }
+  }
+}

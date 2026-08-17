@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/data1/data/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/data1/data/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_hypertension.json",
+  "case_id": "approved_drugs_indication_hypertension",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "zai/glm-4.7",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "provenance": {
+      "provider": "zai",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "zai/glm-4.7",
+      "base_url": "https://api.z.ai/api/paas/v4"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs indicated for hypertension. Join molecule_dictionary to drug_indication on molregno. Filter where max_phase equals 4 and mesh_heading equals 'hypertension'. Join compound_structures on molregno as INNER JOIN to require canonical SMILES. Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs indicated for hypertension. Join molecule_dictionary to drug_indication on molregno. Filter where max_phase equals 4 and mesh_heading equals 'hypertension'. Join compound_structures on molregno as INNER JOIN to require canonical SMILES. Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

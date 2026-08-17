@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity records for the target molecule CHEMBL1795176 (N-lysine methyltransferase KMT5A) in humans (target type: single protein, tax_id: 9606, target CHEMBL ID: CHEMBL1795176). Specifically: \n\u2022 Filter activities where standard_type = 'IC50' and pChEMBL value is NOT NULL (i.e., exact standard relation '=' with a defined numeric pChEMBL value).\n\u2022 Return assay ChEMBL ID (from assay.chembl_id), target type (from target_dictionary.target_type), target tax_id (from target_dictionary.tax_id), compound canonical SMILES (from compound_structures.canonical_smiles), molecule ChEMBL ID (from molecule_dictionary.chembl_id), standard_type (IC50), and pChEMBL value.\n\u2022 Include only rows where assay_target is a single protein (target_dictionary.target_type = 'SINGLE PROTEIN') and the assay organism is human (target_dictionary.tax_id = 9606).\n\u2022 Order results by molecule_chembl_id ascending, then assay_chembl_id ascending.\n\u2022 Ensure exactly 1000 rows are returned (first 1000 by order).",
+    "sql": "WITH activities_by_mol AS (\n  SELECT a.activity_id, a.assay_id, a.molecule_chembl_id\n  FROM activities a\n  WHERE a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND a.standard_relation = '='\n)\nSELECT DISTINCT\n  td.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities_by_mol a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1795176'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.tax_id = 9606\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity records for the human single\u2011protein target CHEMBL1795176 (N\u2011lysine methyltransferase KMT5A). Filter activities where the standard relation is exactly '=', standard_type = 'IC50' and pChEMBL value is not null. Return assay ChEMBL ID, target type, target tax_id, the compound's canonical SMILES, the molecule's ChEMBL ID, the standard_type (IC50) and the pChEMBL value. Include only assays whose target type is 'SINGLE PROTEIN' and whose target tax_id is 9606 (human). Order the rows by molecule ChEMBL ID (ascending) and then assay ChEMBL ID (ascending).",
+    "sql": "WITH activities_by_mol AS ( SELECT a.activity_id, a.assay_id, a.molregno FROM activities a WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND a.standard_relation = '=' ) SELECT td.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities_by_mol a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1795176' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.standard_type",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.standard_type",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity rows (exact relation '=') with non-null pChEMBL values for the human single\u2011protein target CHEMBL1795176 (N\u2011lysine methyltransferase KMT5A). Return assay.chembl_id, target_dictionary.target_type, target_dictionary.tax_id, canonical SMILES (compound_structures.canonical_smiles), molecule_dictionary.chembl_id, activities.standard_type, and activities.pchembl_value. Ensure the target has target_type = 'SINGLE PROTEIN' and target_dictionary.tax_id = 9606 (human). Order by molecule_chembl_id ASC, then assay_chembl_id ASC. Include all matching rows and limit to 1000 by that ordering.",
+    "sql": "WITH a AS (SELECT a.activity_id, a.assay_id, a.molregno, a.pchembl_value FROM activities a WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND a.standard_relation = '=') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1795176' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.standard_type",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.standard_type",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve up to 1000 rows of activity data for the human target CHEMBL1795176 (N\u2011lysine methyltransferase KMT5A). The query must select assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id), standard_type (must be exactly 'IC50'), and pChEMBL value (from activities.pchembl_value). Filter to activities where the standard_relation = '=', pChEMBL value is not NULL, and standard_type = 'IC50'. Include only assays whose target_type = 'SINGLE PROTEIN' and tax_id = 9606 (human). Order the output by molecule_chembl_id ASC then assay_chembl_id ASC. Return the first 1000 rows according to that ordering.",
+    "sql": "WITH a AS (SELECT a.activity_id, a.assay_id, a.molregno, a.pchembl_value, a.standard_type FROM activities a WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND a.standard_relation = '=') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1795176' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 59,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows with non-null pChEMBL values for the human single-protein target with ChEMBL ID CHEMBL1795171 (Potassium/sodium hyperpolarization-activated cyclic nucleotide-gated channel 1). Only include rows where standard_relation = '='. For each row, return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID in ascending order and then by assay ChEMBL ID in ascending order. The required data comes from joining activities with assays (on assay_id), assays with target_dictionary (on tid), activities with molecule_dictionary (on molregno), and molecule_dictionary with compound_structures (on molregno). Ensure that the target is filtered by its ChEMBL ID and also by target_type = 'SINGLE PROTEIN' and tax_id = 9606 to enforce the human single-protein constraint.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type AS target_type, target_dictionary.tax_id AS tax_id, compound_structures.canonical_smiles AS canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type AS standard_type, activities.pchembl_value AS pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND target_dictionary.chembl_id = 'CHEMBL1795171' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 ORDER BY molecule_chembl_id ASC, assay_chembl_id ASC LIMIT 1000",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 29,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

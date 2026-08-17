@@ -1,0 +1,12 @@
+Select molecule_dictionary.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles, compound_records.compound_key AS compound_key, docs.pubmed_id AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type AS standard_type, activities.standard_relation AS standard_relation, activities.standard_value AS standard_value, activities.standard_units AS standard_units, activities.activity_comment AS activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism
+Join molecule_dictionary ON activities.molregno = molecule_dictionary.molregno
+Join compound_records ON molecule_dictionary.molregno = compound_records.molregno
+Join docs ON compound_records.doc_id = docs.doc_id
+Join activities ON activities.record_id = compound_records.record_id
+Join assays ON activities.assay_id = assays.assay_id
+Join target_dictionary ON assays.tid = target_dictionary.tid
+Join compound_structures ON molecule_dictionary.molregno = compound_structures.molregno
+Filter activities.activity_type = 'IC50' AND activities.standard_units = 'nM' AND activities.standard_relation = '=' AND activities.standard_value IS NOT NULL AND activities.standard_value > 0 AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.pref_name = 'Metabotropic glutamate receptor 5' AND target_dictionary.chembl_id = 'CHEMBL3227'
+Filter docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL
+Filter compound_structures.canonical_smiles IS NOT NULL
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

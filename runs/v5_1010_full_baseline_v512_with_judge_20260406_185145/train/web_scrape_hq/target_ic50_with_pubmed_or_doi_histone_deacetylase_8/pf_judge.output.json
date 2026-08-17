@@ -1,0 +1,32 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_histone_deacetylase_8.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_histone_deacetylase_8",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 176,873 rows of IC50 activity data for Histone deacetylase 8, including compound identifiers, SMILES, PubMed/DOI, assay description, and target information. However, the query has several issues:\\n\\n1. **Incorrect target filtering**: The target name 'Histone deacetylase 8' is being matched against `td.pref_name`, but the actual target in ChEMBL is likely 'Histone deacetylase 8' (with exact spelling). The sample rows show 'Histone deacetylase 8' as target_name, but the query uses `td.pref_name = 'Histone deacetylase 8'` which may not match due to case or exact string differences.\\n\\n2. **Missing target organism**: The query includes `target_dictionary.organism` but the sample rows show 'Homo sapiens' as target_organism. However, the query does not filter for human target (tax_id = 9606), which could include assays on other species.\\n\\n3. **Redundant joins and potential row multiplication**: The query joins `compound_structures` (cs) but does not use `cs.canonical_smiles` in the SELECT (it uses `m.chembl_id` and `cs.canonical_smiles` is selected as `canonical_smiles`). However, `compound_structures` may have multiple entries per compound, causing row duplication. The `DISTINCT` is applied to all selected columns, but the row count (176,873) is high for a single target, suggesting possible duplication.\\n\\n4. **Incorrect activity filtering**: The query filters for `act.standard_type = 'IC50'` and `act.standard_relation = '='`, which is correct for IC50 values. However, the sample rows show `standard_value = 4600.0` and `standard_units = 'nM'`, which is correct.\\n\\n5. **Provenance columns**: The query includes `compound_key` and `pubmed_id_or_doi` as requested, but the sample rows show `compound_key` values like '44l', '63', etc., which are not standard ChEMBL compound keys (usually like '44l' is a record_id). The `compound_key` should ideally be the `compound_records.compound_key` (e.g., '44l'), but the sample rows show it as a string that may not be the correct identifier.\\n\\n6. **Target information**: The target information is included (target_chembl_id, target_name, target_organism), but the target_organism is 'Homo sapiens' for all rows, which is correct for human HDAC8. However, the query does not ensure that the target is specifically human (tax_id = 9606).\\n\\n7. **Assay description**: The assay description is included and matches 'Inhibition of Homo sapiens (human) HDAC8', which is correct.\\n\\n8. **Sorting**: The results are sorted by the requested columns, but the sort order is not meaningful for the user (e.g., sorting by `standard_value` would be more useful for potency ranking).\\n\\n9. **Row count**: 176,873 rows for a single target (HDAC8) is extremely high. HDAC8 is a well-studied target, but this number suggests that the query may be including assays from multiple sources (e.g., different cell lines, assay types) that are not filtered out. The query does not filter by `assays.assay_organism` or `target_dictionary.tax_id` to ensure human target.\\n\\n10. **Missing PubMed/DOI**: The query uses `COALESCE(pubmed_id, doi)` from `docs`, but the sample rows show `pubmed_id_or_doi` as '14613312' (which is a PubMed ID) and '10.1007/s00044-011-9571-y' (a DOI). However, the `docs` table has `pubmed_id` and `doi` columns, and the query correctly uses `COALESCE(pubmed_id, doi)`. But the sample rows show `pubmed_id_or_doi` as '14613312' for the first row, which is a PubMed ID, and '10.1007/s00044-011-9571-y' for the second, which is a DOI. This is correct.\\n\\n11. **Compound key**: The `compound_key` in the sample rows is '44l', '63', etc., which are not the standard ChEMBL compound keys (which are like 'CHEMBL100282'). The `compound_records.compound_key` is a string that may be a record-specific key (e.g., '44l' is a compound_key from the compound_records table). However, the user requested `compound_key` as per the example, so this is acceptable.\\n\\n12. **Target name**: The target name is 'Histone deacetylase 8', but the query uses `td.pref_name = 'Histone deacetylase 8'`. The sample rows show 'Histone deacetylase 8' as target_name, so this is correct.\\n\\n13. **Standard units**: The standard_units is 'nM' for all",
+    "parsed_json": null
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_histone_deacetylase_8/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_histone_deacetylase_8/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_histone_deacetylase_8/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_dpp4",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activities against target CHEMBL284 (DPP4). Join target_dictionary (filter target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens') to assays to activities (filter standard_type = 'IC50', standard_units = 'nM'). Inner join molecule_dictionary and compound_structures on activities.molregno, requiring non-null canonical_smiles. Join docs from activities.doc_id = docs.doc_id, requiring at least one of pubmed_id or doi to be non-null. Left join compound_records from activities.record_id = compound_records.record_id to obtain compound_key. Compute pubmed_id_or_doi as COALESCE(pubmed_id, doi). Return DISTINCT rows of: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by all 12 output columns.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activities against target CHEMBL284 (DPP4). Join target_dictionary (filter target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens') to assays to activities (filter standard_type = 'IC50', standard_units = 'nM'). Inner join molecule_dictionary and compound_structures on activities.molregno, requiring non-null canonical_smiles. Join docs from activities.doc_id = docs.doc_id, requiring at least one of pubmed_id or doi to be non-null. Left join compound_records from activities.record_id = compound_records.record_id to obtain compound_key. Compute pubmed_id_or_doi as COALESCE(pubmed_id, doi). Return DISTINCT rows of: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by all 12 output columns."
+    }
+  }
+}

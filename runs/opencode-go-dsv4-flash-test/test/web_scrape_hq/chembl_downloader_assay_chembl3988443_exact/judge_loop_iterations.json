@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay uniquely identified by chembl_id = 'CHEMBL3988443' in the assays table, retrieve all activity measurements (rows from the activities table). For each activity, include the following output columns: the compound identifier (molecule_dictionary.chembl_id) and compound name (molecule_dictionary.pref_name), the standard activity type (activities.standard_type), standard relation (activities.standard_relation), standard value (activities.standard_value), standard units (activities.standard_units), and any activity comment (activities.activity_comment). Do not filter by relation, value, units, or any other criteria; return every reported measurement for that assay. The join path is: activities.assay_id = assays.assay_id, and activities.molregno = molecule_dictionary.molregno.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL3988443';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 68626,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

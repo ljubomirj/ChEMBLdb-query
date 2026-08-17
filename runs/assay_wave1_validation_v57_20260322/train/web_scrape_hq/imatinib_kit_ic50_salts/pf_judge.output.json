@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.7.yaml",
+  "prompt_pack_version": "v5.7",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/imatinib_kit_ic50_salts.json",
+  "case_id": "imatinib_kit_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the salts pattern using molecule_hierarchy to include both parent CHEMBL941 and its salts (e.g., CHEMBL1642 - Imatinib mesylate, CHEMBL2386595 - deuterated Imatinib). The FAQ provenance path (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary) is preserved. All requested columns are present with correct aliases. The filters for target CHEMBL1936, standard_type='IC50', and standard_units='nM' are applied. The LEFT JOIN for compound_structures ensures canonical_smiles is retrieved without dropping rows. The result set includes 43 activity rows with proper multiplicity, matching the expected behavior for activity-row extraction without deduplication.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the salts pattern using molecule_hierarchy to include both parent CHEMBL941 and its salts (e.g., CHEMBL1642 - Imatinib mesylate, CHEMBL2386595 - deuterated Imatinib). The FAQ provenance path (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary) is preserved. All requested columns are present with correct aliases. The filters for target CHEMBL1936, standard_type='IC50', and standard_units='nM' are applied. The LEFT JOIN for compound_structures ensures canonical_smiles is retrieved without dropping rows. The result set includes 43 activity rows with proper multiplicity, matching the expected behavior for activity-row extraction without deduplication.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/imatinib_kit_ic50_salts/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/imatinib_kit_ic50_salts/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/imatinib_kit_ic50_salts/pf_judge.generated_artifact_record.json"
+  }
+}

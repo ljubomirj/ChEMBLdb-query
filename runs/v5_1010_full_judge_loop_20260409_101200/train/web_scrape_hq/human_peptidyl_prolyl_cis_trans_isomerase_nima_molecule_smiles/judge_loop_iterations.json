@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve chemical structures for all molecules that have at least one activity measurement tested against the human protein target Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1 (CHEMBL2288). Include both the canonical SMILES representation of the chemical structure and a link to the molecular structure file (molfile) for each qualifying compound. No restrictions on assay types, activity types, units, or confidence scores should be applied. Provide a list of distinct compounds identified by their ChEMBL identifier (CHEMBL ID) and their corresponding canonical SMILES. Ensure that the target is identified using the target dictionary entry where target_type is 'SINGLE PROTEIN' and the pref_name matches the exact protein name 'Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1' (CHEMBL2288). Return two columns: one for the ChEMBL ID of the molecule and one for the canonical SMILES. No ordering or ranking is required; return all matching rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE td.tid = 11004\nAND td.pref_name = 'Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all distinct compounds that have been tested against the human protein target Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1 (CHEMBL2288) and return each compound's ChEMBL ID together with its canonical SMILES. The target must be identified from the target_dictionary table where the target_type is 'SINGLE PROTEIN' and the pref_name matches exactly 'Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1' (CHEMBL2288). Include only molecules that have at least one activity measurement (any assay, any activity type, any units). Output two columns: the compound's ChEMBL ID and its canonical SMILES representation. No additional filtering, ordering, or ranking is required.",
+    "sql": "WITH target_compounds AS (\n  SELECT a.molregno AS molregno,\n         md.chembl_id AS chembl_id,\n         cs.canonical_smiles AS canonical_smiles\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.pref_name = 'Peptidyl-prolyl cis-trans isomerase NIMA-interacting 1'\n    AND td.target_type = 'SINGLE PROTEIN'\n)\nSELECT DISTINCT chembl_id, canonical_smiles\nFROM target_compounds\n;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n47 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 36317,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

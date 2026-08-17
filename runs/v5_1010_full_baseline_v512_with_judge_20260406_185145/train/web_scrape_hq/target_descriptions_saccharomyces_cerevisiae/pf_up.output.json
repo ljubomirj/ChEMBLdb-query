@@ -1,0 +1,42 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_saccharomyces_cerevisiae.json",
+  "case_id": "target_descriptions_saccharomyces_cerevisiae",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select target_dictionary.pref_name AS target_description\",\n    \"From activities\",\n    \"Join assays ON activities.assay_id = assays.assay_id\",\n    \"Join target_dictionary ON assays.tid = target_dictionary.tid\",\n    \"Join molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\",\n    \"Join compound_records ON activities.record_id = compound_records.record_id\",\n    \"Join docs ON compound_records.doc_id = docs.doc_id\",\n    \"Filter assays.assay_organism = 'Saccharomyces cerevisiae'\",\n    \"Filter target_dictionary.target_type = 'SINGLE PROTEIN'\",\n    \"Select distinct target_description\",\n    \"Sort by target_description\",\n    \"Return target_description\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select target_dictionary.pref_name AS target_description",
+        "From activities",
+        "Join assays ON activities.assay_id = assays.assay_id",
+        "Join target_dictionary ON assays.tid = target_dictionary.tid",
+        "Join molecule_dictionary ON activities.molregno = molecule_dictionary.molregno",
+        "Join compound_records ON activities.record_id = compound_records.record_id",
+        "Join docs ON compound_records.doc_id = docs.doc_id",
+        "Filter assays.assay_organism = 'Saccharomyces cerevisiae'",
+        "Filter target_dictionary.target_type = 'SINGLE PROTEIN'",
+        "Select distinct target_description",
+        "Sort by target_description",
+        "Return target_description"
+      ]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "case_id": "chembl_downloader_document_molecules_chembl1123859",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123859/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123859/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/mixed100_v54b_20260322/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123859/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/documentation.txt"
+  },
+  "metadata": {
+    "family": "document",
+    "origin": "explicit_from_function_comment_and_parameter",
+    "source_title": "chembl_downloader get_document_molecule_sql instantiated for CHEMBL1123859",
+    "source_url": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "tags": [
+      "document",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "chembl_id",
+      "compound_name": "compound_name",
+      "canonical_smiles": "canonical_smiles"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

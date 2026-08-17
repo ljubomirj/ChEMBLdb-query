@@ -1,0 +1,83 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds tested against human lysosomal acid glucosylceramidase (CHEMBL2179) in any assay. Return each compound's unique ChEMBL identifier and its canonical SMILES. Ensure only one row per compound (i.e., distinct SMILES). Order by compound uniqueness only.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE td.pref_name = 'Human lysosomal acid glucosylceramidase' AND md.chembl_id = 'CHEMBL2179' ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the unique ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for all compounds that have been tested against the human lysosomal acid glucosylceramidase protein, which is identified in ChEMBL by the target CHEMBL2179. The result should include each compound only once (distinct SMILES) and be ordered by the ChEMBL identifier for reproducibility.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE td.pref_name = 'Human lysosomal acid glucosylceramidase' AND md.chembl_id = 'CHEMBL2179' ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all unique ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for compounds that have been tested against the human lysosomal acid glucosylceramidase protein. The target is identified by CHEMBL2179. Only one row per compound (distinct SMILES) should be returned. Order the results by the chembl_id for reproducible ordering.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles AS canonical_smiles, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE td.pref_name = 'Human lysosomal acid glucosylceramidase' AND md.chembl_id = 'CHEMBL2179' ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all unique ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for distinct compounds that have been tested against the human lysosomal acid glucosylceramidase protein identified by CHEMBL2179. Only one row per compound (distinct SMILES) should be returned. Order the results by chembl_id for reproducible ordering.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE CHEMBL_ID = 'CHEMBL2179') SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target ON ass.tid = target.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE md.chembl_id = 'CHEMBL2179' ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all unique ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for distinct compounds that have been tested against the human lysosomal acid glucosylceramidase protein, which is identified in ChEMBL by the target CHEMBL2179. Return exactly one row per compound (distinct SMILES). Order the result set by chembl_id for reproducibility. Do not filter on assay confidence, activity units, relations, or any other optional criteria. Ensure the result includes the chembl_id of the compound (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). No row limits should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2179') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target ON ass.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molecule_chembl_id ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all unique ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) for distinct compounds that have been tested against the human lysosomal acid glucosylceramidase protein, which is identified in ChEMBL by the target CHEMBL2179. Return exactly one row per compound (distinct SMILES). Order the result set by chembl_id for reproducibility. Do not filter on assay confidence, activity units, relations, or any other optional criteria. Ensure the result includes the chembl_id of the compound (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). No row limits should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2179') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target ON ass.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 12554,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.94,
+    "judge_decision": true
+  }
+]

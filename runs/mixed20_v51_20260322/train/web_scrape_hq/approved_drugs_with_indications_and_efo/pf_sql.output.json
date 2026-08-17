@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT\\n  m.chembl_id,\\n  m.pref_name,\\n  cs.canonical_smiles,\\n  di.efo_id AS indication_curie,\\n  di.efo_term AS indication_label,\\n  di.max_phase_for_ind\\nFROM molecule_dictionary m\\nJOIN drug_indication di ON di.molregno = m.molregno\\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\\nWHERE m.max_phase = 4\\n  AND di.efo_id IS NOT NULL\\n  AND di.efo_term IS NOT NULL\\nORDER BY\\n  m.chembl_id ASC,\\n  m.pref_name ASC,\\n  cs.canonical_smiles ASC,\\n  di.efo_id ASC,\\n  di.efo_term ASC,\\n  di.max_phase_for_ind ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  m.chembl_id,\n  m.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary m\nJOIN drug_indication di ON di.molregno = m.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\nWHERE m.max_phase = 4\n  AND di.efo_id IS NOT NULL\n  AND di.efo_term IS NOT NULL\nORDER BY\n  m.chembl_id ASC,\n  m.pref_name ASC,\n  cs.canonical_smiles ASC,\n  di.efo_id ASC,\n  di.efo_term ASC,\n  di.max_phase_for_ind ASC"
+    }
+  }
+}

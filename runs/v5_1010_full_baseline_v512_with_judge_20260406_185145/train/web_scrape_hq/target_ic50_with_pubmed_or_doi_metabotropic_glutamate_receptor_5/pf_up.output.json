@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_metabotropic_glutamate_receptor_5.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_metabotropic_glutamate_receptor_5",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select molecule_dictionary.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles, compound_records.compound_key AS compound_key, docs.pubmed_id AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type AS standard_type, activities.standard_relation AS standard_relation, activities.standard_value AS standard_value, activities.standard_units AS standard_units, activities.activity_comment AS activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism\\nJoin molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\\nJoin compound_records ON molecule_dictionary.molregno = compound_records.molregno\\nJoin docs ON compound_records.doc_id = docs.doc_id\\nJoin activities ON activities.record_id = compound_records.record_id\\nJoin assays ON activities.assay_id = assays.assay_id\\nJoin target_dictionary ON assays.tid = target_dictionary.tid\\nJoin compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\\nFilter activities.activity_type = 'IC50' AND activities.standard_units = 'nM' AND activities.standard_relation = '=' AND activities.standard_value IS NOT NULL AND activities.standard_value > 0 AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.pref_name = 'Metabotropic glutamate receptor 5' AND target_dictionary.chembl_id = 'CHEMBL3227'\\nFilter docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL\\nFilter compound_structures.canonical_smiles IS NOT NULL\\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles, compound_records.compound_key AS compound_key, docs.pubmed_id AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type AS standard_type, activities.standard_relation AS standard_relation, activities.standard_value AS standard_value, activities.standard_units AS standard_units, activities.activity_comment AS activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism\nJoin molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJoin compound_records ON molecule_dictionary.molregno = compound_records.molregno\nJoin docs ON compound_records.doc_id = docs.doc_id\nJoin activities ON activities.record_id = compound_records.record_id\nJoin assays ON activities.assay_id = assays.assay_id\nJoin target_dictionary ON assays.tid = target_dictionary.tid\nJoin compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nFilter activities.activity_type = 'IC50' AND activities.standard_units = 'nM' AND activities.standard_relation = '=' AND activities.standard_value IS NOT NULL AND activities.standard_value > 0 AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.pref_name = 'Metabotropic glutamate receptor 5' AND target_dictionary.chembl_id = 'CHEMBL3227'\nFilter docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL\nFilter compound_structures.canonical_smiles IS NOT NULL\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1140846.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1140846",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL ID, name, max phase, type, and canonical SMILES for compounds reported in the specified document. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id filtering by the document ChEMBL ID. Join compound_structures on molregno to retrieve canonical SMILES. Return the columns molecule_chembl_id, molecule_name, max_phase, molecule_type, and canonical_smiles. Sort by molecule_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL ID, name, max phase, type, and canonical SMILES for compounds reported in the specified document. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id filtering by the document ChEMBL ID. Join compound_structures on molregno to retrieve canonical SMILES. Return the columns molecule_chembl_id, molecule_name, max_phase, molecule_type, and canonical_smiles. Sort by molecule_chembl_id."
+    }
+  }
+}

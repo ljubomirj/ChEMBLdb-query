@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles. Source: docs, compound_records, molecule_dictionary, compound_structures. Join: docs.doc_id = compound_records.doc_id, compound_records.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: docs.chembl_id = 'CHEMBL1142268'. Sort: molecule_dictionary.chembl_id ASC.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles FROM docs JOIN compound_records ON docs.doc_id = compound_records.doc_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE docs.chembl_id = 'CHEMBL1142268' ORDER BY molecule_dictionary.chembl_id ASC",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 0 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 225,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly identifies compounds reported in document CHEMBL1142268 by joining docs, compound_records, molecule_dictionary, and compound_structures. It returns all requested columns (chembl_id, pref_name, max_phase, molecule_type, canonical_smiles) and orders by chembl_id. The result set contains 225 rows with valid data, including known compounds like VORINOSTAT (CHEMBL98), TRICHOSTATIN (CHEMBL99), ENTINOSTAT (CHEMBL27759), and MOCETINOSTAT (CHEMBL272980). The execution plan shows efficient index usage. The query fully satisfies the user's request.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

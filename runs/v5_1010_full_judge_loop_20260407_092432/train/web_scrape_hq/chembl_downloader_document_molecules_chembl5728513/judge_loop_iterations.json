@@ -1,0 +1,70 @@
+[
+  {
+    "n": 1,
+    "up": "Find the compound identifiers reported in the document with the ChEMBL identifier CHEMBL5728513. Return the distinct compound keys (compound_key) and the associated document title (title) from the doc table. Include all rows where the doc_id matches the doc_id of the document CHEMBL5728513. Ensure compound_key and title are selected. No other filters are applied.",
+    "sql": "SELECT DISTINCT activities.compound_key, docs.title FROM activities JOIN docs ON activities.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5728513';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: activities.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: activities.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find the document title and the distinct compound identifiers (compound_key) of all activities reported in the document whose ChEMBL ID is CHEMBL5728513. Return the compound_key and title. Do not filter on doc_type or DOI unless explicitly requested. Only include rows where the document identifier equals CHEMBL5728513.",
+    "sql": "WITH target_doc AS (SELECT doc_id FROM compound_records WHERE chembl_id = 'CHEMBL5728513') SELECT DISTINCT cr.compound_key, d.title FROM target_doc td JOIN compound_records cr ON td.doc_id = cr.doc_id JOIN docs d ON cr.doc_id = d.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find the document title and the distinct compound identifiers (compound_key) of all activities reported in the document whose ChEMBL ID is CHEMBL5728513. Return the compound_key and title. Do not filter on doc_type or DOI unless explicitly requested. Only include rows where the document identifier equals CHEMBL5728513. Ensure that the document identifier CHEMBL5728513 refers to a document (i.e., a publication) and not a compound. Use the docs table for the title and the activities table for activity records. The output columns must be exactly `compound_key` and `title`. Do not add any other columns, do not apply any additional filters (such as on year, doc_type, or DOI), and do not group or limit the results.",
+    "sql": "WITH target_doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728513') SELECT DISTINCT a.compound_key, d.title FROM target_doc td JOIN activities a ON a.doc_id = td.doc_id JOIN docs d ON a.doc_id = d.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find the document title and distinct compound identifiers reported in the document whose ChEMBL identifier is CHEMBL5728513. Return exactly the columns 'compound_key' and 'title'. The document identifier CHEMBL5728513 refers to a publication (not a compound). Retrieve the title from the docs table where docs.chembl_id = 'CHEMBL5728513'. Retrieve the compound_key of each activity reported in that document by joining docs (doc_id) \u2192 activities (doc_id) \u2192 activities (record_id) \u2192 compound_records (record_id) to get the compound_key. Ensure no filters are applied except the document identifier condition. No grouping, ordering, or additional columns.",
+    "sql": "WITH target_doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728513') SELECT DISTINCT a.compound_key, d.title FROM target_doc td JOIN activities a ON a.doc_id = td.doc_id JOIN docs d ON a.doc_id = d.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.compound_key",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.compound_key",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find the document title and the distinct compound identifiers (compound_key) of all activities reported in the document whose ChEMBL identifier is CHEMBL5728513. Return exactly the columns compound_key and title. Ensure the document identifier CHEMBL5728513 refers to a publication (not a compound). Retrieve the title from docs where chembl_id = 'CHEMBL5728513'. Retrieve compound_key from activities joined to docs on doc_id, then to compound_records on record_id to get compound_key. No other filters, no limits, no additional columns.",
+    "sql": "WITH target_doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728513') SELECT DISTINCT cr.compound_key, d.title FROM target_doc td JOIN docs d ON d.doc_id = td.doc_id JOIN activities a ON a.doc_id = d.doc_id JOIN compound_records cr ON cr.record_id = a.record_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n21 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n30 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 823,
+    "res_columns": [
+      "compound_key",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

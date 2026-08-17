@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_2a662bdb74c16920.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "2a662bdb74c16920",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n  md.chembl_id,\\n  md.pref_name,\\n  cs.canonical_smiles,\\n  md.max_phase,\\n  dm.mechanism_of_action,\\n  dm.action_type,\\n  td.chembl_id AS target_chembl_id,\\n  td.pref_name AS target_name\\nFROM molecule_dictionary md\\nINNER JOIN drug_mechanism dm ON dm.molregno = md.molregno\\nINNER JOIN target_dictionary td ON td.tid = dm.tid\\nINNER JOIN compound_structures cs ON cs.molregno = md.molregno\\nWHERE md.max_phase = 4\\n  AND dm.action_type = 'INHIBITOR'\\nORDER BY\\n  md.chembl_id ASC,\\n  md.pref_name ASC,\\n  cs.canonical_smiles ASC,\\n  md.max_phase ASC,\\n  dm.mechanism_of_action ASC,\\n  dm.action_type ASC,\\n  td.chembl_id ASC,\\n  td.pref_name ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  dm.mechanism_of_action,\n  dm.action_type,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name\nFROM molecule_dictionary md\nINNER JOIN drug_mechanism dm ON dm.molregno = md.molregno\nINNER JOIN target_dictionary td ON td.tid = dm.tid\nINNER JOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE md.max_phase = 4\n  AND dm.action_type = 'INHIBITOR'\nORDER BY\n  md.chembl_id ASC,\n  md.pref_name ASC,\n  cs.canonical_smiles ASC,\n  md.max_phase ASC,\n  dm.mechanism_of_action ASC,\n  dm.action_type ASC,\n  td.chembl_id ASC,\n  td.pref_name ASC"
+    }
+  }
+}

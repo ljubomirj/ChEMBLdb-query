@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, compound_structures.canonical_smiles. Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures. Join: molecule_dictionary.molregno = drug_mechanism.molregno; drug_mechanism.tid = target_dictionary.tid; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_mechanism.action_type = 'AGONIST'. Sort: None. Limit: None.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, compound_structures.canonical_smiles FROM molecule_dictionary JOIN drug_mechanism ON molecule_dictionary.molregno = drug_mechanism.molregno JOIN target_dictionary ON drug_mechanism.tid = target_dictionary.tid JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type = 'AGONIST'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN drug_mechanism\n12 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 0 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 441,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully returns approved drugs (max_phase = 4) with AGONIST mechanism of action, including target information (chembl_id, pref_name) and structures (canonical_smiles). The result set contains 441 rows covering diverse drug classes (opioids, adrenergics, hormones, etc.). The joins are correct: molecule_dictionary -> drug_mechanism -> target_dictionary -> compound_structures. All requested columns are present and properly aliased. The sample shows expected drugs like morphine, albuterol, and various glucocorticoids with their targets and SMILES. The query is complete and accurate.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

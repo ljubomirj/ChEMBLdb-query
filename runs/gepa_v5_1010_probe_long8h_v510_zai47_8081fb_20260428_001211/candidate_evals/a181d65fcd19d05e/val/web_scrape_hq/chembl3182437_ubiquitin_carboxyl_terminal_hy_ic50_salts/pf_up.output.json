@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_a181d65fcd19d05e.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts.json",
+  "case_id": "chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "a181d65fcd19d05e",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all IC50 activity records for the parent compound CHEMBL3182437 and all of its salt forms against the specified target CHEMBL3430885. Include compound structures, assay details, and literature provenance.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, docs, target_dictionary\n\n4. Logic:\n   - Filter molecule_dictionary for the parent compound CHEMBL3182437.\n   - Join molecule_hierarchy to retrieve all child records (salts) linked via parent_molregno.\n   - Join compound_structures to obtain canonical_smiles.\n   - Join compound_records on molregno to link to activities.\n   - Join activities on record_id and filter for standard_type = 'IC50'.\n   - Join assays on assay_id to obtain assay_description.\n   - Join docs on doc_id to obtain pubmed_id_or_doi (prefer pubmed_id, fallback to doi).\n   - Join target_dictionary on tid to filter for target_chembl_id = 'CHEMBL3430885' and retrieve target_name and target_organism.\n   - Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all IC50 activity records for the parent compound CHEMBL3182437 and all of its salt forms against the specified target CHEMBL3430885. Include compound structures, assay details, and literature provenance.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, docs, target_dictionary\n\n4. Logic:\n   - Filter molecule_dictionary for the parent compound CHEMBL3182437.\n   - Join molecule_hierarchy to retrieve all child records (salts) linked via parent_molregno.\n   - Join compound_structures to obtain canonical_smiles.\n   - Join compound_records on molregno to link to activities.\n   - Join activities on record_id and filter for standard_type = 'IC50'.\n   - Join assays on assay_id to obtain assay_description.\n   - Join docs on doc_id to obtain pubmed_id_or_doi (prefer pubmed_id, fallback to doi).\n   - Join target_dictionary on tid to filter for target_chembl_id = 'CHEMBL3430885' and retrieve target_name and target_organism.\n   - Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

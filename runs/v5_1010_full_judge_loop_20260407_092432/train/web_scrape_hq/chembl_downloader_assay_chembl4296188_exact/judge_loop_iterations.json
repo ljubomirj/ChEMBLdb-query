@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact activity values for all compounds tested in the assay CHEMBL4296188. Provide the compound ChEMBL ID, molecule preferred name, the standard activity type (e.g., IC50), the standard value, the standard units, the standard relation, and the activity comment.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS molecule_preferred_name, a.standard_type AS standard_activity_type, a.standard_value, a.standard_units, a.standard_relation, a.activity_comment FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL4296188' AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 22658,
+    "res_columns": [
+      "compound_chembl_id",
+      "molecule_preferred_name",
+      "standard_activity_type",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "activity_comment"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

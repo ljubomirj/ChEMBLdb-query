@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl4235_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl4235_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query successfully filters for exact IC50 activities (standard_relation = '=') with non-null pChEMBL values for the human single-protein target CHEMBL4235 (11-beta-hydroxysteroid dehydrogenase 1). It correctly joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures to retrieve the required fields. The filters ensure assay_type 'B' (Binding), target_type 'SINGLE PROTEIN', tax_id 9606 (Homo sapiens), assay_organism 'Homo sapiens', and bao_endpoint 'IC50'. The result set is empty (row_count: 0), which may indicate no matching activities exist in the current dataset for these exact criteria. However, the SQL is syntactically correct, follows the required joins and filters, and the logic aligns with the user's request. The empty result could be due to data availability in ChEMBL 36 or the specific target's activity records not meeting all filters (e.g., no IC50 activities with pChEMBL values for this target). The query does not need additional joins or filters unless the user expects more results, but the current execution is accurate based on the schema and filters.\",\n  \"score\": 90,\n  \"decision\": \"good\"\n}",
+    "parsed_json": {
+      "analysis": "The query successfully filters for exact IC50 activities (standard_relation = '=') with non-null pChEMBL values for the human single-protein target CHEMBL4235 (11-beta-hydroxysteroid dehydrogenase 1). It correctly joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures to retrieve the required fields. The filters ensure assay_type 'B' (Binding), target_type 'SINGLE PROTEIN', tax_id 9606 (Homo sapiens), assay_organism 'Homo sapiens', and bao_endpoint 'IC50'. The result set is empty (row_count: 0), which may indicate no matching activities exist in the current dataset for these exact criteria. However, the SQL is syntactically correct, follows the required joins and filters, and the logic aligns with the user's request. The empty result could be due to data availability in ChEMBL 36 or the specific target's activity records not meeting all filters (e.g., no IC50 activities with pChEMBL values for this target). The query does not need additional joins or filters unless the user expects more results, but the current execution is accurate based on the schema and filters.",
+      "score": 90,
+      "decision": "good"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl4235_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl4235_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl4235_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

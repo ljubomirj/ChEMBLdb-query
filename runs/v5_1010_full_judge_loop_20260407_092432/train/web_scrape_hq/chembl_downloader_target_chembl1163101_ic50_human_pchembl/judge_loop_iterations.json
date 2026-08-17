@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity records for human target CHEMBL1163101 (Serine/threonine-protein kinase/endoribonuclease IRE1). Filter activities where the standard_type is 'IC50' and pChEMBL value is present. For each qualifying activity, return assay ChEMBL ID, target type (from target_dictionary.target_type), organism tax_id, molecule canonical SMILES, molecule ChEMBL ID, standard type (from activities.standard_type), and pChEMBL value (from activities.pchembl_value). Join activities to assays to obtain assay_id and assay_chembl_id, join target_dictionary on tid, join molecule_dictionary on molecule_chembl_id and compound_structures on molecule_chembl_id for canonical SMILES. Order results by molecule_chembl_id and assay_chembl_id. Return exactly these columns without additional filters or limits beyond the explicit 1000 row request; no other sorting, grouping, or DISTINCT unless implied by the schema join pattern. Ensure all joins are LEFT where optional (e.g., compound_structures may be missing), but retain rows as long as core fields exist. The query must preserve the requested 1000 row cap as a directive, not hard\u2011coded in the UP description. Explicitly state that rows are limited to the first 1000 after ordering.",
+    "sql": "WITH ranked AS (\n  SELECT\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles AS canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    a.standard_type,\n    a.pchembl_value\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\n  LEFT JOIN compound_structures cs ON md.chembl_id = cs.molecule_chembl_id\n  WHERE\n    td.pref_name = 'Serine/threonine-protein kinase/endoribonuclease IRE1'\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.chembl_id = 'CHEMBL1163101'\n  ORDER BY md.chembl_id, ass.chembl_id\n  LIMIT 1000\n)\nSELECT * FROM ranked;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity records for the human single\u2011protein target CHEMBL1163101 (Serine/threonine\u2011protein kinase/endoribonuclease IRE1). Filter activities where the standard_type is 'IC50' and activities.pchembl_value is not NULL. Return exactly these columns: assay_chembl_id (from assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), pchembl_value (activities.pchembl_value). Join activities to assays on assay_id, assays to target_dictionary on tid, molecule_dictionary to activities on molecule_chembl_id, and left\u2011join compound_structures to molecule_dictionary on molecule_chembl_id. Include only rows where target_dictionary.chembl_id = 'CHEMBL1163101' and where the standard_type equals 'IC50' (exact relation). Order the final result set by molecule_chembl_id ascending and assay_chembl_id ascending, then take the first 1000 rows. No additional filtering, limits beyond the explicit 1000 cap, or extra joins are needed; all returned columns must be as listed.",
+    "sql": "WITH ranked AS (\n  SELECT\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles AS canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    a.standard_type,\n    a.pchembl_value\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\n  LEFT JOIN compound_structures cs ON cs.molecule_chembl_id = md.chembl_id\n  WHERE td.pref_name = 'Serine/threonine-protein kinase/endoribonuclease IRE1'\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.chembl_id = 'CHEMBL1163101'\n  ORDER BY md.chembl_id, ass.chembl_id\n  LIMIT 1000\n)\nSELECT *\nFROM ranked;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity records for the human single\u2011protein target CHEMBL1163101 (Serine/threonine\u2011protein kinase/endoribonuclease IRE1). For each record return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type) and pchembl_value (activities.pchembl_value). Join activities to assays on activity.assay_id = assays.assay_id, assays to target_dictionary on assays.tid = target_dictionary.tid, activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno, and left\u2011join compound_structures on molecule_dictionary.chembl_id = compound_structures.molecule_chembl_id. Apply filters: target_dictionary.chembl_id = 'CHEMBL1163101', activities.standard_type = 'IC50', activities.pchembl_value IS NOT NULL. Order the final result set by molecule_chembl_id ascending then assay_chembl_id ascending and take the first 1000 rows. No additional filters or grouping are required beyond those explicitly stated.",
+    "sql": "WITH ranked AS (\n  SELECT \n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles AS canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    a.standard_type,\n    a.pchembl_value\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  LEFT JOIN compound_structures cs ON cs.molecule_chembl_id = md.chembl_id\n  WHERE td.chembl_id = 'CHEMBL1163101'\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n  ORDER BY md.chembl_id, ass.chembl_id\n  LIMIT 1000\n)\nSELECT * FROM ranked;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 IC50 activity records for the human single\u2011protein target CHEMBL1163101 (Serine/threonine\u2011protein kinase/endoribonuclease IRE1). Return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), and pchembl_value (activities.pchembl_value). Join activities to assays on activities.assay_id = assays.assay_id, assays to target_dictionary on assays.tid = target_dictionary.tid, activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno, and left\u2011join compound_structures on compound_structures.molregno = molecule_dictionary.molregno. Apply exact filters: target_dictionary.chembl_id = 'CHEMBL1163101', activities.standard_type = 'IC50', and activities.pchembl_value IS NOT NULL. Order the result set by molecule_chembl_id ascending, then assay_chembl_id ascending, and limit to the first 1000 rows. No other filters, grouping, or distinct projections are required.",
+    "sql": "WITH ranked AS (\n  SELECT \n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles AS canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    a.standard_type,\n    a.pchembl_value\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  LEFT JOIN compound_structures cs ON cs.molregno = md.molregno\n  WHERE td.chembl_id = 'CHEMBL1163101'\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n  ORDER BY md.chembl_id ASC, ass.chembl_id ASC\n  LIMIT 1000\n)\nSELECT * FROM ranked;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n71 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

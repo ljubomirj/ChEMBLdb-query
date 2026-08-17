@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs that have a mechanism of action classified as a 'partial agonist'. For each drug, return its preferred name (pref_name), ChEMBL ID (chembl_id), canonical SMILES (canonical_smiles), the preferred name of the protein target (target_pref_name), and the ChEMBL ID of the protein target (target_chembl_id). An approved drug is defined as a molecule with max_phase = 4.",
+    "sql": "SELECT\n  md.pref_name,\n  md.chembl_id,\n  cs.canonical_smiles,\n  td.pref_name AS target_pref_name,\n  td.chembl_id AS target_chembl_id\nFROM drug_mechanism dm\nJOIN molecule_dictionary md ON dm.molregno = md.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  dm.action_type = 'PARTIAL AGONIST'\n  AND md.max_phase = 4;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 144 | SCAN dm\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 24,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles",
+      "target_pref_name",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

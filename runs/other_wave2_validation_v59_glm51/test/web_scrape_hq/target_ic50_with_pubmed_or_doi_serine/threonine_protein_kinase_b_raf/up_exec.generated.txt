@@ -1,0 +1,22 @@
+Select IC50 activity records for the human single-protein target B-RAF (CHEMBL5145) with publication provenance.
+
+Join path: activities (on assay_id) -> assays -> target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL5145'), activities -> compound_records (on record_id) -> molecule_dictionary (on molregno), compound_records -> docs (on doc_id), molecule_dictionary -> compound_structures (INNER JOIN, require non-null canonical_smiles).
+
+Filter: activities.standard_type = 'IC50', target_dictionary.chembl_id = 'CHEMBL5145', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL.
+
+Return columns (no deduplication — keep every qualifying activity row):
+- compound_chembl_id (molecule_dictionary.chembl_id)
+- canonical_smiles
+- compound_key (compound_records.compound_key)
+- pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi)
+- assay_description (assays.description)
+- standard_type
+- standard_relation
+- standard_value
+- standard_units
+- activity_comment
+- target_chembl_id (target_dictionary.chembl_id)
+- target_name (target_dictionary.pref_name)
+- target_organism (target_dictionary.organism)
+
+Sort by: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.

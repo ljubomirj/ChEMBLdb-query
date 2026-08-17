@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all molecules that are reported in the document with ChEMBL ID CHEMBL4118110. For each such molecule, return its ChEMBL ID (from molecule_dictionary.chembl_id), its preferred name (molecule_dictionary.pref_name), the maximum development phase (molecule_dictionary.max_phase), the molecule type (molecule_dictionary.molecule_type), and the canonical SMILES (compound_structures.canonical_smiles). If a molecule does not have a structure in compound_structures, still include it but show NULL for the SMILES. Include each molecule only once in the output. Sort the result by the molecule's ChEMBL ID in ascending order.",
+    "sql": "SELECT DISTINCT md.chembl_id AS \"ChEMBL ID\", md.pref_name AS \"Name\", md.max_phase AS \"Maximum Phase\", md.molecule_type AS \"Molecule Type\", cs.canonical_smiles AS \"Canonical SMILES\" FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL4118110' ORDER BY md.chembl_id ASC;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n54 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 294,
+    "res_columns": [
+      "ChEMBL ID",
+      "Name",
+      "Maximum Phase",
+      "Molecule Type",
+      "Canonical SMILES"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

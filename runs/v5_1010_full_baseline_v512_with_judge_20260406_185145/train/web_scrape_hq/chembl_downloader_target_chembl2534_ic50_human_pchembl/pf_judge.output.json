@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl2534_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl2534_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The SQL query attempts to retrieve IC50 activity rows for human target CHEMBL2534 (3-phosphoinositide-dependent protein kinase 1) with exact standard relation '=' and non-null pChEMBL values. However, the result set is empty (row_count: 0). Key issues:\\n\\n1. **Target identification mismatch**: The query filters on `td.tid = 2534` (numeric tid), but the user explicitly requested filtering by `target_dictionary.chembl_id = 'CHEMBL2534'`. The tid 2534 may not correspond to the target with chembl_id 'CHEMBL2534' in the current schema, leading to no matches.\\n\\n2. **Assay organism filter**: The query uses `a.assay_organism = 'Homo sapiens'`, which is correct for human target filtering, but the target_dictionary.tid = 2534 may not be the correct mapping for CHEMBL2534.\\n\\n3. **Missing target_chEMBL_id filter**: The query should filter on `target_dictionary.chembl_id = 'CHEMBL2534'` instead of `td.tid = 2534` to ensure the correct target is selected, regardless of its internal tid.\\n\\n4. **Potential data availability**: It's possible that no IC50 activities with pChEMBL values exist for this specific target in the current ChEMBL release, but the query logic must correctly map the target identifier.\\n\\nThe current query fails to return results due to incorrect target filtering, not necessarily due to data absence. The logic should be adjusted to use the chembl_id for target filtering.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The SQL query attempts to retrieve IC50 activity rows for human target CHEMBL2534 (3-phosphoinositide-dependent protein kinase 1) with exact standard relation '=' and non-null pChEMBL values. However, the result set is empty (row_count: 0). Key issues:\n\n1. **Target identification mismatch**: The query filters on `td.tid = 2534` (numeric tid), but the user explicitly requested filtering by `target_dictionary.chembl_id = 'CHEMBL2534'`. The tid 2534 may not correspond to the target with chembl_id 'CHEMBL2534' in the current schema, leading to no matches.\n\n2. **Assay organism filter**: The query uses `a.assay_organism = 'Homo sapiens'`, which is correct for human target filtering, but the target_dictionary.tid = 2534 may not be the correct mapping for CHEMBL2534.\n\n3. **Missing target_chEMBL_id filter**: The query should filter on `target_dictionary.chembl_id = 'CHEMBL2534'` instead of `td.tid = 2534` to ensure the correct target is selected, regardless of its internal tid.\n\n4. **Potential data availability**: It's possible that no IC50 activities with pChEMBL values exist for this specific target in the current ChEMBL release, but the query logic must correctly map the target identifier.\n\nThe current query fails to return results due to incorrect target filtering, not necessarily due to data absence. The logic should be adjusted to use the chembl_id for target filtering.",
+      "score": 0.65,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2534_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2534_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2534_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

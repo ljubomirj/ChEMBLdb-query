@@ -1,0 +1,22 @@
+[
+  {
+    "n": 3,
+    "up": "List all approved drugs indicated for depressive disorder. For each drug, include the ChEMBL ID, preferred name, canonical SMILES, EFO ID, EFO term (indication label), and the maximum phase for that specific indication. Use the drug_indication table to find indications for 'depressive disorder', joining to molecule_dictionary for drug details and compound_structures for SMILES. Include drugs where max_phase_for_ind is 4 or any phase indicating approval status.",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading LIKE '%depressive disorder%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 602,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_20260405_161854/candidate_cache/candidate_dd9f0d875ca1e3a6.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_mus_musculus.json",
+  "case_id": "target_descriptions_mus_musculus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "dd9f0d875ca1e3a6",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT td.pref_name AS target_description FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Mus musculus' ORDER BY td.pref_name\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT td.pref_name AS target_description FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Mus musculus' ORDER BY td.pref_name"
+    }
+  }
+}

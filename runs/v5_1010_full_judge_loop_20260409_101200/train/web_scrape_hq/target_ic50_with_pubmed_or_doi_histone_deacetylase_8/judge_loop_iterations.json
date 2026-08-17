@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Return IC50 values in nM for compounds tested against human Histone deacetylase 8. Include the ChEMBL ID, canonical SMILES, and PubMed ID or DOI for each compound. Also include the assay description, target ChEMBL ID, target name, and organism.",
+    "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Histone deacetylase 8'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 3705,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "ic50_nM",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds that are selective for Cyclin-dependent kinase 2 (CDK2; CHEMBL301) over Cyclin-dependent kinase 5 (CDK5; CHEMBL4036). Selectivity is defined by: IC50 less than 50 nM for CDK2 (IC50 = 50 nM) and IC50 greater than 200 nM for CDK5 (IC50 = 200 nM). Include only activity rows with standard_relation '=', standard_units 'nM', and standard_type 'IC50'. Return a unique list of two columns: compound_chembl_id (the public ChEMBL identifier for each compound) and canonical_smiles (the canonical SMILES string of the compound). Ensure each compound appears at most once in the result, regardless of multiple qualifying activities. The query must consider activities for both target proteins and enforce the selectivity criteria using the IC50 values from the activities table.",
+    "sql": "WITH cdk2_acts AS (\n  SELECT a.molecule_chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL301'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.standard_units = 'nM'\n    AND a.standard_value IS NOT NULL\n    AND a.standard_value < 50\n),\ncdk5_acts AS (\n  SELECT a.molecule_chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL4036'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.standard_units = 'nM'\n    AND a.standard_value IS NOT NULL\n    AND a.standard_value > 200\n),\nselected AS (\n  SELECT md.chembl_id AS compound_chembl_id,\n         s.canonical_smiles\n  FROM cdk2_acts ca\n  JOIN cdk5_acts cb ON ca.molecule_chembl_id = cb.molecule_chembl_id\n  JOIN molecule_dictionary md ON ca.molecule_chembl_id = md.molregno\n  LEFT JOIN compound_structures s ON md.molregno = s.molregno\n  WHERE s.canonical_smiles IS NOT NULL\n  GROUP BY md.chembl_id, s.canonical_smiles\n)\nSELECT DISTINCT compound_chembl_id, canonical_smiles\nFROM selected;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compounds that are selective for Cyclin-dependent kinase 2 (CDK2; CHEMBL301) over Cyclin-dependent kinase 5 (CDK5; CHEMBL4036). Selectivity is defined by IC50 < 50 nM for CDK2 (IC50 = 50 nM) and IC50 > 200 nM for CDK5 (IC50 = 200 nM). Include only activity rows where standard_type = 'IC50', standard_relation = '=', and standard_units = 'nM'. Ensure each compound appears at most once in the result. Return exactly two columns: compound_chembl_id (the public ChEMBL identifier for each compound) and canonical_smiles (the canonical SMILES string of the compound).",
+    "sql": "WITH cdk2 AS ( SELECT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL301' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50 ), cdk5 AS ( SELECT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL4036' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200 ), sel AS ( SELECT DISTINCT md.chembl_id AS compound_chembl_id, s.canonical_smiles FROM cdk2 ca JOIN cdk5 cb ON ca.molregno = cb.molregno JOIN molecule_dictionary md ON ca.molregno = md.molregno LEFT JOIN compound_structures s ON md.molregno = s.molregno WHERE s.canonical_smiles IS NOT NULL ) SELECT compound_chembl_id, canonical_smiles FROM sel;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n2 | 0 | 0 | CO-ROUTINE sel\n20 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n30 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n43 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n65 | 2 | 47 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n76 | 2 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n96 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n115 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n117 | 0 | 123 | SCAN sel",
+    "res_row_count": 10,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,93 @@
+{
+  "mode": "forward_chain",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_mapk14_ic50_human_pchembl",
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "provider": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4"
+  },
+  "run_root": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain_b",
+  "written_paths": {
+    "pf_up": {
+      "step_output_json": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_up.output.json",
+      "up_exec": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/up_exec.generated.txt",
+      "generated_case_manifest": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_up.generated_artifact_record.json"
+    },
+    "pf_sql": {
+      "step_output_json": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_sql.output.json",
+      "sql": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/sql.generated.sql",
+      "generated_case_manifest": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_sql.generated_artifact_record.json"
+    },
+    "pf_res": {
+      "step_output_json": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_res.output.json",
+      "generated_case_manifest": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_res.generated_artifact_record.json",
+      "result_path": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/result.generated.csv"
+    },
+    "pf_judge": {
+      "step_output_json": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_judge.output.json",
+      "generated_case_manifest": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+    },
+    "result_csv": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/result.generated.csv"
+  },
+  "res_result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain_b/chembl_downloader_target_mapk14_ic50_human_pchembl/result.generated.csv",
+    "row_count": 6269,
+    "column_names": [
+      "molecule_chembl_id",
+      "assay_chembl_id",
+      "canonical_smiles",
+      "target_type",
+      "tax_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 6269,
+    "actual_rows": 6269,
+    "expected_cols": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "actual_cols": [
+      "molecule_chembl_id",
+      "assay_chembl_id",
+      "canonical_smiles",
+      "target_type",
+      "tax_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "missing_cols": [],
+    "extra_cols": [],
+    "status": "pass",
+    "score": 1.0
+  },
+  "judge_execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements all requirements: joins activities to assays, target_dictionary, molecule_dictionary, and compound_structures; filters on CHEMBL260, SINGLE PROTEIN, tax_id 9606, IC50, exact relation '=', and non-null pChEMBL; preserves raw row multiplicity (no DISTINCT); returns exactly the seven requested columns with correct aliases; and sorts by molecule_chembl_id then assay_chembl_id. The sample rows are consistent and the row count (6269) is plausible for MAPK14 IC50 data.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements all requirements: joins activities to assays, target_dictionary, molecule_dictionary, and compound_structures; filters on CHEMBL260, SINGLE PROTEIN, tax_id 9606, IC50, exact relation '=', and non-null pChEMBL; preserves raw row multiplicity (no DISTINCT); returns exactly the seven requested columns with correct aliases; and sorts by molecule_chembl_id then assay_chembl_id. The sample rows are consistent and the row count (6269) is plausible for MAPK14 IC50 data.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all reported IC50 values (in nM) for compounds tested against human B-raf kinase. Return the following information for each matching activity: the compound's ChEMBL ID and canonical SMILES, the standard IC50 value, and the literature reference (PubMed ID if available, otherwise DOI).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  a.standard_value AS ic50_nM,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'B-raf kinase'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all reported IC50 values (in nM) for compounds tested against human B-raf kinase (note: the target name may be 'B-Raf' or similar variants in the database). Return the following information for each matching activity: the compound's ChEMBL ID and canonical SMILES, the standard IC50 value with its relation symbol (e.g., =, <, >), and the literature reference (PubMed ID if available, otherwise DOI).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  a.standard_value AS ic50_nM,\n  a.standard_relation,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name LIKE '%B-Raf%'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n21 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n27 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9047,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "ic50_nM",
+      "standard_relation",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

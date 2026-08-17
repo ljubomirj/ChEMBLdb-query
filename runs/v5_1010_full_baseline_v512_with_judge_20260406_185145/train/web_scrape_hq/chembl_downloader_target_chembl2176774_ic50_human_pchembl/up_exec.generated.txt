@@ -1,0 +1,9 @@
+Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+Join activities on activities.standard_relation = '=' and activities.pchembl_value is not null and activities.type = 'IC50'
+Join assays on activities.assay_id = assays.assay_id
+Join target_dictionary on assays.tid = target_dictionary.tid and target_dictionary.chembl_id = 'CHEMBL2176774'
+Join molecule_dictionary on activities.molregno = molecule_dictionary.molregno
+Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno
+Return assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+Sort by molecule_chembl_id, assay_chembl_id
+Limit 1000

@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.max_phase_for_ind. Source: molecule_dictionary, compound_structures, drug_indication. Join: molecule_dictionary to compound_structures on molregno. molecule_dictionary to drug_indication on molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_heading = 'Diabetes Mellitus, Type 2'.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.mesh_heading = 'Diabetes Mellitus, Type 2'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n10 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 164,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs indicated for type 2 diabetes mellitus. The columns returned (chembl_id, pref_name, canonical_smiles, mesh_heading, max_phase_for_ind) match the user's request for ChEMBL ID, name, structure, and indication details. The filter logic correctly identifies approved drugs (max_phase = 4) with the specific indication ('Diabetes Mellitus, Type 2'). The result set includes 164 rows, which is comprehensive for this query. The execution plan shows efficient index usage. No issues with column names, aliases, sort direction, or filter logic were found.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

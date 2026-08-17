@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds that have been tested in any assay against the human protein target 'Cellular tumor antigen p53' (ChEMBL ID: CHEMBL4096, organism: Homo sapiens). For each such compound, output its ChEMBL compound identifier and its canonical SMILES. Include all tested compounds regardless of activity type, value, relation, or confidence score. Return distinct compounds with no row limit.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4096' AND td.organism = 'Homo sapiens';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n31 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n40 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 36444,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

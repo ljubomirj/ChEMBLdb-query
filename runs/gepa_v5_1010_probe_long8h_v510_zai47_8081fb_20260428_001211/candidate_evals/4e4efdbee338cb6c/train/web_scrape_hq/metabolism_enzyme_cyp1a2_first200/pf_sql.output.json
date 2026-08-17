@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp1a2_first200.json",
+  "case_id": "metabolism_enzyme_cyp1a2_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "<result>\n{\"sql\":\"SELECT DISTINCT cs_sub.canonical_smiles AS canonical_smiles, mol_sub.pref_name AS substrate_compound_name, mol_parent.pref_name AS parent_compound_name, met.met_conversion AS met_conversion, met.pathway_key AS pathway_key, met.organism AS organism, met.enzyme_name AS enzyme_name FROM metabolism met INNER JOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id INNER JOIN molecule_dictionary mol_sub ON cr_sub.molregno = mol_sub.molregno INNER JOIN compound_structures cs_sub ON mol_sub.molregno = cs_sub.molregno INNER JOIN compound_records cr_parent ON met.metabolite_record_id = cr_parent.record_id INNER JOIN molecule_dictionary mol_parent ON cr_parent.molregno = mol_parent.molregno WHERE met.enzyme_name = 'CYP1A2' ORDER BY canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name LIMIT 200;\"}\n</result>",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT cs_sub.canonical_smiles AS canonical_smiles, mol_sub.pref_name AS substrate_compound_name, mol_parent.pref_name AS parent_compound_name, met.met_conversion AS met_conversion, met.pathway_key AS pathway_key, met.organism AS organism, met.enzyme_name AS enzyme_name FROM metabolism met INNER JOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id INNER JOIN molecule_dictionary mol_sub ON cr_sub.molregno = mol_sub.molregno INNER JOIN compound_structures cs_sub ON mol_sub.molregno = cs_sub.molregno INNER JOIN compound_records cr_parent ON met.metabolite_record_id = cr_parent.record_id INNER JOIN molecule_dictionary mol_parent ON cr_parent.molregno = mol_parent.molregno WHERE met.enzyme_name = 'CYP1A2' ORDER BY canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name LIMIT 200;"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity records for erdafitinib and its salt forms against human fibroblast growth factor receptor 2 (FGFR2). Identify erdafitinib as the molecule with pref_name 'Erdafitinib' in molecule_dictionary. Use molecule_hierarchy to find all salt forms where parent_molregno equals the molregno of erdafitinib; include both the parent and the salts. For each activity record with standard_type = 'IC50' and where the assay targets FGFR2 (target_dictionary.pref_name = 'Fibroblast growth factor receptor 2'), return the following columns: compound pref_name, salt status (parent or salt), standard_value, standard_units, standard_relation, pchembl_value, assay description, and target pref_name. Do not restrict standard_units or standard_relation. Do not apply filters on confidence_score or target_type. Do not require any document type or publication year.",
+    "sql": "SELECT md.pref_name AS compound_name, CASE WHEN mh.molregno = mh.parent_molregno THEN 'parent' ELSE 'salt' END AS salt_status, a.standard_value, a.standard_units, a.standard_relation, a.pchembl_value, ass.description AS assay_description, td.pref_name AS target_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN molecule_hierarchy mh ON a.molregno = mh.molregno WHERE a.standard_type = 'IC50' AND td.pref_name = 'Fibroblast growth factor receptor 2' AND mh.parent_molregno = (SELECT molregno FROM molecule_dictionary WHERE pref_name = 'Erdafitinib');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n14 | 0 | 0 | SCALAR SUBQUERY 1\n19 | 14 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_pref_name (pref_name=?)\n33 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n39 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n50 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n56 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_name",
+      "salt_status",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "pchembl_value",
+      "assay_description",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity records for erdafitinib and its salt forms against fibroblast growth factor receptor 2 (FGFR2). First, identify the molecular identifier (molregno) for erdafitinib by performing a case-insensitive search on the molecule_dictionary.pref_name or molecule_synonyms.synonyms for 'erdafitinib' (e.g., using LOWER()). Use that molregno as the parent. Then, from molecule_hierarchy, select all molregno where parent_molregno equals that parent molregno (this includes the parent itself because parent_molregno = molregno for the parent). These constitute the compounds of interest. For each activity record: (a) the compound's molregno must be in that set, (b) standard_type must be 'IC50', and (c) the assay must target FGFR2 \u2014 match target_dictionary.pref_name case-insensitively to 'fibroblast growth factor receptor 2'. Return the following columns: molecule_dictionary.pref_name as compound_name, a column indicating salt status (e.g., 'parent' if the compound's molregno equals its parent_molregno, otherwise 'salt'), standard_value, standard_units, standard_relation, pchembl_value, assays.description as assay_description, and target_dictionary.pref_name as target_name. Do not filter on standard_units, standard_relation, confidence_score, target_type, or document metadata. Return all qualifying rows without imposing any row limit.",
+    "sql": "WITH parent_mol AS (\n  SELECT molregno FROM molecule_dictionary WHERE LOWER(COALESCE(pref_name,'')) = 'erdafitinib'\n  UNION\n  SELECT molregno FROM molecule_synonyms WHERE LOWER(COALESCE(synonyms,'')) = 'erdafitinib'\n),\nparent AS (\n  SELECT molregno FROM parent_mol\n),\ncompounds AS (\n  SELECT mh.molregno, mh.parent_molregno\n  FROM molecule_hierarchy mh\n  WHERE mh.parent_molregno = (SELECT molregno FROM parent)\n)\nSELECT\n  md.pref_name AS compound_name,\n  CASE WHEN c.molregno = c.parent_molregno THEN 'parent' ELSE 'salt' END AS salt_status,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation,\n  a.pchembl_value,\n  ass.description AS assay_description,\n  td.pref_name AS target_name\nFROM compounds c\nJOIN molecule_dictionary md ON c.molregno = md.molregno\nJOIN activities a ON c.molregno = a.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'IC50'\n  AND LOWER(td.pref_name) = 'fibroblast growth factor receptor 2';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 13\n11 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n14 | 0 | 0 | SCALAR SUBQUERY 4\n17 | 14 | 0 | CO-ROUTINE parent_mol\n18 | 17 | 0 | COMPOUND QUERY\n19 | 18 | 0 | LEFT-MOST SUBQUERY\n22 | 19 | 0 | SCAN molecule_dictionary\n33 | 18 | 0 | UNION USING TEMP B-TREE\n35 | 33 | 0 | SCAN molecule_synonyms\n53 | 14 | 0 | SCAN parent_mol\n65 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n74 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n85 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n91 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 15,
+    "res_columns": [
+      "compound_name",
+      "salt_status",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "pchembl_value",
+      "assay_description",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

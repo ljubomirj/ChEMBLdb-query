@@ -1,0 +1,25 @@
+[
+  {
+    "n": 1,
+    "up": "Select: metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, molecule_dictionary.chembl_id AS substrate_chembl_id, molecule_dictionary.pref_name AS substrate_name, compound_structures.canonical_smiles, compound_records.compound_name. Source: metabolism. Join: Join compound_records on metabolism.substrate_record_id = compound_records.record_id. Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno. Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Filter: metabolism.tax_id = 9615. Sort: metabolism.met_id ascending. Limit: 200.",
+    "sql": "SELECT metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, molecule_dictionary.chembl_id AS substrate_chembl_id, molecule_dictionary.pref_name AS substrate_name, compound_structures.canonical_smiles, compound_records.compound_name FROM metabolism JOIN compound_records ON metabolism.substrate_record_id = compound_records.record_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno LEFT JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE metabolism.tax_id = 9615 ORDER BY metabolism.met_id ASC LIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 0 | SCAN metabolism USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 0 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?)\n23 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 3,
+    "res_columns": [
+      "met_id",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name",
+      "substrate_chembl_id",
+      "substrate_name",
+      "canonical_smiles",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly filters for dog metabolism records (tax_id = 9615) and returns the requested columns including substrate structures, names, metabolic conversions, pathway information, and enzyme names. The result set contains 3 rows, which is the complete set of dog metabolism records in the database. The query plan shows efficient index usage. The output includes all requested fields: metabolism metadata (met_id, met_conversion, pathway_key, enzyme_name) and substrate information (chembl_id, pref_name, canonical_smiles, compound_name). The result is complete and accurate.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

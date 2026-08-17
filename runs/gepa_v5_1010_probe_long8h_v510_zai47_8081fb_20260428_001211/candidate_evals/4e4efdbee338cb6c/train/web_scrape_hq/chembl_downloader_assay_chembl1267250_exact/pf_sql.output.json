@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1267250_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1267250_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM assays ass\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  ass.chembl_id = 'CHEMBL1267250'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND a.standard_relation IS NOT NULL\nORDER BY\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM assays ass\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  ass.chembl_id = 'CHEMBL1267250'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND a.standard_relation IS NOT NULL\nORDER BY\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units"
+    }
+  }
+}

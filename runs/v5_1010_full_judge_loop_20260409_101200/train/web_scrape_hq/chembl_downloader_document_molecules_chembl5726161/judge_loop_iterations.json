@@ -1,0 +1,73 @@
+[
+  {
+    "n": 1,
+    "up": "List the SMILES for molecules associated with the publication CHEMBL5726161.",
+    "sql": "WITH doc_records AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5726161') SELECT DISTINCT md.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN doc_records dr ON a.doc_id = dr.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve molecules from the publication identified as CHEMBL5726161 and provide their canonical SMILES strings. No filtering on target, assay, or activity type is required. Ensure each molecule is listed once.",
+    "sql": "WITH doc_rec AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5726161') SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN doc_rec dr ON a.doc_id = dr.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecule entries that are linked to the publication with chembl_id = 'CHEMBL5726161' via any assay that originated from this document. Return the molecule's internal identifier (CHEMBL ID) and the canonical SMILES string for each molecule. Each molecule should appear only once in the result set.",
+    "sql": "WITH doc AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5726161') SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN doc dr ON a.doc_id = dr.doc_id ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the canonical SMILES strings for each molecule that appears in the document with the identifier CHEMBL5726161. Return one row per molecule with two columns: a unique identifier (the molecule's public ChEMBL identifier, md.chembl_id) and the canonical SMILES (cs.canonical_smiles). No additional filtering on target, assay, activity type, confidence score, organism, or date range is required. Each molecule should be listed only once.",
+    "sql": "WITH doc AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5726161') SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN doc dr ON a.doc_id = dr.doc_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n18 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n24 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 39 | SEARCH td USING COVERING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n59 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 715,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve each molecule that is associated with the publication CHEMBL5726161 via any assay linked to this document. For every such molecule, return a unique identifier (the public ChEMBL identifier md.chembl_id) and its canonical SMILES string cs.canonical_smiles. No additional filtering on target, assay, activity type, organism, date range, or source is required. The result must contain one row per molecule only; duplicates should be eliminated, and the final dataset should list each molecule exactly once with its corresponding SMILES.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5726161') SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN doc dr ON a.doc_id = dr.doc_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n18 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n24 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 39 | SEARCH td USING COVERING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n59 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 715,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 rows of IC50 activity data with pChEMBL values for the target CHEMBL1743128 (ATP-binding cassette sub-family C member 4), which is a single-protein target from Homo sapiens (tax_id 9606). The request is limited to exact measurements where the standard relation is '='. For each row, return the following columns: assay ChEMBL ID, target type, target tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID, then by assay ChEMBL ID.",
+    "sql": "WITH target_ids AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1743128') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid, target_ids ti JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.tid = ti.tid AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n48 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n86 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 132,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

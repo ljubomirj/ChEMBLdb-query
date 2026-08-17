@@ -1,0 +1,491 @@
+[
+  {
+    "id": "glm-4.7-flash_local",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider llamacpp --provider-base-url http://192.168.1.251:8081/v1 --sql-model glm-4.7-flash --judge-model glm-4.7-flash -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/local_glm-4.7-flash_20260122_013449/query_results_query1_kinase_after_2022_glm-4.7-flash.csv",
+    "result_csv_path": "tests/fixtures/local_glm-4.7-flash_20260122_013449/query_results_query1_kinase_after_2022_glm-4.7-flash-test-result-last.csv",
+    "log_path": "tests/fixtures/local_glm-4.7-flash_20260122_013449/glm-4.7-flash-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "target_pref_name",
+      "publication_year",
+      "doi",
+      "ic50_nm"
+    ],
+    "float_cols": [
+      "ic50_nm"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_pref_name": "pref_name",
+      "publication_year": "year",
+      "doi": "doi",
+      "ic50_nm": "standard_value"
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "chembl_id": "molecule_chembl_id",
+      "molecule_chembl_id": "molecule_chembl_id",
+      "compound_chembl_id": "molecule_chembl_id",
+      "target_name": "target_pref_name",
+      "target_pref_name": "target_pref_name",
+      "pref_name": "target_pref_name",
+      "year": "publication_year",
+      "publication_year": "publication_year",
+      "article_doi": "doi"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    }
+  },
+  {
+    "id": "anthropic_20260117_091522",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider anthropic --sql-model claude-sonnet-4.5 --judge-model claude-sonnet-4.5 --filter-profile none -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/anthropic_20260117_091522/query_results_query1_kinase_after_2022_anthropic.csv",
+    "result_csv_path": "tests/fixtures/anthropic_20260117_091522/query_results_query1_kinase_after_2022_anthropic-test-result-last.csv",
+    "log_path": "tests/fixtures/anthropic_20260117_091522/anthropic-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "chembl_id",
+      "target_name",
+      "publication_year",
+      "doi",
+      "ic50_value"
+    ],
+    "float_cols": [
+      "ic50_value"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "doi": "doi",
+      "ic50_value": "standard_value"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "molecule_chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "article_doi": "doi",
+      "ic50_nm": "ic50_value",
+      "IC50": "ic50_value",
+      "ic50": "ic50_value",
+      "standard_value": "ic50_value"
+    }
+  },
+  {
+    "id": "cerebras_20260116_202627",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider cerebras --sql-model zai-glm-4.7 --judge-model zai-glm-4.7 --filter-profile none -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/cerebras_20260116_202627/query_results_query1_kinase_after_2022_cerebras.csv",
+    "result_csv_path": "tests/fixtures/cerebras_20260116_202627/query_results_query1_kinase_after_2022_cerebras-test-result-last.csv",
+    "log_path": "tests/fixtures/cerebras_20260116_202627/cerebras-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "chembl_id",
+      "target_name",
+      "year",
+      "doi",
+      "ic50"
+    ],
+    "float_cols": [
+      "IC50"
+    ],
+    "int_cols": [
+      "year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "year": "year",
+      "doi": "doi",
+      "ic50": "standard_value"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "molecule_chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "publication_year": "year",
+      "article_doi": "doi",
+      "ic50_value": "IC50",
+      "ic50_nm": "IC50",
+      "ic50": "IC50",
+      "standard_value": "IC50"
+    }
+  },
+  {
+    "id": "openrouter_20260116_233251",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider openrouter --sql-model openai/gpt-5.1-codex --judge-model openai/gpt-5.1-codex --filter-profile none -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/openrouter_20260116_233251/query_results_query1_kinase_after_2022_openrouter_20260116_233251.csv",
+    "result_csv_path": "tests/fixtures/openrouter_20260116_233251/query_results_query1_kinase_after_2022_openrouter_20260116_233251-test-result-last.csv",
+    "log_path": "tests/fixtures/openrouter_20260116_233251/openrouter-run-last.log",
+    "sort_keys": [
+      "smiles",
+      "compound_chembl_id",
+      "target_name",
+      "publication_year",
+      "doi",
+      "ic50_value",
+      "ic50_units"
+    ],
+    "float_cols": [
+      "ic50_value"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "doi": "doi",
+      "ic50_value": "standard_value",
+      "ic50_units": "standard_units"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "canonical_smiles": "smiles",
+      "compound_smiles": "smiles",
+      "chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "article_doi": "doi",
+      "ic50_nm": "ic50_value",
+      "IC50": "ic50_value",
+      "ic50": "ic50_value",
+      "standard_value": "ic50_value",
+      "standard_units": "ic50_units",
+      "ic50_standard_units": "ic50_units"
+    }
+  },
+  {
+    "id": "openrouter_20260119_233139",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider openrouter --sql-model openai/gpt-5.2 --judge-model openai/gpt-5.2 --filter-profile none -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/openrouter_20260119_233139/query_results_query1_kinase_after_2022_openrouter_20260119_233139.csv",
+    "result_csv_path": "tests/fixtures/openrouter_20260119_233139/query_results_query1_kinase_after_2022_openrouter_20260119_233139-test-result-last.csv",
+    "log_path": "tests/fixtures/openrouter_20260119_233139/openrouter-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "compound_chembl_id",
+      "target_name",
+      "publication_year",
+      "article_doi",
+      "ic50_standard_value",
+      "ic50_standard_units"
+    ],
+    "float_cols": [
+      "ic50_standard_value"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "article_doi": "doi",
+      "ic50_standard_value": "standard_value",
+      "ic50_standard_units": "standard_units"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "doi": "article_doi",
+      "ic50_value": "ic50_standard_value",
+      "ic50_nm": "ic50_standard_value",
+      "IC50": "ic50_standard_value",
+      "standard_value": "ic50_standard_value",
+      "ic50_units": "ic50_standard_units",
+      "standard_units": "ic50_standard_units",
+      "ic50_relation": "ic50_standard_relation",
+      "standard_relation": "ic50_standard_relation"
+    }
+  },
+  {
+    "id": "openrouter_20260115_052049",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider openrouter --sql-model openai/gpt-5.2 --judge-model openai/gpt-5.2 --filter-profile relaxed -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/openrouter_20260115_052049/query_results_query1_kinase_after_2022_20260115_052049.csv",
+    "result_csv_path": "tests/fixtures/openrouter_20260115_052049/query_results_query1_kinase_after_2022_20260115_052049-test-result-last.csv",
+    "log_path": "tests/fixtures/openrouter_20260115_052049/relaxed-openrouter-run-last.log",
+    "sort_keys": [
+      "compound_smiles",
+      "compound_chembl_id",
+      "target_name",
+      "publication_year",
+      "article_doi",
+      "ic50_value",
+      "ic50_units"
+    ],
+    "float_cols": [
+      "ic50_value"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "compound_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "article_doi": "doi",
+      "ic50_value": "standard_value",
+      "ic50_units": "standard_units"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "smiles": "compound_smiles",
+      "canonical_smiles": "compound_smiles",
+      "chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "doi": "article_doi",
+      "ic50_nm": "ic50_value",
+      "IC50": "ic50_value",
+      "ic50": "ic50_value",
+      "standard_value": "ic50_value",
+      "standard_units": "ic50_units"
+    }
+  },
+  {
+    "id": "openrouter_20260115_140504",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider openrouter --sql-model openai/gpt-5.2 --judge-model openai/gpt-5.2 --filter-profile relaxed -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/openrouter_20260115_140504/query_results_query1_kinase_after_2022_20260115_140504.csv",
+    "result_csv_path": "tests/fixtures/openrouter_20260115_140504/query_results_query1_kinase_after_2022_20260115_140504-test-result-last.csv",
+    "log_path": "tests/fixtures/openrouter_20260115_140504/relaxed-openrouter-run-last.log",
+    "sort_keys": [
+      "smiles",
+      "chembl_id",
+      "target_name",
+      "publication_year",
+      "doi",
+      "ic50"
+    ],
+    "float_cols": [
+      "ic50"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "doi": "doi",
+      "ic50": "standard_value"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "canonical_smiles": "smiles",
+      "compound_smiles": "smiles",
+      "molecule_chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "article_doi": "doi",
+      "ic50_value": "ic50",
+      "ic50_nm": "ic50",
+      "IC50": "ic50",
+      "standard_value": "ic50"
+    }
+  },
+  {
+    "id": "deepseek_20260116_191945",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider deepseek --sql-model deepseek-chat --judge-model deepseek-reasoner --filter-profile relaxed -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/deepseek_20260116_191945/query_results_query1_kinase_after_2022_deepseek_20260116_191945.csv",
+    "result_csv_path": "tests/fixtures/deepseek_20260116_191945/query_results_query1_kinase_after_2022_deepseek_20260116_191945-test-result-last.csv",
+    "log_path": "tests/fixtures/deepseek_20260116_191945/relaxed-deepseek-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "compound_chembl_id",
+      "target_name",
+      "publication_year",
+      "article_doi",
+      "ic50"
+    ],
+    "float_cols": [
+      "IC50"
+    ],
+    "int_cols": [
+      "publication_year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "publication_year": "year",
+      "article_doi": "doi",
+      "ic50": "standard_value"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "year": "publication_year",
+      "doi": "article_doi",
+      "ic50_value": "IC50",
+      "ic50_nm": "IC50",
+      "ic50": "IC50",
+      "standard_value": "IC50"
+    }
+  },
+  {
+    "id": "zai_20260116_231554",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "command": "PYTHONUNBUFFERED=1 uv run python src/db_llm_query.py --provider zai --sql-model glm-4.7 --judge-model glm-4.7 --filter-profile none -f csv --run-label {run_label} --output-file {output_csv} -q \"get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022\"",
+    "timeout_seconds": 7200,
+    "quiet": true,
+    "gold_csv_path": "tests/fixtures/zai_20260116_231554/query_results_query1_kinase_after_2022_zai_20260116_231554.csv",
+    "result_csv_path": "tests/fixtures/zai_20260116_231554/query_results_query1_kinase_after_2022_zai_20260116_231554-test-result-last.csv",
+    "log_path": "tests/fixtures/zai_20260116_231554/zai-run-last.log",
+    "sort_keys": [
+      "canonical_smiles",
+      "chembl_id",
+      "target_name",
+      "year",
+      "doi",
+      "ic50"
+    ],
+    "float_cols": [
+      "IC50"
+    ],
+    "int_cols": [
+      "year"
+    ],
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "target_name": "pref_name",
+      "year": "year",
+      "doi": "doi",
+      "ic50": "standard_value"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "doi",
+        "article_doi"
+      ]
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "molecule_chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "publication_year": "year",
+      "article_doi": "doi",
+      "ic50_value": "IC50",
+      "ic50_nm": "IC50",
+      "ic50": "IC50",
+      "standard_value": "IC50"
+    }
+  }
+]

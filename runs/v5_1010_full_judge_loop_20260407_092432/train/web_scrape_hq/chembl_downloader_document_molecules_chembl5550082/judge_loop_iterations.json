@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "The user is requesting information about compounds that were tested in a specific document. We need to retrieve the compounds, their ChEMBL identifiers, preferred names, maximum development phase, compound type (small molecule, peptide, etc.), and canonical SMILES. The focus is on compounds directly linked to document CHEMBL5550082 via the compound_records table, which captures which compounds appear in which documents. No target protein or activity filters are required, as the query is about document-associated compounds rather than activity against a specific target. We must include the canonical SMILES for each compound, which are available in the compound_structures table. The max_phase and compound type should be pulled from molecule_dictionary, as these are compound attributes, not activity-specific. The user does not require filtering by assay type, confidence score, or target type, so we should not add any additional restrictions beyond the document reference. The output should include the compound's CHEMBL ID (preferred), its preferred name, its max_phase (developmental stage), its compound type (molecule_type), and its canonical SMILES. Results do not need to be ranked, and no top-N is specified, so the query should return all matching compounds.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, md.max_phase, md.molecule_type, cs.canonical_smiles FROM docs d JOIN compound_records cr ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5550082'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 350,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_cancer.json",
+  "case_id": "approved_drugs_indication_cancer",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved phase-4 drugs indicated for cancer. Return molecule ChEMBL ID (chembl_id), preferred name (pref_name), canonical SMILES (canonical_smiles), EFO identifier (indication_curie), indication label (indication_label), and max phase for indication (max_phase_for_ind). Join molecule_dictionary to drug_indication on molregno, then INNER JOIN compound_structures on molregno for structures. Filter molecule_dictionary.max_phase = 4 and drug_indication.efo_term or mesh_heading containing 'cancer' (case-insensitive). Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved phase-4 drugs indicated for cancer. Return molecule ChEMBL ID (chembl_id), preferred name (pref_name), canonical SMILES (canonical_smiles), EFO identifier (indication_curie), indication label (indication_label), and max phase for indication (max_phase_for_ind). Join molecule_dictionary to drug_indication on molregno, then INNER JOIN compound_structures on molregno for structures. Filter molecule_dictionary.max_phase = 4 and drug_indication.efo_term or mesh_heading containing 'cancer' (case-insensitive). Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Find all small-molecule compounds (molecule_dictionary.structure_type = 'MOL') that have at least one activity record (activities) against human Cytochrome P450 3A4 (target_dictionary.pref_name = 'Cytochrome P450 3A4' AND target_dictionary.tax_id = 9606). Return for each compound: the compound\u2019s canonical SMILES (compound_structures.canonical_smiles) and its ChEMBL identifier (molecule_dictionary.chembl_id). Ensure that the activity is linked through the assay to a human target (assays.assay_organism = 'Homo sapiens' OR target_dictionary.tax_id = 9606) to guarantee the assay was performed in a human context. Do not filter on activity type (e.g., IC50, binding), standard units, activity values, or any date range. Include only compounds with at least one record in compound_structures (i.e., a structure must be available). Return each compound once (canonical SMILES may be duplicated across different structures, but each output row should correspond to a distinct molecule). The output must contain two columns: the ChEMBL ID and the canonical SMILES.",
+    "sql": "WITH human_cyp3a4 AS ( SELECT DISTINCT a.molecule_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE (td.pref_name = 'Cytochrome P450 3A4' AND td.tax_id = 9606) OR (ass.assay_organism = 'Homo sapiens' AND td.pref_name = 'Cytochrome P450 3A4') ) SELECT DISTINCT md.molecule_chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN human_cyp3a4 hc ON md.molregno = hc.molecule_chembl_id WHERE md.structure_type = 'MOL' AND hc.molecule_chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all distinct small\u2011molecule compounds (structure_type = 'MOL') that have at least one activity record (activities) against human Cytochrome P450 3A4. Return one row per compound showing the compound\u2019s ChEMBL identifier and its canonical SMILES. The activity must be linked to a human target either by target_dictionary.pref_name = 'Cytochrome P450 3A4' AND target_dictionary.tax_id = 9606, or by assays.assay_organism = 'Homo sapiens' together with the same target. No other filters (activity type, units, values, date ranges, or source restrictions) should be applied. The output must contain exactly two columns: chembl_id (the public ChEMBL ID from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles).",
+    "sql": "WITH target_hits AS ( SELECT DISTINCT a.molecule_chembl_id AS molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE (td.pref_name = 'Cytochrome P450 3A4' AND td.tax_id = 9606) OR (ass.assay_organism = 'Homo sapiens' AND td.pref_name = 'Cytochrome P450 3A4') ) SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM target_hits th JOIN molecule_dictionary md ON th.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.structure_type = 'MOL' AND md.chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all distinct small-molecule compounds (structure_type = 'MOL') that have at least one activity record (activities) against human Cytochrome P450 3A4. Return one row per compound showing the compound\u2019s ChEMBL identifier (molecule_dictionary.chembl_id) and its canonical SMILES (compound_structures.canonical_smiles). Ensure the activity is linked to a human target via target_dictionary (pref_name = 'Cytochrome P450 3A4' AND tax_id = 9606) or assays.assay_organism = 'Homo sapiens'. No filters on activity type, units, values, date ranges, or source. Return exactly two columns: chembl_id and canonical_smiles.",
+    "sql": "WITH hit_molregno AS (SELECT DISTINCT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE (td.pref_name = 'Cytochrome P450 3A4' AND td.tax_id = 9606) OR (ass.assay_organism = 'Homo sapiens' AND td.pref_name = 'Cytochrome P450 3A4')) SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM hit_molregno h JOIN molecule_dictionary md ON h.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.structure_type = 'MOL' AND md.chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE hit_molregno\n11 | 2 | 266 | SCAN a USING INDEX fk_act_molregno\n14 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n20 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n47 | 0 | 235 | SCAN md USING INDEX idx_moldict_chembl_id\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n63 | 0 | 0 | BLOOM FILTER ON h (molregno=?)\n75 | 0 | 54 | SEARCH h USING AUTOMATIC PARTIAL COVERING INDEX (molregno=?)",
+    "res_row_count": 34997,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

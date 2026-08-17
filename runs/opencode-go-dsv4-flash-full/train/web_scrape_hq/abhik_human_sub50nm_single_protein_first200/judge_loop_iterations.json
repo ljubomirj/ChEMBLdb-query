@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 distinct activity rows where the target organism is 'Homo sapiens' (from target_dictionary.organism), the target type is 'SINGLE PROTEIN' (from target_dictionary.target_type), the standard_units is 'nM', the standard_type is one of 'EC50', 'IC50', or 'AC50', and the standard_value is less than 50. The molecule_chembl_id must be taken from molecule_dictionary.chembl_id (not molregno). The output columns must be: activity_id, molecule_chembl_id, target_chembl_id, target_name, standard_type, standard_value, standard_units. Order the results by activity_id in ascending order and limit to 200 rows, ensuring the rows are distinct across the selected columns.",
+    "sql": "SELECT DISTINCT\n  a.activity_id,\n  md.chembl_id AS molecule_chembl_id,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  a.standard_type,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE td.organism = 'Homo sapiens'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND a.standard_units = 'nM'\n  AND a.standard_type IN ('EC50', 'IC50', 'AC50')\n  AND a.standard_value < 50\nORDER BY a.activity_id\nLIMIT 200;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 0 | SEARCH a USING INDEX idx_act_std_unit (standard_units=?)\n36 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n53 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n79 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n80 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 200,
+    "res_columns": [
+      "activity_id",
+      "molecule_chembl_id",
+      "target_chembl_id",
+      "target_name",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

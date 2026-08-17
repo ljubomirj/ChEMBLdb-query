@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of compounds that have exact IC50 activity values measured in nM against the human 5-lipoxygenase target. For each matching activity, provide the compound's ChEMBL ID and canonical SMILES, the assay description, and the PubMed ID or DOI for the reference.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, ass.description, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs ON a.doc_id = docs.doc_id WHERE td.pref_name = '5-lipoxygenase' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)\n77 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "description",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return a list of compounds with exact IC50 activity values measured in nM against the human 5-lipoxygenase target (Arachidonate 5-lipoxygenase, ALOX5). For each matching activity, provide the compound's ChEMBL ID, canonical SMILES, assay description, and the PubMed ID or DOI for the reference.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, ass.description, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs ON a.doc_id = docs.doc_id WHERE td.pref_name = 'Arachidonate 5-lipoxygenase' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)\n47 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n75 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 166,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "description",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

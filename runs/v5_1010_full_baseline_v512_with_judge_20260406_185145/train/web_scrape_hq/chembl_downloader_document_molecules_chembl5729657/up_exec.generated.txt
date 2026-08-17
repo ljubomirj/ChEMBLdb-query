@@ -1,0 +1,7 @@
+Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles as canonical_smiles
+Join molecule_dictionary on molecule_dictionary.molregno = compound_records.molregno
+Join compound_records on compound_records.doc_id = docs.doc_id
+Join docs on docs.chembl_id = 'CHEMBL5729657'
+Left Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Return molecule_chembl_id, compound_name, canonical_smiles
+Sort by molecule_chembl_id, compound_name, canonical_smiles

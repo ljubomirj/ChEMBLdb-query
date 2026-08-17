@@ -1,0 +1,9 @@
+Select molecule_chembl_id as compound_chembl_id, compound_structures.canonical_smiles as canonical_smiles
+Join molecule_dictionary m ON m.molregno = a.molregno
+Join activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50'
+Join assays a_s ON a.assay_id = a_s.assay_id
+Join target_dictionary t ON a_s.tid = t.tid
+Join compound_structures cs ON cs.molregno = m.molregno
+Filter t.pref_name = 'Sialic acid‑binding Ig‑like lectin 9' AND t.tax_id = 9606
+Distinct compound_chembl_id, canonical_smiles
+Sort by compound_chembl_id

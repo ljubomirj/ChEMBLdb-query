@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1614458_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1614458_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units for compounds tested in assay CHEMBL1614458 that have exact activity measurements (standard_relation '=' and standard_value is not null). Join assays to activities on assay_id, join activities to molecule_dictionary on molregno, and join compound_structures on molregno to retrieve canonical_smiles. Return all matching rows without deduplication. Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units for compounds tested in assay CHEMBL1614458 that have exact activity measurements (standard_relation '=' and standard_value is not null). Join assays to activities on assay_id, join activities to molecule_dictionary on molregno, and join compound_structures on molregno to retrieve canonical_smiles. Return all matching rows without deduplication. Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units."
+    }
+  }
+}

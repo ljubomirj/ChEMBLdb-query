@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "For compounds tested in assay CHEMBL1613995, retrieve the exact activity values. The output must include the following columns for each qualifying activity: compound CHEMBL ID (molecule_chembl_id), standard relation (standard_relation), standard value (standard_value), and standard units (standard_units). Return all matching activity rows without limiting the number of results.",
+    "sql": "SELECT\n  a.molregno,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nWHERE\n  ass.chembl_id = 'CHEMBL1613995'\n  AND a.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n5 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n10 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)",
+    "res_row_count": 6303,
+    "res_columns": [
+      "molregno",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Show the exact activity values for compounds tested in assay CHEMBL1613995. Return the compound CHEMBL ID (from molecule_dictionary.chembl_id), standard relation, standard value, and standard units for each activity.",
+    "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE\n  ass.chembl_id = 'CHEMBL1613995'\n  AND a.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 6303,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

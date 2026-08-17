@@ -1,0 +1,34 @@
+[
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for lymphoma. For each drug, return the following details: ChEMBL ID, molecule name, canonical SMILES (structure), indication label (e.g., MeSH heading), and EFO term for the indication. Include only drugs with max_phase = 4.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno JOIN atc_classification atc ON md.molregno = atc.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%lymphoma%' OR di.efo_term LIKE '%lymphoma%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: atc.molregno",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: atc.molregno",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List all approved drugs indicated for lymphoma. For each drug, return the following details: ChEMBL ID, molecule name, canonical SMILES (structure), indication label (MeSH heading), and EFO term. Include only drugs with max_phase = 4.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%lymphoma%' OR di.efo_term LIKE '%lymphoma%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1199,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

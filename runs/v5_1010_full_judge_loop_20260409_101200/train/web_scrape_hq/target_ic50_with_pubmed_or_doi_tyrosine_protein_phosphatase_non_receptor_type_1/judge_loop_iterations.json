@@ -1,0 +1,24 @@
+[
+  {
+    "n": 2,
+    "up": "Return the IC50 measurements (in nM) for compounds tested against the human protein 'Tyrosine-protein phosphatase non-receptor type 1'. For each measurement, include the compound's canonical SMILES, the publication's PubMed ID or DOI, the assay description, and the target details. The target should be from Homo sapiens.",
+    "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  a.standard_value,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.target_type AS target_type,\n  td.organism AS target_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Tyrosine-protein phosphatase non-receptor type 1'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n37 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n75 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4466,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_value",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

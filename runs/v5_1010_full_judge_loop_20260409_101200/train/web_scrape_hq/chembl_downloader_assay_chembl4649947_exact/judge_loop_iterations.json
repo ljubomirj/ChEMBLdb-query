@@ -1,0 +1,39 @@
+[
+  {
+    "n": 1,
+    "up": "Return all activity records for assay CHEMBL4649947. For each record, include the molecule's canonical SMILES and the exact activity value (standard_value). Output the following columns: canonical_smiles, standard_value, standard_units, standard_type, standard_relation.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, a.standard_value, a.standard_units, a.standard_type, a.standard_relation FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649947';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 8869,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return activity records for assay CHEMBL4649947 that have exact activity values (standard_relation = '='). For each record, include the canonical SMILES of the molecule and the standard value with its units and type. Output the columns: canonical_smiles, standard_value, standard_units, and standard_type.",
+    "sql": "SELECT cs.canonical_smiles, a.standard_value, a.standard_units, a.standard_type FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649947' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 8861,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_type"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

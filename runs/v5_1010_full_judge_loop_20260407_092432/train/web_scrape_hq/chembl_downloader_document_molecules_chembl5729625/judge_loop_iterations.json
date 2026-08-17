@@ -1,0 +1,59 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds (with their ChEMBL IDs and canonical SMILES) that are described in the document with ChEMBL ID 'CHEMBL5729625'. The desired output should list each molecule once, with the compound name, its canonical SMILES, and the document identifier. The target definitions are not required for this query (no protein targets or organism filters). The only filter is the document identifier: doc.chembl_id = 'CHEMBL5729625'.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS compound_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles, docs.chembl_id AS doc_id FROM compound_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs ON cr.doc_id = docs.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE docs.chembl_id = 'CHEMBL5729625' ORDER BY compound_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all molecules that are described in the publication with ChEMBL ID 'CHEMBL5729625'. For each molecule, return its ChEMBL ID, the molecule's preferred name, and its canonical SMILES. Filter to only include rows where the document identifier matches 'CHEMBL5729625'. Output each molecule once, with columns molecule_chembl_id, compound_name, and smiles.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS compound_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles, docs.chembl_id AS doc_id FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs ON cr.doc_id = docs.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE docs.chembl_id = 'CHEMBL5729625' ORDER BY compound_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules described in the publication with ChEMBL ID 'CHEMBL5729625'. For each molecule, return its ChEMBL ID (as molecule_chembl_id), the molecule's preferred name (as compound_name), and its canonical SMILES (as smiles). Only include rows where the document identifier is exactly 'CHEMBL5729625'. Ensure each molecule appears once only (use DISTINCT). No additional filters on organism, target type, assay confidence, or units are required.",
+    "sql": "WITH recent_docs AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5729625') SELECT DISTINCT md.molecule_chembl_id AS molecule_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles, rd.chembl_id AS doc_id FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN recent_docs rd ON cr.doc_id = rd.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all molecules that are described in the publication with ChEMBL ID 'CHEMBL5729625'. For each molecule, return its ChEMBL ID (as molecule_chembl_id), the molecule's preferred name (as compound_name), and its canonical SMILES (as smiles). Include the document identifier (as doc_id) as part of the result. Filter to only include rows where the document identifier exactly matches 'CHEMBL5729625'. Ensure each molecule appears once only (use DISTINCT). No additional filters on target type, assay confidence, organism, or activity measurements are required.",
+    "sql": "WITH recent_docs AS (SELECT * FROM docs WHERE chembl_id = 'CHEMBL5729625') SELECT DISTINCT md.molregno, md.pref_name AS compound_name, cs.canonical_smiles AS smiles, rd.chembl_id AS doc_id FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN recent_docs rd ON cr.doc_id = rd.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 695,
+    "res_columns": [
+      "molregno",
+      "compound_name",
+      "smiles",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

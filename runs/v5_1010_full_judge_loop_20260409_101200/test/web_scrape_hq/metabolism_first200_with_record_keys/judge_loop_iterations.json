@@ -1,0 +1,23 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 rows from the metabolism table. For each row, return the canonical SMILES, substrate record ID, metabolite record ID, substrate compound key, metabolite compound key, metabolic conversion, and pathway key. Join the metabolism table to compound_records using substrate_record_id to get the substrate compound key, then join to compound_structures to get the canonical SMILES (the substrate join to structures is mandatory, so canonical_smiles and substrate_compound_key must not be null). Use metabolite_record_id to join to compound_records for the metabolite compound key; this metabolite-side join may be optional if the metabolite record is absent. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key.",
+    "sql": "SELECT\n  cs.canonical_smiles,\n  m.substrate_record_id,\n  m.metabolite_record_id,\n  cr_sub.compound_key AS substrate_compound_key,\n  cr_met.compound_key AS metabolite_compound_key,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_met ON m.metabolite_record_id = cr_met.record_id\nLIMIT 200;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n11 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n25 | 0 | 47 | SEARCH cr_met USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 200,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_record_id",
+      "metabolite_record_id",
+      "substrate_compound_key",
+      "metabolite_compound_key",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

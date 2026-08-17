@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1628461 (Oxoeicosanoid receptor 1). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target_assays AS (\n  SELECT assay_id\n  FROM assays\n  WHERE tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1628461')\n), exact_ic50 AS (\n  SELECT activity_id, assay_id, molregno, standard_type, pchembl_value, record_id\n  FROM activities\n  WHERE standard_type = 'IC50'\n    AND standard_relation = '='\n    AND pchembl_value IS NOT NULL\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value\nFROM exact_ic50 act\nJOIN target_assays ta ON act.assay_id = ta.assay_id\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n15 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 0 | SCALAR SUBQUERY 1\n41 | 36 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n50 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n59 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n66 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n73 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n97 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

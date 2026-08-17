@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_7083e6bbc39cb49c.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/alogliptin_dpp4_ic50_salts.json",
+  "case_id": "alogliptin_dpp4_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "7083e6bbc39cb49c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all IC50 bioactivity records in nM for the parent compound CHEMBL376359 (Aloglipin) and all of its salts against target CHEMBL284 (Dipeptidyl peptidase 4), including publication provenance and target details.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary\n\n4. Logic: Identify the set of relevant compounds by selecting the parent molecule where chembl_id is 'CHEMBL376359' and all related salts by joining molecule_hierarchy on parent_molregno. Join compound_structures to this set on molregno to retrieve canonical_smiles. Join compound_records to the compound set on molregno. Join activities on compound_records.record_id. Join docs on compound_records.doc_id to retrieve publication identifiers (prefer pubmed_id; use doi as fallback). Join assays on activities.assay_id to retrieve assay descriptions. Join target_dictionary on assays.tid to retrieve target details. Filter activities where standard_type is 'IC50' and standard_units is 'nM' and target_dictionary.chembl_id is 'CHEMBL284'. Sort the results by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all IC50 bioactivity records in nM for the parent compound CHEMBL376359 (Aloglipin) and all of its salts against target CHEMBL284 (Dipeptidyl peptidase 4), including publication provenance and target details.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary\n\n4. Logic: Identify the set of relevant compounds by selecting the parent molecule where chembl_id is 'CHEMBL376359' and all related salts by joining molecule_hierarchy on parent_molregno. Join compound_structures to this set on molregno to retrieve canonical_smiles. Join compound_records to the compound set on molregno. Join activities on compound_records.record_id. Join docs on compound_records.doc_id to retrieve publication identifiers (prefer pubmed_id; use doi as fallback). Join assays on activities.assay_id to retrieve assay descriptions. Join target_dictionary on assays.tid to retrieve target details. Filter activities where standard_type is 'IC50' and standard_units is 'nM' and target_dictionary.chembl_id is 'CHEMBL284'. Sort the results by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, and target_organism. Do not limit the number of rows."
+    }
+  }
+}

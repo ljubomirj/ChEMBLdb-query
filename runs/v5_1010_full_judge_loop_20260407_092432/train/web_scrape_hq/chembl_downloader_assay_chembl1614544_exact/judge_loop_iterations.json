@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "For assay CHEMBL1614544, return the exact activity values and compound structures. Include the ChEMBL identifier, canonical SMILES, standard type, standard relation, standard value, and standard units. Use an exact match on the assay identifier and preserve all activity rows including those with missing values. Do not limit the number of rows returned.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM assays ass\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ass.chembl_id = 'CHEMBL1614544';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 36356,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

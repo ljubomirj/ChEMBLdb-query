@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_6bb8dcf683f5ebc3.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_acute_myeloid_leukemia.json",
+  "case_id": "approved_drugs_indication_acute_myeloid_leukemia",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "6bb8dcf683f5ebc3",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE drug_indication.max_phase_for_ind = 4 AND drug_indication.mesh_heading = 'Acute Myeloid Leukemia' ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC, indication_curie ASC, indication_label ASC, drug_indication.max_phase_for_ind ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE drug_indication.max_phase_for_ind = 4 AND drug_indication.mesh_heading = 'Acute Myeloid Leukemia' ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC, indication_curie ASC, indication_label ASC, drug_indication.max_phase_for_ind ASC"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows meeting the following criteria. The rows must be from assays associated with the target CHEMBL1919 (Voltage-dependent calcium channel subunit alpha-2/delta-1). The target type must be 'SINGLE PROTEIN' and the organism must be 'Homo sapiens' (tax_id 9606). The activity rows must have an exact standard relation '=' and a non-null pChEMBL value. For each row, return the assay ChEMBL ID, target type, target tax_id, molecule ChEMBL ID, canonical SMILES, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1919'), filtered_activities AS (SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.tid IN (SELECT tid FROM target) AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL) SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, fa.standard_type, fa.pchembl_value FROM filtered_activities fa JOIN assays ass ON fa.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON fa.molregno = md.molregno JOIN compound_structures cs ON fa.molregno = cs.molregno WHERE td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n15 | 0 | 236 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n23 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | LIST SUBQUERY 2\n46 | 42 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n55 | 42 | 0 | CREATE BLOOM FILTER\n63 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n73 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n83 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n95 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n105 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n130 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 873,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

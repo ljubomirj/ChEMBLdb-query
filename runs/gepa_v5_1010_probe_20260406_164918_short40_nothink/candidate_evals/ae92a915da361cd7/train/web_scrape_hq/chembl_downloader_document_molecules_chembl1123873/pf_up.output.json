@@ -1,0 +1,34 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_ae92a915da361cd7.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123873",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "ae92a915da361cd7",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles AS canonical_smiles\",\n    \"From molecule_dictionary\",\n    \"Left Join compound_records On molecule_dictionary.molregno = compound_records.molregno\",\n    \"Left Join docs On compound_records.doc_id = docs.doc_id\",\n    \"Left Join activities On compound_records.record_id = activities.record_id\",\n    \"Left Join assays On activities.assay_id = assays.assay_id\",\n    \"Left Join target_dictionary On assays.tid = target_dictionary.tid\",\n    \"Left Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno\",\n    \"Where docs.chembl_id = 'CHEMBL1123873'\",\n    \"And compound_structures.canonical_smiles Is Not Null\",\n    \"Group By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles\",\n    \"Order By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles\",\n    \"Limit 1000\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles AS canonical_smiles",
+        "From molecule_dictionary",
+        "Left Join compound_records On molecule_dictionary.molregno = compound_records.molregno",
+        "Left Join docs On compound_records.doc_id = docs.doc_id",
+        "Left Join activities On compound_records.record_id = activities.record_id",
+        "Left Join assays On activities.assay_id = assays.assay_id",
+        "Left Join target_dictionary On assays.tid = target_dictionary.tid",
+        "Left Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno",
+        "Where docs.chembl_id = 'CHEMBL1123873'",
+        "And compound_structures.canonical_smiles Is Not Null",
+        "Group By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles",
+        "Order By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles",
+        "Limit 1000"
+      ]
+    }
+  }
+}

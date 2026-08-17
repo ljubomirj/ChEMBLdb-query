@@ -35,19 +35,19 @@ Reports and documentation:
 - **Baseline comparison:** [`doc/2026-07-29-hipfire-qwen36-27b-1010-baseline-comparison.md`](doc/2026-07-29-hipfire-qwen36-27b-1010-baseline-comparison.md)
 - **Artifact guide:** [`doc/2026-07-29-hipfire-qwen36-27b-1010-artifact-guide.md`](doc/2026-07-29-hipfire-qwen36-27b-1010-artifact-guide.md)
 - **Algorithm description:** [`doc/v5-judge-loop-algorithm.md`](doc/v5-judge-loop-algorithm.md)
-- **Full artifact tree:** `experiments/evals/v5_forward_eval/qwen36-27b-hipfire-local-full-1010/`
+- **Full artifact tree:** `runs/qwen36-27b-hipfire-local-full-1010/`
 
 ### v5.1010 diversified benchmark is now the active corpus
 
 The project has moved past the old undiversified `1000` corpus. The active benchmark/data shorthand is now:
 
 - **`1010`** = the diversified, balanced v5 corpus
-- split file: `experiments/case_splits_v5.1010.json`
+- split file: `cases/v5.1010/splits/case_splits_v5.1010.json`
 - dataset report: `experiments/v5.1010_dataset_report.md`
-- v5 manifest root: `tests/v5_manifests_1010/`
+- v5 manifest root: `cases/v5.1010/cases/`
 - latest full judge-loop baseline:
-  - eval root: `experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/`
-  - report: `experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/report.json`
+  - eval root: `runs/v5_1010_full_judge_loop_20260409_101200/`
+  - report: `runs/v5_1010_full_judge_loop_20260409_101200/report.json`
 
 Current full-1010 baseline summary (`prompt_pack_v5.0.yaml`, full J-Judge loop):
 
@@ -94,9 +94,9 @@ This is still not perfectly uniform, but it is materially less distorted than th
 Where to find the full ordered case list:
 
 - canonical ordered list with outcomes and ordinals:  
-  `experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/report.json`
+  `runs/v5_1010_full_judge_loop_20260409_101200/report.json`
 - train/val/test membership list:  
-  `experiments/case_splits_v5.1010.json`
+  `cases/v5.1010/splits/case_splits_v5.1010.json`
 
 Representative examples from the live 1010 report:
 
@@ -869,6 +869,128 @@ This list reflects files intended for the public repo. Excluded: local `.env` fi
 - `src/text2sql/env.py`: Environment loading and provider config helpers.
 - `src/text2sql/local_llm.py`: Local model provider integration.
 - `uv.lock`: Locked dependency versions for uv.
+
+## Algorithm: Iterative Text-to-SQL with Multi-LLM Orchestration (v4)
+
+The v4 query system uses a multi-LLM orchestration pattern inspired by open-ended search techniques. The algorithm separates concerns across three distinct LLM roles that iterate together until a satisfactory result is achieved.
+
+### Core Components
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              SYSTEM PROMPT (SP)                             │
+│  Database schema docs: tables, columns, sampled rows per table              │
+│  (Cached at head, passed to all LLM calls)                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           USER QUESTION (UQ)                                │
+│  Initial natural-language query from user (provided once at start)          │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         PROMPT-WRITER LLM                                   │
+│  Produces execution-oriented User Prompt (UP_1) from (SP, UQ)               │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Iterative Loop (n = 1 to N)
+
+Each iteration maintains a rolling history of the last M iterations to provide context while keeping token usage manageable.
+
+```
+Iteration n:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  INPUT: SP + UQ + history (last M iterations) + UP_n                        │
+│                                                                             │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                         SQL-WRITER LLM                                 │ │
+│  │  Produces SQL_n from (SP, UQ, UP_n, history)                           │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+│                                    ▼                                        │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                       EXECUTE AGAINST DB                               │ │
+│  │  Run SQL_n on ChEMBL SQLite → RES_n (result table)                     │ │
+│  │  Summary: plan, row count, columns, samples, errors                    │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+│                                    ▼                                        │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                          JUDGE LLM                                     │ │
+│  │  Produces J_n from (SP, UQ, UP_n, SQL_n, PLAN_n, RES_n, history)       │ │
+│  │                                                                        │ │
+│  │  Returns:                                                              │ │
+│  │    • Qualitative evaluation of result quality                          │ │
+│  │    • Improvement advice for next iteration                             │ │
+│  │    • Quantitative score [0, 1] (penultimate line)                      │ │
+│  │    • Decision: YES or NO (last line)                                   │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+└────────────────────────────────────┼────────────────────────────────────────┘
+                                     │
+                     ┌───────────────┴───────────────┐
+                     │                               │
+                     ▼                               ▼
+              YES (or score ≥ threshold)        NO (continue)
+                     │                               │
+                     │                               ▼
+                     │               ┌──────────────────────────────┐
+                     │               │    PROMPT-WRITER LLM         │
+                     │               │  Produces UP_(n+1) from      │
+                     │               │  (SP, UQ, full history)      │
+                     │               └──────────────────────────────┘
+                     │                               │
+                     ▼                               ▼
+            ┌───────────────────┐         ┌────────────────────┐
+            │    STOP           │         │  NEXT ITERATION    │
+            │  Return RES_n     │         │  (n → n+1)         │
+            └───────────────────┘         └────────────────────┘
+```
+
+### History Window
+
+The algorithm maintains a sliding window of the last M iterations to:
+- Provide recent context for each LLM
+- Keep token usage bounded
+- Allow the system to "learn" from recent failures
+
+History format (with clear HTML-like tags):
+```
+<SP>...</SP>
+<UQ>...</UQ>
+<ITERATION 1>
+  <UP_1>...</UP_1>
+  <SQL_1>...</SQL_1>
+  <PLAN_1>...</PLAN_1>
+  <RES_1>...</RES_1>
+  <J_1>...</J_1>
+</ITERATION 1>
+...
+<ITERATION M>
+  <UP_M>...</UP_M>
+  <SQL_M>...</SQL_M>
+  <PLAN_M>...</PLAN_M>
+  <RES_M>...</RES_M>
+  <J_M>...</J_M>
+</ITERATION M>
+```
+
+### Key Design Insights
+
+1. **Separation of Concerns**: Three distinct LLM roles (prompt-writer, SQL-writer, judge) each specialize in one aspect of the problem.
+
+2. **Explicit Feedback Loop**: The judge provides both qualitative feedback (what went wrong) and quantitative scoring (how far off are we).
+
+3. **Bounded Context**: The M-iteration history window prevents unbounded token growth while preserving recent learning.
+
+4. **Tagged Structure**: HTML-like tags make the flow auditable and debuggable.
+
+### Acknowledgements
+
+The multi-LLM orchestration pattern and iterative refinement approach were inspired by the [Poetiq ARC-AGI solver](https://github.com/poetiq-ai/poetiq-arc-agi-solver/blob/main/arc_agi/solve_coding.py), which demonstrated the effectiveness of separating generation and evaluation roles in open-ended search problems.
 
 ## CLI options (db_llm_query.py)
 All options are available on `src/db_llm_query.py` (wrapper) and `src/db_llm_query_v1.py`.

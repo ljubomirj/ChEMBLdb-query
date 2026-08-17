@@ -1,0 +1,37 @@
+SELECT
+  m.chembl_id AS compound_chembl_id,
+  cs.canonical_smiles,
+  cr.compound_key,
+  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,
+  a.description AS assay_description,
+  act.standard_type,
+  act.standard_relation,
+  act.standard_value,
+  act.standard_units,
+  act.activity_comment,
+  td.chembl_id AS target_chembl_id,
+  td.pref_name AS target_name,
+  td.organism AS target_organism
+FROM molecule_dictionary m
+JOIN compound_structures cs ON m.molregno = cs.molregno
+JOIN compound_records cr ON m.molregno = cr.molregno
+JOIN docs d ON cr.doc_id = d.doc_id
+JOIN activities act ON cr.record_id = act.record_id
+JOIN assays a ON act.assay_id = a.assay_id
+JOIN target_dictionary td ON a.tid = td.tid
+WHERE td.chembl_id = 'CHEMBL2973'
+  AND act.standard_type = 'IC50'
+ORDER BY
+  m.chembl_id,
+  cs.canonical_smiles,
+  cr.compound_key,
+  COALESCE(d.pubmed_id, d.doi),
+  a.description,
+  act.standard_type,
+  act.standard_relation,
+  act.standard_value,
+  act.standard_units,
+  act.activity_comment,
+  td.chembl_id,
+  td.pref_name,
+  td.organism

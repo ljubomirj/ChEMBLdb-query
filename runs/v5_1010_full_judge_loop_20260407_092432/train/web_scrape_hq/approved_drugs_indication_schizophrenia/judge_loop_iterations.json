@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for schizophrenia. For each drug, return its ChEMBL ID, name, canonical SMILES, EFO ID, indication label (EFO term), and max phase for indication.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading = 'Schizophrenia' AND md.max_phase = 4;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 182,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

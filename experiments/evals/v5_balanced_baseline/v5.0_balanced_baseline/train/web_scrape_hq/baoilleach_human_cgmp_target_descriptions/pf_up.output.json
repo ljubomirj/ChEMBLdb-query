@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_human_cgmp_target_descriptions.json",
+  "case_id": "baoilleach_human_cgmp_target_descriptions",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\"up\": \"Select distinct target_dictionary.pref_name aliased as target_description. Filter target_dictionary.organism = 'Homo sapiens' and target_dictionary.pref_name LIKE 'cGMP%'. Sort by target_description. Return only the target_description column.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct target_dictionary.pref_name aliased as target_description. Filter target_dictionary.organism = 'Homo sapiens' and target_dictionary.pref_name LIKE 'cGMP%'. Sort by target_description. Return only the target_description column."
+    }
+  }
+}

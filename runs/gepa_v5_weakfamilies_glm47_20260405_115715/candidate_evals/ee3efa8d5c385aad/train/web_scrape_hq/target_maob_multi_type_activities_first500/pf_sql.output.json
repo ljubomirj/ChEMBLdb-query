@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_maob_multi_type_activities_first500.json",
+  "case_id": "target_maob_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  act.standard_type,\n  act.standard_value,\n  act.standard_units\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE td.chembl_id = 'CHEMBL221'\nORDER BY act.standard_value ASC, md.chembl_id, cs.canonical_smiles, act.standard_type, act.standard_value, act.standard_units\nLIMIT 500\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  act.standard_type,\n  act.standard_value,\n  act.standard_units\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE td.chembl_id = 'CHEMBL221'\nORDER BY act.standard_value ASC, md.chembl_id, cs.canonical_smiles, act.standard_type, act.standard_value, act.standard_units\nLIMIT 500"
+    }
+  }
+}

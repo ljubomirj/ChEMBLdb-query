@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/drug_indications_max_phase_3.json",
+  "case_id": "drug_indications_max_phase_3",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, drug_indication.mesh_id AS mesh_id, drug_indication.mesh_heading AS mesh_heading, drug_indication.mesh_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind\\nJoin drug_indication ON molecule_dictionary.molregno = drug_indication.molregno\\nFilter drug_indication.max_phase_for_ind = 3\\nFilter molecule_dictionary.therapeutic_flag = 1\\nSort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, max_phase_for_ind\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, drug_indication.mesh_id AS mesh_id, drug_indication.mesh_heading AS mesh_heading, drug_indication.mesh_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind\nJoin drug_indication ON molecule_dictionary.molregno = drug_indication.molregno\nFilter drug_indication.max_phase_for_ind = 3\nFilter molecule_dictionary.therapeutic_flag = 1\nSort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, max_phase_for_ind"
+    }
+  }
+}

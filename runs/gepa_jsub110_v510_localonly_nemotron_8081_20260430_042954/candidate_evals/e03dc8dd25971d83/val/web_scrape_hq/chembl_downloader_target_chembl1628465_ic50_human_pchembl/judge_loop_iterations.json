@@ -1,0 +1,178 @@
+[
+  {
+    "n": 1,
+    "up": ":{",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filtered activities for the human single\u2011protein target CHEMBL1628465 (tax_id 9606, target_type 'SINGLE PROTEIN') using exact standard_relation '=' and non\u2011null pChEMBL values. It returned the requested columns (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value) and ordered the rows by molecule_chembl_id then assay_chembl_id. The result set contains 109 rows (well under the 1000\u2011row limit), all rows have standard_type 'IC50' and a valid pChEMBL value, and the ordering matches the specification. No columns are missing or extraneous, and the query uses the appropriate joins and filters. The output therefore satisfies the user request fully.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\n  \"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\",\n  \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"],\n  \"Join\": [\n    \"activities.assay_id = assays.assay_id\",\n    \"assays.tid = target_dictionary.tid\",\n    \"activities.molregno = molecule_dictionary.molregno\",\n    \"molecule_dictionary.molregno = compound_structures.molregno\"\n  ],\n  \"Filter\": [\n    \"activities.standard_relation = '='\",\n    \"activities.pchembl_value IS NOT NULL\",\n    \"target_dictionary.chembl_id = 'CHEMBL1628465'\",\n    \"target_dictionary.tax_id = 9606\",\n    \"target_dictionary.target_type = 'SINGLE PROTEIN'\"\n  ],\n  \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"],\n  \"Limit\": 1000\n}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The executed query correctly filters activities for the human single\u2011protein target CHEMBL1628465 (tax_id 9606, target_type 'SINGLE PROTEIN') with exact standard relation '=', non\u2011null pChEMBL values, and orders by molecule_chembl_id and assay_chembl_id. The result set contains 109 rows (well under the requested limit of 1000) and includes all requested columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. All rows have a canonical SMILES, the standard_type is IC50, and pChEMBL values are present. The join to compound_structures is appropriate (INNER JOIN) and does not omit any required data. The output matches the user specification exactly, so no further iteration is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\n  \"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\",\n  \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"],\n  \"Join\": [\n    \"activities.assay_id = assays.assay_id\",\n    \"assays.tid = target_dictionary.tid\",\n    \"activities.molregno = molecule_dictionary.molregno\",\n    \"molecule_dictionary.molregno = compound_structures.molregno\"\n  ],\n  \"Filter\": [\n    \"activities.standard_relation = '='\",\n    \"activities.pchembl_value IS NOT NULL\",\n    \"target_dictionary.chembl_id = 'CHEMBL1628465'\",\n    \"target_dictionary.tax_id = 9606\",\n    \"target_dictionary.target_type = 'SINGLE PROTEIN'\"\n  ],\n  \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"],\n  \"Limit\": 1000\n}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters activities with exact IC50 (standard_relation='='), non\u2011null pChEMBL values, for the human single\u2011protein target CHEMBL1628465 (tax_id 9606, target_type 'SINGLE PROTEIN'). It joins to assays, target_dictionary, molecule_dictionary, and compound_structures to retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. The result set (109 rows) is ordered by molecule_chembl_id then assay_chembl_id, includes the required columns, and respects the limit of 1000 rows. All filters and joins match the specification; no extra columns are present. The output appears complete and correctly formatted.\",\n  \"score\": 0.97,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.97,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "{\n  \"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\",\n  \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"],\n  \"Join\": [\n    \"activities.assay_id = assays.assay_id\",\n    \"assays.tid = target_dictionary.tid\",\n    \"activities.molregno = molecule_dictionary.molregno\",\n    \"molecule_dictionary.molregno = compound_structures.molregno\"\n  ],\n  \"Filter\": [\n    \"activities.standard_relation = '='\",\n    \"activities.pchembl_value IS NOT NULL\",\n    \"target_dictionary.chembl_id = 'CHEMBL1628465'\",\n    \"target_dictionary.tax_id = 9606\",\n    \"target_dictionary.target_type = 'SINGLE PROTEIN'\"\n  ],\n  \"Sort\": [\n    \"molecule_chembl_id ASC\",\n    \"assay_chembl_id ASC\"\n  ],\n  \"Limit\": 1000\n}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters for exact IC50 activities (standard_relation='='), non\u2011null pChEMBL values, target CHEMBL1628465, tax_id 9606, and target_type 'SINGLE PROTEIN'. It joins activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures, selects the exact columns requested (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value), and orders by molecule_chembl_id then assay_chembl_id. The result set of 109 rows (well under the 1000\u2011row limit) contains only the required columns, with no extra fields. All filters are applied as specified, and the ordering matches the request. Therefore the output satisfies the user's specification and no further refinement is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\" ,\n  \"stop_iteration\": true\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "{\"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\", \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"], \"Join\": [\"activities.assay_id = assays.assay_id\", \"assays.tid = target_dictionary.tid\", \"activities.molregno = molecule_dictionary.molregno\", \"molecule_dictionary.molregno = compound_structures.molregno\"], \"Filter\": [\"activities.standard_relation = '='\", \"activities.pchembl_value IS NOT NULL\", \"target_dictionary.chembl_id = 'CHEMBL1628465'\", \"target_dictionary.tax_id = 9606\", \"target_dictionary.target_type = 'SINGLE PROTEIN'\"], \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"], \"Limit\": 1000}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query returned 109 rows matching the exact criteria: IC50 activities (standard_relation = '=') with non\u2011null pChEMBL values for the human single\u2011protein target CHEMBL1628465 (tax_id 9606, target_type SINGLE PROTEIN). The output includes the requested columns (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value), ordered by molecule_chembl_id then assay_chembl_id, and limited to 1000 rows (only 109 returned). All rows have canonical SMILES, standard_type = 'IC50', and pChEMBL values present. No missing or extra columns, and the ordering and filtering are correct. The result fully satisfies the user request.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "{\"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\", \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"], \"Join\": [\"activities.assay_id = assays.assay_id\", \"assays.tid = target_dictionary.tid\", \"activities.molregno = molecule_dictionary.molregno\", \"molecule_dictionary.molregno = compound_structures.molregno\"], \"Filter\": [\"activities.standard_relation = '='\", \"activities.pchembl_value IS NOT NULL\", \"target_dictionary.chembl_id = 'CHEMBL1628465'\", \"target_dictionary.tax_id = 9606\", \"target_dictionary.target_type = 'SINGLE PROTEIN'\"], \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"], \"Limit\": 1000}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters activities for the specified target (CHEMBL1628465, tax_id 9606, SINGLE PROTEIN) with exact standard relation '=', non\u2011null pChEMBL values, and joins to assays, target_dictionary, molecule_dictionary, and compound_structures to retrieve the required columns. The result set (109 rows) is ordered by molecule_chembl_id and assay_chembl_id as requested, and the columns match the specification (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value). No extra columns are present, and the limit of 1000 is respected (only 109 rows returned). The output appears complete and accurate; there is no indication of missing data or incorrect joins that would require further iteration.\",\n  \"score\": 0.96,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "{\"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\", \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"], \"Join\": [\"activities.assay_id = assays.assay_id\", \"assays.tid = target_dictionary.tid\", \"activities.molregno = molecule_dictionary.molregno\", \"molecule_dictionary.molregno = compound_structures.molregno\"], \"Filter\": [\"activities.standard_relation = '='\", \"activities.pchembl_value IS NOT NULL\", \"target_dictionary.chembl_id = 'CHEMBL1628465'\", \"target_dictionary.tax_id = 9606\", \"target_dictionary.target_type = 'SINGLE PROTEIN'\"], \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"], \"Limit\": 1000}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query returned 109 rows matching the exact criteria: IC50 activities (standard_relation = '=') with non\u2011null pChEMBL values for the human single\u2011protein target CHEMBL1628465 (tax_id 9606, target_type 'SINGLE PROTEIN'). The SELECT includes the requested columns (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value). Results are ordered by molecule_chembl_id ASC, assay_chembl_id ASC and limited to 1000 rows (the result set is smaller, which is fine). No extra columns or joins are present, and the provenance (canonical SMILES from compound_structures) is correct. The output matches the user request precisely.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "{\"Select\": \"assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\", \"Source\": [\"activities\", \"assays\", \"target_dictionary\", \"molecule_dictionary\", \"compound_structures\"], \"Join\": [\"activities.assay_id = assays.assay_id\", \"assays.tid = target_dictionary.tid\", \"activities.molregno = molecule_dictionary.molregno\", \"molecule_dictionary.molregno = compound_structures.molregno\"], \"Filter\": [\"activities.standard_relation = '='\", \"activities.pchembl_value IS NOT NULL\", \"target_dictionary.chembl_id = 'CHEMBL1628465'\", \"target_dictionary.tax_id = 9606\", \"target_dictionary.target_type = 'SINGLE PROTEIN'\"], \"Sort\": [\"molecule_chembl_id ASC\", \"assay_chembl_id ASC\"], \"Limit\": 1000}",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, mol.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary mol ON a.molregno = mol.molregno INNER JOIN compound_structures cs ON mol.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY mol.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n29 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH mol USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly retrieves the requested columns (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value) for the specified target (CHEMBL1628465, human, SINGLE PROTEIN). It filters on exact standard_relation '=', non\u2011null pchembl_value, and the appropriate taxonomy and target type. The join pattern (activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures) is appropriate and yields distinct rows. The results are ordered by molecule_chembl_id and assay_chembl_id as required, and the limit of 1000 is respected (only 109 rows exist). All output columns match the specification, and no extra columns are present. The result set appears complete and accurate for the user's request.\",\n  \"score\": 0.96,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": true
+  }
+]

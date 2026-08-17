@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_oryctolagus_cuniculus_first200.json",
+  "case_id": "metabolism_oryctolagus_cuniculus_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n  cs.canonical_smiles,\\n  sub_mol.pref_name AS substrate_compound_name,\\n  parent_mol.pref_name AS parent_compound_name,\\n  met.met_conversion,\\n  met.pathway_key,\\n  met.organism,\\n  met.enzyme_name\\nFROM metabolism met\\nJOIN compound_records sub_cr ON met.substrate_record_id = sub_cr.record_id\\nJOIN molecule_dictionary sub_mol ON sub_cr.molregno = sub_mol.molregno\\nJOIN compound_structures cs ON sub_mol.molregno = cs.molregno\\nLEFT JOIN molecule_hierarchy mh ON sub_mol.molregno = mh.molregno\\nLEFT JOIN molecule_dictionary parent_mol ON mh.parent_molregno = parent_mol.molregno\\nWHERE met.organism = 'Oryctolagus cuniculus'\\nLIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  sub_mol.pref_name AS substrate_compound_name,\n  parent_mol.pref_name AS parent_compound_name,\n  met.met_conversion,\n  met.pathway_key,\n  met.organism,\n  met.enzyme_name\nFROM metabolism met\nJOIN compound_records sub_cr ON met.substrate_record_id = sub_cr.record_id\nJOIN molecule_dictionary sub_mol ON sub_cr.molregno = sub_mol.molregno\nJOIN compound_structures cs ON sub_mol.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON sub_mol.molregno = mh.molregno\nLEFT JOIN molecule_dictionary parent_mol ON mh.parent_molregno = parent_mol.molregno\nWHERE met.organism = 'Oryctolagus cuniculus'\nLIMIT 200"
+    }
+  }
+}

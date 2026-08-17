@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8e9665838e7ec322.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "8e9665838e7ec322",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT act.activity_id, md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, act.standard_type, act.standard_value, act.standard_units FROM activities act INNER JOIN molecule_dictionary md ON act.molregno = md.molregno INNER JOIN assays a ON act.assay_id = a.assay_id INNER JOIN target_dictionary td ON a.tid = td.tid WHERE td.organism = 'Homo sapiens' AND td.target_type = 'SINGLE PROTEIN' AND act.standard_units = 'nM' AND act.standard_type IN ('EC50', 'IC50', 'AC50') AND act.standard_value < 50 ORDER BY act.activity_id LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT act.activity_id, md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, act.standard_type, act.standard_value, act.standard_units FROM activities act INNER JOIN molecule_dictionary md ON act.molregno = md.molregno INNER JOIN assays a ON act.assay_id = a.assay_id INNER JOIN target_dictionary td ON a.tid = td.tid WHERE td.organism = 'Homo sapiens' AND td.target_type = 'SINGLE PROTEIN' AND act.standard_units = 'nM' AND act.standard_type IN ('EC50', 'IC50', 'AC50') AND act.standard_value < 50 ORDER BY act.activity_id LIMIT 200"
+    }
+  }
+}

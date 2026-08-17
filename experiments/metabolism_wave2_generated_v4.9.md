@@ -1,0 +1,32 @@
+# Metabolism Wave2 Generated v4.9
+
+- Generated: 27
+- Failures: 0
+
+- `metabolism_homo_sapiens_first200` rows=200 round=82
+- `metabolism_rattus_norvegicus_first200` rows=101 round=82
+- `metabolism_mus_musculus_first200` rows=54 round=82
+- `metabolism_callithrix_jacchus_first200` rows=14 round=82
+- `metabolism_macaca_fascicularis_first200` rows=11 round=82
+- `metabolism_oryctolagus_cuniculus_first200` rows=6 round=82
+- `metabolism_canis_lupus_familiaris_first200` rows=5 round=82
+- `metabolism_enzyme_cyp3a4_first200` rows=174 round=82
+- `metabolism_enzyme_cyp2c9_first200` rows=59 round=82
+- `metabolism_enzyme_cyp3a_first200` rows=53 round=82
+- `metabolism_enzyme_cyp2d6_first200` rows=53 round=82
+- `metabolism_enzyme_cyp2c19_first200` rows=31 round=82
+- `metabolism_enzyme_cyp1a2_first200` rows=31 round=82
+- `metabolism_enzyme_cytochrome_p450s_first200` rows=28 round=82
+- `metabolism_enzyme_cyp2b6_first200` rows=28 round=82
+- `metabolism_enzyme_p450_first200` rows=20 round=82
+- `metabolism_enzyme_cyp3a4_cyp3a5_first200` rows=22 round=82
+- `metabolism_enzyme_cyp2c8_first200` rows=19 round=82
+- `metabolism_enzyme_ugt_first200` rows=16 round=82
+- `metabolism_enzyme_cyp3a5_first200` rows=14 round=82
+- `metabolism_enzyme_ugt1a9_first200` rows=13 round=83
+- `metabolism_enzyme_ugt1a10_first200` rows=13 round=83
+- `metabolism_enzyme_cyp2e1_first200` rows=13 round=83
+- `metabolism_enzyme_cyp2a6_first200` rows=12 round=83
+- `metabolism_enzyme_p450_reductase_first200` rows=11 round=83
+- `metabolism_enzyme_cyp3a4_3a5_first200` rows=11 round=83
+- `metabolism_enzyme_ugt1a1_first200` rows=10 round=83

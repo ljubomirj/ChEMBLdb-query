@@ -1,0 +1,35 @@
+{
+  "version": "v4.0",
+  "description": "Fixed optimization splits for the v4 prompt-pack track. Count-style queries stay auxiliary. Large and massive cases stay out of the inner loop.",
+  "splits": {
+    "train": [
+      {"corpus": "faq_hq", "id": "faq_cdk2_selective_over_cdk5"},
+      {"corpus": "faq_hq", "id": "faq_all_protein_targets"},
+      {"corpus": "web_scrape_hq", "id": "baoilleach_celegans_target_descriptions"},
+      {"corpus": "web_scrape_hq", "id": "baoilleach_human_cgmp_target_descriptions"},
+      {"corpus": "web_scrape_hq", "id": "iwatobipen_ki_target_tid_pref_name"},
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_id_name_pairs"},
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_drug_indications"}
+    ],
+    "val": [
+      {"corpus": "faq_hq", "id": "faq_sildenafil_pde5_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "baoilleach_human_hsp90_molecule_smiles"}
+    ],
+    "test": [
+      {"corpus": "faq_hq", "id": "faq_levofloxacin_pk"},
+      {"corpus": "web_scrape_hq", "id": "iwatobipen_metabolism_example"}
+    ],
+    "auxiliary": [
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_count_activities"}
+    ],
+    "large_eval": [
+      {"corpus": "faq_hq", "id": "faq_bacterial_targets"},
+      {"corpus": "faq_hq", "id": "faq_m2_muscarinic_targets"},
+      {"corpus": "faq_hq", "id": "faq_pde5_target_activity"},
+      {"corpus": "web_scrape_large", "id": "chembl_downloader_all_ic50_activities"}
+    ],
+    "massive_holdout": [
+      {"corpus": "faq_hq", "id": "faq_pubchem_only"}
+    ]
+  }
+}

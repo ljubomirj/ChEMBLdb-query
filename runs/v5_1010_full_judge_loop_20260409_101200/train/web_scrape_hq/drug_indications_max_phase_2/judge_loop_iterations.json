@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Find approved (Phase 4) drugs that have recorded drug indications at Clinical Phase 2. For each qualifying drug, return the drug's preferred name (pref_name) and its max_phase, and list the indication (mesh_heading) associated with each indication that is recorded at Phase 2. The query should consider only records where the drug's max_phase equals 4 (approved) and the indication's max_phase for that drug is exactly 2. Return only distinct pairs of (pref_name, indication). No ranking or additional filtering is requested.",
+    "sql": "WITH approved AS (\n  SELECT md.molregno, md.pref_name, md.max_phase, dr.mesh_heading\n  FROM drug_indication dr\n  JOIN molecule_dictionary md ON dr.molregno = md.molregno\n  WHERE dr.max_phase = 2\n    AND dr.mesh_heading IS NOT NULL\n    AND md.max_phase = 4\n)\nSELECT DISTINCT pref_name, mesh_heading\nFROM approved;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: dr.max_phase",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: dr.max_phase",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all drugs that are approved (i.e., have `molecule_dictionary.max_phase` = 4) and that have at least one drug indication recorded with phase exactly 2 (`drug_indication.max_phase_for_ind` = 2). For each qualifying drug return the preferred name `pref_name` and the mesh heading of each phase\u20112 indication `mesh_heading`. Return each drug\u2011indication pair only once (no duplicate indication rows per drug). No additional filters, ranking, limits, or extra columns are requested. The results should include the drug\u2019s therapeutic area (mesh_heading) for phase\u20112 indications of approved drugs.",
+    "sql": "WITH approved_drugs AS ( SELECT md.molregno, md.pref_name FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 2 ) SELECT DISTINCT pref_name, di.mesh_heading FROM approved_drugs ad JOIN drug_indication di ON ad.molregno = di.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n6 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | BLOOM FILTER ON di (molregno=?)\n31 | 0 | 51 | SEARCH di USING AUTOMATIC COVERING INDEX (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 31984,
+    "res_columns": [
+      "pref_name",
+      "mesh_heading"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.94,
+    "judge_decision": true
+  }
+]

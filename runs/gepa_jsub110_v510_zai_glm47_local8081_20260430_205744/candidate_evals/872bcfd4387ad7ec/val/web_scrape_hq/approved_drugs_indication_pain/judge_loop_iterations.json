@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.drugind_id, drug_indication.mesh_heading, drug_indication.max_phase_for_ind. Source: molecule_dictionary, drug_indication, compound_structures. Join: molecule_dictionary.molregno = drug_indication.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_indication.mesh_heading LIKE '%pain%'. Sort: None. Limit: None.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.drugind_id, drug_indication.mesh_heading, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.mesh_heading LIKE '%pain%'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n11 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 523,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly returns approved drugs (max_phase = 4) indicated for pain. All requested columns are present: chembl_id, pref_name, canonical_smiles, drugind_id, mesh_heading, and max_phase_for_ind. The filter logic correctly identifies 'pain' indications using LIKE '%pain%', and the joins are appropriate. The result set includes 523 rows with diverse pain-related indications (e.g., 'Pain', 'Acute Pain', 'Chronic Pain', 'Back Pain', 'Cancer Pain'). No sorting was requested, so the unsorted output is acceptable.\",\n  \"score\": 1.0,\n  \"decision\": \"ACCEPT\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

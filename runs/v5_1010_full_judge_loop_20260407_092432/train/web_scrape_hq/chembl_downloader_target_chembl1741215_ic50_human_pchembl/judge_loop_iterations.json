@@ -1,0 +1,75 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve assay details for the human single-protein target CHEMBL1741215 (Sentrin-specific protease 6) to obtain IC50 activity rows with pChEMBL values. For each row, include the assay's ChEMBL ID, target type (must be 'SINGLE PROTEIN'), the target's tax ID (should be 9606 for human), the canonical SMILES of the active compound, the compound's ChEMBL ID, the activity's standard type (exactly 'IC50'), and the pChEMBL value. Filter rows to only those where the assay is conducted on a human target (organism 9606) and the activity standard type is 'IC50' with a non-null pChEMBL value. Order the results first by molecule ChEMBL ID (ascending) and then by assay ChEMBL ID (ascending). Return the first 1000 rows of the ordered result set.",
+    "sql": "WITH target_activities AS (\n  SELECT\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    md.pref_name AS molecule_pref_name,\n    cs.canonical_smiles,\n    a.pchembl_value,\n    a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\n  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno\n  WHERE\n    td.pref_name = 'Sentrin-specific protease 6'\n    AND td.tax_id = 9606\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.target_type = 'SINGLE PROTEIN'\n)\nSELECT\n  assay_chembl_id,\n  target_type,\n  tax_id,\n  canonical_smiles,\n  molecule_chembl_id,\n  standard_type,\n  pchembl_value\nFROM (\n  SELECT\n    assay_chembl_id,\n    target_type,\n    tax_id,\n    canonical_smiles,\n    molecule_pref_name AS molecule_chembl_id,\n    pchembl_value,\n    standard_type\n  FROM target_activities\n)\nORDER BY molecule_chembl_id,\n         assay_chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1741215 (Sentrin-specific protease 6). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard type 'IC50' rows with non-null pChEMBL values. Filter assays to those where the assay's target type is 'SINGLE PROTEIN', the tax_id equals 9606 (human), and the target pref_name equals 'Sentrin-specific protease 6'. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID. Return up to 1000 rows; do not include any extra filters or text. Only return the requested columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value.",
+    "sql": "WITH target_assays AS (\n  SELECT ass.chembl_id AS assay_chembl_id,\n         td.target_type,\n         td.tax_id,\n         md.molregno AS molecule_molregno,\n         md.chembl_id AS molecule_chembl_id,\n         cs.canonical_smiles,\n         a.pchembl_value AS pchembl_value,\n         a.standard_type AS standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.pref_name = 'Sentrin-specific protease 6'\n    AND td.tax_id = 9606\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.target_type = 'SINGLE PROTEIN'\n),\nfinal AS (\n  SELECT assay_chembl_id,\n         target_type,\n         tax_id,\n         canonical_smiles,\n         molecule_chembl_id,\n         standard_type,\n         pchembl_value\n  FROM target_assays\n)\nSELECT *\nFROM final\nORDER BY molecule_chembl_id,\n         assay_chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single\u2011protein target Sentrin\u2011specific protease 6 (CHEMBL1741215). For each activity row return assay ChEMBL ID, target type, target tax_id, canonical SMILES of the compound, compound ChEMBL ID, the standard type (exactly IC50), and the pChEMBL value. Filter to activities where the assay target is human (tax_id = 9606) and the target type is SINGLE PROTEIN, and the activity standard_type is exactly 'IC50' with a non\u2011null pChEMBL value. Order the final rows by molecule ChEMBL ID ascending and then by assay ChEMBL ID ascending. Return up to 1000 rows; do not add any other filters or text. Target must be the protein SENTRIN\u2011SPECIFIC PROTEASE 6, not a cell line or other organism.",
+    "sql": "WITH target_assays AS (\n  SELECT\n    a.standard_type,\n    a.pchembl_value,\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    md.chembl_id AS molecule_chembl_id,\n    cs.canonical_smiles,\n    a.standard_type AS standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.pref_name = 'Sentrin-specific protease 6'\n    AND td.tax_id = 9606\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.target_type = 'SINGLE PROTEIN'\n),\nfinal AS (\n  SELECT\n    assay_chembl_id,\n    target_type,\n    tax_id,\n    canonical_smiles,\n    molecule_chembl_id,\n    standard_type,\n    pchembl_value\n  FROM target_assays\n)\nSELECT\n  assay_chembl_id,\n  target_type,\n  tax_id,\n  canonical_smiles,\n  molecule_chembl_id,\n  standard_type,\n  pchembl_value\nFROM final\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single\u2011protein target Sentrin\u2011specific protease 6 (CHEMBL1741215). For each row return assay ChEMBL ID, target type (must be 'SINGLE PROTEIN'), target tax_id (must be 9606), the canonical SMILES of the active compound, the compound ChEMBL ID, the activity's standard type (exactly 'IC50'), and the pChEMBL value. Filter to activities where the assay target is human (tax_id = 9606) and the target type is 'SINGLE PROTEIN', and the activity standard type is exactly 'IC50' with a non\u2011null pChEMBL value. Order the final rows by molecule ChEMBL ID ascending and then by assay ChEMBL ID ascending. Return up to 1000 rows; do not add any other filters or text. Target must be the protein Sentrin\u2011specific protease 6, not a cell line or other organism.",
+    "sql": "WITH target_assays AS (\n  SELECT\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    md.chembl_id AS molecule_chembl_id,\n    cs.canonical_smiles,\n    a.pchembl_value,\n    a.standard_type AS standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.pref_name = 'Sentrin-specific protease 6'\n    AND td.tax_id = 9606\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.target_type = 'SINGLE PROTEIN'\n)\nSELECT\n  assay_chembl_id,\n  target_type,\n  tax_id,\n  canonical_smiles,\n  molecule_chembl_id,\n  standard_type,\n  pchembl_value\nFROM target_assays\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve IC50 activity rows (standard type exactly 'IC50') with pChEMBL values for the human single\u2011protein target Sentrin\u2011specific protease 6 (CHEMBL1741215). For each activity return assay ChEMBL ID, target type, target tax_id, canonical SMILES of the compound, compound ChEMBL ID, standard type, and pChEMBL value. Filter to rows where the assay target is human (tax_id\u202f=\u202f9606), the target type is 'SINGLE PROTEIN', and the standard type is exactly 'IC50' with a non\u2011null pChEMBL value. Order by molecule ChEMBL ID (ascending) then assay ChEMBL ID (ascending). Return up to 1000 rows only as requested, no other filters or text.",
+    "sql": "WITH target_assays AS (\n  SELECT\n    a.pchembl_value,\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    md.chembl_id AS molecule_chembl_id,\n    cs.canonical_smiles,\n    a.standard_type AS standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.pref_name = 'Sentrin-specific protease 6'\n    AND td.tax_id = 9606\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND td.target_type = 'SINGLE PROTEIN'\n)\nSELECT\n  assay_chembl_id,\n  target_type,\n  tax_id,\n  canonical_smiles,\n  molecule_chembl_id,\n  standard_type,\n  pchembl_value\nFROM target_assays\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n20 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 751,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,603 @@
+{
+  "version": "v5.1010_trainonly_gepa_judge_sub110",
+  "description": "Train-only diverse-1010 subset for GEPA judge prompt experiments. All cases are drawn from canonical diverse-1010 train so canonical val/test remain untouched.",
+  "source_split": "experiments/case_splits_v5.1010.json",
+  "source_split_membership": "all selected cases come from source split train",
+  "manifest_root": "tests/v5_manifests_1010",
+  "quotas": {
+    "train": {
+      "target_pchembl": 17,
+      "document": 15,
+      "other": 13,
+      "assay_exact": 8,
+      "metabolism": 1,
+      "salts": 1
+    },
+    "val": {
+      "target_pchembl": 8,
+      "document": 7,
+      "other": 6,
+      "assay_exact": 3,
+      "metabolism": 1,
+      "salts": 0
+    },
+    "test": {
+      "target_pchembl": 9,
+      "document": 9,
+      "other": 7,
+      "assay_exact": 4,
+      "metabolism": 1,
+      "salts": 0
+    }
+  },
+  "quota_summary": {
+    "train": {
+      "target_pchembl": {
+        "requested": 17,
+        "available_remaining": 226,
+        "selected": 17
+      },
+      "document": {
+        "requested": 15,
+        "available_remaining": 208,
+        "selected": 15
+      },
+      "other": {
+        "requested": 13,
+        "available_remaining": 169,
+        "selected": 13
+      },
+      "assay_exact": {
+        "requested": 8,
+        "available_remaining": 102,
+        "selected": 8
+      },
+      "metabolism": {
+        "requested": 1,
+        "available_remaining": 24,
+        "selected": 1
+      },
+      "salts": {
+        "requested": 1,
+        "available_remaining": 13,
+        "selected": 1
+      }
+    },
+    "val": {
+      "target_pchembl": {
+        "requested": 8,
+        "available_remaining": 209,
+        "selected": 8
+      },
+      "document": {
+        "requested": 7,
+        "available_remaining": 193,
+        "selected": 7
+      },
+      "other": {
+        "requested": 6,
+        "available_remaining": 156,
+        "selected": 6
+      },
+      "assay_exact": {
+        "requested": 3,
+        "available_remaining": 94,
+        "selected": 3
+      },
+      "metabolism": {
+        "requested": 1,
+        "available_remaining": 23,
+        "selected": 1
+      },
+      "salts": {
+        "requested": 0,
+        "available_remaining": 12,
+        "selected": 0
+      }
+    },
+    "test": {
+      "target_pchembl": {
+        "requested": 9,
+        "available_remaining": 201,
+        "selected": 9
+      },
+      "document": {
+        "requested": 9,
+        "available_remaining": 186,
+        "selected": 9
+      },
+      "other": {
+        "requested": 7,
+        "available_remaining": 150,
+        "selected": 7
+      },
+      "assay_exact": {
+        "requested": 4,
+        "available_remaining": 91,
+        "selected": 4
+      },
+      "metabolism": {
+        "requested": 1,
+        "available_remaining": 22,
+        "selected": 1
+      },
+      "salts": {
+        "requested": 0,
+        "available_remaining": 12,
+        "selected": 0
+      }
+    }
+  },
+  "family_counts": {
+    "train": {
+      "assay_exact": 8,
+      "document": 15,
+      "metabolism": 1,
+      "other": 13,
+      "salts": 1,
+      "target_pchembl": 17
+    },
+    "val": {
+      "assay_exact": 3,
+      "document": 7,
+      "metabolism": 1,
+      "other": 6,
+      "target_pchembl": 8
+    },
+    "test": {
+      "assay_exact": 4,
+      "document": 9,
+      "metabolism": 1,
+      "other": 7,
+      "target_pchembl": 9
+    }
+  },
+  "splits": {
+    "train": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "(+/_)_tylophorine_non_protein_target_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "abhik_human_sub50nm_single_protein_first200"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "all_single_protein_targets_accession_sequence"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_acute_myeloid_leukemia"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_breast_cancer"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_cancer"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_cardiovascular_disease"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_covid_19"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_depressive_disorder"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_hiv_infection"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_infection"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_leukemia"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_lymphoma"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_neoplasm"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1040694_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1054500_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1054502_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1054504_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1054505_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1217644_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1267250_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613769_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1122023"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123558"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123858"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123859"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123860"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123873"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123890"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123892"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1125208"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1125325"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1125820"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1126796"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1126835"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1127197"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1130277"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075102_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075104_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075115_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075145_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075165_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075319_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163101_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250411_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250417_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275221_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287623_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293194_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293197_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293222_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293226_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293229_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293237_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "iwatobipen_metabolism_example"
+      }
+    ],
+    "val": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_non_small_cell_lung_carcinoma"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_pain"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_pancreatic_carcinoma"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_prostate_cancer"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_schizophrenia"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_indication_type_2_diabetes_mellitus"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613797_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613836_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613838_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1131436"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1133022"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1133512"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1133765"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1134488"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1134522"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1135496"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293255_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293265_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293266_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293267_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293274_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293286_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628461_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628465_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "metabolism_callithrix_jacchus_first200"
+      }
+    ],
+    "test": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_activator"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_agonist"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_antagonist"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_chelating_agent"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_modulator"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_partial_agonist"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_mechanism_positive_modulator"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613842_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613910_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613914_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1613930_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1135798"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1138844"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1139796"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1140357"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1140610"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1140846"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1141299"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1142268"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1142695"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628468_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1681611_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1697668_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741179_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741208_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741213_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741214_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741215_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741220_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "metabolism_canis_lupus_familiaris_first200"
+      }
+    ]
+  }
+}

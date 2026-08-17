@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity measurements for the compound CHEMBL4857685 and all its salt/derivative forms against the target KCNH2 (CHEMBL240). First, look up the molregno of CHEMBL4857685 from molecule_dictionary. Then, using molecule_hierarchy, find all molecules where parent_molregno equals that molregno (include the parent itself where molregno = parent_molregno and any direct children). For each resulting molregno, join activities (on molregno) with assays and target_dictionary to filter for target CHEMBL240 and standard_type = 'IC50'. Return the following columns for each matching activity: the tested molecule's ChEMBL ID (from molecule_dictionary.chembl_id), its preferred name (pref_name), a relationship indicator (e.g., 'parent' when molregno equals parent_molregno, otherwise 'salt'), the IC50 value (standard_value), units (standard_units), relation operator (standard_relation), pChEMBL value (pchembl_value), and the assay ID (assay_id). Do not impose any additional filters on units, relation, confidence score, or target type. Return all qualifying rows without a row limit.",
+    "sql": "WITH parent_mol AS (\n  SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL4857685'\n),\nall_molregnos AS (\n  SELECT mh.molregno, mh.parent_molregno\n  FROM molecule_hierarchy mh\n  JOIN parent_mol pm ON mh.parent_molregno = pm.molregno\n)\nSELECT\n  md.chembl_id,\n  md.pref_name,\n  CASE WHEN am.molregno = am.parent_molregno THEN 'parent' ELSE 'salt' END AS relationship,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation,\n  a.pchembl_value,\n  a.assay_id\nFROM all_molregnos am\nJOIN molecule_dictionary md ON md.molregno = am.molregno\nJOIN activities a ON a.molregno = am.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE td.chembl_id = 'CHEMBL240'\n  AND a.standard_type = 'IC50';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n23 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n29 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n49 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 21,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "relationship",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "pchembl_value",
+      "assay_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

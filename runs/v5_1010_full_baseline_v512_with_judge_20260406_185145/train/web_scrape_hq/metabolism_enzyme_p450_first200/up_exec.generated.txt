@@ -1,0 +1,9 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Join metabolism m on m.met_id = m.met_id
+Join compound_records cr on m.substrate_record_id = cr.record_id
+Join molecule_dictionary sub on cr.molregno = sub.molregno
+Join molecule_dictionary parent on m.metabolism.substrate_record_id = parent.molregno
+Join compound_structures cs on sub.molregno = cs.molregno
+Join target_dictionary t on m.enzyme_tid = t.tid
+Filter t.target_type = 'PROTEIN' and t.pref_name like '%P450%'
+Limit 200

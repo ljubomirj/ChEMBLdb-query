@@ -1,0 +1,75 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 rows of IC50 activities for the human target CHEMBL1743124 (solute carrier organic anion transporter family member 2B1). Output assay.chembl_id, target_dictionary.target_type, target_dictionary.tax_id, molecule_structures.canonical_smiles, compound_dictionary.chembl_id, activities.standard_type, and activities.pchembl_value. Filter activities to have standard_type='IC50', activities.standard_relation='=' (exact value), activities.pchembl_value IS NOT NULL, and activities.doc_id linked to assays via assay.chembl_id = activities.assay_chembl_id. Join activities to assays on activity.assay_id = assay.assay_id, assays to target_dictionary on assay.tid = target_dictionary.tid, and activities to compound_structures and compound_dictionary via activity.molecule_chembl_id = compound_structures.molecule_chembl_id = compound_dictionary.chembl_id. Order results by compound_dictionary.chembl_id ASC, assay.chembl_id ASC. Return exactly these columns without additional text.",
+    "sql": "SELECT DISTINCT a.assay_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       cd.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_dictionary cd ON a.molecule_chembl_id = cd.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND td.pref_name = 'Solute carrier organic anion transporter family member 2B1'\nORDER BY cd.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List the first 1000 rows of IC50 activity data for the human single-protein target CHEMBL1743124 (Solute carrier organic anion transporter family member 2B1). Provide the following columns: assay ChEMBL ID (from assays.chembl_id), target type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical SMILES (from compound_structures.canonical_smiles), molecule ChEMBL ID (from molecule_dictionary.chembl_id), activity standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Restrict to activity rows where standard_type = 'IC50', standard_relation = '=' (exact value), and pchembl_value is not NULL. Join activities to assays on activity.assay_id = assays.assay_id, assays to target_dictionary on assays.tid = target_dictionary.tid, and activities to molecule_dictionary and compound_structures via activity.molecule_chembl_id = molecule_dictionary.molecule_chembl_id = compound_structures.molecule_chembl_id. Filter target_dictionary.pref_name to 'Solute carrier organic anion transporter family member 2B1'. Order the final result set by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. Return exactly these columns without any additional text.",
+    "sql": "SELECT DISTINCT a.assay_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       cd.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary cd ON a.molecule_chembl_id = cd.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND td.pref_name = 'Solute carrier organic anion transporter family member 2B1'\nORDER BY cd.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 rows of IC50 activity data for the human single-protein target CHEMBL1743124 (Solute carrier organic anion transporter family member 2B1). Provide the following columns: assay ChEMBL ID (from assays.chembl_id), target type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical SMILES (from compound_structures.canonical_smiles), molecule ChEMBL ID (from molecule_dictionary.chembl_id), activity standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Restrict to activity rows where standard_type = 'IC50', standard_relation = '=' (exact value), and pchembl_value is not NULL. Join activities to assays on activity.assay_id = assays.assay_id, assays to target_dictionary on assays.tid = target_dictionary.tid, and activities to molecule_dictionary and compound_structures via activity.molregno = molecule_dictionary.molregno = compound_structures.molecule_chembl_id. Filter target_dictionary.pref_name to 'Solute carrier organic anion transporter family member 2B1'. Order the final result set by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. Return exactly these columns without any additional text.",
+    "sql": "WITH target_tid AS (\n  SELECT tid\n  FROM target_dictionary\n  WHERE pref_name = 'Solute carrier organic anion transporter family member 2B1'\n  AND tax_id = 9606\n  AND target_type = 'SINGLE PROTEIN'\n),\nselected_activities AS (\n  SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_tid tt ON ass.tid = tt.tid\n  WHERE a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  sa.standard_type,\n  sa.pchembl_value\nFROM selected_activities sa\nJOIN assays ass ON sa.assay_id = ass.assay_id\nJOIN target_tid tt ON ass.tid = tt.tid\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON sa.molregno = md.molregno\nJOIN compound_structures cs ON sa.molregno = cs.molecule_chembl_id\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 rows of IC50 activity data for the human single-protein target with ChEMBL ID 1743124 (Solute carrier organic anion transporter family member 2B1). Provide columns: assay.chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id, activities.standard_type, and activities.pchembl_value. Include only rows where activities.standard_type='IC50', activities.standard_relation='=' (exact), activities.pchembl_value is not NULL, and target_dictionary.pref_name='Solute carrier organic anion transporter family member 2B1'. Return rows ordered by molecule_dictionary.chembl_id ascending then assays.chembl_id ascending. Do not add any row limit beyond the 1000 specified in the request (i.e., the order is by the two identifiers and the first 1000 rows of that ordered set are returned).",
+    "sql": "WITH target_info AS ( SELECT tid FROM target_dictionary WHERE pref_name = 'Solute carrier organic anion transporter family member 2B1' ), selected AS ( SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_info ti ON ass.tid = ti.tid WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ) SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, sa.standard_type, sa.pchembl_value FROM selected sa JOIN assays ass ON sa.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON sa.molregno = md.molregno JOIN compound_structures cs ON sa.molregno = cs.molecule_chembl_id ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 1000 rows of IC50 activity data for the human single-protein target with ChEMBL ID 1743124 (Solute carrier organic anion transporter family member 2B1). Provide the columns: assay.chembl_id (assay ChEMBL ID), target_dictionary.target_type (target type), target_dictionary.tax_id (tax ID of the organism), compound_structures.canonical_smiles (canonical SMILES of the molecule), molecule_dictionary.chembl_id (molecule ChEMBL ID), activities.standard_type (standard activity type, e.g., IC50), and activities.pchembl_value (pChEMBL value). Include only rows where activities.standard_type = 'IC50', activities.standard_relation = '=' (exact value), and activities.pchembl_value is not NULL. Join activities to assays on activities.assay_id = assays.assay_id, assays to target_dictionary on assays.tid = target_dictionary.tid, and activities to molecule_dictionary and compound_structures via activities.molregno = molecule_dictionary.molregno = compound_structures.molecule_chembl_id. Filter target_dictionary.pref_name = 'Solute carrier organic anion transporter family member 2B1'. Order the result set by molecule_dictionary.chembl_id ascending and assays.chembl_id ascending. Return exactly these columns without extra text.",
+    "sql": "WITH target_tid AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Solute carrier organic anion transporter family member 2B1'), selected_activities AS (SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_tid tt ON ass.tid = tt.tid WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL) SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, sa.standard_type, sa.pchembl_value FROM selected_activities sa JOIN assays ass ON sa.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON sa.molregno = md.molregno JOIN compound_structures cs ON sa.molregno = cs.molregno ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n17 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n44 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n53 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n60 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n70 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n95 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 57,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

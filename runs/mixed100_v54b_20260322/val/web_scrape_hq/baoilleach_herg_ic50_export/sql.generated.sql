@@ -1,0 +1,17 @@
+SELECT
+  activities.activity_id,
+  assays.chembl_id AS assay_chembl_id,
+  activities.standard_relation,
+  activities.standard_value,
+  activities.standard_units,
+  activities.standard_type,
+  molecule_dictionary.chembl_id AS molecule_chembl_id
+FROM activities
+JOIN assays ON activities.assay_id = assays.assay_id
+JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno
+WHERE assays.tid = 165
+  AND activities.standard_type = 'IC50'
+ORDER BY
+  activities.activity_id,
+  assays.chembl_id,
+  molecule_dictionary.chembl_id

@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_a181d65fcd19d05e.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "a181d65fcd19d05e",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all approved drugs (max_phase = 4) that have a mechanism of action classified as 'BLOCKER'. Return the drug's identity, structure, mechanism details, and associated target information.\n\n2. Output: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name\n\n3. Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures\n\n4. Logic:\n   - Filter molecule_dictionary where max_phase = 4.\n   - Join drug_mechanism on molecule_dictionary.molregno = drug_mechanism.molregno.\n   - Filter drug_mechanism where action_type = 'BLOCKER'.\n   - Join target_dictionary on drug_mechanism.tid = target_dictionary.tid.\n   - Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno.\n   - Order results by chembl_id.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all approved drugs (max_phase = 4) that have a mechanism of action classified as 'BLOCKER'. Return the drug's identity, structure, mechanism details, and associated target information.\n\n2. Output: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name\n\n3. Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures\n\n4. Logic:\n   - Filter molecule_dictionary where max_phase = 4.\n   - Join drug_mechanism on molecule_dictionary.molregno = drug_mechanism.molregno.\n   - Filter drug_mechanism where action_type = 'BLOCKER'.\n   - Join target_dictionary on drug_mechanism.tid = target_dictionary.tid.\n   - Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno.\n   - Order results by chembl_id."
+    }
+  }
+}

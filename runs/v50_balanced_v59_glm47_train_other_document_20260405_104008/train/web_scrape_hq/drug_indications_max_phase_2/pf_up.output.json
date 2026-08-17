@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/drug_indications_max_phase_2.json",
+  "case_id": "drug_indications_max_phase_2",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select drug ChEMBL ID, preferred name, MeSH ID, MeSH heading, EFO ID as indication_curie, EFO term as indication_label, and max_phase_for_ind. Join molecule_dictionary to drug_indication on molregno. Filter for drugs with max_phase = 4 and indications with max_phase_for_ind = 2. Return all rows without deduplication. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select drug ChEMBL ID, preferred name, MeSH ID, MeSH heading, EFO ID as indication_curie, EFO term as indication_label, and max_phase_for_ind. Join molecule_dictionary to drug_indication on molregno. Filter for drugs with max_phase = 4 and indications with max_phase_for_ind = 2. Return all rows without deduplication. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

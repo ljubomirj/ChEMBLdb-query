@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293289_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293289_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  a.chembl_id AS assay_chembl_id,\\n  td.target_type,\\n  td.tax_id,\\n  cs.canonical_smiles AS canonical_smiles,\\n  md.chembl_id AS molecule_chembl_id,\\n  act.standard_type,\\n  act.pchembl_value AS pchembl_value\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN molecule_dictionary md ON act.molregno = md.molregno\\nLEFT JOIN compound_structures cs ON cs.molregno = md.molregno\\nWHERE td.chembl_id = 'CHEMBL1293289'\\n  AND a.assay_organism = 'Homo sapiens'\\n  AND act.standard_type = 'IC50'\\n  AND act.standard_relation = '='\\n  AND act.pchembl_value IS NOT NULL\\n  AND act.standard_value IS NOT NULL\\n  AND act.standard_units = 'nM'\\n  AND act.standard_flag = 1\\n  AND a.assay_type = 'B'\\n  AND a.assay_tax_id = 9606\\n  AND a.assay_strain IS NOT NULL\\n  AND a.assay_cell_type IS NOT NULL\\n  AND a.assay_subcellular_fraction IS NOT NULL\\n  AND a.bao_format IS NOT NULL\\n  AND a.tissue_id IS NOT NULL\\n  AND a.variant_id IS NOT NULL\\n  AND a.aidx IS NOT NULL\\n  AND a.assay_group IS NOT NULL\\n  AND a.relationship_type IS NOT NULL\\n  AND a.confidence_score IS NOT NULL\\n  AND a.curated_by IS NOT NULL\\n  AND a.src_id IS NOT NULL\\n  AND a.src_assay_id IS NOT NULL\\n  AND a.chembl_id IS NOT NULL\\n  AND a.doc_id IS NOT NULL\\n  AND act.doc_id IS NOT NULL\\n  AND act.record_id IS NOT NULL\\n  AND act.activity_id IS NOT NULL\\n  AND act.activity_comment IS NOT NULL\\nORDER BY molecule_chembl_id, assay_chembl_id\\nLIMIT 1000\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  a.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles AS canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value AS pchembl_value\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL1293289'\n  AND a.assay_organism = 'Homo sapiens'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\n  AND act.standard_value IS NOT NULL\n  AND act.standard_units = 'nM'\n  AND act.standard_flag = 1\n  AND a.assay_type = 'B'\n  AND a.assay_tax_id = 9606\n  AND a.assay_strain IS NOT NULL\n  AND a.assay_cell_type IS NOT NULL\n  AND a.assay_subcellular_fraction IS NOT NULL\n  AND a.bao_format IS NOT NULL\n  AND a.tissue_id IS NOT NULL\n  AND a.variant_id IS NOT NULL\n  AND a.aidx IS NOT NULL\n  AND a.assay_group IS NOT NULL\n  AND a.relationship_type IS NOT NULL\n  AND a.confidence_score IS NOT NULL\n  AND a.curated_by IS NOT NULL\n  AND a.src_id IS NOT NULL\n  AND a.src_assay_id IS NOT NULL\n  AND a.chembl_id IS NOT NULL\n  AND a.doc_id IS NOT NULL\n  AND act.doc_id IS NOT NULL\n  AND act.record_id IS NOT NULL\n  AND act.activity_id IS NOT NULL\n  AND act.activity_comment IS NOT NULL\nORDER BY molecule_chembl_id, assay_chembl_id\nLIMIT 1000"
+    }
+  }
+}

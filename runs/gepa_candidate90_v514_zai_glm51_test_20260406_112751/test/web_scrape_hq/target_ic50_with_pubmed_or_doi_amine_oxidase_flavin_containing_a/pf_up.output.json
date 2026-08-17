@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_a.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_a",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\\n\\nJoin path: molecule_dictionary -> compound_records (on molregno) -> docs (on record_id -> doc_id) -> activities (on record_id) -> assays (on assay_id) -> target_dictionary (on tid).\\nInner join compound_structures on molecule_dictionary.molregno to guarantee canonical_smiles is present.\\n\\nFilter:\\n- target_dictionary.pref_name = 'Amine oxidase [flavin-containing] A' and target_dictionary.organism = 'Homo sapiens'\\n- activities.standard_type = 'IC50'\\n- activities.standard_units = 'nM'\\n- activities.standard_relation = '='\\n- activities.standard_value is not null\\n- docs.pubmed_id is not null or docs.doi is not null\\n\\nDo not deduplicate; keep every qualifying activity row.\\n\\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\n\nJoin path: molecule_dictionary -> compound_records (on molregno) -> docs (on record_id -> doc_id) -> activities (on record_id) -> assays (on assay_id) -> target_dictionary (on tid).\nInner join compound_structures on molecule_dictionary.molregno to guarantee canonical_smiles is present.\n\nFilter:\n- target_dictionary.pref_name = 'Amine oxidase [flavin-containing] A' and target_dictionary.organism = 'Homo sapiens'\n- activities.standard_type = 'IC50'\n- activities.standard_units = 'nM'\n- activities.standard_relation = '='\n- activities.standard_value is not null\n- docs.pubmed_id is not null or docs.doi is not null\n\nDo not deduplicate; keep every qualifying activity row.\n\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

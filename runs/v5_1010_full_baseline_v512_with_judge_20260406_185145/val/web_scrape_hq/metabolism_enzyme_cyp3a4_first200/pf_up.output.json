@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp3a4_first200.json",
+  "case_id": "metabolism_enzyme_cyp3a4_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 metabolism records for CYP3A4. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures for canonical_smiles and to molecule_dictionary for substrate_compound_name. Optionally join molecule_hierarchy from the substrate molregno to molecule_dictionary (parent) to retrieve parent_compound_name. Return canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Do not sort; preserve source row order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 metabolism records for CYP3A4. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures for canonical_smiles and to molecule_dictionary for substrate_compound_name. Optionally join molecule_hierarchy from the substrate molregno to molecule_dictionary (parent) to retrieve parent_compound_name. Return canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Do not sort; preserve source row order."
+    }
+  }
+}

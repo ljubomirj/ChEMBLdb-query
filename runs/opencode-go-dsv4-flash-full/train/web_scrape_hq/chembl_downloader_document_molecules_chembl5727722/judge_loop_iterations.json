@@ -1,0 +1,34 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct molecules that are reported in document CHEMBL5727722. Return the molecule's ChEMBL ID (chembl_id) and preferred name (pref_name).",
+    "sql": "SELECT DISTINCT\n    md.chembl_id,\n    md.pref_name\nFROM docs d\nJOIN activities a ON d.doc_id = a.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5727722';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 840,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all distinct molecules referenced in the document with ChEMBL ID CHEMBL5727722. Return the molecule's ChEMBL identifier (chembl_id) and its preferred name (pref_name). Link the document to molecules via the compound_records table (docs -> compound_records -> molecule_dictionary).",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727722';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 840,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

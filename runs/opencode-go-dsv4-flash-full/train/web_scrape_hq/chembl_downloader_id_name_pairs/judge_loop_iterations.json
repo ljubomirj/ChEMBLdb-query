@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL identifier (chembl_id) and preferred name (pref_name) for molecules that have a structural representation in the compound_structures table and whose preferred name is not null. Return each molecule only once. Do not include molecules without a structure or with a null pref_name. No additional filters or sorting required.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM molecule_dictionary md INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.pref_name IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 2\n5 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n10 | 0 | 0 | SEARCH cs USING COVERING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 42299,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

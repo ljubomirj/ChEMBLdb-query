@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8e43843f9562cd0e.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts.json",
+  "case_id": "chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "8e43843f9562cd0e",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT child.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles, compound_records.compound_key, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno JOIN compound_structures ON child.molregno = compound_structures.molregno JOIN compound_records ON child.molregno = compound_records.molregno JOIN activities ON compound_records.record_id = activities.record_id JOIN assays ON activities.assay_id = assays.assay_id JOIN docs ON activities.doc_id = docs.doc_id JOIN target_dictionary ON assays.tid = target_dictionary.tid WHERE parent.chembl_id = 'CHEMBL3182437' AND target_dictionary.chembl_id = 'CHEMBL3430885' AND activities.standard_type = 'IC50' ORDER BY child.chembl_id ASC, compound_structures.canonical_smiles ASC, compound_records.compound_key ASC, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) ASC, assays.description ASC, activities.standard_type ASC, activities.standard_relation ASC, activities.standard_value ASC, activities.standard_units ASC, activities.activity_comment ASC, target_dictionary.chembl_id ASC, target_dictionary.pref_name ASC, target_dictionary.organism ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT child.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles, compound_records.compound_key, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno JOIN compound_structures ON child.molregno = compound_structures.molregno JOIN compound_records ON child.molregno = compound_records.molregno JOIN activities ON compound_records.record_id = activities.record_id JOIN assays ON activities.assay_id = assays.assay_id JOIN docs ON activities.doc_id = docs.doc_id JOIN target_dictionary ON assays.tid = target_dictionary.tid WHERE parent.chembl_id = 'CHEMBL3182437' AND target_dictionary.chembl_id = 'CHEMBL3430885' AND activities.standard_type = 'IC50' ORDER BY child.chembl_id ASC, compound_structures.canonical_smiles ASC, compound_records.compound_key ASC, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) ASC, assays.description ASC, activities.standard_type ASC, activities.standard_relation ASC, activities.standard_value ASC, activities.standard_units ASC, activities.activity_comment ASC, target_dictionary.chembl_id ASC, target_dictionary.pref_name ASC, target_dictionary.organism ASC"
+    }
+  }
+}

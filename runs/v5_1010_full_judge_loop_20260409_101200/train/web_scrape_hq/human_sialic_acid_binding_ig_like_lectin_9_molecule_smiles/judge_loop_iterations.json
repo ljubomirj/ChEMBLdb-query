@@ -1,0 +1,138 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin\u00a09) and the organism is Homo sapiens. The result should include only one row per compound (distinct by CHEMBL identifier) and list the molecule's ChEMBL identifier and its canonical SMILES. No other compound attributes, assay details, or document information are required.",
+    "sql": "WITH target AS (\n  SELECT tid\n  FROM target_dictionary\n  WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9'\n    AND tax_id = 9606\n    AND organism = 'Homo sapiens'\n    AND target_type = 'PROTEIN'\n),\nassays_hs AS (\n  SELECT a.assay_id\n  FROM assays a\n  JOIN target ON a.tid = target.tid\n  WHERE target.tid = target.tid\n),\ncompound_records_hs AS (\n  SELECT DISTINCT cr.molregno, cr.chembl_id\n  FROM compound_records cr\n  JOIN assay_records ar ON cr.record_id = ar.record_id\n  JOIN assays a ON ar.assay_id = a.assay_id\n  JOIN target ON a.tid = target.tid\n  WHERE target.tid = target.tid\n    AND target.pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9'\n    AND target.tax_id = 9606\n    AND target.organism = 'Homo sapiens'\n)\nSELECT DISTINCT\n  molecule_dictionary.chembl_id AS CHEMBL,\n  compound_structures.canonical_smiles\nFROM molecule_dictionary\nJOIN compound_records ON molecule_dictionary.molregno = compound_records.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nJOIN compound_records_hs ON molecule_dictionary.molregno = compound_records_hs.molregno\nWHERE molecule_dictionary.chembl_id = 'CHEMBL4105860';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: assay_records",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: assay_records",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. The result should include only one row per compound (distinct by CHEMBL identifier) and list the molecule's ChEMBL identifier and its canonical SMILES. No other compound attributes, assay details, or document information are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'),\ncompounds AS (SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens' AND a.pchembl_value IS NOT NULL) SELECT DISTINCT chembl_id, canonical_smiles FROM compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. The result should include only one row per compound (distinct by CHEMBL identifier) and list the molecule's ChEMBL identifier and its canonical SMILES. No other compound attributes, assay details, or document information are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid-binding Ig-like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'),\nactivity_compounds AS (SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens')\nSELECT DISTINCT chembl_id, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. The result should include only one row per compound (distinct by CHEMBL identifier) and list the molecule's ChEMBL identifier and its canonical SMILES. No other compound attributes, assay details, or document information are required.",
+    "sql": "WITH target AS (\n  SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'\n),\nactivity_compounds AS (\n  SELECT DISTINCT a.chembl_id, cs.canonical_smiles\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT chembl_id, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. Do not filter on assay_type, activity type, units, relations, confidence_score, or document properties. Do not limit the number of rows. Only include compounds tested against the specified target in human assays.",
+    "sql": "WITH target AS (\n  SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'\n),\nactivity_compounds AS (\n  SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT chembl_id, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin\u00a09) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. No other attributes such as assay type, activity type, units, or document details should be included.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid-binding Ig-like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'), activity_compounds AS (SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT chembl_id, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. No other attributes such as assay type, activity type, units, or document details should be included.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'),\n activity_compounds AS (\n   SELECT DISTINCT md.chembl_id AS chembl_id,\n          cs.canonical_smiles\n   FROM activities a\n   JOIN assays ass ON a.assay_id = ass.assay_id\n   JOIN target_dictionary td ON ass.tid = td.tid\n   JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\n   JOIN compound_structures cs ON md.molregno = cs.molregno\n   WHERE td.chembl_id = 'CHEMBL4105860'\n   AND ass.assay_organism = 'Homo sapiens'\n   AND a.pchembl_value IS NOT NULL\n   AND a.standard_relation = '='\n   AND a.standard_units = 'nM'\n   AND a.standard_type = 'IC50'\n ),\n filtered_compounds AS (\n   SELECT DISTINCT md.chembl_id AS chembl_id,\n          cs.canonical_smiles\n   FROM activities a\n   JOIN assays ass ON a.assay_id = ass.assay_id\n   JOIN target_dictionary td ON ass.tid = td.tid\n   JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\n   JOIN compound_structures cs ON md.molregno = cs.molregno\n   WHERE td.chembl_id = 'CHEMBL4105860'\n   AND ass.assay_organism = 'Homo sapiens'\n   AND a.pchembl_value IS NOT NULL\n   AND a.standard_relation = '='\n   AND a.standard_units = 'nM'\n   AND a.standard_type = 'IC50'\n )\n SELECT chembl_id, canonical_smiles\n FROM filtered_compounds\n;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. No other attributes such as assay type, activity type, units, or document details should be included. Target must be a protein (target_type = 'PROTEIN'), organism must be Homo sapiens, and the target name must be 'Sialic acid\u2011binding Ig\u2011like lectin 9'. Only compounds that meet these target and organism criteria should be included; no additional filtering (e.g., activity type, units, relations, confidence_score) or limits are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'), activity_compounds AS (SELECT DISTINCT md.chembl_id AS CHEMBL, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT CHEMBL, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. No other attributes such as assay type, activity type, units, or document details should be included. Target must be a protein (target_type = 'PROTEIN'), organism must be Homo sapiens, and the target name must be 'Sialic acid\u2011binding Ig\u2011like lectin 9'. Only compounds that meet these target and organism criteria should be included; no additional filtering (e.g., activity type, units, relations, confidence_score) or limits are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'), activity_compounds AS (SELECT DISTINCT md.chembl_id AS CHEMBL, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT CHEMBL, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE activity_compounds\n13 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 2 | 224 | SCAN ass\n25 | 2 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n31 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n59 | 0 | 210 | SCAN activity_compounds\n69 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9033,
+    "res_columns": [
+      "CHEMBL",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve distinct ChEMBL identifiers (CHEMBL) and their corresponding canonical SMILES for compounds that have activity data recorded in assay records where the assay target is the protein CHEMBL4105860 (human Sialic acid\u2011binding Ig\u2011like lectin 9) and the organism is Homo sapiens. Return one row per compound (distinct by CHEMBL identifier) with columns: CHEMBL and canonical_smiles. No other attributes such as assay type, activity type, units, or document details should be included. Target must be a protein (target_type = 'PROTEIN'), organism must be Homo sapiens, and the target name must be 'Sialic acid\u2011binding Ig\u2011like lectin 9'. Only compounds that meet these target and organism criteria should be included; no additional filtering (e.g., activity type, units, relations, confidence_score) or limits are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Sialic acid\u2011binding Ig\u2011like lectin 9' AND tax_id = 9606 AND organism = 'Homo sapiens' AND target_type = 'PROTEIN'), activity_compounds AS (SELECT DISTINCT md.chembl_id AS CHEMBL, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4105860' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT CHEMBL, canonical_smiles FROM activity_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE activity_compounds\n13 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 2 | 224 | SCAN ass\n25 | 2 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n31 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n59 | 0 | 210 | SCAN activity_compounds\n69 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9033,
+    "res_columns": [
+      "CHEMBL",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

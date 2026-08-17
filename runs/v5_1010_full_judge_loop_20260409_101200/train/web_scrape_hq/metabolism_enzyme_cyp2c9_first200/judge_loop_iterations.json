@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for CYP2C9. For each record, include the substrate structure (canonical SMILES), substrate compound name, the metabolic conversion description, pathway key, and the organism. Return the first 200 rows.",
+    "sql": "WITH cyp2c9_records AS (\n  SELECT\n    m.met_id,\n    m.substrate_record_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.organism\n  FROM metabolism m\n  WHERE m.enzyme_name = 'CYP2C9'\n  LIMIT 200\n)\nSELECT\n  cs.canonical_smiles,\n  cr.compound_name,\n  r.met_conversion,\n  r.pathway_key,\n  r.organism\nFROM cyp2c9_records r\nJOIN compound_records cr ON r.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n2 | 0 | 0 | CO-ROUTINE cyp2c9_records\n5 | 2 | 126 | SCAN m\n22 | 0 | 92 | SCAN r\n25 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 59,
+    "res_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

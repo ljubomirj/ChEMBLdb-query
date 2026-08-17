@@ -1,0 +1,107 @@
+{
+  "ts_utc": "2026-03-15T20:00:54Z",
+  "eval_label": "eval_prompt_pack_v4.0_20260315_200054",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.0.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.0.json",
+  "reuse_existing": true,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [],
+  "splits": {
+    "val": {
+      "n_cases": 2,
+      "n_pass": 1,
+      "pass_rate": 0.5,
+      "mean_score": 0.664929,
+      "cases": [
+        {
+          "corpus": "faq_hq",
+          "id": "faq_sildenafil_pde5_ic50_salts",
+          "uq": "Retrieve activity details for compound and all its salts which have an IC50 bioactivity value in nM against a target of interest:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/faq_hq/faq_sildenafil_pde5_ic50_salts/result-last.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/faq_hq/faq_sildenafil_pde5_ic50_salts/run-last.log",
+          "generated_sql": null,
+          "judge_text": null,
+          "expected_rows": 59,
+          "actual_rows": 1,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "molecule_pref_name",
+            "activity_id",
+            "assay_chembl_id",
+            "target_chembl_id",
+            "target_name",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "pchembl_value"
+          ],
+          "missing_cols": [
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "activity_comment",
+            "target_organism"
+          ],
+          "extra_cols": [
+            "molecule_pref_name",
+            "activity_id",
+            "assay_chembl_id",
+            "pchembl_value"
+          ],
+          "status": "partial",
+          "score": 0.329857,
+          "column_recall": 0.538462,
+          "row_ratio": 0.016949
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_human_hsp90_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL3880 (HSP90). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape/baoilleach_human_hsp90_molecule_smiles/result-last.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape/baoilleach_human_hsp90_molecule_smiles/run-last.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL3880';",
+          "judge_text": "{\"analysis\":\"The SQL query correctly joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures tables. It properly filters on assays.assay_organism = 'Homo sapiens' and td.chembl_id = 'CHEMBL3880'. It returns DISTINCT molecule_chembl_id and canonical_smiles as requested. No LIMIT clause is present, so all matching rows are returned. The result contains 2510 distinct rows with the correct two columns. Sample rows show valid ChEMBL IDs and SMILES strings. The query fully and correctly answers the user's question.\",\"score\":1.0,\"decision\":\"YES\"}",
+          "expected_rows": 2510,
+          "actual_rows": 2510,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 2,
+    "n_pass": 1,
+    "pass_rate": 0.5,
+    "mean_score": 0.664929
+  }
+}

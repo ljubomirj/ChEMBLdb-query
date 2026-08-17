@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_human_hsp90_molecule_smiles.json",
+  "case_id": "baoilleach_human_hsp90_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select distinct compound_chembl_id and canonical_smiles for molecules tested in assays against target CHEMBL3880. Join target_dictionary to assays on tid, filter assays.assay_organism = 'Homo sapiens'. Join assays to activities on assay_id, then activities to molecule_dictionary on molregno for compound_chembl_id, then to compound_structures on molregno for canonical_smiles. Return distinct rows. Sort by compound_chembl_id, canonical_smiles.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct compound_chembl_id and canonical_smiles for molecules tested in assays against target CHEMBL3880. Join target_dictionary to assays on tid, filter assays.assay_organism = 'Homo sapiens'. Join assays to activities on assay_id, then activities to molecule_dictionary on molregno for compound_chembl_id, then to compound_structures on molregno for canonical_smiles. Return distinct rows. Sort by compound_chembl_id, canonical_smiles."
+    }
+  }
+}

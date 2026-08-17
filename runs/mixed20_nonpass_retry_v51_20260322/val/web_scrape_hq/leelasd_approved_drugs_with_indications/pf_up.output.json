@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval. Join molecule_dictionary with drug_indication on molregno. LEFT JOIN compound_structures on molregno for canonical_smiles. Filter molecule_dictionary where max_phase = 4. Return DISTINCT rows on the requested output columns. Sort by first_approval descending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval. Join molecule_dictionary with drug_indication on molregno. LEFT JOIN compound_structures on molregno for canonical_smiles. Filter molecule_dictionary where max_phase = 4. Return DISTINCT rows on the requested output columns. Sort by first_approval descending."
+    }
+  }
+}

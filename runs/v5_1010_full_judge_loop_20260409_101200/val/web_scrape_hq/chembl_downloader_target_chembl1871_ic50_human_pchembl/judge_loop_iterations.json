@@ -1,0 +1,44 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows for the human single-protein target CHEMBL1871 (Androgen receptor) that have a standard type of 'IC50' and a non-null pChEMBL value. For each row, return the assay ChEMBL ID, target type, target tax_id, molecule ChEMBL ID, canonical SMILES, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target_assays AS (SELECT assay_id FROM assays WHERE tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1871') AND assay_tax_id = 9606), molecule_list AS (SELECT DISTINCT molregno FROM activities WHERE assay_id IN (SELECT assay_id FROM target_assays) AND standard_type = 'IC50' AND pchembl_value IS NOT NULL ORDER BY molregno LIMIT 1000) SELECT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, act.standard_type, act.pchembl_value FROM molecule_list ml JOIN activities act ON act.molregno = ml.molregno AND act.standard_type = 'IC50' AND act.pchembl_value IS NOT NULL JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON ml.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id, a.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE molecule_list\n11 | 2 | 110 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n15 | 2 | 0 | LIST SUBQUERY 3\n18 | 15 | 224 | SCAN assays\n23 | 15 | 0 | SCALAR SUBQUERY 1\n28 | 23 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n43 | 15 | 0 | CREATE BLOOM FILTER\n57 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n102 | 0 | 143 | SCAN ml\n105 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n118 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n127 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n141 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n147 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n165 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 4332,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity rows for the target CHEMBL1871 (Androgen receptor) that have a standard type of 'IC50' and a non-null pChEMBL value. The rows must correspond to a single-protein target type (target_dictionary.target_type = 'SINGLE PROTEIN') and human organism (target_dictionary.tax_id = 9606). For each row, return the assay ChEMBL ID (from assays), target type, target tax_id, canonical SMILES (from compound_structures), molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH filtered_activities AS (SELECT activities.activity_id, activities.assay_id, activities.molregno, activities.pchembl_value, activities.standard_type, assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid WHERE target_dictionary.chembl_id = 'CHEMBL1871' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 ORDER BY activities.molregno, assays.chembl_id LIMIT 1000) SELECT fa.assay_chembl_id, fa.target_type, fa.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, fa.standard_type, fa.pchembl_value FROM filtered_activities fa JOIN molecule_dictionary ON fa.molregno = molecule_dictionary.molregno JOIN compound_structures ON fa.molregno = compound_structures.molregno ORDER BY molecule_dictionary.chembl_id, fa.assay_chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE filtered_activities\n11 | 2 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 2 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 2 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n53 | 2 | 0 | USE TEMP B-TREE FOR ORDER BY\n71 | 0 | 115 | SCAN fa\n74 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n84 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n104 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

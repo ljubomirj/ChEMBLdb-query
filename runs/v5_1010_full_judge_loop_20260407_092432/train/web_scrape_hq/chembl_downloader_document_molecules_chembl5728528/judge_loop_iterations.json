@@ -1,0 +1,30 @@
+[
+  {
+    "n": 1,
+    "up": "List all molecule records (compound keys) that are documented in the database record with CHEMBL ID = 'CHEMBL5728528'. Return one molecule identifier per row (the compound_key column from the compound_records table). No other columns, filters, ranking or additional constraints are required.",
+    "sql": "SELECT DISTINCT compound_key FROM compound_records WHERE chembl_id = 'CHEMBL5728528';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all molecule records (compound keys) associated with the ChEMBL database document identified by CHEMBL ID 'CHEMBL5728528'. Return one compound key per row from the compound_records table, no other columns, filters, ranking, or additional constraints.",
+    "sql": "SELECT DISTINCT compound_key FROM compound_records WHERE doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728528');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n4 | 0 | 75 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n7 | 0 | 0 | SCALAR SUBQUERY 1\n12 | 7 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n31 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

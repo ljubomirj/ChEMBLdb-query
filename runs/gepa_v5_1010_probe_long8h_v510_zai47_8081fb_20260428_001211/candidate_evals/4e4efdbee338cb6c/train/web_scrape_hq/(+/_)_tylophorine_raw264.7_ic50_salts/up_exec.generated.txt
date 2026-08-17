@@ -1,0 +1,15 @@
+1. Objective: Retrieve IC50 activity records with provenance for (+/-)-tylophorine (CHEMBL493620) and its salt forms tested against the RAW264.7 cell line target.
+
+2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+
+3. Source: molecule_dictionary, molecule_hierarchy, compound_records, compound_structures, activities, docs, assays, target_dictionary
+
+4. Logic:
+   - Filter molecule_dictionary for parent compound CHEMBL493620.
+   - Join molecule_hierarchy to include all salt forms (parent_molregno = parent.molregno).
+   - Join compound_records on molregno, then activities on record_id.
+   - Join docs on doc_id to obtain pubmed_id_or_doi (prefer pubmed_id, fallback to doi).
+   - Join assays on assay_id to retrieve assay_description.
+   - Join target_dictionary on tid to retrieve target details and filter for CHEMBL612557 (RAW264.7).
+   - Filter activities for standard_type = 'IC50'.
+   - Return all matching rows, preserving row multiplicity.

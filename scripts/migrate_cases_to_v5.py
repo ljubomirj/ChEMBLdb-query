@@ -16,7 +16,7 @@ from db_llm_v5.artifacts import V5ArtifactPaths, V5CaseManifest, V5CaseMetadata
 from db_llm_v5.io import save_case_manifest
 
 
-DEFAULT_REGISTRY = REPO_ROOT / "tests/cases/web_scrape_hq_cases.json"
+DEFAULT_REGISTRY = REPO_ROOT / "cases/registries/archive/web_scrape_hq_cases.json"
 DEFAULT_OUT_DIR = REPO_ROOT / "tests/v5_manifests/web_scrape_hq"
 
 

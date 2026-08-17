@@ -1,0 +1,26 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, and doi for bioassays where assay_type is 'B' and tid is 165.",
+    "sql": "SELECT\n  ass.chembl_id AS assay_chembl_id,\n  ass.tid,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism,\n  d.journal,\n  d.year,\n  d.volume,\n  d.first_page,\n  d.doi\nFROM assays ass\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN docs d ON ass.doc_id = d.doc_id\nWHERE ass.assay_type = 'B'\n  AND ass.tid = 165;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n15 | 0 | 204 | SEARCH ass USING INDEX idx_assay_assay_id (assay_type=?)\n22 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 3536,
+    "res_columns": [
+      "assay_chembl_id",
+      "tid",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "journal",
+      "year",
+      "volume",
+      "first_page",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

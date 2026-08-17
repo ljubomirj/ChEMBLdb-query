@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) where the mechanism of action is classified as an activator. For each drug, provide the compound name, the chemical structure (canonical SMILES), the mechanism of action description, and the target information (target name).",
+    "sql": "SELECT\n  md.pref_name AS compound_name,\n  cs.canonical_smiles,\n  dm.mechanism_of_action,\n  td.pref_name AS target_name\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  md.max_phase = 4\n  AND dm.action_type = 'ACTIVATOR';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 144 | SCAN dm\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 15,
+    "res_columns": [
+      "compound_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

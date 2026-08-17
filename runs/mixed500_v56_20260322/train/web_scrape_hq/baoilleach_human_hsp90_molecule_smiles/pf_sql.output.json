@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_human_hsp90_molecule_smiles.json",
+  "case_id": "baoilleach_human_hsp90_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON a.assay_id = act.assay_id\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL3880'\n  AND a.assay_organism = 'Homo sapiens'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON a.assay_id = act.assay_id\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL3880'\n  AND a.assay_organism = 'Homo sapiens'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles"
+    }
+  }
+}

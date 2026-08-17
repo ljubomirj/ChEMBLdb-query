@@ -1,0 +1,40 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_serine/threonine_protein_kinase_plk1_molecule_smiles.json",
+  "case_id": "human_serine/threonine_protein_kinase_plk1_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_chembl_id AS compound_chembl_id, canonical_smiles\",\n    \"From molecule_dictionary md\",\n    \"Join activities a ON md.molregno = a.molregno\",\n    \"Join assays ass ON a.assay_id = ass.assay_id\",\n    \"Join target_dictionary td ON ass.tid = td.tid\",\n    \"Filter td.pref_name = 'human serine/threonine-protein kinase PLK1' AND td.tax_id = 9606\",\n    \"Join compound_structures cs ON md.molregno = cs.molregno\",\n    \"Return compound_chembl_id, canonical_smiles\",\n    \"Sort by compound_chembl_id, canonical_smiles\",\n    \"Limit 2000\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_chembl_id AS compound_chembl_id, canonical_smiles",
+        "From molecule_dictionary md",
+        "Join activities a ON md.molregno = a.molregno",
+        "Join assays ass ON a.assay_id = ass.assay_id",
+        "Join target_dictionary td ON ass.tid = td.tid",
+        "Filter td.pref_name = 'human serine/threonine-protein kinase PLK1' AND td.tax_id = 9606",
+        "Join compound_structures cs ON md.molregno = cs.molregno",
+        "Return compound_chembl_id, canonical_smiles",
+        "Sort by compound_chembl_id, canonical_smiles",
+        "Limit 2000"
+      ]
+    }
+  }
+}

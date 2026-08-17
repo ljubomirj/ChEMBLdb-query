@@ -1,0 +1,146 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compound records that have a publication associated with the ChEMBL document whose identifier is CHEMBL5665443. Return the distinct molecular identifiers (chembl_id), compound names (pref_name) and the publication details (title and year). The query must retrieve data from the molecule_dictionary table (for the molecular identifiers and compound names) and the docs table (for publication metadata). No filtering on document type, journal, or other fields is needed; only the exact doc_id value CHEMBL5665443 is required. The results should list each qualifying compound once (DISTINCT) and should not be sorted or limited beyond what the user explicitly asks for. This prompt explicitly defines the required data columns and the filter condition (doc_id = 'CHEMBL5665443') without imposing additional constraints on document type, taxonomy, or activity data.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5665443';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for this document. Ensure each molecule appears only once in the results. The filter must be on the document identifier CHEMBL5665443, using the compound_records table (which links compounds to their primary publication) and the molecule_dictionary table (for molecular identifiers and names). Include the document's title and year from the docs table. No additional filtering on document type, journal, taxonomy, or activity data is required.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5665443';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id) and compound names (pref_name) for all molecules reported in the ChEMBL document with identifier CHEMBL5665443, together with the title and year of that document. Filter by exact document identifier CHEMBL5665443, ensure each molecule is listed only once, and return the document's title and year without additional constraints or filters. The result should be a deduplicated list of molecules (chembl_id, pref_name) linked to that document, accompanied by the document's title and year.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5665443' ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n39 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.65,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Ensure each molecule appears only once in the result set. The filter must be on the exact document identifier CHEMBL5665443 using the compound_records table (which stores the primary publication for each compound) and the molecule_dictionary table (for chembl_id and pref_name). Include the document's title and year from the docs table. No additional filtering, sorting, or row limits are required beyond the explicit deduplication and document identifier condition.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5665443'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Ensure each molecule appears only once in the result set. The filter must be on the exact document identifier CHEMBL5665443 using the compound_records table (which stores the primary publication for each compound) and the molecule_dictionary table (for chembl_id and pref_name). Include the document's title and year from the docs table. No additional filtering, sorting, or row limits are required beyond the explicit deduplication and document identifier condition.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5665443'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Ensure each molecule appears only once in the result set. The filter must be on the exact document identifier CHEMBL5665443 using the compound_records table (which stores the primary publication for each compound) and the molecule_dictionary table (for chembl_id and pref_name). Include the document's title and year from the docs table. No additional filtering, sorting, or row limits are required beyond the explicit deduplication and document identifier condition.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5665443')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n11 | 0 | 0 | SCALAR SUBQUERY 1\n16 | 11 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n29 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n36 | 0 | 0 | REUSE SUBQUERY 1\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Ensure each molecule appears only once in the result set. The filter must be on the exact document identifier CHEMBL5665443 using the compound_records table (which stores the primary publication for each compound) and the molecule_dictionary table (for chembl_id and pref_name). Include the document's title and year from the docs table. No additional filtering, sorting, or row limits are required beyond the explicit deduplication and document identifier condition.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5665443' AND cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5665443')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n11 | 0 | 0 | SCALAR SUBQUERY 1\n16 | 11 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n31 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n38 | 0 | 0 | REUSE SUBQUERY 1\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the distinct molecular identifiers (chembl_id), compound names (pref_name), and the publication details (title and year) for all molecules that are the primary subject of the ChEMBL document with identifier CHEMBL5665443. Ensure each molecule appears only once in the result set. The filter must be on the exact document identifier CHEMBL5665443 using the compound_records table (which stores the primary publication for each compound) and the molecule_dictionary table (for chembl_id and pref_name). Include the document's title and year from the docs table. No additional filtering, sorting, or row limits are required beyond the explicit deduplication and document identifier condition.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, d.title, d.year FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5665443')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n11 | 0 | 0 | SCALAR SUBQUERY 1\n16 | 11 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n29 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n36 | 0 | 0 | REUSE SUBQUERY 1\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 976,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

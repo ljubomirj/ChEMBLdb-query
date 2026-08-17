@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp3a4_3a5_first200.json",
+  "case_id": "metabolism_enzyme_cyp3a4_3a5_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve metabolism records for CYP3A4 or CYP3A5 enzymes, but the filter on target_dictionary.target_type = 'CYPI' is incorrect. According to the schema, CYP3A4 and CYP3A5 are classified under target_type 'PROTEIN' (or possibly 'SINGLE PROTEIN'), not 'CYPI'. The target_type 'CYPI' does not exist in the target_type lookup table. The correct filter should be target_dictionary.target_type = 'PROTEIN' AND target_dictionary.pref_name IN ('CYP3A4', 'CYP3A5'). Additionally, the join to target_dictionary uses met.enzyme_tid = td.tid, which is correct, but the target_type filter must reference the actual target_type values. The current query returns 0 rows because no records match the invalid target_type 'CYPI'. The rest of the query structure (joins, column selection, limit) is appropriate, but the WHERE clause is fundamentally flawed, causing the result set to be empty. The sample_rows_csv being empty confirms no rows matched the criteria.\",\n  \"score\": 0.3,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve metabolism records for CYP3A4 or CYP3A5 enzymes, but the filter on target_dictionary.target_type = 'CYPI' is incorrect. According to the schema, CYP3A4 and CYP3A5 are classified under target_type 'PROTEIN' (or possibly 'SINGLE PROTEIN'), not 'CYPI'. The target_type 'CYPI' does not exist in the target_type lookup table. The correct filter should be target_dictionary.target_type = 'PROTEIN' AND target_dictionary.pref_name IN ('CYP3A4', 'CYP3A5'). Additionally, the join to target_dictionary uses met.enzyme_tid = td.tid, which is correct, but the target_type filter must reference the actual target_type values. The current query returns 0 rows because no records match the invalid target_type 'CYPI'. The rest of the query structure (joins, column selection, limit) is appropriate, but the WHERE clause is fundamentally flawed, causing the result set to be empty. The sample_rows_csv being empty confirms no rows matched the criteria.",
+      "score": 0.3,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a4_3a5_first200/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a4_3a5_first200/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a4_3a5_first200/pf_judge.generated_artifact_record.json"
+  }
+}

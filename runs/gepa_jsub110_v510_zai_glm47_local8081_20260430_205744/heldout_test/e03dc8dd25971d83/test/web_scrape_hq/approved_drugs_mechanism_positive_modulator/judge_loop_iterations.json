@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, drug_mechanism.mechanism_of_action, drug_mechanism.action_type. Source: molecule_dictionary, drug_mechanism, target_dictionary. Join: molecule_dictionary.molregno = drug_mechanism.molregno; drug_mechanism.tid = target_dictionary.tid. Filter: molecule_dictionary.max_phase = 4; drug_mechanism.action_type IN ('POSITIVE MODULATOR', 'AGONIST', 'PARTIAL AGONIST', 'POSITIVE ALLOSTERIC MODULATOR', 'ACTIVATOR', 'OPENER', 'EXOGENOUS PROTEIN', 'EXOGENOUS GENE').",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, drug_mechanism.mechanism_of_action, drug_mechanism.action_type FROM molecule_dictionary JOIN drug_mechanism ON molecule_dictionary.molregno = drug_mechanism.molregno JOIN target_dictionary ON drug_mechanism.tid = target_dictionary.tid WHERE molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type IN ('POSITIVE MODULATOR', 'AGONIST', 'PARTIAL AGONIST', 'POSITIVE ALLOSTERIC MODULATOR', 'ACTIVATOR', 'OPENER', 'EXOGENOUS PROTEIN', 'EXOGENOUS GENE')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_mechanism\n40 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 0 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 777,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "target_chembl_id",
+      "target_name",
+      "mechanism_of_action",
+      "action_type"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs (max_phase = 4) with positive modulator mechanisms of action. The execution plan shows efficient index usage on all three tables. The result set contains 777 rows with the requested columns: drug identifiers, names, target identifiers, target names, mechanism descriptions, and action types. The sample data confirms correct filtering for positive modulators (AGONIST, PARTIAL AGONIST, POSITIVE ALLOSTERIC MODULATOR, ACTIVATOR, OPENER, EXOGENOUS PROTEIN, EXOGENOUS GENE). The query correctly joins molecule_dictionary, drug_mechanism, and target_dictionary tables. The result comprehensively answers the user's request for approved drugs with positive modulator mechanisms including their target information.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

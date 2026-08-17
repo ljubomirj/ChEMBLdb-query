@@ -1,0 +1,10 @@
+Select molecule_chembl_id as compound_chembl_id, canonical_smiles as canonical_smiles
+Join activities on activities.molregno = molecule_dictionary.molregno
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.tid = 1963
+Filter target_dictionary.target_type = 'SINGLE PROTEIN'
+Filter assays.assay_type = 'B'
+Return molecule_chembl_id as compound_chembl_id, canonical_smiles as canonical_smiles
+Sort by compound_chembl_id

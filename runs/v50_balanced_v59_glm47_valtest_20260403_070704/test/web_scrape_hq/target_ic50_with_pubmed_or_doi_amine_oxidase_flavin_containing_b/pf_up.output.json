@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity rows for human amine oxidase [flavin-containing] B (CHEMBL2039). Join molecule_dictionary to activities on molregno, then assays on assay_id, then target_dictionary on tid. Join compound_structures on molregno to require canonical SMILES. Join docs on doc_id to obtain PubMed ID or DOI. Left join compound_records on record_id to retrieve compound key. Return compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism. Do not deduplicate rows. Sort by compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity rows for human amine oxidase [flavin-containing] B (CHEMBL2039). Join molecule_dictionary to activities on molregno, then assays on assay_id, then target_dictionary on tid. Join compound_structures on molregno to require canonical SMILES. Join docs on doc_id to obtain PubMed ID or DOI. Left join compound_records on record_id to retrieve compound key. Return compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism. Do not deduplicate rows. Sort by compound ChEMBL ID, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, standard relation, standard value, standard units, activity comment, target ChEMBL ID, target name, and target organism."
+    }
+  }
+}

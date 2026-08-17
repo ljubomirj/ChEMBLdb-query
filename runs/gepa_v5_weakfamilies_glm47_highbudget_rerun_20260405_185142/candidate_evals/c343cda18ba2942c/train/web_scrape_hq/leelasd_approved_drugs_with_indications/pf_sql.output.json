@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_c343cda18ba2942c.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "c343cda18ba2942c",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  di.mesh_heading,\n  md.first_approval\nFROM molecule_dictionary md\nJOIN drug_indication di ON md.molregno = di.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.first_approval DESC, md.chembl_id ASC\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  di.mesh_heading,\n  md.first_approval\nFROM molecule_dictionary md\nJOIN drug_indication di ON md.molregno = di.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.first_approval DESC, md.chembl_id ASC"
+    }
+  }
+}

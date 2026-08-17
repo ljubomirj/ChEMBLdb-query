@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Identify compounds with IC50 measurements (in nM) against human Isocitrate dehydrogenase [NADP] cytoplasmic. Provide the ChEMBL ID, canonical SMILES, compound key, and PubMed ID or DOI for each result. Also include the assay description and target preferred name.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.pref_name AS target_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE\n  a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND td.pref_name = 'Isocitrate dehydrogenase [NADP] cytoplasmic'\n  AND td.organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n61 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 13627,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

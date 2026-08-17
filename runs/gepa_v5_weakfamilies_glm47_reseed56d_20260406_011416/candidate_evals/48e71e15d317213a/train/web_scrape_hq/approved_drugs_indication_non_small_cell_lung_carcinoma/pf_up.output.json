@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_48e71e15d317213a.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_non_small_cell_lung_carcinoma.json",
+  "case_id": "approved_drugs_indication_non_small_cell_lung_carcinoma",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "48e71e15d317213a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs indicated for non-small cell lung carcinoma. Join molecule_dictionary to drug_indication on molregno. Filter by max_phase = 4 and mesh_heading = 'non-small cell lung carcinoma'. Join compound_structures on molregno to retrieve canonical_smiles. Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs indicated for non-small cell lung carcinoma. Join molecule_dictionary to drug_indication on molregno. Filter by max_phase = 4 and mesh_heading = 'non-small cell lung carcinoma'. Join compound_structures on molregno to retrieve canonical_smiles. Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

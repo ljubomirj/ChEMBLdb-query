@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 
 # Configuration
 BASE_DIR = Path("/Users/ljubomir/ChEMBLdb-query")
-CASES_FILE = BASE_DIR / "tests/cases/web_scrape_hq_cases.json"
+CASES_FILE = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases.json"
 NEW_CASES_FILE = BASE_DIR / "scripts/new_cases_rounds_18_22.json"
 
 # Load existing cases
@@ -87,7 +87,7 @@ all_cases = existing_cases + promoted_cases
 print(f"\nTotal cases after promotion: {len(all_cases)}")
 
 # Save updated cases file
-output_file = BASE_DIR / "tests/cases/web_scrape_hq_cases_v4.5.json"
+output_file = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases_v4.5.json"
 with open(output_file, 'w') as f:
     json.dump(all_cases, f, indent=2)
 

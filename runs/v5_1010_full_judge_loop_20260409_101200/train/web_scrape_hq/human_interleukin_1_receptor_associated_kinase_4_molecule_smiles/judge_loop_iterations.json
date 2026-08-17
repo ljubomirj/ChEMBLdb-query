@@ -1,0 +1,96 @@
+[
+  {
+    "n": 1,
+    "up": "List the ChEMBL identifiers and SMILES of compounds tested against human Interleukin-1 receptor-associated kinase 4 (IRAK4). Retrieve compounds that have activity data against the protein target 'Interleukin-1 receptor-associated kinase 4'. The target may be specified via the target_dictionary table (e.g., by pref_name or chembl_id). Ensure the assay is associated with the target (through assay_classification or target_dictionary). Output the compound's ChEMBL identifier (pref_name or chembl_id) and its canonical SMILES. Do not filter on activity type (e.g., IC50, binding) or units, and do not require any specific assay confidence or activity relation. Do not restrict to human assays, but the target should be identified by its preferred name 'Interleukin-1 receptor-associated kinase 4' in the target_dictionary.",
+    "sql": "SELECT DISTINCT m.chembl_id AS chembl_id, cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nLEFT JOIN compound_structures cs ON md.chembl_id = cs.chembl_id\nWHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4'\n  AND a.activity_type IS NOT NULL\n  AND a.molecule_chembl_id IS NOT NULL\n  AND md.chembl_id IS NOT NULL\n  AND cs.chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: m.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: m.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List the ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) of compounds that have been tested against the human target Interleukin-1 receptor-associated kinase 4 (IRAK4). For this target, retrieve the corresponding target_dictionary entry where target_dictionary.pref_name = 'Interleukin-1 receptor-associated kinase 4'. Join activities to assays and then to target_dictionary via the assay's tid to find activities associated with this target. For each qualifying compound, obtain the canonical SMILES from compound_structures using the compound's chembl_id. Ensure that the activity has a molecule_chembl_id linking to molecule_dictionary and that the compound_structures record exists. The output should include only two columns: chembl_id (the public ChEMBL identifier of the compound) and canonical_smiles (the canonical SMILES string for the compound). No other filtering, ranking, or limits are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target target_table ON ass.tid = target_table.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.chembl_id = cs.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "For the human protein target 'Interleukin-1 receptor-associated kinase 4' (IRAK4) identified by the target_dictionary pref_name 'Interleukin-1 receptor-associated kinase 4', list each compound's ChEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles) that has at least one activity measurement associated with an assay whose tid links to this target. Include all activity types and assays; do not filter by activity type, standard relation, units, confidence score, assay organism, or any other criteria. Return one row per compound (distinct by chembl_id) with its SMILES, even if the compound has multiple activities for this target. Ensure the SMILES is retrieved from compound_structures via the compound's chembl_id. Do not add extra columns or rank the results.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.chembl_id = cs.chembl_id WHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List the ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) of compounds that have been tested against the human target 'Interleukin-1 receptor-associated kinase 4' (IRAK4). Retrieve the corresponding target_dictionary entry where pref_name = 'Interleukin-1 receptor-associated kinase 4', join activities to assays to target_dictionary via assay.tid, and link the compound's molecule_chembl_id to compound_structures to obtain the canonical SMILES. Ensure at least one activity exists for the compound, do not filter by activity type, units, or confidence score, and return distinct rows with exactly the columns: chembl_id (ChEMBL identifier of the compound) and canonical_smiles (canonical SMILES string). No other columns, ranking, or limits should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT a.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.chembl_id = cs.chembl_id WHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4' AND a.chembl_id IS NOT NULL AND md.chembl_id IS NOT NULL AND cs.chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "List the ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) of compounds that have been tested against the human target Interleukin-1 receptor-associated kinase 4 (IRAK4). Retrieve the target_dictionary entry for 'Interleukin-1 receptor-associated kinase 4' by pref_name, join activities to assays via assay_id, link assays to the target via tid, join molecule_dictionary to activities via molecule_chembl_id, and retrieve the compound's canonical SMILES from compound_structures using the compound's chembl_id. Ensure the target is the human IRAK4 (pref_name = 'Interleukin-1 receptor-associated kinase 4') but do not filter by assay organism, assay type, activity type, units, or activity relation. Output exactly two columns: chembl_id (the public ChEMBL identifier of the compound) and canonical_smiles (the canonical SMILES string). Do not add extra columns, ranking, or row limits.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.chembl_id = cs.chembl_id WHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "For the human target named 'Interleukin-1 receptor-associated kinase 4' (pref_name = 'Interleukin-1 receptor-associated kinase 4' in target_dictionary), list each compound's ChEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles) that have at least one activity recorded for an assay whose tid links to this target. Ensure the compound is represented in molecule_dictionary and that the canonical SMILES is obtained from compound_structures via the compound's chembl_id. Return exactly two columns: chembl_id (the public ChEMBL identifier of the compound) and canonical_smiles (the canonical SMILES string). Do not filter by activity type, units, assay organism, confidence score, or any other criteria. No additional columns, ranking, or row limits should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.chembl_id = cs.chembl_id WHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "List the ChEMBL identifiers (chembl_id) and canonical SMILES (canonical_smiles) of compounds that have been tested against the human target 'Interleukin-1 receptor-associated kinase 4' (IRAK4). Retrieve the target_dictionary entry where pref_name = 'Interleukin-1 receptor-associated kinase 4', join activities to assays via assay_id, link assays to the target via tid, join molecule_dictionary to activities via molregno, and obtain the canonical SMILES from compound_structures using the compound's chembl_id. Ensure the target is the human IRAK4 (pref_name = 'Interleukin-1 receptor-associated kinase 4') but do not filter by assay organism, assay type, activity type, units, confidence score, or any other criteria. Output exactly two columns: chembl_id (the public ChEMBL identifier of the compound) and canonical_smiles (the canonical SMILES string). Do not add extra columns, ranking, or row limits.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Interleukin-1 receptor-associated kinase 4') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE td.pref_name = 'Interleukin-1 receptor-associated kinase 4'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n48 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11162,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

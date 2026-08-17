@@ -1,0 +1,7 @@
+1. Objective: Retrieve all approved drugs (max_phase = 4) with a mechanism of action classified as 'BLOCKER', including their chemical structures and associated target details.
+
+2. Output: Return the following columns: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.
+
+3. Source: Query molecule_dictionary, drug_mechanism, target_dictionary, and compound_structures.
+
+4. Logic: Filter molecule_dictionary for max_phase = 4. Join drug_mechanism on molregno. Filter drug_mechanism where action_type = 'BLOCKER'. Join target_dictionary on drug_mechanism.tid to retrieve target details. Join compound_structures on molregno to retrieve structure. Sort by chembl_id.

@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/data1/data/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_tiny24_from_v50_20260426_232232/candidate_cache/candidate_e622365aeaa6efb5.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/data1/data/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123558.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123558",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "e622365aeaa6efb5",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule chembl_id, compound_name, and canonical_smiles for all molecules mentioned in document CHEMBL1123558. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, and to compound_structures on molregno. Filter by docs.chembl_id = 'CHEMBL1123558' and require canonical_smiles to be not null. Order results by chembl_id, compound_name, and canonical_smiles.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule chembl_id, compound_name, and canonical_smiles for all molecules mentioned in document CHEMBL1123558. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, and to compound_structures on molregno. Filter by docs.chembl_id = 'CHEMBL1123558' and require canonical_smiles to be not null. Order results by chembl_id, compound_name, and canonical_smiles."
+    }
+  }
+}

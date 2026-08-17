@@ -1,0 +1,1 @@
+SELECT DISTINCT m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, di.mesh_heading, m.first_approval FROM molecule_dictionary m JOIN drug_indication di ON m.molregno = di.molregno LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase = 4 ORDER BY m.first_approval DESC

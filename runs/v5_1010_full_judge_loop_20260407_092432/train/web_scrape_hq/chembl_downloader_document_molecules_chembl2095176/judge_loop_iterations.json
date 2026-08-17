@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Return the ChEMBL IDs (molecule_chembl_id), preferred names (pref_name), and canonical SMILES for all compounds that are reported in the document identified by ChEMBL document ID CHEMBL2095176. Join compound_records to molecule_dictionary and compound_structures to retrieve these fields.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL2095176';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 776,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,16 @@
+Retrieve distinct compounds that have an IC50 measurement (standard_type = 'IC50' and standard_units = 'nM') against the human EGFR target (CHEMBL203, SINGLE PROTEIN, organism = 'Homo sapiens'). For each compound return the following columns in the exact order specified:
+- compound_chembl_id (CHEMBL identifier of the molecule)
+- canonical_smiles (non‑null)
+- compound_key
+- pubmed_id_or_doi (prefer PubMed ID; if missing use DOI)
+- assay_description
+- standard_type
+- standard_relation
+- standard_value
+- standard_units
+- activity_comment
+- target_chembl_id
+- target_name
+- target_organism
+
+Include only rows where the activity is linked to a document that provides at least one of PubMed ID or DOI. Return the result set sorted by the columns in the order listed above.

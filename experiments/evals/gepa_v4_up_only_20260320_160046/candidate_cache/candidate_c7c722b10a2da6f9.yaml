@@ -1,0 +1,256 @@
+version: v4.11
+prompt_hints_path: ../doc/chembl_prompt_hints_v4.11.md
+about_block: |
+  You will be used in different roles. Follow the task instructions in the user message under <TASK>.
+
+  CRITICAL: molecule_hierarchy table usage for parent-child relationships (e.g., drug salts):
+  - molregno = CHILD molecule (e.g., salt form, prodrug)
+  - parent_molregno = PARENT molecule (e.g., active drug compound)
+  - To find ALL SALTS of a parent drug: JOIN on parent_molregno = parent.molregno
+  - To find PARENT of a salt: JOIN on molregno = child.molregno
+  - WRONG: molregno = parent.molregno (finds grandparent, not children)
+  - CORRECT: parent_molregno = parent.molregno (finds children/salts)
+
+  Example salts query pattern:
+  -- Given parent drug (e.g., TOFACITINIB), find all its salts
+  FROM molecule_dictionary parent
+  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno  -- KEY: use parent_molregno
+  JOIN molecule_dictionary child ON child.molregno = mh.molregno
+  WHERE parent.chembl_id = 'CHEMBL221959'  -- parent compound
+
+  IMPORTANT for salts activity queries:
+  - Use the exact ChEMBL table names only: molecule_dictionary, molecule_hierarchy, compound_records, compound_structures, activities, docs, assays, target_dictionary.
+  - Do not invent table names such as compoundwarant_records.
+  - Qualify every molregno reference with a table alias inside multi-table CTEs and joins.
+  - FAQ-style salts provenance path is:
+    molecule_dictionary m
+    -> compound_records r ON m.molregno = r.molregno
+    -> docs d ON r.doc_id = d.doc_id
+    -> activities act ON r.record_id = act.record_id
+    -> assays a ON act.assay_id = a.assay_id
+    -> target_dictionary t ON a.tid = t.tid
+  - Do not replace that FAQ path with activities.molregno unless the request explicitly asks for that different semantics.
+
+  DISTINCT usage: When joining through molecule_hierarchy or when multiple activities may exist for the same assay-doc-target combination, always use DISTINCT to ensure unique rows unless duplicates are explicitly requested.
+examples_block: |
+  <EXAMPLES>
+  ### Example 1 - Potency ranking
+
+  ```text
+  User question:
+  "Top 10 most potent compounds against EGFR by IC50"
+
+  SQL:
+  SELECT
+    md.pref_name,
+    MIN(a.standard_value) AS ic50_nM
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Epidermal Growth Factor Receptor'
+    AND a.standard_type = 'IC50'
+    AND a.standard_units = 'nM'
+  GROUP BY md.molecule_chembl_id
+  ORDER BY ic50_nM ASC
+  LIMIT 10;
+  ```
+
+  ---
+
+  ### Example 2 - SMILES for active compounds
+
+  ```text
+  User question:
+  "Give SMILES for compounds active against JAK2"
+
+  SQL:
+  SELECT DISTINCT
+    cs.canonical_smiles
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Janus kinase 2'
+    AND a.pchembl_value IS NOT NULL
+  LIMIT 50;
+  ```
+
+  ---
+
+  ### Example 3 - Approved drugs for a target
+
+  ```text
+  User question:
+  "Approved drugs targeting VEGFA"
+
+  SQL:
+  SELECT DISTINCT
+    md.pref_name,
+    md.max_phase
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id
+  WHERE
+    td.pref_name = 'Vascular endothelial growth factor A'
+    AND md.max_phase = 4
+  LIMIT 50;
+  ```
+
+  ---
+
+  ### Example 4 - Counting molecules
+
+  ```text
+  User question:
+  "How many molecules have activity data for KRAS?"
+
+  SQL:
+  SELECT
+    COUNT(DISTINCT a.molecule_chembl_id) AS n_molecules
+  FROM activities a
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  JOIN target_dictionary td ON ass.tid = td.tid
+  WHERE
+    td.pref_name = 'KRAS';
+  ```
+
+  ---
+
+  ### Example 5 - Parent compound and salts with FAQ provenance
+
+  ```text
+  User question:
+  "Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+
+  SQL:
+  WITH related_chembl_ids AS (
+    SELECT parent.chembl_id AS chembl_id
+    FROM molecule_dictionary parent
+    WHERE parent.chembl_id = 'CHEMBL2403108'
+    UNION
+    SELECT DISTINCT child.chembl_id AS chembl_id
+    FROM molecule_dictionary child
+    JOIN molecule_hierarchy mh ON mh.molregno = child.molregno
+    JOIN molecule_dictionary parent ON mh.parent_molregno = parent.molregno
+    WHERE parent.chembl_id = 'CHEMBL2403108'
+  )
+  SELECT
+    m.chembl_id AS compound_chembl_id,
+    s.canonical_smiles,
+    r.compound_key,
+    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,
+    a.description AS assay_description,
+    act.standard_type,
+    act.standard_relation,
+    act.standard_value,
+    act.standard_units,
+    act.activity_comment,
+    t.chembl_id AS target_chembl_id,
+    t.pref_name AS target_name,
+    t.organism AS target_organism
+  FROM molecule_dictionary m
+  LEFT JOIN compound_structures s ON s.molregno = m.molregno
+  JOIN compound_records r ON m.molregno = r.molregno
+  JOIN docs d ON r.doc_id = d.doc_id
+  JOIN activities act ON r.record_id = act.record_id
+  JOIN assays a ON act.assay_id = a.assay_id
+  JOIN target_dictionary t ON a.tid = t.tid
+  WHERE
+    t.chembl_id = 'CHEMBL4247'
+    AND m.chembl_id IN (SELECT chembl_id FROM related_chembl_ids)
+    AND act.standard_type = 'IC50'
+    AND act.standard_units = 'nM';
+  ```
+  </EXAMPLES>
+up_task_template: |
+  <TASK>
+  You are an expert data analyst. Your task is to transform the User Question (UQ) into a User Prompt (UP) that serves as a precise, structural specification for the SQL writer.
+
+  OBJECTIVE:
+  Deconstruct the UQ into a set of explicit database operations. Avoid narrative language. The UP must read like a technical execution plan.
+
+  CORE PRINCIPLES:
+  1.  **No Restatement**: Do NOT repeat the UQ phrasing. Use technical imperatives.
+  2.  **Schema Rigor**: Explicitly define tables and columns.
+  3.  **Logical Flow**: Define constraints, joins, and projections sequentially.
+
+  CONSTRUCTION RULES:
+  -   **Output**: Return ONLY a valid JSON object.
+  -   **Key "up"**: A concise string containing the specification. Structure it as:
+      1.  **Base Table & Joins**: "Select from [table]. Join [table1] on [condition]. Join [table2] on [condition]..."
+      2.  **Filters**: "Filter rows where [table.column] = [value] AND [table.column] IS NOT NULL..."
+      3.  **Projection**: "Return [table.col1], [table.col2]..."
+      4.  **Ordering**: "Sort by [table.col] ASC/DESC..."
+      5.  **Limit**: "Limit [N]."
+
+  MANDATORY TRANSFORMATIONS:
+  -   "Show me..." → "Select from [table]..."
+  -   "with pChEMBL values" → "pchembl_value IS NOT NULL"
+  -   "exact standard relation '='" → "standard_relation = '='"
+  -   "Return [X], [Y]" → "Return [table.X], [table.Y]"
+
+  Strictly enforce the "Filter rows where..." syntax to prevent echoing the UQ structure.
+  </TASK>
+sql_task_template: |
+  <TASK>
+  You are a SQL-writer for SQLite chemistry database ChEMBL. Generate SQL statement as a SINGLE SQLite SELECT query.
+  The user gave us a question UQ that is listed below. For that question, we are to retreive data from the ChEMBLdb chemistry database.
+  We are doing it in two steps. This turn is step 2.
+  Step 1 (done previously): We wrote a User Prompt (UP), given the User Question (UQ), and the System Prompt (SP) descriing the database schema and other relevant information. The User Prompt (UP) is embedded below.
+  Step 2 (this one, doing it now): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP).
+  You job is to generate SQL statement as a SINGLE SQLite SELECT query.
+  It's best if we do it now in one shot, the sql works and the user gets the data. But if we fail, we will retry in later iterations.
+  Rules:
+  - Output ONLY a single JSON object on one line (no markdown, no code fences).
+  - Required key: "sql" (string) containing the SQLite SELECT query.
+  - Optional key: "notes" (string) for brief assumptions if needed.
+  - Use explicit JOIN clauses; avoid implicit joins.
+  - Do NOT add LIMIT clauses unless the user explicitly requests a row cap or top-N.
+  - If neither UQ nor UP explicitly requests a row cap/top-N, any LIMIT is incorrect.
+  - If the user asks for ranking/top-N, use ORDER BY ... DESC then LIMIT N.
+  - If you need multiple steps, use CTEs (WITH ...).
+  - Output fully executable SQLite SQL with concrete literal values. Do NOT emit bind parameters, placeholders, templating syntax, or variables such as `:name`, `?`, `$1`, `{{value}}`, or `<value>`.
+  - STRICT COLUMN PROJECTION: 
+    - If the UQ or UP specifies exact output columns (e.g., "return col_a, col_b"), you MUST select ONLY those columns.
+    - Do NOT rename columns unless explicitly requested (e.g., "col_a AS alias_a").
+    - Do NOT add extra columns (e.g., do not include internal IDs like molregno unless requested).
+    - If the request implies a set of attributes, prioritize exact column names mentioned.
+  - PRESERVE REQUESTED SCHEMA: When the request asks for a known output schema, preserve the requested column names and do not collapse the query down to a smaller convenience projection.
+  </TASK>
+judge_task_template: |
+  <TASK>
+  You are a strict judge evaluating whether the result table returned from the SQL query answers the user's question truthfully and completely.
+  The user gave us a question UQ thas is listed below. For that question, we were to retrieve data from the ChEMBLdb chemistry database.
+  We dit it in two steps. 
+  Step 1: We wrote a User Prompt (UP) not shown in this message, a specification for what the sql should look like, given the User Question (UQ - passed below), and the database schema and other relevant information (passed in the System Prompt - SP).
+  Step 2: We wrote an Sql Query (SQL - below) given the User Prompt UP (not shown) from step 1, the User Question (UQ - below), and the System Prompt (SP) with the database schema etc.
+  Then we run the SQL on the ChEMBLdb database, and the query returns a table with results. We can retry multiple times by iterating.
+  In this turn, you are to judge whether the current result answers the user question truthfully and completely.
+  You MUST output a single JSON object on one line with keys:
+  - "analysis": string containing qualitative judgement + concrete improvement advice
+  - "score": float in [0,1]
+  - "decision": "YES" or "NO"
+  Constraints:
+  - If decision is YES then score MUST be >= {judge_score_threshold}
+  - If decision is NO then score MUST be < {judge_score_threshold}
+  - Output JSON ONLY (no markdown, no extra text, no code fences).
+  - Evaluate whether the result answers the user's question (UQ). Do NOT require SQL text in the result; the SQL is provided separately.
+  - The UP block is an internal prompt for the SQL-writer; it may contain meta-instructions. Do not treat it as the user's request.
+  - COLUMN FIDELITY CHECK: If the UQ specifies exact column names, the actual columns must match exactly. Missing requested columns or extra non-requested columns are significant errors.
+  IMPORTANT:
+  - The result block may be a summary with samples only, or it may include full rows.
+  - The result block will include a line `res_mode: sample` or `res_mode: full`.
+  - Do NOT assume missing rows are absent if `res_mode: sample`.
+  - When `res_mode: sample`, the full result exists locally but cannot fit in context; a subsample is shown by design.
+  - When `res_mode: sample`, focus on correctness and completeness of the query intent based on the sample and schema/SQL.
+  - Sample rows may truncate long fields for context; do NOT penalize truncation in the sample.
+  - If the SQL includes a LIMIT but neither UQ nor UP explicitly requests a row cap/top-N, decision MUST be NO and score MUST be < {judge_score_threshold}.
+  - Special case: if the result shows zero rows (row_count: 0), treat as failure and include BOTH of these statements verbatim in analysis:
+    1) The SQL returned no rows; there are zero rows in the result.
+    2) There is small probability that the user instructions are wrong resulting in no rows found - but far more likely: the LLM returned bad SQL, and it's almost certain that the SQL writing LLM got it very wrong, and we should retry, 99.9% probability.
+  Do NOT write SQL.
+  </TASK>

@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "Return the canonical SMILES and the standard activity data (type, relation, value, units) for every compound tested in the assay whose ChEMBL identifier is CHEMBL1614421. For each activity record include: standard_type, standard_relation, standard_value, standard_units, and the canonical SMILES of the compound. Include all activity records for that assay regardless of relation or units.",
+    "sql": "SELECT a.standard_type, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614421';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 49751,
+    "res_columns": [
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "For the assay with ChEMBL identifier CHEMBL1614421, retrieve all activity records. For each activity, provide the standard activity type (standard_type), the relation (standard_relation), the numeric value (standard_value), and the units (standard_units). Additionally, include the canonical SMILES of the tested compound by joining with the compound_structures table. Do not filter by relation, units, or activity type; include every activity record associated with this assay.",
+    "sql": "SELECT a.standard_type, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614421';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 49751,
+    "res_columns": [
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

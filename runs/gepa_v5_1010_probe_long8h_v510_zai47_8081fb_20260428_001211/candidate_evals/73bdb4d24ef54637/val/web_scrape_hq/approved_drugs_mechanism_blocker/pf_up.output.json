@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all approved drugs (max_phase = 4) with a mechanism of action classified as 'BLOCKER', including their chemical structures and associated target details.\n\n2. Output: Return the following columns: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.\n\n3. Source: Query molecule_dictionary, drug_mechanism, target_dictionary, and compound_structures.\n\n4. Logic: Filter molecule_dictionary for max_phase = 4. Join drug_mechanism on molregno. Filter drug_mechanism where action_type = 'BLOCKER'. Join target_dictionary on drug_mechanism.tid to retrieve target details. Join compound_structures on molregno to retrieve structure. Sort by chembl_id.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all approved drugs (max_phase = 4) with a mechanism of action classified as 'BLOCKER', including their chemical structures and associated target details.\n\n2. Output: Return the following columns: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.\n\n3. Source: Query molecule_dictionary, drug_mechanism, target_dictionary, and compound_structures.\n\n4. Logic: Filter molecule_dictionary for max_phase = 4. Join drug_mechanism on molregno. Filter drug_mechanism where action_type = 'BLOCKER'. Join target_dictionary on drug_mechanism.tid to retrieve target details. Join compound_structures on molregno to retrieve structure. Sort by chembl_id."
+    }
+  }
+}

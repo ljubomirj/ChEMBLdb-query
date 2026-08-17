@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity measurement rows that meet all of the following criteria:\n- Target: the single-protein target with ChEMBL ID CHEMBL3663 (Growth factor receptor-bound protein 2) from Homo sapiens (human). This means the target_dictionary.target_type must be 'SINGLE PROTEIN' and target_dictionary.organism must be 'Homo sapiens'.\n- Activity type: standard_type = 'IC50'.\n- Standard relation: exactly '=' (exact values only).\n- pChEMBL value (pchembl_value) is not null.\n\nFor each qualifying row, return the following columns:\n1. Assay ChEMBL ID (the chembl_id from the assays table)\n2. Target type (target_type from target_dictionary)\n3. Taxonomy ID (tax_id from target_dictionary)\n4. Canonical SMILES (canonical_smiles from compound_structures)\n5. Molecule ChEMBL ID (chembl_id from molecule_dictionary)\n6. Standard type (standard_type from activities)\n7. pChEMBL value (pchembl_value from activities)\n\nOrder the results by molecule ChEMBL ID (ascending) and assay ChEMBL ID (ascending). Limit the output to 1000 rows (the first 1000 in that order).",
+    "sql": "SELECT ass.chembl_id AS \"Assay ChEMBL ID\", td.target_type AS \"Target type\", td.tax_id AS \"Taxonomy ID\", cs.canonical_smiles AS \"Canonical SMILES\", md.chembl_id AS \"Molecule ChEMBL ID\", a.standard_type AS \"Standard type\", a.pchembl_value AS \"pChEMBL value\" FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary md ON a.molregno = md.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL3663' AND td.target_type = 'SINGLE PROTEIN' AND td.organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 273,
+    "res_columns": [
+      "Assay ChEMBL ID",
+      "Target type",
+      "Taxonomy ID",
+      "Canonical SMILES",
+      "Molecule ChEMBL ID",
+      "Standard type",
+      "pChEMBL value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

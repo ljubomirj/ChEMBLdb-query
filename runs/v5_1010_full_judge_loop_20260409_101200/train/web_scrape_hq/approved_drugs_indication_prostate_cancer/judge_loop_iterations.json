@@ -1,0 +1,21 @@
+[
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for prostate cancer. For each drug, provide the ChEMBL ID, the preferred name, the canonical SMILES, and the indication details (mesh_heading and efo_term). An approved drug is defined as having max_phase = 4. The results should be distinct rows for each drug-indication pair.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.mesh_heading,\n  di.efo_term\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4 AND di.mesh_heading = 'Prostatic Neoplasms';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 326,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

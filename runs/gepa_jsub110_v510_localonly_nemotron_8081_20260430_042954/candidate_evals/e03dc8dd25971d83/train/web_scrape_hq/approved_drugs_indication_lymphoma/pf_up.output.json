@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_lymphoma.json",
+  "case_id": "approved_drugs_indication_lymphoma",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "{\n  \"Select\": [\n    \"molecule_dictionary.chembl_id AS chembl_id\",\n    \"molecule_dictionary.pref_name AS name\",\n    \"compound_structures.canonical_smiles AS structure\",\n    \"drug_indication.efo_term AS indication_efo_term\",\n    \"drug_indication.mesh_heading AS indication_mesh_heading\"\n  ],\n  \"Source\": [\n    \"molecule_dictionary\",\n    \"compound_structures\",\n    \"drug_indication\"\n  ],\n  \"Join\": [\n    \"molecule_dictionary.molregno = compound_structures.molregno\",\n    \"molecule_dictionary.molregno = drug_indication.molregno\"\n  ],\n  \"Filter\": [\n    \"molecule_dictionary.therapeutic_flag = 1\",\n    \"AND (LOWER(drug_indication.efo_term) LIKE '%lymphoma%' OR LOWER(drug_indication.mesh_heading) LIKE '%lymphoma%')\"\n  ],\n  \"Sort\": [\n    \"chembl_id ASC\"\n  ],\n  \"Limit\": null\n}"
+}

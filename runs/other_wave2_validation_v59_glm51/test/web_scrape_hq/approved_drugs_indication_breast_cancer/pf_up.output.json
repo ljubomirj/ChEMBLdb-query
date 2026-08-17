@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_breast_cancer.json",
+  "case_id": "approved_drugs_indication_breast_cancer",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs indicated for breast cancer. Filter drug_indication where max_phase_for_ind = 4 and the indication label contains 'breast cancer'. Join drug_indication to molecule_dictionary on molregno for chembl_id and pref_name. Join molecule_dictionary to compound_structures on molregno as INNER JOIN for canonical_smiles. Return columns: chembl_id, pref_name, canonical_smiles, indication_curie (from drug_indication.efo_id), indication_label (from drug_indication.efo_term), max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs indicated for breast cancer. Filter drug_indication where max_phase_for_ind = 4 and the indication label contains 'breast cancer'. Join drug_indication to molecule_dictionary on molregno for chembl_id and pref_name. Join molecule_dictionary to compound_structures on molregno as INNER JOIN for canonical_smiles. Return columns: chembl_id, pref_name, canonical_smiles, indication_curie (from drug_indication.efo_id), indication_label (from drug_indication.efo_term), max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

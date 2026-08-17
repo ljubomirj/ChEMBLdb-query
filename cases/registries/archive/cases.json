@@ -1,0 +1,91 @@
+[
+  {
+    "id": "kinase_after_2022_claude",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "sql_path": "tests/fixtures/claude/query_kinase_inhibitors.sql",
+    "csv_path": "tests/fixtures/claude/kinase_inhibitors_after_2022.csv",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "sort_keys": [
+      "chembl_id",
+      "target_name",
+      "publication_year",
+      "article_doi",
+      "ic50_value",
+      "smiles"
+    ],
+    "float_cols": ["ic50_value"],
+    "int_cols": ["publication_year"],
+    "metric_column_map": {
+      "smiles": "canonical_smiles",
+      "article_doi": "doi",
+      "publication_year": "year",
+      "target_name": "pref_name",
+      "ic50_value": "standard_value",
+      "ic50_units": "standard_units"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": ["article_doi"]
+    }
+  },
+  {
+    "id": "kinase_after_2022_gemini",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "sql_path": "tests/fixtures/gemini/gemini_query.sql",
+    "csv_path": "tests/fixtures/gemini/kinase_inhibitors_after_2022.csv",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "sort_keys": [
+      "target_chembl_id",
+      "activity_id",
+      "year",
+      "article_doi",
+      "ic50",
+      "canonical_smiles"
+    ],
+    "float_cols": ["ic50"],
+    "int_cols": ["year", "activity_id", "molregno"],
+    "metric_column_map": {
+      "article_doi": "doi",
+      "target_name": "pref_name",
+      "ic50": "standard_value",
+      "units": "standard_units"
+    },
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": ["article_doi"]
+    }
+  },
+  {
+    "id": "kinase_after_2022_human",
+    "uq": "get the smiles, chembl_id, target_name, publication year, article doi, and IC50 for all kinase inhibitors published after 2022",
+    "sql_path": "tests/fixtures/human/query_kinase_inhibitors.sql",
+    "csv_path": "tests/fixtures/human/kinase_inhibitors_after_2022.csv",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "sort_keys": [
+      "target_chembl_id",
+      "activity_id",
+      "year",
+      "doi",
+      "standard_value",
+      "canonical_smiles"
+    ],
+    "float_cols": ["standard_value"],
+    "int_cols": ["year", "activity_id", "molregno"],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": ["doi"]
+    },
+    "temp_table": {
+      "name": "tmp_ids",
+      "schema": "chembl_id TEXT",
+      "source": {
+        "type": "chembl_uniprot_mapping",
+        "uniprot_csv": "tests/fixtures/human/kinase_uniprot.csv",
+        "mapping_tsv": "tests/fixtures/human/chembl_uniprot_mapping.txt"
+      }
+    }
+  }
+]

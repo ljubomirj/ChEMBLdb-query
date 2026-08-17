@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_c343cda18ba2942c.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_structures.json",
+  "case_id": "leelasd_approved_drugs_with_structures",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "c343cda18ba2942c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval. Join molecule_dictionary to compound_records as an inner join to enforce the at-least-one-record requirement. Left join compound_structures to include canonical_smiles for molecules that have structures while retaining those without. Filter molecule_dictionary where max_phase is 3 or 4. Sort by molecule_chembl_id, canonical_smiles, max_phase, and first_approval.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval. Join molecule_dictionary to compound_records as an inner join to enforce the at-least-one-record requirement. Left join compound_structures to include canonical_smiles for molecules that have structures while retaining those without. Filter molecule_dictionary where max_phase is 3 or 4. Sort by molecule_chembl_id, canonical_smiles, max_phase, and first_approval."
+    }
+  }
+}

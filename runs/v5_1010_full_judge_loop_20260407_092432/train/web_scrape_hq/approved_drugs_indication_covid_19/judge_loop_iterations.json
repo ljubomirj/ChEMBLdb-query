@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of approved drugs that have an indication for COVID-19. Include the drug name and the indication term.",
+    "sql": "SELECT DISTINCT md.pref_name, di.efo_term AS indication_term FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND (di.efo_term LIKE '%COVID-19%' OR di.mesh_heading LIKE '%COVID-19%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 290,
+    "res_columns": [
+      "pref_name",
+      "indication_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,7 @@
+1. Objective: Retrieve IC50 bioactivity details for ALOGLIPTIN (CHEMBL376359) and all its salts against Dipeptidyl peptidase 4 (CHEMBL284), including the parent compound and all related salts via molecule_hierarchy parent mapping.
+
+2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary.
+
+4. Logic: Filter molecule_dictionary for CHEMBL376359. Join molecule_hierarchy on parent_molregno to retrieve all salts, then join back to molecule_dictionary for child records. Join compound_structures on molregno to obtain canonical_smiles. Join compound_records on molregno, then activities on record_id, and docs on doc_id. Join assays on assay_id and target_dictionary on tid. Filter target_dictionary.chembl_id = 'CHEMBL284' and activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Return all matching rows without limit.

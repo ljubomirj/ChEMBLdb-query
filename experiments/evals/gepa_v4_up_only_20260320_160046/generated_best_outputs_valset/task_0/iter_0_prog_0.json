@@ -1,0 +1,40 @@
+[
+    0.9602941176470586,
+    {
+        "current_candidate": "<TASK>\nYou are a prompt writer that crafts a single improved User Prompt (UP) for a Text-to-SQL model.\nThe user gave you a User Question UQ thas is listed below. For that user question UQ, we are to retrieve data from the ChEMBLdb chemistry database.\nWe will do it in two steps.\nStep 1 (this one): Write a User Prompt (UP), given the User Question (UQ) passed below, and the database schema and other relevant information passed in the System Prompt (SP).\nStep 2 (next one): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP) with the database schema etc.\nNow in this turn we are doing step 1. It's best if we do it now. But if we fail, we will retry in later iterations.\nRules:\n- Output ONLY a single JSON object on one line (no markdown, no code fences).\n- Required key: \"up\" (string). This is the user prompt that will be passed to the SQL-writer.\n- Optional keys (use when helpful): \"targets\", \"output_columns\", \"filters\", \"ranking\", \"notes\".\n- The \"up\" string must be explicit about:\n  + target definitions (e.g., target types, organism, protein family constraints)\n  + required output columns and their required aliases (if UQ specifies column names, they MUST be preserved in SELECT output)\n  + filters, units, and date ranges\n  + whether results should be ranked and any top-N; but do not add limits to the number of rows yourself, if the UQ does not request itself; do not mistake any number in the UQ as a number of rows to be returned\n- Do NOT ask for SQL or mention SQL output; describe the desired data/results only.\n- Follow FILTER_PROFILE guidance when provided.\n- Use prior judge advice from the latest history block when present.\n- STRICT COLUMN PROJECTION: If the User Question specifies exact column names (e.g., \"return col_a, col_b\"), the User Prompt MUST explicitly instruct the SQL-writer to select ONLY those columns with EXACTLY those names in the final output. Do not add extra columns, rename columns, or omit requested columns.\n</TASK>"
+    },
+    {
+        "case_id": "baoilleach_human_cgmp_target_descriptions",
+        "corpus": "web_scrape_hq",
+        "uq": "List distinct human target descriptions whose description starts with cGMP. Return exactly one column only, named target_description.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt",
+        "generated_sql": "SELECT DISTINCT pref_name AS target_description FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name LIKE 'cGMP%'",
+        "judge_text": null,
+        "expected_rows": 6,
+        "actual_rows": 6,
+        "expected_cols": [
+            "target_description"
+        ],
+        "actual_cols": [
+            "target_description"
+        ],
+        "missing_cols": [],
+        "extra_cols": [],
+        "status": "pass",
+        "score": 0.960294,
+        "generated_up": "List distinct human target descriptions where the description starts with 'cGMP'. Return exactly one column only, named target_description.",
+        "base_score": 1.0,
+        "up_echo_ratio": 0.963235,
+        "up_echo_penalty": 0.039706,
+        "adjusted_score": 0.960294,
+        "scores": {
+            "result_score": 1.0,
+            "up_non_echo_score": 0.960294
+        },
+        "log": "{\"case_id\": \"baoilleach_human_cgmp_target_descriptions\", \"corpus\": \"web_scrape_hq\", \"uq\": \"List distinct human target descriptions whose description starts with cGMP. Return exactly one column only, named target_description.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt\", \"generated_sql\": \"SELECT DISTINCT pref_name AS target_description FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name LIKE 'cGMP%'\", \"judge_text\": null, \"expected_rows\": 6, \"actual_rows\": 6, \"expected_cols\": [\"target_description\"], \"actual_cols\": [\"target_description\"], \"missing_cols\": [], \"extra_cols\": [], \"status\": \"pass\", \"score\": 0.960294, \"generated_up\": \"List distinct human target descriptions where the description starts with 'cGMP'. Return exactly one column only, named target_description.\", \"base_score\": 1.0, \"up_echo_ratio\": 0.963235, \"up_echo_penalty\": 0.039706, \"adjusted_score\": 0.960294, \"scores\": {\"result_score\": 1.0, \"up_non_echo_score\": 0.960294}}\n"
+    }
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for compounds that have been tested against human Cytochrome P450 2D6 (CHEMBL289). The target is defined as the protein CHEMBL289 in the target_dictionary. Return one row per compound with the fields: chembl_id_chembl_id and canonical_smiles. No additional filters (e.g., assay type, activity type, date range) are required beyond that the activity must be associated with an assay that tests this target. Do not filter out any records based on activity values, standard units, or activity relationships. The query should join activities to assays, then to target_dictionary to confirm the target is CHEMBL289, and finally to compound_structures to obtain the canonical SMILES. The results should include all qualifying compounds regardless of the assay format or activity data completeness.",
+    "sql": "SELECT DISTINCT d.chembl_id AS chembl_id_chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: d.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: d.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier and its canonical SMILES. Confirm the target by matching target_dictionary.pref_name = 'Cytochrome P450 2D6' and target_dictionary.chembl_id = 'CHEMBL289'. Include activity rows that are linked to an assay (via activities.assay_id = assays.assay_id) and have at least one associated structure (via molecule_dictionary.molregno = compound_structures.molregno). No additional restrictions on activity types, units, dates, or assay formats are required.",
+    "sql": "WITH compounds AS (\n  SELECT md.molregno\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\n  WHERE td.chembl_id = 'CHEMBL289'\n  GROUP BY md.molregno\n)\nSELECT cs.chembl_id AS chembl_id_chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM compound_structures cs\nJOIN compounds c ON c.molregno = cs.molregno\nORDER BY cs.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL ID (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the compound link uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, or units are required. Each result row must be distinct.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id_chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find all compounds tested in assays that target human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the join uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "WITH comps AS (\n  SELECT a.molecule_chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL289'\n)\nSELECT md.chembl_id AS chembl_id, cs.canonical_smiles\nFROM comps c\nJOIN molecule_dictionary md ON c.molecule_chembl_id = md.chembl_id\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nGROUP BY md.chembl_id, cs.canonical_smiles\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find all compounds tested in assays that target human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the join uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "WITH comp AS ( SELECT DISTINCT a.molecule_chembl_id AS molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL289' ) SELECT md.chembl_id AS chembl_id, cs.canonical_smiles FROM comp c JOIN molecule_dictionary md ON c.molecule_chembl_id = md.chembl_id JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (using molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the compound link uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "WITH comp AS (SELECT DISTINCT a.molecule_chembl_id AS molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL289') SELECT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM comp c JOIN molecule_dictionary md ON c.molecule_chembl_id = md.chembl_id JOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the compound link uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the compound link uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 27662,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Find all compounds tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the join uses activities.molecule_chembl_id = molecule_dictionary.chembl_id. No additional filters on assay type, activity type, dates, units, or activity values are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "WITH compound_list AS (\n  SELECT DISTINCT a.molecule_chembl_id AS chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL289'\n)\nSELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM compound_list cl\nJOIN molecule_dictionary md ON cl.chembl_id = md.chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Find all compounds that have been tested in assays targeting human Cytochrome P450 2D6 (CHEMBL289). Return each compound\u2019s ChEMBL identifier (using the molecule_dictionary.chembl_id column) and its canonical SMILES (from compound_structures.canonical_smiles). Confirm the target by joining activities \u2192 assays \u2192 target_dictionary and filtering target_dictionary.chembl_id = 'CHEMBL289'. Ensure the join uses activities.molecule_chembl_id = molecule_dictionary.chembl_id (or activities.molregno = molecule_dictionary.molregno). No additional filters on assay type, activity type, dates, units, activity relationships, or document types are required. Return one row per distinct compound with the exact column names: chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL289'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 27662,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

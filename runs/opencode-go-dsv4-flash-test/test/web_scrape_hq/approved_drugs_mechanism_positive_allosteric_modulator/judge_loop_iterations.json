@@ -1,0 +1,67 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of approved drugs (those in molecule_dictionary with max_phase = 4) whose mechanism of action is recorded as 'POSITIVE ALLOSTERIC MODULATOR' in the drug_mechanism table (action_type = 'POSITIVE ALLOSTERIC MODULATOR'). For each such drug\u2013target pair, output the following columns: drug ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), target ChEMBL ID (target_dictionary.chembl_id), target name (target_dictionary.pref_name), target organism (target_dictionary.organism), action type (drug_mechanism.action_type), mechanism of action description (drug_mechanism.mechanism_of_action), and the canonical SMILES of the drug (compound_structures.canonical_smiles). If a drug has multiple approved mechanisms of this type, one row per target should be included. Do not limit the number of rows; return all matching records. Use LEFT JOIN for compound_structures so that drugs without a structure representation are still listed.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism, dm.action_type, dm.mechanism_of_action, cs.canonical_smiles FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'POSITIVE ALLOSTERIC MODULATOR';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n28 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 51,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "target_chembl_id",
+      "target_name",
+      "target_organism",
+      "action_type",
+      "mechanism_of_action",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs (those that have reached clinical phase 4) that have a mechanism of action recorded as a positive allosteric modulator. For each such drug, provide the drug's ChEMBL identifier, drug name, and canonical SMILES structure. Also include the target information associated with that mechanism: the target's ChEMBL identifier, target name, target organism, and the mechanism of action description. If a drug has multiple positive allosteric modulator mechanisms, list each one as a separate row. Include all matching records, including drugs whose canonical SMILES may not be available. Do not limit the output row count.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, cs.canonical_smiles, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism, dm.mechanism_of_action FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'POSITIVE ALLOSTERIC MODULATOR';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n28 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 51,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "canonical_smiles",
+      "target_chembl_id",
+      "target_name",
+      "target_organism",
+      "mechanism_of_action"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve a list of all approved drugs (molecule_dictionary.max_phase = 4) whose mechanism of action is a positive allosteric modulator (drug_mechanism.action_type = 'POSITIVE ALLOSTERIC MODULATOR'). For each such drug\u2013target pair, return the following columns: drug ChEMBL identifier, drug name, canonical SMILES, target ChEMBL identifier, target name, target organism, action type, and mechanism of action description. Include all matching records; do not limit the number of rows. Use LEFT JOIN for compound_structures so that drugs without a structure are still included. If a drug has multiple positive allosteric modulator mechanisms for different targets, each should result in a separate row.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, cs.canonical_smiles, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism, dm.action_type, dm.mechanism_of_action FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'POSITIVE ALLOSTERIC MODULATOR';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n28 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 51,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "canonical_smiles",
+      "target_chembl_id",
+      "target_name",
+      "target_organism",
+      "action_type",
+      "mechanism_of_action"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

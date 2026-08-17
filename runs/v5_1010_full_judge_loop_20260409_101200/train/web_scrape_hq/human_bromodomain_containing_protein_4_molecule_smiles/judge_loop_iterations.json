@@ -1,0 +1,70 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds (including their ChEMBL IDs and canonical SMILES) that have at least one activity record (any type) for assays that target 'Bromodomain-containing protein 4' (BRD4) in Homo sapiens (human). Return the results ordered by the ChEMBL ID. The target is a single protein; no restrictions on assay type, organims, confidence score, or other assay descriptors. No additional document-level filters are needed. No limits on the number of rows are requested in the user question; the user explicitly asked for ordering but not for a specific row count. Return exactly the two columns 'chembl_id' and 'canonical_smiles' for the molecules that meet the target and assay criteria, and ensure each row is unique (i.e., deduplicate on molecule). The user requested ordering by ChEMBL ID in ascending order.",
+    "sql": "WITH BRD4_TID AS (\n  SELECT tid\n  FROM target_dictionary\n  WHERE pref_name = 'Bromodomain-containing protein 4'\n    AND tax_id = 9606\n    AND target_type = 'SINGLE PROTEIN'\n),\n  HUMAN_ASSAYS AS (\n  SELECT assay_id\n  FROM assays\n  WHERE tid IN (SELECT tid FROM BRD4_TID)\n    AND assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT\n  md.chembl_id AS chembl_id,\n  cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN HUMAN_ASSAYS ha ON a.assay_id = ha.assay_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all molecules (including their ChEMBL IDs and canonical SMILES) that have at least one activity record (any type) for assays that target 'Bromodomain-containing protein 4' (BRD4) in Homo sapiens (human). Return the results ordered by the ChEMBL ID in ascending order. For each qualifying molecule, retrieve the ChEMBL ID (`chembl_id`) from the molecule_dictionary table and the canonical SMILES (`canonical_smiles`) from the compound_structures table. Ensure that each molecule appears only once in the result (deduplicate on the ChEMBL ID) and that the final list is sorted by the ChEMBL ID.",
+    "sql": "WITH BRD4_TID AS ( SELECT tid FROM target_dictionary WHERE pref_name = 'Bromodomain-containing protein 4' AND tax_id = 9606 ), HUMAN_ASSAYS AS ( SELECT assay_id FROM assays WHERE tid IN (SELECT tid FROM BRD4_TID) AND assay_organism = 'Homo sapiens' ) SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN HUMAN_ASSAYS ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.chembl_id = md.chembl_id JOIN compound_structures cs ON a.chembl_id = cs.molecule_chembl_id ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all molecules (including their ChEMBL IDs and canonical SMILES) that have at least one activity record (any type) for assays that target 'Bromodomain-containing protein 4' (BRD4) in Homo sapiens (human). Return the results ordered by the ChEMBL ID in ascending order. For each qualifying molecule, retrieve the ChEMBL ID (`chembl_id`) from the molecule_dictionary table and the canonical SMILES (`canonical_smiles`) from the compound_structures table. Ensure that each molecule appears only once in the result (deduplicate on the ChEMBL ID) and that the final list is sorted by the ChEMBL ID.",
+    "sql": "WITH BRD4_TID AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Bromodomain-containing protein 4' AND tax_id = 9606), HUMAN_ASSAYS AS (SELECT assay_id FROM assays WHERE tid IN (SELECT tid FROM BRD4_TID) AND assay_organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN HUMAN_ASSAYS ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.chembl_id = md.chembl_id JOIN compound_structures cs ON a.chembl_id = cs.molecule_chembl_id ORDER BY md.chembl_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find all distinct molecules that have at least one activity record (any type) for assays targeting 'Bromodomain-containing protein 4' (BRD4) in Homo sapiens. Return exactly two columns: the molecule's ChEMBL ID (named 'chembl_id') and its canonical SMILES (named 'canonical_smiles'). Ensure each molecule appears only once in the result, and order the list by the ChEMBL ID in ascending order. No additional document filters or activity filters (such as activity type, relation, or units) should be applied; include all activity records regardless of activity type or value. The target must be the protein 'Bromodomain-containing protein 4' (from target_dictionary) with tax_id 9606 and target_type 'SINGLE PROTEIN' (or equivalent), and the assays must be for Homo sapiens (assay_organism = 'Homo sapiens'). No limits on the number of rows are requested; the user only asked for ordering, so the query should not impose its own limit. Return the columns as described, with no extra fields.",
+    "sql": "WITH brd4_tid AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Bromodomain-containing protein 4' AND tax_id = 9606 AND target_type = 'SINGLE PROTEIN'), human_assays AS (SELECT assay_id FROM assays WHERE tid IN (SELECT tid FROM brd4_tid) AND assay_organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN human_assays ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id ORDER BY md.chembl_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find all distinct molecules (including their ChEMBL IDs and canonical SMILES) that have at least one activity record (any type) for assays that target Bromodomain-containing protein 4 in Homo sapiens. Return exactly two columns: the molecule's ChEMBL ID (named 'chembl_id') and its canonical SMILES (named 'canonical_smiles'). Ensure each molecule appears only once in the result and order the list by the ChEMBL ID in ascending order. The target must be the protein 'Bromodomain-containing protein 4' (pref_name) with tax_id 9606 and target_type 'SINGLE PROTEIN', and the assays must be for Homo sapiens (assay_organism = 'Homo sapiens'). No activity filters (type, relation, units, etc.) should be applied, and no additional document filters (e.g., doc_type, DOI, year) should be used. The results should be ordered by chembl_id but not limited to a specific number of rows. The output columns must be exactly 'chembl_id' and 'canonical_smiles'.",
+    "sql": "WITH brd4_tid AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Bromodomain-containing protein 4' AND tax_id = 9606 AND target_type = 'SINGLE PROTEIN'), human_assays AS (SELECT assay_id FROM assays WHERE tid IN (SELECT tid FROM brd4_tid) AND assay_organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN human_assays ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno ORDER BY md.chembl_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n10 | 0 | 224 | SCAN assays\n15 | 0 | 0 | LIST SUBQUERY 2\n19 | 15 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n32 | 15 | 0 | CREATE BLOOM FILTER\n43 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n49 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n59 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n79 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n80 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 8250,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

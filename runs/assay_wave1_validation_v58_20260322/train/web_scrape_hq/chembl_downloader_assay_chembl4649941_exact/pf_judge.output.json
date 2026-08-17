@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649941_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649941_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request for exact activity values and canonical SMILES for compounds tested in assay CHEMBL4649941. The execution plan specified an INNER JOIN for compound_structures, which the SQL correctly implements. The filters for standard_value IS NOT NULL and standard_relation = '=' are correctly applied. The result set includes the requested columns (canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units) and returns 67,390 rows, which is a reasonable size for this assay. The sample rows show valid data with exact values and canonical SMILES. The query meets all requirements specified in the user question and execution plan.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request for exact activity values and canonical SMILES for compounds tested in assay CHEMBL4649941. The execution plan specified an INNER JOIN for compound_structures, which the SQL correctly implements. The filters for standard_value IS NOT NULL and standard_relation = '=' are correctly applied. The result set includes the requested columns (canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units) and returns 67,390 rows, which is a reasonable size for this assay. The sample rows show valid data with exact values and canonical SMILES. The query meets all requirements specified in the user question and execution plan.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649941_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649941_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649941_exact/pf_judge.generated_artifact_record.json"
+  }
+}

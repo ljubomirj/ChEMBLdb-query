@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_isocitrate_dehydrogenase_nadp_cytoplasmic.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_isocitrate_dehydrogenase_nadp_cytoplasmic",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compounds with IC50 measurements in nM against human Isocitrate dehydrogenase [NADP] cytoplasmic. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno to obtain canonical_smiles as an INNER JOIN. Join docs on activities.doc_id to obtain pubmed_id_or_doi. Join compound_records on activities.record_id to obtain compound_key. Filter by target_dictionary.pref_name = 'Isocitrate dehydrogenase [NADP] cytoplasmic' and target_dictionary.organism = 'Homo sapiens' and activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compounds with IC50 measurements in nM against human Isocitrate dehydrogenase [NADP] cytoplasmic. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno to obtain canonical_smiles as an INNER JOIN. Join docs on activities.doc_id to obtain pubmed_id_or_doi. Join compound_records on activities.record_id to obtain compound_key. Filter by target_dictionary.pref_name = 'Isocitrate dehydrogenase [NADP] cytoplasmic' and target_dictionary.organism = 'Homo sapiens' and activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

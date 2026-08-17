@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_b4877c25b1214c34.yaml",
+  "prompt_pack_version": "v5.15",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_adenosine_receptor_a1_molecule_smiles.json",
+  "case_id": "human_adenosine_receptor_a1_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b4877c25b1214c34",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select molecule_chembl_id aliased as compound_chembl_id and canonical_smiles from molecule_dictionary joined with activities on molregno, then with assays on assay_id, then with target_dictionary on tid, and finally with compound_structures on molregno. Filter to target_dictionary.pref_name matching 'adenosine A1 receptor' and assays.assay_organism matching 'Homo sapiens'. Return rows sorted by compound_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id aliased as compound_chembl_id and canonical_smiles from molecule_dictionary joined with activities on molregno, then with assays on assay_id, then with target_dictionary on tid, and finally with compound_structures on molregno. Filter to target_dictionary.pref_name matching 'adenosine A1 receptor' and assays.assay_organism matching 'Homo sapiens'. Return rows sorted by compound_chembl_id."
+    }
+  }
+}

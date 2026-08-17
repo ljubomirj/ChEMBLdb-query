@@ -1,0 +1,29 @@
+Objective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication.
+
+Output: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind
+
+Source: molecule_dictionary (parent compounds), drug_indication (indication details), compound_structures (canonical SMILES)
+
+Logic: 
+- Join molecule_dictionary to drug_indication on molregno = molregno
+- Join compound_structures on molregno = molregno
+- Filter molecule_dictionary.therapeutic_flag = 1
+- Filter drug_indication.max_phase_for_ind = 4
+- Filter drug_indication.efo_id = 'EFO:0000404' AND drug_indication.efo_term = 'infection'
+- Ensure molecule_dictionary.molregno is parent (not salt) by using molecule_hierarchy? Not needed as therapeutic_flag=1 and max_phase_for_ind=4 already target approved parent compounds. 
+- Use LEFT JOIN for compound_structures to include all approved drugs even if structure missing (but all should have). 
+- Select distinct rows to avoid duplicates from multiple indications (but infection is specific). 
+- Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind. 
+- Limit not required as per benchmark. 
+
+Note: Use drug_indication.efo_id = 'EFO:0000404' for precise infection indication. Do not use other indication labels. 
+
+Final UP: 
+Objective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication. 
+Output: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind 
+Source: molecule_dictionary, drug_indication, compound_structures 
+Logic: 
+- Join molecule_dictionary to drug_indication on molregno = molregno 
+- Join compound_structures on molregno = molregno 
+- Filter molecule_dictionary.therapeutic_flag = 1 
+- Filter drug_indication.max_phase_for_ind

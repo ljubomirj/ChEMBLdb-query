@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/sitagliptin_dpp4_ic50_salts.json",
+  "case_id": "sitagliptin_dpp4_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. Start from molecule_dictionary for CHEMBL1422 as parent. Join molecule_hierarchy on parent_molregno to include the parent row and all child salts. Join compound_records on molregno, then activities on record_id, then docs on doc_id for pubmed_id_or_doi (prefer pubmed_id, fallback to doi). Join assays on assay_id for assay_description. Join target_dictionary on tid for target_chembl_id, target_name, target_organism. Filter to standard_type IC50, standard_units nM, and target chembl_id CHEMBL284. Sort by all output columns. No row limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. Start from molecule_dictionary for CHEMBL1422 as parent. Join molecule_hierarchy on parent_molregno to include the parent row and all child salts. Join compound_records on molregno, then activities on record_id, then docs on doc_id for pubmed_id_or_doi (prefer pubmed_id, fallback to doi). Join assays on assay_id for assay_description. Join target_dictionary on tid for target_chembl_id, target_name, target_organism. Filter to standard_type IC50, standard_units nM, and target chembl_id CHEMBL284. Sort by all output columns. No row limit."
+    }
+  }
+}

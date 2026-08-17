@@ -1,0 +1,7 @@
+1. Objective: Extract assay and target metadata for binding assays (type 'B') against the hERG target (tid 165), including publication details.
+
+2. Output: assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi
+
+3. Source: assays, target_dictionary, docs
+
+4. Logic: Join assays to target_dictionary on assays.tid = target_dictionary.tid and to docs on assays.doc_id = docs.doc_id. Filter where assays.assay_type = 'B' and assays.tid = 165. Sort by assay_chembl_id, tid, journal, year, and doi.

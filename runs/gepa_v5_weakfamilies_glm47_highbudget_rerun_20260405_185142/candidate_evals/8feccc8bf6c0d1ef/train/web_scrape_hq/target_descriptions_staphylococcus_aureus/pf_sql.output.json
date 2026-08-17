@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_8feccc8bf6c0d1ef.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_staphylococcus_aureus.json",
+  "case_id": "target_descriptions_staphylococcus_aureus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "8feccc8bf6c0d1ef",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE a.assay_organism = 'Staphylococcus aureus'\nORDER BY td.pref_name\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE a.assay_organism = 'Staphylococcus aureus'\nORDER BY td.pref_name"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements the user request: it filters approved drugs (max_phase_for_ind = 4), requires non-null EFO identifier and label, joins compound_structures as an INNER JOIN to ensure canonical SMILES are present, and returns DISTINCT rows for exactly the six requested columns. The result set (6706 rows) and sample output match the specification. No iteration is needed.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements the user request: it filters approved drugs (max_phase_for_ind = 4), requires non-null EFO identifier and label, joins compound_structures as an INNER JOIN to ensure canonical SMILES are present, and returns DISTINCT rows for exactly the six requested columns. The result set (6706 rows) and sample output match the specification. No iteration is needed.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.generated_artifact_record.json"
+  }
+}

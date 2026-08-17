@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/rofecoxib_ptgs2_ic50_salts.json",
+  "case_id": "rofecoxib_ptgs2_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  child.chembl_id AS compound_chembl_id,\\n  cs.canonical_smiles,\\n  r.compound_key AS compound_key,\\n  d.pubmed_id AS pubmed_id_or_doi,\\n  a.description AS assay_description,\\n  a.standard_type,\\n  a.standard_relation,\\n  a.standard_value,\\n  a.standard_units,\\n  a.activity_comment,\\n  t.chembl_id AS target_chembl_id,\\n  t.pref_name AS target_name,\\n  t.organism AS target_organism\\nFROM molecule_dictionary parent\\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\\nLEFT JOIN compound_structures cs ON cs.molregno = child.molregno\\nLEFT JOIN compound_records r ON child.molregno = r.molregno\\nLEFT JOIN docs d ON r.doc_id = d.doc_id\\nLEFT JOIN activities a ON r.record_id = a.record_id\\nLEFT JOIN assays ass ON a.assay_id = ass.assay_id\\nLEFT JOIN target_dictionary t ON ass.tid = t.tid\\nWHERE parent.chembl_id = 'CHEMBL122'\\n  AND a.standard_type = 'IC50'\\n  AND a.standard_relation = '='\\n  AND a.standard_value IS NOT NULL\\n  AND a.standard_units = 'nM'\\n  AND ass.tid = 230\\nORDER BY compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  child.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  r.compound_key AS compound_key,\n  d.pubmed_id AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units,\n  a.activity_comment,\n  t.chembl_id AS target_chembl_id,\n  t.pref_name AS target_name,\n  t.organism AS target_organism\nFROM molecule_dictionary parent\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = child.molregno\nLEFT JOIN compound_records r ON child.molregno = r.molregno\nLEFT JOIN docs d ON r.doc_id = d.doc_id\nLEFT JOIN activities a ON r.record_id = a.record_id\nLEFT JOIN assays ass ON a.assay_id = ass.assay_id\nLEFT JOIN target_dictionary t ON ass.tid = t.tid\nWHERE parent.chembl_id = 'CHEMBL122'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND a.standard_units = 'nM'\n  AND ass.tid = 230\nORDER BY compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism;"
+    }
+  }
+}

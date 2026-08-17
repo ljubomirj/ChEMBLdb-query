@@ -1,0 +1,70 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve ChEMBL IDs and canonical SMILES for compounds that have been tested against the human glycogen synthase kinase-3 beta target (CHEMBL262). The query should select the molecule_chembl_id from the target_dictionary (where chembl_id = 'CHEMBL262') as the target identifier, and join to the compound_structures table on molregno to obtain the canonical_smiles for each molecule. Ensure that the compounds are connected to activities that have a valid assay record (activities.molregno = compound_structures.molregno and activities.assay_id = assays.assay_id) and that the target_dictionary.tid matches the assay's tid. No additional filters, units, date ranges, or ranking specifications are required. Return the target identifier and canonical SMILES as the output columns.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL262') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM target t JOIN assays ass ON t.tid = ass.tid JOIN activities a ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE t.tid = ass.tid AND a.standard_type IS NOT NULL AND a.standard_value IS NOT NULL AND a.standard_units IS NOT NULL AND a.standard_relation IS NOT NULL AND a.type IN ('BINDING','FUNCTIONAL','ADME') ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List compounds that have been tested against human glycogen synthase kinase\u20113 beta (CHEMBL262) and return their ChEMBL IDs and canonical SMILES. Ensure the compounds are linked to assays that have a target with chembl_id = 'CHEMBL262'. Include only compounds that have a non\u2011null molecular structure in the compound_structures table. No additional filters, units, date ranges, ranking, or document constraints are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL262') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM target t JOIN assays ass ON t.tid = ass.tid JOIN activities a ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE t.tid = ass.tid AND a.standard_type IS NOT NULL AND a.standard_value IS NOT NULL AND a.standard_units IS NOT NULL AND a.standard_relation IS NOT NULL AND a.type IN ('BINDING','FUNCTIONAL','ADME') ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List compounds that have been tested against human glycogen synthase kinase\u20113 beta (CHEMBL262) and return their ChEMBL IDs and canonical SMILES. Ensure the compounds are linked to assays that have a target with chembl_id = 'CHEMBL262'. Include only compounds that have a non\u2011null molecular structure in the compound_structures table. No additional filters, units, date ranges, ranking, or document constraints are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL262' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List ChEMBL IDs (from molecule_dictionary.chembl_id) and canonical SMILES (from compound_structures.canonical_smiles) of compounds that have been tested in any assay where the target\u2019s chembl_id is 'CHEMBL262' (human glycogen synthase kinase\u20113 beta). Ensure each compound has a valid assay record (i.e., activities, assays) and that the compound\u2019s structure is present (compound_structures.molregno = molecule_dictionary.molregno). No additional filters on assay type, activity relation, units, date, confidence, or document source are required. Return exactly two columns: chembl_id and canonical_smiles.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL262') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM target t JOIN assays ass ON t.tid = ass.tid JOIN activities a ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE t.tid = ass.tid AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find ChEMBL IDs and canonical SMILES for compounds that have been tested against the human glycogen synthase kinase\u20113 beta target (CHEMBL262). Ensure each compound is linked to an assay whose target is the entry with chembl_id = 'CHEMBL262' and that the compound\u2019s structure is available in compound_structures. Return only two columns: chembl_id (the public ChEMBL identifier) and canonical_smiles (the canonical SMILES from compound_structures). No additional filters, units, date ranges, ranking, or document constraints are required.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL262') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM target t JOIN assays ass ON t.tid = ass.tid JOIN activities a ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE t.tid = ass.tid AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n26 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n31 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 11262,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.93,
+    "judge_decision": true
+  }
+]

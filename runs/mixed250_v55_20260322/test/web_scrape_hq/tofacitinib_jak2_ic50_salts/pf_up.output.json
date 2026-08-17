@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/tofacitinib_jak2_ic50_salts.json",
+  "case_id": "tofacitinib_jak2_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Define the compound set by filtering molecule_dictionary for CHEMBL221959 and joining molecule_hierarchy on parent_molregno to include all salts. Join compound_records on molregno, then activities on record_id, then docs on doc_id, then assays on assay_id, then target_dictionary on tid. Filter activities for standard_type IC50 and standard_units nM. Filter target_dictionary for chembl_id CHEMBL2971. Left join compound_structures to retrieve canonical_smiles. Do not limit rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Define the compound set by filtering molecule_dictionary for CHEMBL221959 and joining molecule_hierarchy on parent_molregno to include all salts. Join compound_records on molregno, then activities on record_id, then docs on doc_id, then assays on assay_id, then target_dictionary on tid. Filter activities for standard_type IC50 and standard_units nM. Filter target_dictionary for chembl_id CHEMBL2971. Left join compound_structures to retrieve canonical_smiles. Do not limit rows."
+    }
+  }
+}

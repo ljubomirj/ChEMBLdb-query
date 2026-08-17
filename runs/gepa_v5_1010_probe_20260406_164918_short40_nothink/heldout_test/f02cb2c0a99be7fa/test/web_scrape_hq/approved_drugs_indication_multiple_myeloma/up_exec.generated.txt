@@ -1,0 +1,7 @@
+Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, drug_indication.mesh_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind
+Join molecule_dictionary ON drug_indication.molregno = molecule_dictionary.molregno
+Left Join compound_structures ON molecule_dictionary.molregno = compound_structures.molregno
+Join drug_indication ON drug_indication.molregno = molecule_dictionary.molregno
+Filter drug_indication.mesh_heading = 'Multiple Myeloma'
+Filter molecule_dictionary.therapeutic_flag = 1
+Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind

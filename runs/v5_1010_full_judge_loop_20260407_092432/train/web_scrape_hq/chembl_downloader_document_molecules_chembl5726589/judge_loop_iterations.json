@@ -1,0 +1,47 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds directly cited in document CHEMBL5726589, returning for each compound its ChEMBL identifier (CHEMBL ID) and the standardized chemical structure (canonical SMILES). No activity values, target names, assay details, or document provenance fields are requested; exclude any compound that is not explicitly referenced in the specified document. Ensure only compounds with a defined canonical SMILES are returned.",
+    "sql": "SELECT DISTINCT c.chembl_id AS chembl_id, s.canonical_smiles FROM compounds c JOIN activity_records ar ON c.molregno = ar.molregno JOIN activity_parameters ap ON ar.activity_id = ap.activity_id WHERE ar.document_chembl_id = 'CHEMBL5726589' AND c.molregno IN (SELECT molregno FROM activity_records WHERE document_chembl_id = 'CHEMBL5726589') AND s.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compounds",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compounds",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds that appear in document CHEMBL5726589. For each compound, return its ChEMBL identifier (CHEMBL ID) and the canonical SMILES representation of its chemical structure. Only include compounds that have a non\u2011null canonical SMILES in the compound_structures table. No other filters, activity values, target names, or assay information are required.",
+    "sql": "WITH document_compounds AS ( SELECT DISTINCT a.molregno FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5726589') ) SELECT DISTINCT c.chembl_id AS chembl_id, cs.canonical_smiles FROM document_compounds dc JOIN molecule_dictionary c ON dc.molregno = c.molregno JOIN compound_structures cs ON c.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE document_compounds\n6 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n9 | 2 | 0 | SCALAR SUBQUERY 1\n14 | 9 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n33 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n40 | 0 | 65 | SCAN dc\n43 | 0 | 47 | SEARCH c USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 689,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules that are referenced in the publication document CHEMBL5726589. For each such molecule, return its public ChEMBL identifier (the value in molecule_dictionary.chembl_id) and its canonical SMILES string (from compound_structures.canonical_smiles). Include only molecules that have a non\u2011null canonical SMILES. No activity values, target names, assay details, or document provenance fields are requested; filter strictly to the given document and exclude any molecule without a SMILES.",
+    "sql": "WITH document_compounds AS (SELECT DISTINCT a.molregno FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5726589')) SELECT DISTINCT c.chembl_id AS chembl_id, s.canonical_smiles FROM document_compounds dc JOIN molecule_dictionary c ON dc.molregno = c.molregno JOIN compound_structures s ON c.molregno = s.molregno WHERE s.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE document_compounds\n6 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n9 | 2 | 0 | SCALAR SUBQUERY 1\n14 | 9 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n33 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n40 | 0 | 65 | SCAN dc\n43 | 0 | 47 | SEARCH c USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n50 | 0 | 47 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 689,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

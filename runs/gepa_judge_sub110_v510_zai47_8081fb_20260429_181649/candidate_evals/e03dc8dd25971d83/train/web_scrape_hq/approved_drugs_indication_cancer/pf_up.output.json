@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_cancer.json",
+  "case_id": "approved_drugs_indication_cancer",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "Select: [chembl_id, pref_name, canonical_smiles, indication_mesh_id, indication_mesh_heading, indication_efo_id, indication_efo_term]\nSource: [molecule_dictionary, drug_indication, compound_structures]\nJoin: [molecule_dictionary.molregno = drug_indication.molregno, molecule_dictionary.molregno = compound_structures.molregno]\nFilter: [drug_indication.mesh_heading = 'Cancer', molecule_dictionary.therapeutic_flag = 1]\nSort: [pref_name ASC]\nLimit: [None]"
+}

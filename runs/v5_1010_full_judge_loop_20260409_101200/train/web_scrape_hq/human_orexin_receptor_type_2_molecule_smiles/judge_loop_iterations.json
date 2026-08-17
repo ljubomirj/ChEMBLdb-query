@@ -1,0 +1,58 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct canonical SMILES for compounds tested in human assays targeting the human Orexin receptor type 2 (chembl_id=CHEMBL4792). Include both the molecule's chembl_id and pref_name (preferred name). Filter activities to those with a measured IC50 value reported in nM (standard_type='IC50', standard_units='nM', standard_value IS NOT NULL). Exclude rows where canonical_smiles is null or standard_value is null. Ensure the assay is performed on a human organism (assays.assay_organism = 'Homo sapiens'). Join activities to assays via assay_id, assays to target_dictionary via tid, and molecule_structures to retrieve the canonical SMILES via molecule_chembl_id. The result should show each qualifying compound's chembl_id, preferred name, and canonical SMILES exactly once (use SELECT DISTINCT on these three columns).",
+    "sql": "WITH target_info AS (\n    SELECT tid, pref_name, organism AS assay_organism FROM target_dictionary WHERE pref_name = 'Orexin receptor type 2' AND chembl_id = 'CHEMBL4792' AND target_type = 'SINGLE PROTEIN' AND tax_id = 9606\n), human_assays AS (\n    SELECT a.assay_id, a.molecule_chembl_id, a.activity_id FROM activities a JOIN target_info t ON a.assay_id IN (SELECT assay_id FROM assays WHERE tid = t.tid AND assay_organism = 'Homo sapiens') WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL\n)\nSELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles FROM human_assays ha JOIN molecule_dictionary md ON ha.molecule_chembl_id = md.molecule_chembl_id JOIN molecule_structures cs ON ha.molecule_chembl_id = cs.molecule_chembl_id WHERE cs.canonical_smiles IS NOT NULL AND ha.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: molecule_structures",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: molecule_structures",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find distinct compounds that have canonical SMILES and are tested in human assays targeting the human Orexin receptor type 2 (CHEMBL4792). Return the compound's CHEMBL ID, preferred name, and canonical SMILES. Filter for activities where the assay is performed on a human organism (assays.assay_organism = 'Homo sapiens') and the activity is an IC50 value with units in nM (standard_type = 'IC50', standard_units = 'nM', standard_value IS NOT NULL). Ensure the target is exactly the human Orexin receptor type 2 (target_dictionary.chembl_id = 'CHEMBL4792', target_dictionary.pref_name = 'Orexin receptor type 2', target_dictionary.tax_id = 9606, and target_dictionary.target_type = 'SINGLE PROTEIN'). Join activities to assays via assay_id, assays to target_dictionary via tid, and compound_structures to retrieve the canonical SMILES via molecule_chembl_id. Return each qualifying compound once only (SELECT DISTINCT).",
+    "sql": "SELECT DISTINCT m.molecule_chembl_id AS molecule_chembl_id, m.pref_name, s.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molecule_chembl_id = m.molecule_chembl_id JOIN compound_structures s ON a.molecule_chembl_id = s.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL4792' AND td.pref_name = 'Orexin receptor type 2' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND s.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: m.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: m.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find distinct compounds that have canonical SMILES and are tested in human assays targeting the human Orexin receptor type 2 (CHEMBL4792). Return the compound's CHEMBL ID, preferred name, and canonical SMILES. Filter for activities where the assay is performed on a human organism (assays.assay_organism = 'Homo sapiens') and the activity is an IC50 value with units in nM (standard_type = 'IC50', standard_units = 'nM', standard_value IS NOT NULL). Ensure the target is exactly the human Orexin receptor type 2 (target_dictionary.chembl_id = 'CHEMBL4792', target_dictionary.pref_name = 'Orexin receptor type 2', target_dictionary.tax_id = 9606, and target_dictionary.target_type = 'SINGLE PROTEIN'). Join activities to assays via assay_id, assays to target_dictionary via tid, and compound_structures to retrieve the canonical SMILES via molecule_chembl_id. Return each qualifying compound once only (SELECT DISTINCT).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL4792' AND td.pref_name = 'Orexin receptor type 2' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find distinct compounds that have canonical SMILES and are tested in human assays targeting the human Orexin receptor type 2 (CHEMBL4792). Return the compound's CHEMBL ID, preferred name, and canonical SMILES. Filter for activities where the assay is performed on a human organism (assays.assay_organism = 'Homo sapiens') and the activity is an IC50 value with units in nM (standard_type = 'IC50', standard_units = 'nM', standard_value IS NOT NULL). Ensure the target is exactly the human Orexin receptor type 2 (target_dictionary.chembl_id = 'CHEMBL4792', target_dictionary.pref_name = 'Orexin receptor type 2', target_dictionary.tax_id = 9606, and target_dictionary.target_type = 'SINGLE PROTEIN'). Join activities to assays via assay_id, assays to target_dictionary via tid, and compound_structures to retrieve the canonical SMILES via molecule_chembl_id. Return each qualifying compound once only (SELECT DISTINCT).",
+    "sql": "WITH human_target AS ( SELECT tid, pref_name, tax_id, target_type FROM target_dictionary WHERE chembl_id = 'CHEMBL4792' AND pref_name = 'Orexin receptor type 2' AND tax_id = 9606 AND target_type = 'SINGLE PROTEIN' ) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN human_target ht ON ass.tid = ht.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n23 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n43 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n50 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5240,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_a181d65fcd19d05e.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/drug_indications_max_phase_4.json",
+  "case_id": "drug_indications_max_phase_4",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "a181d65fcd19d05e",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all approved drug indications, specifically for drugs that have reached Phase 4 (approved). Return the drug identifier, name, indication details (MeSH and EFO), and the maximum phase for the indication.\n\n2. Output: chembl_id, pref_name, mesh_id, mesh_heading, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind\n\n3. Source: molecule_dictionary, drug_indication\n\n4. Logic: Join molecule_dictionary to drug_indication using molregno. Filter records where max_phase_for_ind equals 4. Sort the results by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, and max_phase_for_ind.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all approved drug indications, specifically for drugs that have reached Phase 4 (approved). Return the drug identifier, name, indication details (MeSH and EFO), and the maximum phase for the indication.\n\n2. Output: chembl_id, pref_name, mesh_id, mesh_heading, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind\n\n3. Source: molecule_dictionary, drug_indication\n\n4. Logic: Join molecule_dictionary to drug_indication using molregno. Filter records where max_phase_for_ind equals 4. Sort the results by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

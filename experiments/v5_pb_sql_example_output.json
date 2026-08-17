@@ -1,0 +1,23 @@
+{
+  "mode": "backward",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/doc/examples/v5_case_example/case_manifest.json",
+  "prompt_pack_version": "v5.0",
+  "case_id": "example_mapk14_target_pchembl",
+  "family": "target_pchembl",
+  "selected_step": "sql_to_up",
+  "backward_steps": [
+    "sql_to_up",
+    "up_to_uq",
+    "res_sql_to_intent"
+  ],
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up_exec\": \"For human single-protein target CHEMBL260, return all exact IC50 activities that have a pChemBL value. Include assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChemBL value. Sort by molecule ChEMBL ID then assay ChEMBL ID ascending.\"}\n```",
+    "parsed_json": {
+      "up_exec": "For human single-protein target CHEMBL260, return all exact IC50 activities that have a pChemBL value. Include assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChemBL value. Sort by molecule ChEMBL ID then assay ChEMBL ID ascending."
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl5729701.json",
+  "case_id": "chembl_downloader_document_molecules_chembl5729701",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles as canonical_smiles\",\n    \"From molecule_dictionary\",\n    \"Join compound_records on molecule_dictionary.molregno = compound_records.molregno\",\n    \"Join docs on compound_records.doc_id = docs.doc_id\",\n    \"Join activities on compound_records.record_id = activities.record_id\",\n    \"Join assays on activities.assay_id = assays.assay_id\",\n    \"Join target_dictionary on assays.tid = target_dictionary.tid\",\n    \"Filter docs.chembl_id = 'CHEMBL5729701'\",\n    \"Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\",\n    \"Return\",\n    \"Sort by chembl_id, compound_name, canonical_smiles\",\n    \"Limit 0\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles as canonical_smiles",
+        "From molecule_dictionary",
+        "Join compound_records on molecule_dictionary.molregno = compound_records.molregno",
+        "Join docs on compound_records.doc_id = docs.doc_id",
+        "Join activities on compound_records.record_id = activities.record_id",
+        "Join assays on activities.assay_id = assays.assay_id",
+        "Join target_dictionary on assays.tid = target_dictionary.tid",
+        "Filter docs.chembl_id = 'CHEMBL5729701'",
+        "Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno",
+        "Return",
+        "Sort by chembl_id, compound_name, canonical_smiles",
+        "Limit 0"
+      ]
+    }
+  }
+}

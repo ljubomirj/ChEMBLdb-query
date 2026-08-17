@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_infection.json",
+  "case_id": "approved_drugs_indication_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "```sql\nSELECT DISTINCT\n    md.chembl_id AS chembl_id,\n    md.pref_name AS pref_name,\n    cs.canonical_smiles AS canonical_smiles,\n    di.efo_id AS indication_curie,\n    di.efo_term AS indication_label,\n    di.max_phase_for_ind AS max_phase_for_ind\nFROM molecule_dictionary md\nINNER JOIN drug_indication di\n    ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs\n    ON md.molregno = cs.molregno\nWHERE md.therapeutic_flag = 1\n  AND di.max_phase_for_ind = 4\n  AND di.efo_id = 'EFO:0000404'\n  AND di.efo_term = 'infection'\nORDER BY\n    chembl_id,\n    pref_name,\n    canonical_smiles,\n    indication_curie,\n    indication_label,\n    max_phase_for_ind;\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n    md.chembl_id AS chembl_id,\n    md.pref_name AS pref_name,\n    cs.canonical_smiles AS canonical_smiles,\n    di.efo_id AS indication_curie,\n    di.efo_term AS indication_label,\n    di.max_phase_for_ind AS max_phase_for_ind\nFROM molecule_dictionary md\nINNER JOIN drug_indication di\n    ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs\n    ON md.molregno = cs.molregno\nWHERE md.therapeutic_flag = 1\n  AND di.max_phase_for_ind = 4\n  AND di.efo_id = 'EFO:0000404'\n  AND di.efo_term = 'infection'\nORDER BY\n    chembl_id,\n    pref_name,\n    canonical_smiles,\n    indication_curie,\n    indication_label,\n    max_phase_for_ind;"
+    }
+  }
+}

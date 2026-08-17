@@ -1,0 +1,66 @@
+{
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/train/web_scrape_hq/approved_drugs_indication_prostate_cancer/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/train/web_scrape_hq/approved_drugs_indication_prostate_cancer/result.generated.csv",
+    "row_count": 326,
+    "column_names": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 240,
+    "actual_rows": 326,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "missing_cols": [
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "extra_cols": [
+      "mesh_heading",
+      "efo_term"
+    ],
+    "status": "partial",
+    "score": 0.594479,
+    "column_recall": 0.5,
+    "row_ratio": 0.736196
+  },
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_id": "approved_drugs_indication_prostate_cancer",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "judge_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Return the distinct compounds that have been tested in any assay against the human target Isocitrate dehydrogenase [NADP] cytoplasmic (ChEMBL ID: CHEMBL2007625). For each compound, provide its ChEMBL identifier (from molecule_dictionary.chembl_id), its preferred name (if available), and its canonical SMILES (from compound_structures.canonical_smiles). Restrict to assays that target this specific human protein (organism Homo sapiens). No ranking or row limit is needed; include all qualifying compounds.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON a.tid = td.tid JOIN activities act ON act.assay_id = a.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2007625' AND td.organism = 'Homo sapiens';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n28 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n59 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 39617,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return the distinct compounds that have been tested against the human target Isocitrate dehydrogenase [NADP] cytoplasmic (ChEMBL ID CHEMBL2007625, organism Homo sapiens). For each compound, provide its ChEMBL identifier, its preferred name (if available), and its canonical SMILES. Include all compounds regardless of assay type, activity measure, or potency; do not restrict by confidence score or any other filter. Deduplicate so each compound appears once, and do not apply any row limit or ranking. If a compound lacks a canonical SMILES record, include it still with a NULL value for the structure.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles FROM target_dictionary td JOIN assays a ON a.tid = td.tid JOIN activities act ON act.assay_id = a.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2007625' AND td.organism = 'Homo sapiens';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n28 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n59 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 39617,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

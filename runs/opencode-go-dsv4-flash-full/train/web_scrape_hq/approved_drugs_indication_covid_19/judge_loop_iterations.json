@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (molecules with max_phase = 4 in molecule_dictionary) that have a COVID-19 indication, meaning a record in drug_indication where mesh_heading contains 'COVID-19' or efo_term contains 'COVID-19'. Return the drug name (pref_name) and ChEMBL ID (chembl_id), with duplicate rows removed.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%COVID-19%' OR di.efo_term LIKE '%COVID-19%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 279,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

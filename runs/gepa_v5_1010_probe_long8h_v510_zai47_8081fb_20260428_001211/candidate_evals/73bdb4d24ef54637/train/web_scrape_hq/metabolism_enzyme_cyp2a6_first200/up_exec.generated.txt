@@ -1,0 +1,7 @@
+1. Objective: Retrieve the first 200 metabolism records associated with the enzyme CYP2A6, including structural and provenance details for the substrate and parent compounds.
+
+2. Output: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+
+3. Source: metabolism, compound_structures, compound_records, molecule_dictionary
+
+4. Logic: Filter metabolism records where enzyme_name is 'CYP2A6'. Join metabolism to compound_structures via substrate_record_id to obtain canonical_smiles. Join metabolism to compound_records on substrate_record_id to retrieve the substrate compound name. Join metabolism to compound_records on drug_record_id to retrieve the parent compound name. Join compound_records to molecule_dictionary to map names. Sort the results by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Limit the output to the first 200 rows.

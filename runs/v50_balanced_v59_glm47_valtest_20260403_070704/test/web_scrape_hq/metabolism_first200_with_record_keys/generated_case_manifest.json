@@ -1,0 +1,76 @@
+{
+  "case_id": "metabolism_first200_with_record_keys",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/v50_balanced_v59_glm47_valtest_20260403_070704/test/web_scrape_hq/metabolism_first200_with_record_keys/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/v50_balanced_v59_glm47_valtest_20260403_070704/test/web_scrape_hq/metabolism_first200_with_record_keys/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/v50_balanced_v59_glm47_valtest_20260403_070704/test/web_scrape_hq/metabolism_first200_with_record_keys/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/documentation.txt"
+  },
+  "metadata": {
+    "family": "metabolism",
+    "origin": "templated_from_promoted_case",
+    "source_title": "ChemblDB 21 was released!",
+    "source_url": "https://iwatobipen.wordpress.com/2016/03/06/chembldb-21-was-released/",
+    "realism_level": "templated_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "canonical_smiles",
+      "substrate_record_id",
+      "metabolite_record_id",
+      "substrate_compound_key",
+      "metabolite_compound_key",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "substrate_record_id",
+      "metabolite_record_id",
+      "substrate_compound_key",
+      "metabolite_compound_key",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "tags": [
+      "metabolism",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles",
+      "substrate_record_id": "substrate_record_id",
+      "metabolite_record_id": "metabolite_record_id",
+      "substrate_compound_key": "substrate_compound_key",
+      "substrate_key": "substrate_compound_key",
+      "compound_key": "substrate_compound_key",
+      "metabolite_compound_key": "metabolite_compound_key",
+      "metabolite_key": "metabolite_compound_key",
+      "met_conversion": "met_conversion",
+      "pathway_key": "pathway_key"
+    },
+    "float_cols": [],
+    "int_cols": [
+      "substrate_record_id",
+      "metabolite_record_id"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

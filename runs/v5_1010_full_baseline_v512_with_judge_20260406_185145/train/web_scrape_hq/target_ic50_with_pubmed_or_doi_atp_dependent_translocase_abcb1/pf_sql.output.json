@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_atp_dependent_translocase_abcb1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_atp_dependent_translocase_abcb1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT\\n  MD.chembl_id AS compound_chembl_id,\\n  CS.canonical_smiles,\\n  CR.compound_key,\\n  COALESCE(ACT.pubmed_id, ACT.doi) AS pubmed_id_or_doi,\\n  ASY.description AS assay_description,\\n  ACT.standard_type,\\n  ACT.standard_relation,\\n  ACT.standard_value,\\n  ACT.standard_units,\\n  ACT.activity_comment,\\n  TD.chembl_id AS target_chembl_id,\\n  TD.pref_name AS target_name,\\n  TD.organism AS target_organism\\nFROM molecule_dictionary MD\\nJOIN activities ACT ON MD.molregno = ACT.molregno\\nJOIN assays ASY ON ACT.assay_id = ASY.assay_id\\nJOIN target_dictionary TD ON ASY.tid = TD.tid\\nJOIN compound_structures CS ON MD.molregno = CS.molregno\\nJOIN compound_records CR ON MD.molregno = CR.molregno\\nJOIN docs DOC ON ACT.doc_id = DOC.doc_id\\nWHERE MD.molregno IN (\\n  SELECT MD2.molregno\\n  FROM molecule_dictionary MD2\\n  JOIN assays ASY2 ON MD2.molregno = ASY2.molregno\\n  JOIN activities ACT2 ON ASY2.assay_id = ACT2.assay_id\\n  JOIN target_dictionary TD2 ON ASY2.tid = TD2.tid\\n  WHERE TD2.pref_name = 'ATP\u2011dependent translocase ABCB1'\\n    AND TD2.target_type = 'PROTEIN'\\n    AND TD2.organism = 'Homo sapiens'\\n    AND ACT2.standard_type = 'IC50'\\n    AND ACT2.standard_units = 'nM'\\n    AND ACT2.standard_relation = '='\\n    AND ACT2.standard_value IS NOT NULL\\n    AND (ACT2.pubmed_id IS NOT NULL OR ACT2.doi IS NOT NULL)\\n)\\n  AND (ACT.pubmed_id IS NOT NULL OR ACT.doi IS NOT NULL)\\n  AND CS.canonical_smiles IS NOT NULL\\nORDER BY\\n  compound_chembl_id,\\n  canonical_smiles,\\n  compound_key,\\n  pubmed_id_or_doi,\\n  assay_description,\\n  standard_type,\\n  standard_relation,\\n  standard_value,\\n  standard_units,\\n  activity_comment,\\n  target_chembl_id,\\n  target_name,\\n  target_organism;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT\n  MD.chembl_id AS compound_chembl_id,\n  CS.canonical_smiles,\n  CR.compound_key,\n  COALESCE(ACT.pubmed_id, ACT.doi) AS pubmed_id_or_doi,\n  ASY.description AS assay_description,\n  ACT.standard_type,\n  ACT.standard_relation,\n  ACT.standard_value,\n  ACT.standard_units,\n  ACT.activity_comment,\n  TD.chembl_id AS target_chembl_id,\n  TD.pref_name AS target_name,\n  TD.organism AS target_organism\nFROM molecule_dictionary MD\nJOIN activities ACT ON MD.molregno = ACT.molregno\nJOIN assays ASY ON ACT.assay_id = ASY.assay_id\nJOIN target_dictionary TD ON ASY.tid = TD.tid\nJOIN compound_structures CS ON MD.molregno = CS.molregno\nJOIN compound_records CR ON MD.molregno = CR.molregno\nJOIN docs DOC ON ACT.doc_id = DOC.doc_id\nWHERE MD.molregno IN (\n  SELECT MD2.molregno\n  FROM molecule_dictionary MD2\n  JOIN assays ASY2 ON MD2.molregno = ASY2.molregno\n  JOIN activities ACT2 ON ASY2.assay_id = ACT2.assay_id\n  JOIN target_dictionary TD2 ON ASY2.tid = TD2.tid\n  WHERE TD2.pref_name = 'ATP\u2011dependent translocase ABCB1'\n    AND TD2.target_type = 'PROTEIN'\n    AND TD2.organism = 'Homo sapiens'\n    AND ACT2.standard_type = 'IC50'\n    AND ACT2.standard_units = 'nM'\n    AND ACT2.standard_relation = '='\n    AND ACT2.standard_value IS NOT NULL\n    AND (ACT2.pubmed_id IS NOT NULL OR ACT2.doi IS NOT NULL)\n)\n  AND (ACT.pubmed_id IS NOT NULL OR ACT.doi IS NOT NULL)\n  AND CS.canonical_smiles IS NOT NULL\nORDER BY\n  compound_chembl_id,\n  canonical_smiles,\n  compound_key,\n  pubmed_id_or_doi,\n  assay_description,\n  standard_type,\n  standard_relation,\n  standard_value,\n  standard_units,\n  activity_comment,\n  target_chembl_id,\n  target_name,\n  target_organism;"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "n": 1,
+    "up": "Find the first 1000 IC50 activity records where pChEMBL value is not null for assays targeting the human single-protein target CHEMBL2243 (Fatty-acid amide hydrolase 1). Return assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Restrict activities to exact relation '=', keep only rows with activities.pchembl_value IS NOT NULL, and order the final result set by molecule ChEMBL ID ascending then assay ChEMBL ID ascending.",
+    "sql": "WITH a AS (SELECT a.*, c.canonical_smiles, m.chembl_id, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molecule_chembl_id = m.chembl_id JOIN compound_structures c ON a.molecule_chembl_id = c.molecule_chembl_id WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.pref_name = 'Fatty-acid amide hydrolase 1' AND td.chembl_id = 'CHEMBL2243' ) SELECT DISTINCT m.chembl_id, td.target_type, td.tax_id, c.canonical_smiles, m.chembl_id, a.standard_type, a.pchembl_value FROM a JOIN molecule_dictionary m ON a.molecule_chembl_id = m.chembl_id JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures c ON a.molecule_chembl_id = c.molecule_chembl_id WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.pref_name = 'Fatty-acid amide hydrolase 1' AND td.chembl_id = 'CHEMBL2243' ORDER BY m.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows with non\u2011null pChEMBL values for assays targeting the human single\u2011protein target CHEMBL2243 (Fatty\u2011acid amide hydrolase 1). For each matching activity row return assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id), standard_type (from activities.standard_type), and pchembl_value (from activities.pchembl_value). The dataset must satisfy: activities.standard_relation = '=' (exact IC50), activities.pchembl_value IS NOT NULL, target_dictionary.chembl_id = 'CHEMBL2243', and the assay organism is 'Homo sapiens' (target_dictionary.tax_id = 9606). The final result set must be ordered by molecule_chembl_id ascending, then assay_chembl_id ascending. Distinctness is required on the selected columns to avoid duplicate rows.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND td.chembl_id = 'CHEMBL2243'\n  AND td.tax_id = 9606\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n77 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve IC50 activity records for assays targeting the human single\u2011protein target CHEMBL2243 (Fatty\u2011acid amide hydrolase 1). Return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), and pchembl_value (activities.pchembl_value). Filter activities to those with standard_relation = '=' and pchembl_value IS NOT NULL, restrict target_dictionary.chembl_id = 'CHEMBL2243' (human, tax_id = 9606), and order the final result set by molecule_chembl_id ascending then assay_chembl_id ascending. No limit on row count should be applied; return up to 1000 rows ordered as specified.",
+    "sql": "WITH a AS (SELECT a.standard_relation, a.pchembl_value, a.standard_type, a.molregno, a.assay_id, a.molecule_chembl_id, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' AND ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2243' AND tax_id = 9606) ), c AS (SELECT molregno, canonical_smiles FROM compound_structures), m AS (SELECT molregno, chembl_id FROM molecule_dictionary WHERE chembl_id IN (SELECT DISTINCT molecule_chembl_id FROM a) ) SELECT DISTINCT m.chembl_id AS molecule_chembl_id, td.target_type, td.tax_id, c.canonical_smiles, a.assay_chembl_id, a.standard_type, a.pchembl_value FROM a JOIN c ON a.molregno = c.molregno JOIN m ON a.molregno = m.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' AND td.chembl_id = 'CHEMBL2243' AND td.tax_id = 9606 ORDER BY m.chembl_id ASC, a.assay_chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve IC50 activity records for assays targeting the human single-protein target CHEMBL2243 (Fatty-acid amide hydrolase 1). Return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), and pchembl_value (activities.pchembl_value). Filter activities to those with standard_relation = '=' and pchembl_value IS NOT NULL, restrict target_dictionary.chembl_id = 'CHEMBL2243' (human, tax_id = 9606), and order the final result set by molecule_chembl_id ascending then assay_chembl_id ascending. No additional limits should be applied; up to 1000 rows should be returned in that order.",
+    "sql": "WITH a AS (SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50'), td AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL2243' AND tax_id = 9606), md AS (SELECT molregno, chembl_id FROM molecule_dictionary), cs AS (SELECT molregno, canonical_smiles FROM compound_structures) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, a.assay_chembl_id, a.standard_type, a.pchembl_value FROM a JOIN td ON a.assay_id = (SELECT assay_id FROM assays WHERE tid = td.tid) JOIN md ON a.molregno = md.molregno JOIN cs ON md.molregno = cs.molregno WHERE td.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2243' AND tax_id = 9606) ORDER BY md.chembl_id ASC, a.assay_chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n14 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n24 | 0 | 0 | SCALAR SUBQUERY 6\n29 | 24 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | CORRELATED SCALAR SUBQUERY 5\n46 | 42 | 224 | SCAN assays\n60 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n73 | 0 | 0 | REUSE SUBQUERY 5\n76 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n83 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n113 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n114 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 0,
+    "res_columns": [
+      "molecule_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "assay_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve IC50 activity records for assays targeting the human single\u2011protein target CHEMBL2243 (Fatty\u2011acid amide hydrolase 1). Return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), and pchembl_value (activities.pchembl_value). Filter activities to those with standard_relation = '=' and pchembl_value IS NOT NULL, restrict target_dictionary.chembl_id = 'CHEMBL2243' (human, tax_id = 9606), and order the final result set by molecule_chembl_id ascending then assay_chembl_id ascending. Return up to 1000 rows in that order without additional limits.",
+    "sql": "SELECT DISTINCT td.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND a.standard_type = 'IC50'\n  AND td.chembl_id = 'CHEMBL2243'\n  AND td.tax_id = 9606\nORDER BY md.chembl_id ASC, a.assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.assay_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve IC50 activity records for assays targeting the human single-protein target CHEMBL2243 (Fatty-acid amide hydrolase 1). Return assay_chembl_id (assays.chembl_id), target_type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical_smiles (compound_structures.canonical_smiles), molecule_chembl_id (molecule_dictionary.chembl_id), standard_type (activities.standard_type), and pchembl_value (activities.pchembl_value). Filter activities to those with standard_relation = '=' and pchembl_value IS NOT NULL, restrict target_dictionary.chembl_id = 'CHEMBL2243' (human, tax_id = 9606), and order the final result set by molecule_chembl_id ascending then assay_chembl_id ascending. Return up to 1000 rows in that order without additional limits.",
+    "sql": "SELECT DISTINCT td.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND a.standard_type = 'IC50'\n  AND td.chembl_id = 'CHEMBL2243'\n  AND td.tax_id = 9606\nORDER BY md.chembl_id ASC, a.assay_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n77 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

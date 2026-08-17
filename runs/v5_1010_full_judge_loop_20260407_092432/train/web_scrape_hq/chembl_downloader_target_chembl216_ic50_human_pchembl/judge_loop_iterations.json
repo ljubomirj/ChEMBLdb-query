@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows for a specific human single-protein target (CHEMBL216: Muscarinic acetylcholine receptor M1) with associated canonical SMILES and pChEMBL values, ensuring results are sorted by molecule ChEMBL ID and assay ChEMBL ID. The query must: (1) restrict to human single-protein target CHEMBL216, (2) include assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value, (3) retain exact standard relation '=' rows with non-null pChEMBL values, (4) order by molecule_chembl_id (ascending) then assay_chembl_id (ascending), (5) not filter on additional fields (e.g., assay confidence score, assay organims, activity end points, or source metadata).",
+    "sql": "SELECT DISTINCT a.standard_type, a.pchembl_value, cs.canonical_smiles, a.assay_id, td.target_type, td.tax_id, a.molecule_chembl_id\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.pref_name = 'Muscarinic acetylcholine receptor M1' AND td.chembl_id = 'CHEMBL216'\nORDER BY a.molecule_chembl_id ASC, a.assay_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human single-protein target CHEMBL216 (Muscarinic acetylcholine receptor M1) with associated assay data. Return the following columns: assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id), standard_type (from activities.standard_type, exact match = 'IC50'), and pChEMBL value (from activities.pchembl_value). Restrict to activities where standard_type = 'IC50' and pchembl_value IS NOT NULL, join to assays, target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL216'), and molecule_dictionary (via molregno), and compound_structures (via molregno). Order by molecule_chembl_id ASC then assay_chembl_id ASC. Do not add any additional filters or limits beyond the requested 1000 rows.",
+    "sql": "WITH mol AS (\n  SELECT molregno, chembl_id AS molecule_chembl_id\n  FROM molecule_dictionary\n),\nstruct AS (\n  SELECT molregno, canonical_smiles\n  FROM compound_structures\n),\nassay_td AS (\n  SELECT a.assay_id, a.chembl_id AS assay_chembl_id, a.tid\n  FROM assays a\n),\ntd AS (\n  SELECT tid, target_type, tax_id\n  FROM target_dictionary\n  WHERE chembl_id = 'CHEMBL216'\n  AND pref_name = 'Muscarinic acetylcholine receptor M1'\n  AND target_type = 'SINGLE PROTEIN'\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities a\nJOIN assay_td ass ON a.assay_id = ass.assay_id\nJOIN td ON a.tid = td.tid\nJOIN mol md ON a.molregno = md.molregno\nJOIN struct cs ON a.molregno = cs.molregno\nWHERE a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ass.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ass.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human single-protein target CHEMBL216 (Muscarinic acetylcholine receptor M1) with associated assay, target, and compound data. Return assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id), standard_type (from activities.standard_type, exact match = 'IC50'), and pChEMBL value (from activities.pchembl_value). Restrict to activities where standard_type = 'IC50' and pchembl_value IS NOT NULL, join to assays, target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL216'), and molecule_dictionary (via molregno), and compound_structures (via molregno). Order by molecule_chembl_id ASC then assay_chembl_id ASC. Do not add any additional filters or limits beyond the requested 1000 rows.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id AS molecule_chembl_id FROM molecule_dictionary), cs AS (SELECT molregno, canonical_smiles FROM compound_structures), a AS (SELECT assay_id, chembl_id AS assay_chembl_id, tid FROM assays), td AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL216') SELECT a.assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN a ON a.assay_id = a.assay_id JOIN td ON a.tid = td.tid JOIN md ON a.molregno = md.molregno JOIN cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL ORDER BY md.molecule_chembl_id ASC, a.assay_chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: ambiguous column name: a.assay_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "ambiguous column name: a.assay_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human single-protein target CHEMBL216 (Muscarinic acetylcholine receptor M1) with associated assay, target, and compound data. Return the following columns: assay_chembl_id (from assays.chembl_id), target_type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical_smiles (from compound_structures.canonical_smiles), molecule_chembl_id (from molecule_dictionary.chembl_id), standard_type (from activities.standard_type, exact match = 'IC50'), and pChEMBL value (from activities.pchembl_value). Restrict to activities where standard_type = 'IC50' and pchembl_value IS NOT NULL, join to assays, target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL216'), and molecule_dictionary (via molregno), and compound_structures (via molregno). Order by molecule_chembl_id ASC then assay_chembl_id ASC. Do not add any additional filters or limits beyond the requested 1000 rows.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\n  AND td.chembl_id = 'CHEMBL216'\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n77 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 901,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

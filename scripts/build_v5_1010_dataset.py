@@ -31,15 +31,15 @@ from compressed_io import read_candidates, read_text_maybe_compressed
 from db_llm_v5.artifacts import V5ArtifactPaths, V5CaseManifest, V5CaseMetadata
 from db_llm_v5.io import load_case_manifest, save_case_manifest
 
-BASE_REGISTRY = REPO_ROOT / "tests/cases/web_scrape_hq_cases_v5.0_balanced.json"
+BASE_REGISTRY = REPO_ROOT / "cases/registries/archive/web_scrape_hq_cases_v5.0_balanced.json"
 BASE_SPLIT = REPO_ROOT / "experiments/case_splits_v5.0_balanced.json"
 CANDIDATES = REPO_ROOT / "experiments/document_wave2_candidates_v4.9.json"
 DB_PATH = REPO_ROOT / "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db"
 SOURCE_MANIFEST_ROOT = REPO_ROOT / "tests/v5_manifests/web_scrape_hq"
-MANIFEST_ROOT = REPO_ROOT / "tests/v5_manifests_1010/web_scrape_hq"
+MANIFEST_ROOT = REPO_ROOT / "cases/v5.1010/cases"
 FIXTURE_ROOT = REPO_ROOT / "tests/fixtures/web_scrape_1010"
-OUT_REGISTRY = REPO_ROOT / "tests/cases/web_scrape_hq_cases_v5.1010.json"
-OUT_SPLIT = REPO_ROOT / "experiments/case_splits_v5.1010.json"
+OUT_REGISTRY = REPO_ROOT / "cases/registries/web_scrape_hq_cases_v5.1010.json"
+OUT_SPLIT = REPO_ROOT / "cases/v5.1010/splits/case_splits_v5.1010.json"
 OUT_REPORT_JSON = REPO_ROOT / "experiments/v5.1010_dataset_report.json"
 OUT_REPORT_MD = REPO_ROOT / "experiments/v5.1010_dataset_report.md"
 TARGET_TOTAL = 1010

@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Show all IC50 activity records for CHEMBL5498743 and its salt forms against target CHEMBL612267. Include the following columns: compound CHEMBL ID, compound name, canonical SMILES, activity ID, assay ID, document ID, PubMed ID, DOI, assay description, standard value, standard units, standard relation, and pChEMBL value.",
+    "sql": "WITH\n compound_set AS (\n   -- Start with the specified parent compound\n   SELECT molregno, chembl_id, pref_name\n   FROM molecule_dictionary\n   WHERE chembl_id = 'CHEMBL5498743'\n\n   UNION\n\n   -- Add all salt forms (children) via molecule_hierarchy\n   SELECT md.molregno, md.chembl_id, md.pref_name\n   FROM molecule_dictionary parent\n   JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n   JOIN molecule_dictionary md ON md.molregno = mh.molregno\n   WHERE parent.chembl_id = 'CHEMBL5498743'\n )\nSELECT\n   cs.chembl_id AS compound_chembl_id,\n   cs.pref_name AS compound_name,\n   struct.canonical_smiles,\n   act.activity_id,\n   act.assay_id,\n   act.doc_id,\n   docs.pubmed_id,\n   docs.doi,\n   ass.description AS assay_description,\n   act.standard_value,\n   act.standard_units,\n   act.standard_relation,\n   act.pchembl_value\nFROM compound_set cs\nJOIN activities act ON act.molregno = cs.molregno\nJOIN assays ass ON ass.assay_id = act.assay_id\nJOIN target_dictionary td ON td.tid = ass.tid\nLEFT JOIN compound_structures struct ON struct.molregno = cs.molregno\nLEFT JOIN docs ON docs.doc_id = act.doc_id\nWHERE\n   td.chembl_id = 'CHEMBL612267'\n   AND act.standard_type = 'IC50';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n18 | 3 | 0 | UNION USING TEMP B-TREE\n25 | 18 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n30 | 18 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n36 | 18 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n66 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n71 | 0 | 32 | SCAN cs\n74 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n83 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n92 | 0 | 47 | SEARCH struct USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n101 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 5,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles",
+      "activity_id",
+      "assay_id",
+      "doc_id",
+      "pubmed_id",
+      "doi",
+      "assay_description",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

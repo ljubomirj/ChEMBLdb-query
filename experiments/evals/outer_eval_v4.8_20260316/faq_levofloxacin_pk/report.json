@@ -1,0 +1,104 @@
+{
+  "ts_utc": "2026-03-16T19:57:51Z",
+  "eval_label": "faq_levofloxacin_pk",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.8.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 1,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.85,
+      "cases": [
+        {
+          "corpus": "faq_hq",
+          "id": "faq_levofloxacin_pk",
+          "uq": "Retrieve PK data from 'Curated Drug Pharmacokinetic Data' source in ChEMBL for drug LEVOFLOXACIN. Return DISTINCT title, dataset, assay_id, description, dosed_compound_name, dose, dosage_form, regimen, route, gender, age_range, health_status, tissue, molregno, compound_name, activity_id, toid, standard_type, standard_relation, standard_value, standard_units, and activity_comment. Preserve the PK-specific join path source -> compound_records -> docs -> activities using both record_id and doc_id, then join activity_properties and assay_parameters to pivot the PK context fields. The dataset field must come from assay_parameters where standard_type = 'DATASET'. The description field must come from assays.description. The dosed_compound_name, dose, dosage_form, regimen, route, gender, age_range, health_status, and tissue fields come from activity_properties using these raw standard_type codes exactly: DOSED_COMPOUND_NAME, DOSE, DOSAGE_FORM, REGIMEN, ROUTE, GENDER, AGE_RANGE, HEALTH_STATUS, and TISSUE. Render DOSED_COMPOUND_NAME, DOSE, DOSAGE_FORM, and REGIMEN from COALESCE(CAST(standard_value AS TEXT), standard_text_value) together with standard_units when present. Render ROUTE, GENDER, AGE_RANGE, HEALTH_STATUS, and TISSUE from COALESCE(CAST(standard_value AS TEXT), standard_text_value).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/faq_levofloxacin_pk/test/faq_hq/faq_levofloxacin_pk/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/faq_levofloxacin_pk/test/faq_hq/faq_levofloxacin_pk/run.log",
+          "generated_sql": "WITH base AS (",
+          "judge_text": null,
+          "expected_rows": 154,
+          "actual_rows": 154,
+          "expected_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "actual_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Null mismatch in column 'dataset'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 0,
+    "pass_rate": 0.0,
+    "mean_score": 0.85
+  }
+}

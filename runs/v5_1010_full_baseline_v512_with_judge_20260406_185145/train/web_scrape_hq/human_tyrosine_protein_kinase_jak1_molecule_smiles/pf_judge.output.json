@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_tyrosine_protein_kinase_jak1_molecule_smiles.json",
+  "case_id": "human_tyrosine_protein_kinase_jak1_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve compounds tested against human tyrosine-protein kinase JAK1 (CHEMBL2835) in Homo sapiens assays, returning molecule_chembl_id and canonical_smiles. The SQL uses a DISTINCT projection and joins molecule_dictionary, activities, assays, target_dictionary, and compound_structures. However, the result set is empty (row_count: 0). This could be due to:\\n\\n1. No activities for JAK1 (tid=2835) in Homo sapiens assays with available canonical SMILES.\\n2. Missing or misaligned joins (e.g., target_dictionary.tid vs assays.tid, or assay_organism filter).\\n3. The target_dictionary.tid=2835 may not correspond to the intended JAK1 target (tid 2835 is correct for JAK1).\\n4. The compound_structures table may lack entries for the relevant molregno values.\\n\\nGiven the empty result, the current SQL does not produce the expected output. The joins appear correct, but the data may not exist in the current snapshot or there may be a mismatch in the target identifier. The query logic is sound, but the result is unsatisfying.\",\n  \"score\": 0.7,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve compounds tested against human tyrosine-protein kinase JAK1 (CHEMBL2835) in Homo sapiens assays, returning molecule_chembl_id and canonical_smiles. The SQL uses a DISTINCT projection and joins molecule_dictionary, activities, assays, target_dictionary, and compound_structures. However, the result set is empty (row_count: 0). This could be due to:\n\n1. No activities for JAK1 (tid=2835) in Homo sapiens assays with available canonical SMILES.\n2. Missing or misaligned joins (e.g., target_dictionary.tid vs assays.tid, or assay_organism filter).\n3. The target_dictionary.tid=2835 may not correspond to the intended JAK1 target (tid 2835 is correct for JAK1).\n4. The compound_structures table may lack entries for the relevant molregno values.\n\nGiven the empty result, the current SQL does not produce the expected output. The joins appear correct, but the data may not exist in the current snapshot or there may be a mismatch in the target identifier. The query logic is sound, but the result is unsatisfying.",
+      "score": 0.7,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_tyrosine_protein_kinase_jak1_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_tyrosine_protein_kinase_jak1_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_tyrosine_protein_kinase_jak1_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

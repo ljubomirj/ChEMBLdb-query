@@ -1,0 +1,49 @@
+# Config: Qwen3.6-27B via Hipfire, local-only (named config, smevals-style)
+# config = model + prompt pack + provider (+ params)
+# This is the config that produced runs/v5.1010-qwen36-27b-hipfire-local-full-20260719.
+name: qwen36-27b-hipfire-local
+description: >
+  Qwen3.6-27B (MQ4, 4-bit) served by the Hipfire feature daemon on the AMD
+  RX 7900 XTX (gfx1100, 24GB VRAM). All three roles (UP writer, SQL writer,
+  judge) use the same local endpoint. Zero API cost.
+
+model:
+  id: qwen3.6:27b.mq4
+  file: /home/ljubomir/.hipfire/models/qwen3.6-27b.mq4
+  quantization: mq4
+  context: 262144
+
+provider:
+  name: hipfire
+  base_url: http://127.0.0.1:8081/v1
+  transport: openai-compatible chat/completions
+  grammar_file: rocm-glm-4.7-flash/grammars/text2sql_think_then_json.gbnf
+  branch: feature/gbnf-and-reasoning-budget
+
+prompt_pack: experiments/prompt_pack_v5.0.yaml   # -> configs/prompt_packs/ after Phase 4
+
+params:
+  max_tokens: 10240
+  max_think_tokens: 4096
+  thinking: on
+  kv_cache: asym2
+  speculation: off
+  dflash: off
+  mtp: off
+
+roles:
+  up: qwen3.6:27b.mq4
+  sql: qwen3.6:27b.mq4
+  judge: qwen3.6:27b.mq4
+
+eval:
+  split: experiments/case_splits_v5.1010.json   # -> cases/v5.1010/splits/ after Phase 3
+  registry: cases/registries/web_scrape_hq_cases_v5.1010.json
+
+result:
+  run: v5.1010-qwen36-27b-hipfire-local-full-20260719
+  n_cases: 1010
+  n_pass: 321
+  pass_rate: 0.318
+  mean_score: 0.7751
+  artifact: experiments/evals/v5_forward_eval/qwen36-27b-hipfire-local-full-1010  # -> runs/ after Phase 5

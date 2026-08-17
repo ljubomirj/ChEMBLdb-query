@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_b61819595c7f08b9.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact.json",
+  "case_id": "selective_egfr_over_erbb2_smiles_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b61819595c7f08b9",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN compound_structures cs ON cs.molregno = md.molregno\nJOIN activities act_a ON act_a.molregno = md.molregno\nJOIN assays a_a ON act_a.assay_id = a_a.assay_id\nJOIN target_dictionary td_a ON a_a.tid = td_a.tid\nJOIN activities act_b ON act_b.molregno = md.molregno\nJOIN assays a_b ON act_b.assay_id = a_b.assay_id\nJOIN target_dictionary td_b ON a_b.tid = td_b.tid\nWHERE\n  td_a.chembl_id = 'CHEMBL203'\n  AND act_a.standard_type = 'IC50'\n  AND act_a.standard_relation = '='\n  AND act_a.standard_units = 'nM'\n  AND act_a.standard_value < 50\n  AND td_b.chembl_id = 'CHEMBL1824'\n  AND act_b.standard_type = 'IC50'\n  AND act_b.standard_relation = '='\n  AND act_b.standard_units = 'nM'\n  AND act_b.standard_value > 200\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN compound_structures cs ON cs.molregno = md.molregno\nJOIN activities act_a ON act_a.molregno = md.molregno\nJOIN assays a_a ON act_a.assay_id = a_a.assay_id\nJOIN target_dictionary td_a ON a_a.tid = td_a.tid\nJOIN activities act_b ON act_b.molregno = md.molregno\nJOIN assays a_b ON act_b.assay_id = a_b.assay_id\nJOIN target_dictionary td_b ON a_b.tid = td_b.tid\nWHERE\n  td_a.chembl_id = 'CHEMBL203'\n  AND act_a.standard_type = 'IC50'\n  AND act_a.standard_relation = '='\n  AND act_a.standard_units = 'nM'\n  AND act_a.standard_value < 50\n  AND td_b.chembl_id = 'CHEMBL1824'\n  AND act_b.standard_type = 'IC50'\n  AND act_b.standard_relation = '='\n  AND act_b.standard_units = 'nM'\n  AND act_b.standard_value > 200\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles"
+    }
+  }
+}

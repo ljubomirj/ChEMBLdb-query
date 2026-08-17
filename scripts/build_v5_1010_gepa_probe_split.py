@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_SOURCE_SPLIT = REPO_ROOT / "experiments/case_splits_v5.1010.json"
-DEFAULT_MANIFEST_ROOT = REPO_ROOT / "tests/v5_manifests_1010/web_scrape_hq"
-DEFAULT_OUT = REPO_ROOT / "experiments/case_splits_v5.1010_gepa_probe.json"
+DEFAULT_SOURCE_SPLIT = REPO_ROOT / "cases/v5.1010/splits/case_splits_v5.1010.json"
+DEFAULT_MANIFEST_ROOT = REPO_ROOT / "cases/v5.1010/cases"
+DEFAULT_OUT = REPO_ROOT / "cases/v5.1010/splits/case_splits_v5.1010_gepa_probe.json"
 
 DEFAULT_QUOTAS = {
     "train": {

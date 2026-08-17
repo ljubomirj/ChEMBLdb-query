@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select DISTINCT molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, drug_indication.mesh_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno LEFT JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE drug_indication.max_phase_for_ind = 4 AND drug_indication.mesh_id IS NOT NULL AND drug_indication.mesh_heading IS NOT NULL AND molecule_dictionary.therapeutic_flag = 1\"\n}",
+    "parsed_json": {
+      "up": "Select DISTINCT molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, drug_indication.mesh_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno LEFT JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE drug_indication.max_phase_for_ind = 4 AND drug_indication.mesh_id IS NOT NULL AND drug_indication.mesh_heading IS NOT NULL AND molecule_dictionary.therapeutic_flag = 1"
+    }
+  }
+}

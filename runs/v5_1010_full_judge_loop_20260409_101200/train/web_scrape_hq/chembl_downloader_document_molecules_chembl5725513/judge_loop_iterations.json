@@ -1,0 +1,111 @@
+[
+  {
+    "n": 1,
+    "up": "Find all distinct compound records that have at least one activity measurement (any type) linked to the document with CHEMBL ID 'CHEMBL5725513'. Return each compound's canonical SMILES, molecular weight, and any reported activity values (standard value, standard units, and activity type) along with the standard relation (e.g., '=', '<', '>'), ensuring only records that have a canonical SMILES stored in compound_structures are included. Filter results to the specified document ID only, and preserve all related activity details without additional date or unit restrictions.",
+    "sql": "WITH target_activities AS (\n  SELECT a.molecule_chembl_id, a.standard_value, a.standard_units, a.type AS activity_type, a.standard_relation, cs.canonical_smiles\n  FROM activities a\n  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n  WHERE a.doc_id = 5725513\n    AND cs.canonical_smiles IS NOT NULL\n),\nactivity_summaries AS (\n  SELECT molecule_chembl_id,\n         GROUP_CONCAT(standard_value || ' ' || standard_units || ' ' || activity_type || ' ' || standard_relation || ';') AS activity_details\n  FROM target_activities\n  GROUP BY molecule_chembl_id\n)\nSELECT DISTINCT\n       t.pref_name,\n       cs.canonical_smiles,\n       cs.mw_freebase AS molecular_weight,\n       s.activity_details\nFROM target_activities a\nJOIN molecule_dictionary t ON a.molecule_chembl_id = t.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nJOIN activity_summaries s ON a.molecule_chembl_id = s.molecule_chembl_id\nWHERE cs.canonical_smiles IS NOT NULL\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compound records present in document CHEMBL5725513 that have at least one activity measurement, regardless of activity type or standard relation, and that possess a stored canonical SMILES in the compound_structures table. The required output for each qualifying compound is its ChEMBL canonical SMILES (cs.canonical_smiles), its molecular weight (cs.mw_freebase), and a list of any reported activity values, including the standard value (a.standard_value), standard units (a.standard_units), the activity type (a.type), and the standard relation (a.standard_relation). The query must restrict results to activities linked to document CHEMBL5725513, ensure each compound has a canonical SMILES, and preserve all activity details without adding extra unit or date restrictions. No further filtering on target types, confidence scores, or assay organims is required.",
+    "sql": "WITH activities_in_doc AS ( SELECT a.molregno, a.standard_value, a.standard_units, a.type AS activity_type, a.standard_relation, cs.canonical_smiles, a.doc_id FROM activities a JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.doc_id = 5725513 AND cs.canonical_smiles IS NOT NULL ), activity_details AS ( SELECT molregno, GROUP_CONCAT(activity_type || ';' || standard_relation || ';' || standard_value || ' ' || standard_units || ';') AS details FROM activities_in_doc GROUP BY molregno ) SELECT DISTINCT t.pref_name, cs.canonical_smiles, cs.mw_freebase AS molecular_weight, d.details FROM activities_in_doc a JOIN molecule_dictionary t ON a.molregno = t.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN activity_details d ON a.molregno = d.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.mw_freebase",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.mw_freebase",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compounds that have at least one activity measurement recorded in the document with CHEMBL ID 'CHEMBL5725513'. For each compound return: the compound's canonical SMILES (cs.canonical_smiles), its molecular weight (cp.mw_freebase) as 'molecular_weight', and all activity details including the activity type (a.type), standard relation (a.standard_relation), standard value (a.standard_value) and standard units (a.standard_units) grouped per compound. Ensure the canonical SMILES exists in compound_structures and the molecular weight is taken from compound_properties. Restrict results to activities linked to the specified document ID and include all activity types and relations without further filtering.",
+    "sql": "WITH activities_in_doc AS ( SELECT a.molregno, a.standard_value, a.standard_units, a.type AS activity_type, a.standard_relation, cs.canonical_smiles FROM activities a JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.doc_id = 5725513 AND cs.canonical_smiles IS NOT NULL AND a.standard_value IS NOT NULL ), activity_details AS ( SELECT molregno, GROUP_CONCAT(activity_type || ';' || standard_relation || ';' || standard_value || ' ' || standard_units || ';') AS details FROM activities_in_doc GROUP BY molregno ) SELECT DISTINCT t.pref_name, cs.canonical_smiles, cp.mw_freebase AS molecular_weight, d.details FROM activities_in_doc a JOIN molecule_dictionary t ON a.molregno = t.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_properties cp ON cp.molregno = a.molregno JOIN activity_details d ON a.molregno = d.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n2 | 0 | 0 | CO-ROUTINE activity_details\n11 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n18 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n88 | 0 | 102 | SCAN d\n91 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n98 | 0 | 47 | SEARCH cp USING INDEX pk_com_molreg (molregno=?)\n107 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n115 | 0 | 47 | SEARCH t USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n121 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n150 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "molecular_weight",
+      "details"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all distinct compounds that have at least one activity measurement recorded in the document whose ChEMBL identifier is 'CHEMBL5725513'. For each qualifying compound return its canonical SMILES (from compound_structures.canonical_smiles), its molecular weight (from compound_properties.mw_freebase, labelled molecular_weight), and all activity details (activity type, standard relation, standard value, and standard units) aggregated per compound. The query must filter activities to those linked to the document with CHEMBL ID CHEMBL5725513 (using the docs table to map CHEMBL IDs to doc_id), keep only rows where a canonical SMILES exists, and include every activity type, standard relation, value, and units without imposing unit restrictions, activity type filters, or additional date or target type constraints.",
+    "sql": "WITH doc_id_lookup AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725513'), activities_in_doc AS (SELECT a.molregno, a.standard_value, a.standard_units, a.type AS activity_type, a.standard_relation, cs.canonical_smiles FROM activities a JOIN compound_structures cs ON a.molregno = cs.molregno JOIN doc_id_lookup d ON a.doc_id = d.doc_id WHERE cs.canonical_smiles IS NOT NULL AND a.standard_value IS NOT NULL), activity_details AS (SELECT molregno, GROUP_CONCAT(activity_type || ';' || standard_relation || ';' || standard_value || ' ' || standard_units || ';') AS details FROM activities_in_doc GROUP BY molregno) SELECT DISTINCT t.pref_name, cs.canonical_smiles, cp.mw_freebase AS molecular_weight, d.details FROM activities_in_doc a JOIN molecule_dictionary t ON a.molregno = t.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_properties cp ON cp.molregno = a.molregno JOIN activity_details d ON a.molregno = d.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE activity_details\n13 | 2 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n18 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n26 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n35 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n98 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n103 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n111 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n123 | 0 | 47 | SEARCH t USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n133 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n143 | 0 | 47 | SEARCH cp USING INDEX pk_com_molreg (molregno=?)\n155 | 0 | 0 | BLOOM FILTER ON d (molregno=?)\n167 | 0 | 47 | SEARCH d USING AUTOMATIC COVERING INDEX (molregno=?)\n184 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 816,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "molecular_weight",
+      "details"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all distinct compounds that have at least one activity measurement recorded in the document whose ChEMBL identifier is 'CHEMBL5725513'. For each qualifying compound return: the compound's canonical SMILES (from compound_structures.canonical_smiles), its molecular weight (from compound_properties.mw_freebase, labelled molecular_weight), and all activity details (activity type, standard relation, standard value, and standard units) aggregated per compound. The query must filter activities to those linked to the document with CHEMBL ID CHEMBL5725513 (using the docs table to map CHEMBL IDs to doc_id), keep only rows where a canonical SMILES exists, and include every activity type, standard relation, value, and units without imposing unit restrictions, activity type filters, or additional date or target type constraints.",
+    "sql": "WITH doc_id_lookup AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725513'), activities_in_doc AS (SELECT a.molregno, a.standard_value, a.standard_units, a.type AS activity_type, a.standard_relation, cs.canonical_smiles, cp.mw_freebase AS molecular_weight FROM activities a JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_properties cp ON cp.molregno = cs.molregno JOIN doc_id_lookup d ON a.doc_id = d.doc_id WHERE cs.canonical_smiles IS NOT NULL AND a.standard_value IS NOT NULL), activity_details AS (SELECT molregno, GROUP_CONCAT(CONCAT(activity_type, ';', standard_relation, ';', standard_value, ' ', standard_units, ';') ) AS details FROM activities_in_doc GROUP BY molregno) SELECT DISTINCT cs.canonical_smiles AS canonical_smiles, molecular_weight, details FROM activities_in_doc a JOIN compound_structures cs ON a.molregno = cs.molregno JOIN compound_properties cp ON cp.molregno = cs.molregno JOIN activity_details d ON a.molregno = d.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE activity_details\n14 | 2 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n27 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 2 | 45 | SEARCH cp USING COVERING INDEX pk_com_molreg (molregno=?)\n44 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n100 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n105 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n113 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n125 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n135 | 0 | 45 | SEARCH cp USING COVERING INDEX pk_com_molreg (molregno=?)\n143 | 0 | 47 | SEARCH cp USING INDEX pk_com_molreg (molregno=?)\n154 | 0 | 0 | BLOOM FILTER ON d (molregno=?)\n166 | 0 | 47 | SEARCH d USING AUTOMATIC COVERING INDEX (molregno=?)\n182 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 816,
+    "res_columns": [
+      "canonical_smiles",
+      "molecular_weight",
+      "details"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all distinct compounds that have at least one activity measurement linked to the document with ChEMBL ID 'CHEMBL5725513'. For each compound return its canonical SMILES (from compound_structures.canonical_smiles), its molecular weight (from compound_properties.mw_freebase, labelled molecular_weight), and a list of all activity details including the activity type (a.type), standard relation (a.standard_relation), standard value (a.standard_value) and standard units (a.standard_units) aggregated per compound. The filter must restrict activities to those associated with the document whose chembl_id is 'CHEMBL5725513' (using the docs table to map the CHEMBL ID to doc_id). No other filters (e.g., unit restrictions, activity type, confidence scores) are required. Ensure a canonical SMILES exists and the molecular weight is taken from compound_properties. The output should include one row per compound with all its activity details, and the compound rows must be distinct.",
+    "sql": "WITH doc_id_lookup AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725513'), activity_summary AS (\n  SELECT a.molregno,\n         GROUP_CONCAT(a.type || ';', a.standard_relation || ';', a.standard_value || ' ', a.standard_units, ';') AS details\n  FROM activities a\n  JOIN doc_id_lookup d ON a.doc_id = d.doc_id\n  WHERE a.standard_value IS NOT NULL\n  GROUP BY a.molregno\n), molecules AS (\n  SELECT DISTINCT cs.canonical_smiles,\n                  cp.mw_freebase AS molecular_weight,\n                  ass.details\n  FROM activity_summary ass\n  JOIN compound_structures cs ON ass.molregno = cs.molregno\n  JOIN compound_properties cp ON cp.molregno = cs.molregno\n  JOIN activity_summary ass ON cp.molregno = ass.molregno\n)\nSELECT DISTINCT canonical_smiles, molecular_weight, details\nFROM molecules;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: wrong number of arguments to function GROUP_CONCAT()",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "wrong number of arguments to function GROUP_CONCAT()",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve all distinct compounds that have at least one activity measurement linked to the document with ChEMBL identifier 'CHEMBL5725513'. For each qualifying compound return: its canonical SMILES (cs.canonical_smiles), its molecular weight (cp.mw_freebase) labeled as molecular_weight, and a concatenated list of activity details (including the activity type, standard relation, standard value, and standard units). The activities must be restricted to those whose document reference is the one with chembl_id = 'CHEMBL5725513' (use the docs table to map the CHEMBL ID to the internal doc_id). No other filters (e.g., unit restrictions, activity type, confidence scores, target types, date ranges) are required. The result should contain exactly one row per compound with all its activity details, and each compound must be distinct (i.e., duplicate rows for the same compound should not appear).",
+    "sql": "WITH doc_id_lookup AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725513'), activity_agg AS (SELECT a.molregno, GROUP_CONCAT(a.type || ';' || a.standard_relation || ';' || a.standard_value || ' ' || a.standard_units || ';') AS details FROM activities a JOIN doc_id_lookup d ON a.doc_id = d.doc_id WHERE a.standard_value IS NOT NULL AND a.doc_id IS NOT NULL GROUP BY a.molregno), mol_info AS (SELECT DISTINCT cs.canonical_smiles, cp.mw_freebase AS molecular_weight, ass.details FROM activity_agg ass JOIN compound_structures cs ON ass.molregno = cs.molregno JOIN compound_properties cp ON cp.molregno = cs.molregno) SELECT DISTINCT canonical_smiles, molecular_weight, details FROM mol_info ORDER BY canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n2 | 0 | 0 | CO-ROUTINE mol_info\n4 | 2 | 0 | CO-ROUTINE activity_agg\n13 | 4 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n18 | 4 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n28 | 4 | 0 | USE TEMP B-TREE FOR GROUP BY\n83 | 2 | 82 | SCAN ass\n86 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n93 | 2 | 47 | SEARCH cp USING INDEX pk_com_molreg (molregno=?)\n110 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n114 | 0 | 51 | SCAN mol_info\n127 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n128 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 816,
+    "res_columns": [
+      "canonical_smiles",
+      "molecular_weight",
+      "details"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/(+/_)_tylophorine_non_protein_target_ic50_salts.json",
+  "case_id": "(+/_)_tylophorine_non_protein_target_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT DISTINCT a.activity_id, a.standard_value, a.standard_units, a.standard_relation, a.assay_id, a2.assay_type, a2.assay_organism, a2.assay_tax_id, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, cr.compound_name, cs.canonical_smiles, d.title AS literature_title\nFROM activities a\nINNER JOIN assays a2 ON a.assay_id = a2.assay_id\nINNER JOIN target_dictionary td ON a2.tid = td.tid\nINNER JOIN compound_records cr ON a.record_id = cr.record_id\nINNER JOIN compound_structures cs ON cr.molregno = cs.molregno\nINNER JOIN molecule_dictionary md ON cr.molregno = md.molregno\nINNER JOIN docs d ON a.doc_id = d.doc_id\nWHERE a.standard_relation = 'IC50'\n  AND a.standard_value IS NOT NULL\n  AND a.standard_units = 'nM'\n  AND a2.assay_organism = 'Homo sapiens'\n  AND td.tid = 3879801\n  AND md.chembl_id = 'CHEMBL493620'\nORDER BY a.standard_value ASC, cr.compound_name ASC;"
+}

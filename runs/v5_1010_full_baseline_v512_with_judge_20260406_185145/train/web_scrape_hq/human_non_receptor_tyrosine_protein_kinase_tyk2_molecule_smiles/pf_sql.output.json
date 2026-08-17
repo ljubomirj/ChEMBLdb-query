@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_non_receptor_tyrosine_protein_kinase_tyk2_molecule_smiles.json",
+  "case_id": "human_non_receptor_tyrosine_protein_kinase_tyk2_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles\\nFROM molecule_dictionary md\\nJOIN compound_records cr ON md.molregno = cr.molregno\\nJOIN activities act ON cr.record_id = act.record_id\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN compound_structures cs ON md.molregno = cs.molregno\\nWHERE td.chembl_id = 'CHEMBL3553'\\n  AND a.assay_organism = 'Homo sapiens'\\nORDER BY molecule_chembl_id;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN activities act ON cr.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL3553'\n  AND a.assay_organism = 'Homo sapiens'\nORDER BY molecule_chembl_id;"
+    }
+  }
+}

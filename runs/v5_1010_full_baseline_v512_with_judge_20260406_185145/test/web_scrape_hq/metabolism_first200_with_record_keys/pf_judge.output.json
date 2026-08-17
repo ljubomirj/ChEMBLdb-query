@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the mandatory substrate-side join (metabolism -> compound_records -> compound_structures) and the optional metabolite-side join (metabolism -> compound_records). It returns exactly the requested columns: canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key. The LIMIT 200 is applied without sorting, matching the user request. The sample rows show valid data with non-null canonical_smiles and substrate_compound_key, confirming the mandatory join semantics.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the mandatory substrate-side join (metabolism -> compound_records -> compound_structures) and the optional metabolite-side join (metabolism -> compound_records). It returns exactly the requested columns: canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key. The LIMIT 200 is applied without sorting, matching the user request. The sample rows show valid data with non-null canonical_smiles and substrate_compound_key, confirming the mandatory join semantics.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/metabolism_first200_with_record_keys/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/metabolism_first200_with_record_keys/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/metabolism_first200_with_record_keys/pf_judge.generated_artifact_record.json"
+  }
+}

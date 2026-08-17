@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3716726_mus_musculus_ic50_salts.json",
+  "case_id": "chembl3716726_mus_musculus_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all IC50 activity records for the parent compound CHEMBL3716726 and all of its salt/derivative forms against target CHEMBL375. Return full provenance including compound identifiers, structures, assay details, literature references, and target metadata.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary, docs\n\n4. Logic: Identify the parent compound by filtering molecule_dictionary where chembl_id = 'CHEMBL3716726'. Retrieve all related forms by joining molecule_hierarchy on parent_molregno = parent.molregno and joining back to molecule_dictionary as child on child.molregno = hierarchy.molregno. Include the parent row in the result set. Join compound_structures on child.molregno to obtain canonical_smiles. Join compound_records on child.molregno to link to activities via record_id. Filter activities where standard_type = 'IC50'. Join assays on assay_id and filter where tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL375'). Join docs on doc_id to obtain pubmed_id and doi. Join target_dictionary on assays.tid to retrieve target metadata. Construct pubmed_id_or_doi preferring pubmed_id over doi. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all IC50 activity records for the parent compound CHEMBL3716726 and all of its salt/derivative forms against target CHEMBL375. Return full provenance including compound identifiers, structures, assay details, literature references, and target metadata.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary, docs\n\n4. Logic: Identify the parent compound by filtering molecule_dictionary where chembl_id = 'CHEMBL3716726'. Retrieve all related forms by joining molecule_hierarchy on parent_molregno = parent.molregno and joining back to molecule_dictionary as child on child.molregno = hierarchy.molregno. Include the parent row in the result set. Join compound_structures on child.molregno to obtain canonical_smiles. Join compound_records on child.molregno to link to activities via record_id. Filter activities where standard_type = 'IC50'. Join assays on assay_id and filter where tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL375'). Join docs on doc_id to obtain pubmed_id and doi. Join target_dictionary on assays.tid to retrieve target metadata. Construct pubmed_id_or_doi preferring pubmed_id over doi. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

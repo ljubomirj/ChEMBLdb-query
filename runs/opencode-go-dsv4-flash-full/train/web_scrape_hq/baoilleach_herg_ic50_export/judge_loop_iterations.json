@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the following columns: activity_id, assay_chembl_id (the ChEMBL identifier of the assay from assays.chembl_id), standard_relation, standard_value, standard_units, standard_type, and molecule_chembl_id (the ChEMBL identifier of the molecule from molecule_dictionary.chembl_id). The activities should be filtered such that the assay's target ID (tid) equals 165 and the standard_type is 'IC50'. Use inner joins between activities and assays on assay_id, and between activities and molecule_dictionary on molregno. Return all rows that satisfy the filters without adding any extra restrictions.",
+    "sql": "SELECT a.activity_id, ass.chembl_id AS assay_chembl_id, a.standard_relation, a.standard_value, a.standard_units, a.standard_type, md.chembl_id AS molecule_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.tid = 165 AND a.standard_type = 'IC50';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n12 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 18588,
+    "res_columns": [
+      "activity_id",
+      "assay_chembl_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "molecule_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

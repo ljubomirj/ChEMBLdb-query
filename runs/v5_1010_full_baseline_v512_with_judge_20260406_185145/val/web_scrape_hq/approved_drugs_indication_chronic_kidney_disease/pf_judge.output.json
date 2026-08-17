@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease.json",
+  "case_id": "approved_drugs_indication_chronic_kidney_disease",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly filters for 'chronic kidney disease' and returns the requested columns. However, the user asked for 'approved drugs' indicated for this condition. The current filter `m.max_phase = 4` restricts results to drugs whose global max_phase is 4, which excludes drugs that are approved (max_phase_for_ind = 4 for this specific indication) but may have a lower global max_phase in molecule_dictionary (e.g., if they are only approved for this indication or have phase 3 for other indications). The correct logic is to filter on `di.max_phase_for_ind = 4` to capture drugs approved specifically for chronic kidney disease, regardless of their global max_phase. Additionally, the sample rows show max_phase_for_ind values of 2.0, 3.0, and 4.0, confirming that the current WHERE clause is too restrictive and misses some approved drugs for this indication while including non-approved ones (e.g., CHEMBL1042 with max_phase_for_ind=3.0).\",\n  \"score\": 0.6,\n  \"decision\": \"iterate\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly filters for 'chronic kidney disease' and returns the requested columns. However, the user asked for 'approved drugs' indicated for this condition. The current filter `m.max_phase = 4` restricts results to drugs whose global max_phase is 4, which excludes drugs that are approved (max_phase_for_ind = 4 for this specific indication) but may have a lower global max_phase in molecule_dictionary (e.g., if they are only approved for this indication or have phase 3 for other indications). The correct logic is to filter on `di.max_phase_for_ind = 4` to capture drugs approved specifically for chronic kidney disease, regardless of their global max_phase. Additionally, the sample rows show max_phase_for_ind values of 2.0, 3.0, and 4.0, confirming that the current WHERE clause is too restrictive and misses some approved drugs for this indication while including non-approved ones (e.g., CHEMBL1042 with max_phase_for_ind=3.0).",
+      "score": 0.6,
+      "decision": "iterate"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease/pf_judge.generated_artifact_record.json"
+  }
+}

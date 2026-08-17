@@ -1,0 +1,97 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (molecule_dictionary.max_phase = 4) that have at least one cancer indication in the drug_indication table. A cancer indication is defined as a row in drug_indication where mesh_heading (case-insensitive) contains 'neoplasm', 'cancer', 'carcinoma', 'leukemia', 'lymphoma', 'sarcoma', 'melanoma', or 'tumor', or where efo_term (case-insensitive) contains similar cancer-related terms. For each such drug, return the following columns: ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), structure (compound_structures.canonical_smiles, use LEFT JOIN to include drugs even if no structure exists), and indication details (drug_indication.mesh_heading and drug_indication.efo_term). If a drug has multiple cancer indications, include each indication as a separate row. Do not limit the number of rows and do not add any extra filters beyond those specified.",
+    "sql": "SELECT\n    md.chembl_id,\n    md.pref_name AS drug_name,\n    cs.canonical_smiles AS structure,\n    di.mesh_heading,\n    di.efo_term\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND (\n         LOWER(di.mesh_heading) LIKE '%neoplasm%'\n      OR LOWER(di.mesh_heading) LIKE '%cancer%'\n      OR LOWER(di.mesh_heading) LIKE '%carcinoma%'\n      OR LOWER(di.mesh_heading) LIKE '%leukemia%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphoma%'\n      OR LOWER(di.mesh_heading) LIKE '%sarcoma%'\n      OR LOWER(di.mesh_heading) LIKE '%melanoma%'\n      OR LOWER(di.mesh_heading) LIKE '%tumor%'\n      OR LOWER(di.efo_term) LIKE '%neoplasm%'\n      OR LOWER(di.efo_term) LIKE '%cancer%'\n      OR LOWER(di.efo_term) LIKE '%carcinoma%'\n      OR LOWER(di.efo_term) LIKE '%leukemia%'\n      OR LOWER(di.efo_term) LIKE '%lymphoma%'\n      OR LOWER(di.efo_term) LIKE '%sarcoma%'\n      OR LOWER(di.efo_term) LIKE '%melanoma%'\n      OR LOWER(di.efo_term) LIKE '%tumor%'\n   );",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n72 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n81 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 12660,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.45,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return all approved drugs (where molecule_dictionary.max_phase = 4) that have at least one approved cancer indication. A cancer indication is defined as a row in drug_indication where the indication is approved (drug_indication.max_phase_for_ind = 4) and the mesh_heading or efo_term (case-insensitive) contains terms such as 'neoplasm', 'cancer', 'carcinoma', 'leukemia', 'lymphoma', 'sarcoma', 'melanoma', or 'tumor'. For each such drug, provide the following columns: ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), structure (compound_structures.canonical_smiles, include even if missing), and indication details: mesh_heading and efo_term from the drug_indication table. If a drug has multiple approved cancer indications, include each as a separate row. Do not limit the number of rows and do not add any filters beyond those specified.",
+    "sql": "SELECT\n    md.chembl_id,\n    md.pref_name AS drug_name,\n    cs.canonical_smiles AS structure,\n    di.mesh_heading,\n    di.efo_term\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND di.max_phase_for_ind = 4\n  AND (\n         LOWER(di.mesh_heading) LIKE '%neoplasm%'\n      OR LOWER(di.mesh_heading) LIKE '%cancer%'\n      OR LOWER(di.mesh_heading) LIKE '%carcinoma%'\n      OR LOWER(di.mesh_heading) LIKE '%leukemia%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphoma%'\n      OR LOWER(di.mesh_heading) LIKE '%sarcoma%'\n      OR LOWER(di.mesh_heading) LIKE '%melanoma%'\n      OR LOWER(di.mesh_heading) LIKE '%tumor%'\n      OR LOWER(di.efo_term) LIKE '%neoplasm%'\n      OR LOWER(di.efo_term) LIKE '%cancer%'\n      OR LOWER(di.efo_term) LIKE '%carcinoma%'\n      OR LOWER(di.efo_term) LIKE '%leukemia%'\n      OR LOWER(di.efo_term) LIKE '%lymphoma%'\n      OR LOWER(di.efo_term) LIKE '%sarcoma%'\n      OR LOWER(di.efo_term) LIKE '%melanoma%'\n      OR LOWER(di.efo_term) LIKE '%tumor%'\n   );",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n74 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n83 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1510,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List all approved drugs (molecule_dictionary.max_phase = 4) that have at least one approved cancer indication (drug_indication.max_phase_for_ind = 4 and drug_indication.mesh_id LIKE 'C04%' to capture all MeSH neoplasms). For each drug, return the following columns: ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), structure (compound_structures.canonical_smiles; include even if missing), and indication details: mesh_heading and efo_term from drug_indication. If a drug has multiple approved cancer indications, include each as a separate row. Do not limit the number of rows and do not add any extra filters beyond those specified.",
+    "sql": "SELECT\n    md.chembl_id,\n    md.pref_name AS drug_name,\n    cs.canonical_smiles AS structure,\n    di.mesh_heading,\n    di.efo_term\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND di.max_phase_for_ind = 4\n  AND di.mesh_id LIKE 'C04%';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Return all approved drugs (molecule_dictionary.max_phase = 4) that have at least one approved indication for cancer (drug_indication.max_phase_for_ind = 4). A cancer indication is defined as one where drug_indication.mesh_heading or drug_indication.efo_term (case\u2011insensitive) contains any of the following cancer\u2011related keywords: 'cancer', 'neoplasm', 'tumor' (also 'tumour'), 'carcinoma', 'sarcoma', 'leukemia' (also 'leukaemia'), 'lymphoma', 'melanoma', 'myeloma', 'blastoma', 'glioma', 'astrocytoma', 'glioblastoma', 'neuroblastoma', 'retinoblastoma', 'nephroblastoma', 'mesothelioma', 'teratoma', 'angioma', 'lymphangioma'. For each drug\u2011indication pair, provide the following columns: ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), structure (compound_structures.canonical_smiles; use LEFT JOIN to keep drugs even if no structure exists), and indication details (drug_indication.mesh_heading and drug_indication.efo_term). If a drug has multiple approved cancer indications, include each as a separate row. Do not limit the number of rows and do not add any extra filters beyond those specified.",
+    "sql": "SELECT\n    md.chembl_id,\n    md.pref_name AS drug_name,\n    cs.canonical_smiles AS structure,\n    di.mesh_heading,\n    di.efo_term\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND di.max_phase_for_ind = 4\n  AND (\n         LOWER(di.mesh_heading) LIKE '%cancer%'\n      OR LOWER(di.mesh_heading) LIKE '%neoplasm%'\n      OR LOWER(di.mesh_heading) LIKE '%tumor%'\n      OR LOWER(di.mesh_heading) LIKE '%tumour%'\n      OR LOWER(di.mesh_heading) LIKE '%carcinoma%'\n      OR LOWER(di.mesh_heading) LIKE '%sarcoma%'\n      OR LOWER(di.mesh_heading) LIKE '%leukemia%'\n      OR LOWER(di.mesh_heading) LIKE '%leukaemia%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphoma%'\n      OR LOWER(di.mesh_heading) LIKE '%melanoma%'\n      OR LOWER(di.mesh_heading) LIKE '%myeloma%'\n      OR LOWER(di.mesh_heading) LIKE '%blastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%glioma%'\n      OR LOWER(di.mesh_heading) LIKE '%astrocytoma%'\n      OR LOWER(di.mesh_heading) LIKE '%glioblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%neuroblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%retinoblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%nephroblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%mesothelioma%'\n      OR LOWER(di.mesh_heading) LIKE '%teratoma%'\n      OR LOWER(di.mesh_heading) LIKE '%angioma%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphangioma%'\n      OR LOWER(di.efo_term) LIKE '%cancer%'\n      OR LOWER(di.efo_term) LIKE '%neoplasm%'\n      OR LOWER(di.efo_term) LIKE '%tumor%'\n      OR LOWER(di.efo_term) LIKE '%tumour%'\n      OR LOWER(di.efo_term) LIKE '%carcinoma%'\n      OR LOWER(di.efo_term) LIKE '%sarcoma%'\n      OR LOWER(di.efo_term) LIKE '%leukemia%'\n      OR LOWER(di.efo_term) LIKE '%leukaemia%'\n      OR LOWER(di.efo_term) LIKE '%lymphoma%'\n      OR LOWER(di.efo_term) LIKE '%melanoma%'\n      OR LOWER(di.efo_term) LIKE '%myeloma%'\n      OR LOWER(di.efo_term) LIKE '%blastoma%'\n      OR LOWER(di.efo_term) LIKE '%glioma%'\n      OR LOWER(di.efo_term) LIKE '%astrocytoma%'\n      OR LOWER(di.efo_term) LIKE '%glioblastoma%'\n      OR LOWER(di.efo_term) LIKE '%neuroblastoma%'\n      OR LOWER(di.efo_term) LIKE '%retinoblastoma%'\n      OR LOWER(di.efo_term) LIKE '%nephroblastoma%'\n      OR LOWER(di.efo_term) LIKE '%mesothelioma%'\n      OR LOWER(di.efo_term) LIKE '%teratoma%'\n      OR LOWER(di.efo_term) LIKE '%angioma%'\n      OR LOWER(di.efo_term) LIKE '%lymphangioma%'\n   );",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n186 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n195 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1588,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Return all approved drugs (molecule_dictionary.max_phase = 4) that have at least one approved indication for cancer (drug_indication.max_phase_for_ind = 4). A cancer indication is defined as one where drug_indication.mesh_heading or drug_indication.efo_term (case\u2011insensitive) contains any of the following cancer\u2011related keywords: 'cancer', 'neoplasm', 'tumor' (also 'tumour'), 'carcinoma', 'sarcoma', 'leukemia' (also 'leukaemia'), 'lymphoma', 'melanoma', 'myeloma', 'blastoma', 'glioma', 'astrocytoma', 'glioblastoma', 'neuroblastoma', 'retinoblastoma', 'nephroblastoma', 'mesothelioma', 'teratoma', 'angioma', 'lymphangioma'. For each drug\u2011indication pair, provide the following columns: ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), structure (compound_structures.canonical_smiles; use LEFT JOIN to keep drugs even if no structure exists), and indication details (drug_indication.mesh_heading and drug_indication.efo_term). If a drug has multiple approved cancer indications, include each as a separate row. Do not limit the number of rows and do not add any extra filters beyond those specified.",
+    "sql": "SELECT\n    md.chembl_id,\n    md.pref_name AS drug_name,\n    cs.canonical_smiles AS structure,\n    di.mesh_heading,\n    di.efo_term\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND di.max_phase_for_ind = 4\n  AND (\n         LOWER(di.mesh_heading) LIKE '%cancer%'\n      OR LOWER(di.mesh_heading) LIKE '%neoplasm%'\n      OR LOWER(di.mesh_heading) LIKE '%tumor%'\n      OR LOWER(di.mesh_heading) LIKE '%tumour%'\n      OR LOWER(di.mesh_heading) LIKE '%carcinoma%'\n      OR LOWER(di.mesh_heading) LIKE '%sarcoma%'\n      OR LOWER(di.mesh_heading) LIKE '%leukemia%'\n      OR LOWER(di.mesh_heading) LIKE '%leukaemia%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphoma%'\n      OR LOWER(di.mesh_heading) LIKE '%melanoma%'\n      OR LOWER(di.mesh_heading) LIKE '%myeloma%'\n      OR LOWER(di.mesh_heading) LIKE '%blastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%glioma%'\n      OR LOWER(di.mesh_heading) LIKE '%astrocytoma%'\n      OR LOWER(di.mesh_heading) LIKE '%glioblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%neuroblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%retinoblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%nephroblastoma%'\n      OR LOWER(di.mesh_heading) LIKE '%mesothelioma%'\n      OR LOWER(di.mesh_heading) LIKE '%teratoma%'\n      OR LOWER(di.mesh_heading) LIKE '%angioma%'\n      OR LOWER(di.mesh_heading) LIKE '%lymphangioma%'\n      OR LOWER(di.efo_term) LIKE '%cancer%'\n      OR LOWER(di.efo_term) LIKE '%neoplasm%'\n      OR LOWER(di.efo_term) LIKE '%tumor%'\n      OR LOWER(di.efo_term) LIKE '%tumour%'\n      OR LOWER(di.efo_term) LIKE '%carcinoma%'\n      OR LOWER(di.efo_term) LIKE '%sarcoma%'\n      OR LOWER(di.efo_term) LIKE '%leukemia%'\n      OR LOWER(di.efo_term) LIKE '%leukaemia%'\n      OR LOWER(di.efo_term) LIKE '%lymphoma%'\n      OR LOWER(di.efo_term) LIKE '%melanoma%'\n      OR LOWER(di.efo_term) LIKE '%myeloma%'\n      OR LOWER(di.efo_term) LIKE '%blastoma%'\n      OR LOWER(di.efo_term) LIKE '%glioma%'\n      OR LOWER(di.efo_term) LIKE '%astrocytoma%'\n      OR LOWER(di.efo_term) LIKE '%glioblastoma%'\n      OR LOWER(di.efo_term) LIKE '%neuroblastoma%'\n      OR LOWER(di.efo_term) LIKE '%retinoblastoma%'\n      OR LOWER(di.efo_term) LIKE '%nephroblastoma%'\n      OR LOWER(di.efo_term) LIKE '%mesothelioma%'\n      OR LOWER(di.efo_term) LIKE '%teratoma%'\n      OR LOWER(di.efo_term) LIKE '%angioma%'\n      OR LOWER(di.efo_term) LIKE '%lymphangioma%'\n   );",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n186 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n195 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1588,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

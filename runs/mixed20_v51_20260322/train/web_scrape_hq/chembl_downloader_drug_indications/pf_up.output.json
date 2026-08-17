@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_drug_indications.json",
+  "case_id": "chembl_downloader_drug_indications",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Join drug_indication to molecule_dictionary on molregno. Select chembl_id, pref_name, mesh_id, mesh_heading, efo_id aliased as indication_curie, efo_term aliased as indication_label, max_phase_for_ind. Return all rows with no filtering. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Join drug_indication to molecule_dictionary on molregno. Select chembl_id, pref_name, mesh_id, mesh_heading, efo_id aliased as indication_curie, efo_term aliased as indication_label, max_phase_for_ind. Return all rows with no filtering. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

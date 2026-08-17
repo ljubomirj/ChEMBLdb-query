@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves IC50 activities for human MAO-B (CHEMBL2039) with all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, plus the potency values (standard_value/standard_units). The join path (molecule_dictionary -> activities -> assays -> target_dictionary, plus compound_structures, compound_records, docs) is correct. The sample rows show valid data with proper COALESCE logic for pubmed_id_or_doi. Row count (8649) is plausible for this target. No deduplication was requested, so keeping all activity rows is correct. The result fully satisfies the user request.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query successfully retrieves IC50 activities for human MAO-B (CHEMBL2039) with all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, plus the potency values (standard_value/standard_units). The join path (molecule_dictionary -> activities -> assays -> target_dictionary, plus compound_structures, compound_records, docs) is correct. The sample rows show valid data with proper COALESCE logic for pubmed_id_or_doi. Row count (8649) is plausible for this target. No deduplication was requested, so keeping all activity rows is correct. The result fully satisfies the user request.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b/pf_judge.generated_artifact_record.json"
+  }
+}

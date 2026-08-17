@@ -1,0 +1,86 @@
+{
+  "ts_utc": "2026-03-16T19:54:01Z",
+  "eval_label": "sitagliptin_dpp4_ic50_salts",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.8.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 1,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.802899,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "sitagliptin_dpp4_ic50_salts",
+          "uq": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/sitagliptin_dpp4_ic50_salts/val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/sitagliptin_dpp4_ic50_salts/val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/run.log",
+          "generated_sql": "WITH compound_family AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL1422' UNION SELECT molregno FROM molecule_hierarchy WHERE parent_molregno = (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL1422')), docs_union AS (SELECT doc_id, pubmed_id AS doc_id, CAST(pubmed_id AS TEXT) AS pubmed_id_or_doi FROM docs WHERE pubmed_id IS NOT NULL UNION SELECT doc_id, doc_id, 'https://doi.org/' || doi FROM docs WHERE doi IS NOT NULL) SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, du.pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM compound_family cf JOIN activities a ON cf.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs_union du ON a.doc_id = du.doc_id WHERE td.chembl_id = 'CHEMBL284' AND a.standard_type = 'IC50' AND a.standard_units = 'nM';",
+          "judge_text": null,
+          "expected_rows": 70,
+          "actual_rows": 138,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=138, expected=70",
+          "status": "partial",
+          "score": 0.802899,
+          "column_recall": 1.0,
+          "row_ratio": 0.507246
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 0,
+    "pass_rate": 0.0,
+    "mean_score": 0.802899
+  }
+}

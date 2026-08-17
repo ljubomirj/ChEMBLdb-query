@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 500 exact activity measurements for compounds tested against the target with ChEMBL ID CHEMBL1862 (Thyroid hormone receptor). Include the following fields for each activity record: molecule ChEMBL ID, molecule pref_name, canonical SMILES, standard type, standard value, standard units, and pChEMBL value. Sort the results by potency in ascending order (most potent first), prioritizing the pChEMBL value (descending) or standard value (ascending if applicable for the type). Only include rows where the standard relation is '=' (exact measurements).",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, a.standard_type, a.standard_value, a.standard_units, a.pchembl_value FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1862') AND a.standard_relation = '=' ORDER BY a.pchembl_value DESC, a.standard_value ASC LIMIT 500;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n12 | 0 | 236 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n18 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 0 | SCALAR SUBQUERY 1\n39 | 34 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n48 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n84 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n85 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 500,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

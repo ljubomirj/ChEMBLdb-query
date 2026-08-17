@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "List distinct target descriptions for Caenorhabditis elegans assays with activities. The output should contain only the distinct target description values.",
+    "sql": "SELECT DISTINCT td.pref_name AS target_description FROM assays ass JOIN target_dictionary td ON ass.tid = td.tid JOIN activities a ON ass.assay_id = a.assay_id WHERE ass.assay_organism = 'Caenorhabditis elegans'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n6 | 0 | 158 | SCAN td USING INDEX idx_td_pname\n11 | 0 | 0 | BLOOM FILTER ON ass (assay_organism=? AND tid=?)\n24 | 0 | 54 | SEARCH ass USING AUTOMATIC PARTIAL COVERING INDEX (assay_organism=? AND tid=?)\n31 | 0 | 54 | SEARCH a USING COVERING INDEX fk_act_assay_id (assay_id=?)",
+    "res_row_count": 17,
+    "res_columns": [
+      "target_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,333 @@
+{
+  "ts_utc": "2026-03-19T11:18:37Z",
+  "eval_label": "eval_prompt_pack_v4.11_assay_exact_probe_20260319",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.11.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.5_assay_exact_probe.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--temperature",
+    "0.3",
+    "--up-temperature",
+    "0.2",
+    "--judge-temperature",
+    "0.2"
+  ],
+  "splits": {
+    "train": {
+      "n_cases": 3,
+      "n_pass": 1,
+      "pass_rate": 0.333333,
+      "mean_score": 0.916667,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1217643_exact",
+          "uq": "For assay CHEMBL1217643, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1217643_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1217643_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1217643' AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 1,
+          "actual_rows": 1,
+          "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "molecule_chembl_id"
+          ],
+          "extra_cols": [
+            "chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1267250_exact",
+          "uq": "For assay CHEMBL1267250, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1267250_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1267250_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL1267250' AND a.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 519,
+          "actual_rows": 518,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=518, expected=519",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 0.998073
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1614455_exact",
+          "uq": "For assay CHEMBL1614455, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1614455_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/train/web_scrape_hq/chembl_downloader_assay_chembl1614455_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1614455' AND act.standard_relation = '=' AND act.standard_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 483,
+          "actual_rows": 483,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    },
+    "val": {
+      "n_cases": 2,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.9,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1217644_exact",
+          "uq": "For assay CHEMBL1217644, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1217644' AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 1,
+          "actual_rows": 1,
+          "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "molecule_chembl_id"
+          ],
+          "extra_cols": [
+            "chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl3885862_exact",
+          "uq": "For assay CHEMBL3885862, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/val/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/val/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 94976,
+          "actual_rows": 94976,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "chembl_id"
+          ],
+          "extra_cols": [
+            "molecule_chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 3,
+      "n_pass": 2,
+      "pass_rate": 0.666667,
+      "mean_score": 0.966667,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl647319_exact",
+          "uq": "For assay CHEMBL647319, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl647319_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl647319_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL647319' AND act.standard_relation = '=' AND act.standard_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 13,
+          "actual_rows": 13,
+          "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "molecule_chembl_id"
+          ],
+          "extra_cols": [
+            "chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1794523_exact",
+          "uq": "For assay CHEMBL1794523, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl1794523_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl1794523_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL1794523' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 478,
+          "actual_rows": 478,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl3705858_exact",
+          "uq": "For assay CHEMBL3705858, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_assay_exact_probe/eval_prompt_pack_v4.11_assay_exact_probe_20260319/test/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL3705858' AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 490,
+          "actual_rows": 490,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 8,
+    "n_pass": 3,
+    "pass_rate": 0.375,
+    "mean_score": 0.93125
+  }
+}

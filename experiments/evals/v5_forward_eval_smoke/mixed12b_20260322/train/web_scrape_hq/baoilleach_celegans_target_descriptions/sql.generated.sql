@@ -1,0 +1,1 @@
+SELECT DISTINCT td.pref_name AS target_description FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Caenorhabditis elegans' ORDER BY target_description ASC

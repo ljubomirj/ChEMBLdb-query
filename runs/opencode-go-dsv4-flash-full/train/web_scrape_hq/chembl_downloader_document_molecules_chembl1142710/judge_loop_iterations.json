@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct molecules that appear in the document with ChEMBL ID CHEMBL1142710. The document is identified in the docs table by its chembl_id. Link molecules through the compound_records table (using doc_id to doc_id and molregno to molecule_dictionary.molregno). For each distinct molecule, output its molecule ChEMBL ID (molecule_dictionary.chembl_id), its compound name (compound_records.compound_name), and its canonical SMILES (compound_structures.canonical_smiles). Only include molecules that have a canonical SMILES available (canonical_smiles IS NOT NULL). If a molecule has multiple compound names in the document, pick one arbitrarily to preserve distinctness. Order the results by chembl_id, compound_name, and canonical_smiles in ascending order.",
+    "sql": "SELECT\n    md.chembl_id,\n    MIN(cr.compound_name) AS compound_name,\n    cs.canonical_smiles\nFROM docs d\nJOIN compound_records cr ON d.doc_id = cr.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL1142710'\n  AND cs.canonical_smiles IS NOT NULL\nGROUP BY md.chembl_id, cs.canonical_smiles\nORDER BY md.chembl_id, compound_name, cs.canonical_smiles;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY\n83 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Fetch all distinct molecules that appear in the document whose ChEMBL ID is 'CHEMBL1142710'. Use the docs table to locate this document by its chembl_id. Then use compound_records to associate the document to molecules: compound_records.doc_id matches docs.doc_id, and compound_records.molregno points to the molecule. For each associated molecule, join molecule_dictionary on molregno to retrieve its chembl_id. Also join compound_structures on molregno to get its canonical_smiles, but only keep molecules that have a canonical_smiles (i.e., the canonical_smiles column is not NULL). Since a molecule might appear in compound_records multiple times with different compound_name values, include exactly one compound_name per molecule, choosing the alphabetically smallest one if needed. The final result should have three columns: chembl_id (from molecule_dictionary), compound_name (from compound_records), and canonical_smiles (from compound_structures). Sort the result rows in ascending order by chembl_id, then by compound_name, then by canonical_smiles. Ensure that each molecule is listed only once.",
+    "sql": "SELECT md.chembl_id, MIN(cr.compound_name) AS compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1142710' AND cs.canonical_smiles IS NOT NULL GROUP BY md.chembl_id, cs.canonical_smiles ORDER BY md.chembl_id, compound_name, cs.canonical_smiles",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY\n83 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

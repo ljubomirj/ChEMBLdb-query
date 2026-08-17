@@ -1,0 +1,64 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_lymphoma.json",
+  "case_id": "approved_drugs_indication_lymphoma",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "res",
+  "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_evals/e03dc8dd25971d83/train/web_scrape_hq/approved_drugs_indication_lymphoma/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_evals/e03dc8dd25971d83/train/web_scrape_hq/approved_drugs_indication_lymphoma/result.generated.csv",
+    "row_count": 1050,
+    "column_names": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 200,
+    "actual_rows": 1050,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "missing_cols": [
+      "indication_curie",
+      "indication_label"
+    ],
+    "extra_cols": [
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id"
+    ],
+    "status": "partial",
+    "score": 0.47619,
+    "column_recall": 0.666667,
+    "row_ratio": 0.190476
+  }
+}

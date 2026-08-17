@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay with ChEMBL ID 'CHEMBL3885863', retrieve all exact activity measurements, where exact means standard_relation equals '='. For each such measurement, output the canonical SMILES of the compound, the molecule ChEMBL ID, standard type, standard relation, standard value, and standard units. Use the assays table to identify the assay by its chembl_id, join to activities on assay_id, then join to molecule_dictionary on molregno, and join to compound_structures on molregno to obtain the SMILES. Include every matching row; do not limit the number of results.",
+    "sql": "SELECT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL3885863' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n24 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 104643,
+    "res_columns": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

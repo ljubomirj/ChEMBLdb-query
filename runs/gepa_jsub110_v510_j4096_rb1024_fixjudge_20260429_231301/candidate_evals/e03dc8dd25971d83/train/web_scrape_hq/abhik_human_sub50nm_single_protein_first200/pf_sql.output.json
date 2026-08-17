@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_j4096_rb1024_fixjudge_20260429_231301/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT activities.activity_id, molecule_dictionary.chembl_id AS molecule_chembl_id, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, activities.standard_type, activities.standard_value, activities.standard_units FROM activities JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid WHERE target_dictionary.organism = 'Homo sapiens' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND activities.standard_units = 'nM' AND activities.standard_type IN ('EC50', 'IC50', 'AC50') AND activities.standard_value < 50 ORDER BY activities.activity_id ASC LIMIT 200"
+}

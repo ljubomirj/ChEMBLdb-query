@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return IC50 values (in nM) for compounds tested against human TRPV1 (CHEMBL4794). Include only compounds that have a SMILES string and are reported in a publication with a PubMed ID or DOI. For each result, provide the compound's ChEMBL ID, SMILES, compound key, assay description, target name, and target organism.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism,\n  a.standard_value AS ic50_nM\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL4794'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n58 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n87 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2008,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

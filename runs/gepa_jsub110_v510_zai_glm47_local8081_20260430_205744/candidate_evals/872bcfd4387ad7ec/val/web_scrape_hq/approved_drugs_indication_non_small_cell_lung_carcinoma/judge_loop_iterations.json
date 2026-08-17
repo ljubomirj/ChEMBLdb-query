@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id, drug_indication.efo_term, drug_indication.max_phase_for_ind. Source: molecule_dictionary. Join: compound_structures ON molecule_dictionary.molregno = compound_structures.molregno. Join: drug_indication ON molecule_dictionary.molregno = drug_indication.molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.efo_term = 'non-small cell lung carcinoma'. Sort: None. Limit: None.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id, drug_indication.efo_term, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.efo_term = 'non-small cell lung carcinoma'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n10 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 221,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly returns all requested columns: chembl_id, pref_name, canonical_smiles, efo_id, efo_term, and max_phase_for_ind. The filter logic correctly identifies drugs indicated for 'non-small cell lung carcinoma' (efo_term) and restricts to approved drugs (max_phase = 4). The joins between molecule_dictionary, compound_structures, and drug_indication are appropriate. The result set contains 221 rows with valid data, including expected NSCLC drugs like AFATINIB, GEFTINIB, ERLOTINIB, and DOCETAXEL. The max_phase_for_ind values are correctly reported as 4.0 for approved drugs in this indication.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

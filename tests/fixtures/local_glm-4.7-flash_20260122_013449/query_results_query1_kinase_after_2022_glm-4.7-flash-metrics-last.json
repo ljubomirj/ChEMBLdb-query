@@ -1,0 +1,54 @@
+{
+  "case_id": "glm-4.7-flash_local",
+  "generated_at": "2026-01-25T20:35:44",
+  "hashes": {
+    "human_gold": "1108b47e8994f04056f0b140d87db851c9ce27f4e97f7956623d9111ab7630d9",
+    "test_gold": "2f6f122c40b7e7931f09fc25eb8f9cd7772475c0ac6aba9725fc2ab9faeeea8d",
+    "test_result": "67682100af73b3b0d88608da91c6e28b5ffd3f6a9c96592eebf28ba8833a2464"
+  },
+  "human_gold": "tests/fixtures/human/kinase_inhibitors_after_2022.csv",
+  "method": {
+    "m1": "hybrid_line_char_levenshtein",
+    "m2": "unified_diff_zstd_bytes"
+  },
+  "params": {
+    "float_decimals": 3,
+    "metric_column_map": {
+      "canonical_smiles": "canonical_smiles",
+      "doi": "doi",
+      "ic50_nm": "standard_value",
+      "publication_year": "year",
+      "target_pref_name": "pref_name"
+    },
+    "metric_columns": [
+      "canonical_smiles",
+      "target_pref_name",
+      "publication_year",
+      "doi",
+      "ic50_nm"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "target_pref_name",
+      "publication_year",
+      "doi",
+      "ic50_nm"
+    ],
+    "tolerance_pct": 0.05
+  },
+  "pass": {
+    "m1": false,
+    "m2": false,
+    "overall": false
+  },
+  "scores": {
+    "m1": 5265981,
+    "m2": 538396
+  },
+  "test_gold": "tests/fixtures/local_glm-4.7-flash_20260122_013449/query_results_query1_kinase_after_2022_glm-4.7-flash.csv",
+  "test_result": "tests/fixtures/local_glm-4.7-flash_20260122_013449/query_results_query1_kinase_after_2022_glm-4.7-flash-test-result-last.csv",
+  "thresholds": {
+    "m1": 1391831,
+    "m2": 305455
+  }
+}

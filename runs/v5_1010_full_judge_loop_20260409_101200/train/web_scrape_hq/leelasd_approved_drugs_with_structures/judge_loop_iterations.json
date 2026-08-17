@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct molecule_chembl_id as molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval for molecules that have a max_phase value of 3 or 4 and have at least one compound record in compound_records. Include molecule_dictionary.chembl_id as the molecule identifier, the preferred compound name (pref_name), the canonical SMILES from compound_structures, the regulatory status (max_phase), and the first approval year (first_approval). Ensure that the query uses an INNER JOIN between molecule_dictionary and compound_records on molregno to enforce the presence of at least one compound record, and a LEFT JOIN to compound_structures on molecule_chembl_id to include molecules even if their SMILES are not stored. Do not filter on source, activity data, or date ranges unless specifically requested. Return the results without any row limits or ordering.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, md.first_approval\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase IN (3, 4);",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 218 | SEARCH md USING INDEX idx_moldict_max_phase (max_phase=?)\n26 | 0 | 46 | SEARCH cr USING COVERING INDEX fk_comp_rec_molregno (molregno=?)\n31 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5921,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "first_approval"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine/threonine_protein_kinase_b_raf.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_serine/threonine_protein_kinase_b_raf",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity records for the human single-protein target B-RAF (CHEMBL5145) with publication provenance.\\n\\nJoin path: activities (on assay_id) -> assays -> target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL5145'), activities -> compound_records (on record_id) -> molecule_dictionary (on molregno), compound_records -> docs (on doc_id), molecule_dictionary -> compound_structures (INNER JOIN, require non-null canonical_smiles).\\n\\nFilter: activities.standard_type = 'IC50', target_dictionary.chembl_id = 'CHEMBL5145', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL.\\n\\nReturn columns (no deduplication \u2014 keep every qualifying activity row):\\n- compound_chembl_id (molecule_dictionary.chembl_id)\\n- canonical_smiles\\n- compound_key (compound_records.compound_key)\\n- pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi)\\n- assay_description (assays.description)\\n- standard_type\\n- standard_relation\\n- standard_value\\n- standard_units\\n- activity_comment\\n- target_chembl_id (target_dictionary.chembl_id)\\n- target_name (target_dictionary.pref_name)\\n- target_organism (target_dictionary.organism)\\n\\nSort by: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity records for the human single-protein target B-RAF (CHEMBL5145) with publication provenance.\n\nJoin path: activities (on assay_id) -> assays -> target_dictionary (filter target_dictionary.chembl_id = 'CHEMBL5145'), activities -> compound_records (on record_id) -> molecule_dictionary (on molregno), compound_records -> docs (on doc_id), molecule_dictionary -> compound_structures (INNER JOIN, require non-null canonical_smiles).\n\nFilter: activities.standard_type = 'IC50', target_dictionary.chembl_id = 'CHEMBL5145', compound_structures.canonical_smiles IS NOT NULL, docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL.\n\nReturn columns (no deduplication \u2014 keep every qualifying activity row):\n- compound_chembl_id (molecule_dictionary.chembl_id)\n- canonical_smiles\n- compound_key (compound_records.compound_key)\n- pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi)\n- assay_description (assays.description)\n- standard_type\n- standard_relation\n- standard_value\n- standard_units\n- activity_comment\n- target_chembl_id (target_dictionary.chembl_id)\n- target_name (target_dictionary.pref_name)\n- target_organism (target_dictionary.organism)\n\nSort by: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

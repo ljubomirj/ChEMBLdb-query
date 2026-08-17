@@ -1,0 +1,60 @@
+{
+  "case_id": "approved_drugs_indication_leukemia",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape76/approved_drugs_indication_leukemia/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/bddde8b5e2cc78d3/train/web_scrape_hq/approved_drugs_indication_leukemia/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/bddde8b5e2cc78d3/train/web_scrape_hq/approved_drugs_indication_leukemia/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape76/approved_drugs_indication_leukemia/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape76/approved_drugs_indication_leukemia/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape76/approved_drugs_indication_leukemia/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/bddde8b5e2cc78d3/train/web_scrape_hq/approved_drugs_indication_leukemia/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape76/approved_drugs_indication_leukemia/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "templated_from_sql",
+    "source_title": "Synthetic approved_drugs_with_indications_export case: approved_drugs_indication_leukemia",
+    "source_url": "synthetic_generated",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "tags": [
+      "other",
+      "approved_drugs_with_indications_export",
+      "wave2"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {},
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Staged other wave-2 case from approved_drugs_with_indications_export."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "mode": "forward",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "selected_step": "up",
+  "pf_sections": [
+    "up",
+    "sql",
+    "judge"
+  ],
+  "pb_sections_present": [
+    "sql_to_up",
+    "up_to_uq",
+    "res_sql_to_intent"
+  ],
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/doc/examples/v5_case_example/case_manifest.json",
+  "case_id": "example_mapk14_target_pchembl",
+  "corpus": "doc_examples",
+  "split": null,
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows against target CHEMBL260. Filter to target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation '=', and non-null pchembl_value. Join assays, target_dictionary, compound_structures, and molecule_dictionary as needed. Preserve row multiplicity without DISTINCT. Order by molecule_chembl_id then assay_chembl_id.\"}\n```",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows against target CHEMBL260. Filter to target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation '=', and non-null pchembl_value. Join assays, target_dictionary, compound_structures, and molecule_dictionary as needed. Preserve row multiplicity without DISTINCT. Order by molecule_chembl_id then assay_chembl_id."
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/v5_runs/example_chain_20260321/example_mapk14_target_pchembl/pf_up.output.json",
+    "up_exec": "experiments/v5_runs/example_chain_20260321/example_mapk14_target_pchembl/up_exec.generated.txt",
+    "generated_case_manifest": "experiments/v5_runs/example_chain_20260321/example_mapk14_target_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/v5_runs/example_chain_20260321/example_mapk14_target_pchembl/generated_artifact_record.json"
+  }
+}

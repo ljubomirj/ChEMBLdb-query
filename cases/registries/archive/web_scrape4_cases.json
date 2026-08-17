@@ -1,0 +1,82 @@
+[
+  {
+    "id": "baoilleach_herg_bioassay_metadata",
+    "uq": "Retrieve assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, and doi for bioassays with assay_type 'B' and tid 165 (the hERG target in the public source query).",
+    "source_url": "https://gist.github.com/baoilleach/4953366",
+    "source_sql_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/source.sql",
+    "sqlite_sql_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/sqlite.sql",
+    "result_csv_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/result-last.csv",
+    "log_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/run-last.log",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "size_class": "medium",
+    "sort_keys": [
+      "assay_chembl_id",
+      "tid",
+      "journal",
+      "year",
+      "doi"
+    ],
+    "int_cols": [
+      "tid",
+      "year"
+    ],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    }
+  },
+  {
+    "id": "baoilleach_herg_ic50_export",
+    "uq": "Retrieve activity_id, assay_chembl_id, standard_relation, standard_value, standard_units, standard_type, and molecule_chembl_id for activities where assay tid is 165 and standard_type is IC50.",
+    "source_url": "https://gist.github.com/baoilleach/4953366",
+    "source_sql_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/source.sql",
+    "sqlite_sql_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/sqlite.sql",
+    "result_csv_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/result-last.csv",
+    "log_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/run-last.log",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "size_class": "medium",
+    "sort_keys": [
+      "activity_id",
+      "assay_chembl_id",
+      "molecule_chembl_id"
+    ],
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "activity_id"
+    ],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    }
+  },
+  {
+    "id": "leelasd_approved_drugs_with_structures",
+    "uq": "Retrieve distinct molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval for molecules with max_phase in (3,4) that have at least one compound record.",
+    "source_url": "https://gist.github.com/leelasd/2d9625c9bca20bc70668270e0f410daa",
+    "source_sql_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/source.sql",
+    "sqlite_sql_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/sqlite.sql",
+    "result_csv_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/result-last.csv",
+    "log_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/run-last.log",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "size_class": "medium",
+    "sort_keys": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "max_phase",
+      "first_approval"
+    ],
+    "int_cols": [
+      "max_phase",
+      "first_approval"
+    ],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    }
+  }
+]

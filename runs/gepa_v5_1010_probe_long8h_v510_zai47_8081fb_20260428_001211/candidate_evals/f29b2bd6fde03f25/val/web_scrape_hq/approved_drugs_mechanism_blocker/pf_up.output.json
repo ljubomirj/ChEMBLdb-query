@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_f29b2bd6fde03f25.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "f29b2bd6fde03f25",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name. Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures. Join: molecule_dictionary.molregno = drug_mechanism.molregno; drug_mechanism.tid = target_dictionary.tid; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_mechanism.action_type = 'BLOCKER'. Sort: molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC, molecule_dictionary.max_phase ASC, drug_mechanism.mechanism_of_action ASC, drug_mechanism.action_type ASC, target_dictionary.chembl_id ASC, target_dictionary.pref_name ASC.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name. Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures. Join: molecule_dictionary.molregno = drug_mechanism.molregno; drug_mechanism.tid = target_dictionary.tid; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_mechanism.action_type = 'BLOCKER'. Sort: molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC, molecule_dictionary.max_phase ASC, drug_mechanism.mechanism_of_action ASC, drug_mechanism.action_type ASC, target_dictionary.chembl_id ASC, target_dictionary.pref_name ASC."
+    }
+  }
+}

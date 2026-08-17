@@ -1,0 +1,21 @@
+SELECT
+    ASSAYS.chembl_id AS assay_chembl_id,
+    TARGET_DICTIONARY.target_type,
+    TARGET_DICTIONARY.tax_id,
+    COMPOUND_STRUCTURES.canonical_smiles,
+    MOLECULE_DICTIONARY.chembl_id AS molecule_chembl_id,
+    ACTIVITIES.standard_type,
+    ACTIVITIES.pchembl_value
+FROM TARGET_DICTIONARY
+JOIN ASSAYS ON TARGET_DICTIONARY.tid = ASSAYS.tid
+JOIN ACTIVITIES ON ASSAYS.assay_id = ACTIVITIES.assay_id
+JOIN MOLECULE_DICTIONARY ON MOLECULE_DICTIONARY.molregno = ACTIVITIES.molregno
+JOIN COMPOUND_STRUCTURES ON MOLECULE_DICTIONARY.molregno = COMPOUND_STRUCTURES.molregno
+WHERE TARGET_DICTIONARY.chembl_id = 'CHEMBL1743291'
+  AND ACTIVITIES.pchembl_value IS NOT NULL
+  AND TARGET_DICTIONARY.target_type = 'SINGLE PROTEIN'
+  AND ACTIVITIES.standard_relation = '='
+  AND ACTIVITIES.standard_type = 'IC50'
+  AND TARGET_DICTIONARY.tax_id = '9606'
+ORDER BY molecule_chembl_id, assay_chembl_id
+LIMIT 1000

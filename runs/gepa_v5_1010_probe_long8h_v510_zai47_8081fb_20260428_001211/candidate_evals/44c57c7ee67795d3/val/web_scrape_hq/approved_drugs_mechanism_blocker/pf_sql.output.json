@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_44c57c7ee67795d3.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "44c57c7ee67795d3",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary md JOIN drug_mechanism dm ON dm.molregno = md.molregno JOIN target_dictionary td ON td.tid = dm.tid JOIN compound_structures cs ON cs.molregno = md.molregno WHERE md.max_phase = 4 AND dm.action_type = 'BLOCKER' ORDER BY md.chembl_id ASC, md.pref_name ASC, cs.canonical_smiles ASC, md.max_phase ASC, dm.mechanism_of_action ASC, dm.action_type ASC, td.chembl_id ASC, td.pref_name ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary md JOIN drug_mechanism dm ON dm.molregno = md.molregno JOIN target_dictionary td ON td.tid = dm.tid JOIN compound_structures cs ON cs.molregno = md.molregno WHERE md.max_phase = 4 AND dm.action_type = 'BLOCKER' ORDER BY md.chembl_id ASC, md.pref_name ASC, cs.canonical_smiles ASC, md.max_phase ASC, dm.mechanism_of_action ASC, dm.action_type ASC, td.chembl_id ASC, td.pref_name ASC"
+    }
+  }
+}

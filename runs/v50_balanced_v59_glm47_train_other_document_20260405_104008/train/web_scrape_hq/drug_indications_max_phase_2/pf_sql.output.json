@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/drug_indications_max_phase_2.json",
+  "case_id": "drug_indications_max_phase_2",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT md.chembl_id, md.pref_name, di.mesh_id, di.mesh_heading, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 2 ORDER BY md.chembl_id, md.pref_name, di.mesh_id, di.mesh_heading, di.efo_id, di.efo_term, di.max_phase_for_ind\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT md.chembl_id, md.pref_name, di.mesh_id, di.mesh_heading, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 2 ORDER BY md.chembl_id, md.pref_name, di.mesh_id, di.mesh_heading, di.efo_id, di.efo_term, di.max_phase_for_ind"
+    }
+  }
+}

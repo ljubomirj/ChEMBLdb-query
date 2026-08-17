@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact.json",
+  "case_id": "selective_egfr_over_erbb2_smiles_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT\\n  md.chembl_id AS compound_chembl_id,\\n  cs.canonical_smiles\\nFROM molecule_dictionary md\\nJOIN compound_structures cs ON cs.molregno = md.molregno\\nJOIN activities a ON a.molregno = md.molregno\\nJOIN assays ass ON ass.assay_id = a.assay_id\\nJOIN target_dictionary td ON td.tid = ass.tid\\nWHERE a.standard_type = 'IC50'\\n  AND a.standard_relation = '='\\n  AND a.standard_units = 'nM'\\n  AND a.standard_value IS NOT NULL\\n  AND (\\n    (td.chembl_id = 'CHEMBL203' AND a.standard_value < 50)\\n    OR\\n    (td.chembl_id = 'CHEMBL1824' AND a.standard_value > 200)\\n  )\\n  AND EXISTS (\\n    SELECT 1\\n    FROM activities a1\\n    JOIN assays ass1 ON ass1.assay_id = a1.assay_id\\n    JOIN target_dictionary td1 ON td1.tid = ass1.tid\\n    WHERE a1.molregno = md.molregno\\n      AND a1.standard_type = 'IC50'\\n      AND a1.standard_relation = '='\\n      AND a1.standard_units = 'nM'\\n      AND a1.standard_value IS NOT NULL\\n      AND td1.chembl_id = 'CHEMBL203'\\n      AND a1.standard_value < 50\\n  )\\n  AND EXISTS (\\n    SELECT 1\\n    FROM activities a2\\n    JOIN assays ass2 ON ass2.assay_id = a2.assay_id\\n    JOIN target_dictionary td2 ON td2.tid = ass2.tid\\n    WHERE a2.molregno = md.molregno\\n      AND a2.standard_type = 'IC50'\\n      AND a2.standard_relation = '='\\n      AND a2.standard_units = 'nM'\\n      AND a2.standard_value IS NOT NULL\\n      AND td2.chembl_id = 'CHEMBL1824'\\n      AND a2.standard_value > 200\\n  )\\nORDER BY md.chembl_id, cs.canonical_smiles;\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN compound_structures cs ON cs.molregno = md.molregno\nJOIN activities a ON a.molregno = md.molregno\nJOIN assays ass ON ass.assay_id = a.assay_id\nJOIN target_dictionary td ON td.tid = ass.tid\nWHERE a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\n  AND (\n    (td.chembl_id = 'CHEMBL203' AND a.standard_value < 50)\n    OR\n    (td.chembl_id = 'CHEMBL1824' AND a.standard_value > 200)\n  )\n  AND EXISTS (\n    SELECT 1\n    FROM activities a1\n    JOIN assays ass1 ON ass1.assay_id = a1.assay_id\n    JOIN target_dictionary td1 ON td1.tid = ass1.tid\n    WHERE a1.molregno = md.molregno\n      AND a1.standard_type = 'IC50'\n      AND a1.standard_relation = '='\n      AND a1.standard_units = 'nM'\n      AND a1.standard_value IS NOT NULL\n      AND td1.chembl_id = 'CHEMBL203'\n      AND a1.standard_value < 50\n  )\n  AND EXISTS (\n    SELECT 1\n    FROM activities a2\n    JOIN assays ass2 ON ass2.assay_id = a2.assay_id\n    JOIN target_dictionary td2 ON td2.tid = ass2.tid\n    WHERE a2.molregno = md.molregno\n      AND a2.standard_type = 'IC50'\n      AND a2.standard_relation = '='\n      AND a2.standard_units = 'nM'\n      AND a2.standard_value IS NOT NULL\n      AND td2.chembl_id = 'CHEMBL1824'\n      AND a2.standard_value > 200\n  )\nORDER BY md.chembl_id, cs.canonical_smiles;"
+    }
+  }
+}

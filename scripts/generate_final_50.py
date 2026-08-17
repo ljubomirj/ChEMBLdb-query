@@ -15,7 +15,7 @@ DB_PATH = BASE_DIR / "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db"
 FIXTURES_BASE = BASE_DIR / "tests/fixtures"
 
 # Load existing case IDs
-CASES_FILE = BASE_DIR / "tests/cases/web_scrape_hq_cases_v4.5.json"
+CASES_FILE = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases_v4.5.json"
 with open(CASES_FILE) as f:
     EXISTING_IDS = {case["id"] for case in json.load(f)}
 

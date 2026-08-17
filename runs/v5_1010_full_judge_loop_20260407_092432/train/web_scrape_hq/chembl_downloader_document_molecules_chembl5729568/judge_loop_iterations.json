@@ -1,0 +1,97 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the list of molecules that appear in the document with the ChEMBL ID CHEMBL5729568 and have a defined canonical SMILES representation. Return the molecule's ChEMBL ID, the canonical SMILES, and the document's CHEMBL ID (which should match the provided document ID) for provenance. Ensure that the compound records are linked through the compound_records and activities tables to the documents, and that only compounds with a non-null canonical SMILES are included in the result set.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.chembl_id = cs.chembl_id\nLEFT JOIN docs ON cr.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL5729568'\n  AND cs.canonical_smiles IS NOT NULL\n  AND a.standard_type = 'IC50'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the canonical SMILES for each distinct molecule that is reported in the document with the ChEMBL identifier CHEMBL5729568. For each molecule return: (1) the molecule's ChEMBL ID (as molecule_chembl_id), (2) its canonical SMILES (as canonical_smiles), and (3) the document's ChEMBL ID (as doc_chembl_id). Filter to rows where the document identifier equals 'CHEMBL5729568', the canonical SMILES is not null, and the activity record is linked through the standard activity tables (compound_records -> compound_structures and activities -> compound_records). Do not apply additional restrictions on assay types, target descriptions, activity values, units, or document type.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.chembl_id = cs.chembl_id JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the distinct molecules listed in the document with the ChEMBL identifier CHEMBL5729568 that have a defined canonical SMILES. For each molecule return: (1) its ChEMBL ID as molecule_chembl_id, (2) its canonical SMILES as canonical_smiles, and (3) the document's ChEMBL ID as doc_chembl_id. The molecules must be linked to this document through the compound_records and activities tables. No additional filters on assay type, activity values, units, or document type are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.chembl_id = cs.chembl_id LEFT JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the distinct molecules listed in the document with the ChEMBL identifier CHEMBL5729568 that have a defined canonical SMILES. For each molecule return: (1) its ChEMBL ID as molecule_chembl_id, (2) its canonical SMILES as canonical_smiles, and (3) the document's ChEMBL ID as doc_chembl_id. The molecules must be linked to this document through the compound_records and activities tables. No additional filters on assay type, activity values, units, document type, or other constraints are required.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id FROM molecule_dictionary), cr AS (SELECT record_id, molregno, doc_id FROM compound_records), a AS (SELECT activity_id, record_id, standard_value, standard_units, standard_type, standard_relation, pchembl_value, bao_endpoint, uo_units, qudt_units, toid, upper_value, standard_upper_value, src_id, type, relation, value, units, text_value, standard_text_value, action_type FROM activities), cs AS (SELECT molregno, chembl_id, canonical_smiles FROM compound_structures), docs AS (SELECT doc_id, chembl_id FROM docs) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM a JOIN ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN cr ON a.record_id = cr.record_id JOIN md ON cr.molregno = md.molregno LEFT JOIN cs ON md.chembl_id = cs.chembl_id LEFT JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: ass",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: ass",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct molecules that appear in the document with the ChEMBL identifier CHEMBL5729568 and have a defined canonical SMILES. For each molecule return: (1) its ChEMBL ID as molecule_chembl_id, (2) its canonical SMILES as canonical_smiles, and (3) the document's ChEMBL ID as doc_chembl_id. The molecules must be linked to this document through the compound_records and activities tables, and the canonical SMILES must be non\u2011null. No other restrictions on assay type, target description, activity values, units, document type, or other criteria are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.chembl_id LEFT JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve distinct molecules that appear in the document with the ChEMBL identifier CHEMBL5729568 and have a defined canonical SMILES. For each molecule return: (1) its ChEMBL ID as molecule_chembl_id, (2) its canonical SMILES as canonical_smiles, and (3) the document's ChEMBL ID as doc_chembl_id. The molecules must be linked to this document through the compound_records and activities tables. No additional filters on assay type, target description, activity values, units, document type, or other criteria are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.chembl_id = cs.chembl_id LEFT JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve distinct molecules reported in the document with the ChEMBL identifier CHEMBL5729568 that have a defined canonical SMILES. For each molecule return: (1) its ChEMBL ID as molecule_chembl_id, (2) its canonical SMILES as canonical_smiles, and (3) the document's ChEMBL ID as doc_chembl_id. Ensure the molecules are linked to this document through the compound_records and activities tables. No other filters (e.g., assay type, target, activity values, units, document type) are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, docs.chembl_id AS doc_chembl_id FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN docs ON cr.doc_id = docs.doc_id WHERE docs.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n12 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n17 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 51 | SEARCH a USING COVERING INDEX fk_act_record_id (record_id=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n60 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n61 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 703,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "doc_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

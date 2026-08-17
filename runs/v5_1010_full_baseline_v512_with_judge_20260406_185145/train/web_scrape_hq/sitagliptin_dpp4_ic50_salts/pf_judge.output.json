@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/sitagliptin_dpp4_ic50_salts.json",
+  "case_id": "sitagliptin_dpp4_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query successfully retrieves activity details for sitagliptin (CHEMBL1422) and its salts against DPP4 (CHEMBL284) with IC50 in nM. However, the result set is empty, which indicates either:\\n1. No activity records exist for sitagliptin or its salts against DPP4 with IC50 in nM units\\n2. The target CHEMBL284 may not be correctly linked to DPP4 in the target_dictionary\\n3. The assay endpoint BAO_0000190 may not correspond to DPP4 inhibition\\n4. The standard_type 'IC50' may not be used for this target\\n5. The molecule_hierarchy may not capture all salts for sitagliptin\\n\\nThe query structure is correct according to the FAQ salts pattern, but the empty result suggests data availability or mapping issues rather than SQL errors.\",\n  \"score\": 85,\n  \"decision\": \"NEED_MORE_DATA\"\n}",
+    "parsed_json": {
+      "analysis": "The query successfully retrieves activity details for sitagliptin (CHEMBL1422) and its salts against DPP4 (CHEMBL284) with IC50 in nM. However, the result set is empty, which indicates either:\n1. No activity records exist for sitagliptin or its salts against DPP4 with IC50 in nM units\n2. The target CHEMBL284 may not be correctly linked to DPP4 in the target_dictionary\n3. The assay endpoint BAO_0000190 may not correspond to DPP4 inhibition\n4. The standard_type 'IC50' may not be used for this target\n5. The molecule_hierarchy may not capture all salts for sitagliptin\n\nThe query structure is correct according to the FAQ salts pattern, but the empty result suggests data availability or mapping issues rather than SQL errors.",
+      "score": 85,
+      "decision": "NEED_MORE_DATA"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/sitagliptin_dpp4_ic50_salts/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/sitagliptin_dpp4_ic50_salts/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/sitagliptin_dpp4_ic50_salts/pf_judge.generated_artifact_record.json"
+  }
+}

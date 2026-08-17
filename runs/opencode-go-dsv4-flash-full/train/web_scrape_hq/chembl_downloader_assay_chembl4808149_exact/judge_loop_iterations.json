@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "I need all activity records from the assay identified by ChEMBL ID 'CHEMBL4808149'. For each activity record, show the compound's ChEMBL ID (from molecule_dictionary), the canonical SMILES (from compound_structures), and the activity details including standard_type, standard_relation, standard_value, and standard_units. Do not impose any additional filters. Return every matching row without any row limit.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4808149';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 5648,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

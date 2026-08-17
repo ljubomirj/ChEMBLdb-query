@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct rows of approved drugs with their indications.\\n\\nJoin path:\\n- molecule_dictionary (md) filtered to max_phase = 4\\n- INNER JOIN drug_indication (di) ON md.molregno = di.molregno\\n- INNER JOIN compound_structures (cs) ON md.molregno = cs.molregno\\n\\nFilters:\\n- md.max_phase = 4\\n- di.efo_id IS NOT NULL\\n- di.efo_term IS NOT NULL\\n\\nReturn columns:\\n- chembl_id \u2190 md.chembl_id\\n- pref_name \u2190 md.pref_name\\n- canonical_smiles \u2190 cs.canonical_smiles\\n- indication_curie \u2190 di.efo_id\\n- indication_label \u2190 di.efo_term\\n- max_phase_for_ind \u2190 di.max_phase_for_ind\\n\\nApply DISTINCT over all six output columns.\\nSort by all output columns: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct rows of approved drugs with their indications.\n\nJoin path:\n- molecule_dictionary (md) filtered to max_phase = 4\n- INNER JOIN drug_indication (di) ON md.molregno = di.molregno\n- INNER JOIN compound_structures (cs) ON md.molregno = cs.molregno\n\nFilters:\n- md.max_phase = 4\n- di.efo_id IS NOT NULL\n- di.efo_term IS NOT NULL\n\nReturn columns:\n- chembl_id \u2190 md.chembl_id\n- pref_name \u2190 md.pref_name\n- canonical_smiles \u2190 cs.canonical_smiles\n- indication_curie \u2190 di.efo_id\n- indication_label \u2190 di.efo_term\n- max_phase_for_ind \u2190 di.max_phase_for_ind\n\nApply DISTINCT over all six output columns.\nSort by all output columns: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

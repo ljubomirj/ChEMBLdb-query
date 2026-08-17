@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_c9c4e13604b68096.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "c9c4e13604b68096",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (as target_chembl_id), target_name (as target_name). Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures. Join: molecule_dictionary to drug_mechanism on molregno; drug_mechanism to target_dictionary on tid; molecule_dictionary to compound_structures on molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type = 'INHIBITOR'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, max_phase ASC, mechanism_of_action ASC, action_type ASC, target_chembl_id ASC, target_name ASC.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (as target_chembl_id), target_name (as target_name). Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures. Join: molecule_dictionary to drug_mechanism on molregno; drug_mechanism to target_dictionary on tid; molecule_dictionary to compound_structures on molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type = 'INHIBITOR'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, max_phase ASC, mechanism_of_action ASC, action_type ASC, target_chembl_id ASC, target_name ASC."
+    }
+  }
+}

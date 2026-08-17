@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_mechanism_sequestering_agent.json",
+  "case_id": "approved_drugs_mechanism_sequestering_agent",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs with mechanism action_type 'SEQUESTERING AGENT'. Join molecule_dictionary to drug_mechanism on molregno, and to target_dictionary on tid. Join compound_structures on molregno to retrieve canonical_smiles. Filter for max_phase = 4. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (as target_dictionary.chembl_id), and target_name (as target_dictionary.pref_name). Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs with mechanism action_type 'SEQUESTERING AGENT'. Join molecule_dictionary to drug_mechanism on molregno, and to target_dictionary on tid. Join compound_structures on molregno to retrieve canonical_smiles. Filter for max_phase = 4. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (as target_dictionary.chembl_id), and target_name (as target_dictionary.pref_name). Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name."
+    }
+  }
+}

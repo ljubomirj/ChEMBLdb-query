@@ -28,10 +28,10 @@ from db_llm_v5.provider import EndpointConfig, build_provider, write_json
 
 DEFAULT_PROMPT_PACK = (
     REPO_ROOT
-    / "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416"
+    / "runs/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416"
     / "candidate_cache/candidate_56d01a91befd8d8a.yaml"
 )
-DEFAULT_MANIFEST_DIR = REPO_ROOT / "tests/v5_manifests_1010/web_scrape_hq"
+DEFAULT_MANIFEST_DIR = REPO_ROOT / "cases/v5.1010/cases"
 DEFAULT_DATASET_REPORT = REPO_ROOT / "experiments/v5.1010_dataset_report.json"
 OVERRIDE_ROOT = REPO_ROOT / "tests/fixtures_1010_overrides"
 NEW_DOC_ORIGIN = "v5.1010_document_wave2_grounded_sql_no_llm"

@@ -1,0 +1,1 @@
+Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval. Join molecule_dictionary with drug_indication on molregno. LEFT JOIN compound_structures on molregno for canonical_smiles. Filter molecule_dictionary where max_phase = 4. Return DISTINCT rows on the requested output columns. Sort by first_approval descending.

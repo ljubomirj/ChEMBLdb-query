@@ -1,0 +1,69 @@
+{
+  "case_id": "chembl_downloader_target_chembl4235_ic50_human_pchembl",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/uq.txt",
+    "up_exec": null,
+    "sql_gold": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/sqlite.sql",
+    "res_gold": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/source.sql",
+    "sqlite_sql": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/sqlite.sql",
+    "documentation": "tests/fixtures/web_scrape31/chembl_downloader_target_chembl4235_ic50_human_pchembl/documentation.txt"
+  },
+  "metadata": {
+    "family": "target_pchembl",
+    "origin": "templated_from_sql",
+    "source_title": "chembl_downloader target export for CHEMBL4235",
+    "source_url": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "sort_keys": [
+      "molecule_chembl_id",
+      "assay_chembl_id",
+      "canonical_smiles",
+      "target_type",
+      "tax_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "tags": [
+      "target_pchembl",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    },
+    "column_rename_map": {
+      "assay_chembl_id": "assay_chembl_id",
+      "chembl_id": "molecule_chembl_id",
+      "molecule_chembl_id": "molecule_chembl_id",
+      "canonical_smiles": "canonical_smiles",
+      "target_type": "target_type",
+      "tax_id": "tax_id",
+      "standard_type": "standard_type",
+      "pchembl_value": "pchembl_value"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

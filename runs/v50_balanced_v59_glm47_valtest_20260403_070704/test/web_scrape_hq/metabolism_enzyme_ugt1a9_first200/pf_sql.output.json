@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_enzyme_ugt1a9_first200.json",
+  "case_id": "metabolism_enzyme_ugt1a9_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  cr.compound_name AS substrate_compound_name,\n  parent_mol.pref_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary parent_mol ON mh.parent_molregno = parent_mol.molregno\nWHERE m.enzyme_name = 'UGT1A9'\nLIMIT 200\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  cr.compound_name AS substrate_compound_name,\n  parent_mol.pref_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno\nLEFT JOIN molecule_dictionary parent_mol ON mh.parent_molregno = parent_mol.molregno\nWHERE m.enzyme_name = 'UGT1A9'\nLIMIT 200"
+    }
+  }
+}

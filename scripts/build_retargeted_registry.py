@@ -11,9 +11,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SUBSET_PATH = REPO_ROOT / 'experiments/target_pchembl_subset_v4.9.json'
-REGISTRY_PATH = REPO_ROOT / 'tests/cases/web_scrape_hq_cases.json'
-STAGING_OUT = REPO_ROOT / 'tests/cases/web_scrape_hq_cases_v4.9_retargeted_staging.json'
-ARCHIVE_OUT = REPO_ROOT / 'tests/cases/web_scrape_hq_cases_archive_v4.9_target_pchembl_excluded.json'
+REGISTRY_PATH = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases.json'
+STAGING_OUT = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases_v4.9_retargeted_staging.json'
+ARCHIVE_OUT = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases_archive_v4.9_target_pchembl_excluded.json'
 REPORT_OUT = REPO_ROOT / 'experiments/retargeted_registry_report_v4.9.md'
 
 

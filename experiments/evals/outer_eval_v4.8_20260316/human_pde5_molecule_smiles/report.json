@@ -1,0 +1,61 @@
+{
+  "ts_utc": "2026-03-16T19:52:41Z",
+  "eval_label": "human_pde5_molecule_smiles",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.8.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 1,
+      "n_pass": 1,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_pde5_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL1827 (cGMP-specific 3',5'-cyclic phosphodiesterase). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/human_pde5_molecule_smiles/val/web_scrape_hq/human_pde5_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/human_pde5_molecule_smiles/val/web_scrape_hq/human_pde5_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1827' AND ass.assay_organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 2604,
+          "actual_rows": 2604,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 1,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

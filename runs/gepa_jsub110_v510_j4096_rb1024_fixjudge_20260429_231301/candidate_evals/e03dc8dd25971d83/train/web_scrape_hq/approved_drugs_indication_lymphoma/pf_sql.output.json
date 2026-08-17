@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_j4096_rb1024_fixjudge_20260429_231301/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_lymphoma.json",
+  "case_id": "approved_drugs_indication_lymphoma",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE drug_indication.mesh_heading LIKE '%lymphoma%' AND molecule_dictionary.max_phase = 4"
+}

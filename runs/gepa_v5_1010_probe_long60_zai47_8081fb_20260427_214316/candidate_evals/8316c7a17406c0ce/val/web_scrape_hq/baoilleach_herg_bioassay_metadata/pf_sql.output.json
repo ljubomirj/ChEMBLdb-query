@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_8316c7a17406c0ce.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/baoilleach_herg_bioassay_metadata.json",
+  "case_id": "baoilleach_herg_bioassay_metadata",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "8316c7a17406c0ce",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT assays.chembl_id AS assay_chembl_id, assays.tid, assays.description AS assay_description, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism, docs.journal, docs.year, docs.volume, docs.first_page, docs.doi FROM assays INNER JOIN target_dictionary ON assays.tid = target_dictionary.tid INNER JOIN docs ON assays.doc_id = docs.doc_id WHERE assays.assay_type = 'B' AND assays.tid = 165 ORDER BY assays.chembl_id, assays.tid, docs.journal, docs.year, docs.doi\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT assays.chembl_id AS assay_chembl_id, assays.tid, assays.description AS assay_description, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism, docs.journal, docs.year, docs.volume, docs.first_page, docs.doi FROM assays INNER JOIN target_dictionary ON assays.tid = target_dictionary.tid INNER JOIN docs ON assays.doc_id = docs.doc_id WHERE assays.assay_type = 'B' AND assays.tid = 165 ORDER BY assays.chembl_id, assays.tid, docs.journal, docs.year, docs.doi"
+    }
+  }
+}

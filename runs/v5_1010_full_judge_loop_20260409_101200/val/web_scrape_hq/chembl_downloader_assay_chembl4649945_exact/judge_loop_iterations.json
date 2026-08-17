@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact activity values (standard_value with its corresponding standard_relation and standard_units) and the chemical structures (canonical_smiles) for all compounds tested in the assay identified by CHEMBL ID 'CHEMBL4649945'.",
+    "sql": "SELECT\n  a.standard_value,\n  a.standard_relation,\n  a.standard_units,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE ass.chembl_id = 'CHEMBL4649945'\n  AND a.standard_relation IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 37351,
+    "res_columns": [
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

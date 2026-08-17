@@ -20,12 +20,12 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 from compressed_io import read_text_maybe_compressed
 from db_llm_runtime_v5 import ChEMBLLLMQuery, Iteration
 from db_llm_v5.forward import run_res
-from db_llm_v5.io import load_case_manifest, load_prompt_pack
+from db_llm_v5.io import load_case_manifest, load_prompt_pack, resolve_case_manifest_path
 from db_llm_v5.provider import EndpointConfig, resolve_profile, write_json
 
-DEFAULT_SPLIT = REPO_ROOT / "experiments" / "case_splits_v5.1010.json"
-DEFAULT_MANIFEST_ROOT = REPO_ROOT / "tests" / "v5_manifests_1010"
-DEFAULT_EVAL_ROOT = REPO_ROOT / "experiments" / "evals" / "v5_forward_eval"
+DEFAULT_SPLIT = REPO_ROOT / "cases" / "v5.1010" / "splits" / "case_splits_v5.1010.json"
+DEFAULT_MANIFEST_ROOT = REPO_ROOT / "cases" / "v5.1010" / "cases"
+DEFAULT_EVAL_ROOT = REPO_ROOT / "runs"
 
 
 def _parse_history_window_arg(value: Optional[str]) -> Optional[int]:
@@ -406,7 +406,7 @@ def main() -> None:
         )
 
         try:
-            manifest = load_case_manifest(Path(args.manifest_root) / corpus / f"{case_id}.json")
+            manifest = load_case_manifest(resolve_case_manifest_path(args.manifest_root, corpus, case_id))
         except Exception as exc:
             _append_case_event(case_root, "case_error", error_stage="manifest", error=str(exc))
             _append_transcript(case_root, "Case Error", _format_key_values({"error_stage": "manifest", "error": str(exc)}))
@@ -446,7 +446,7 @@ def main() -> None:
             "Case Start",
             _render_case_intro(
                 manifest=manifest,
-                manifest_path=Path(args.manifest_root) / corpus / f"{case_id}.json",
+                manifest_path=resolve_case_manifest_path(args.manifest_root, corpus, case_id),
                 prompt_pack=prompt_pack,
                 prompt_pack_path=Path(args.prompt_pack),
                 split_name=split_name,
@@ -483,7 +483,7 @@ def main() -> None:
                     "corpus": corpus,
                     "case_id": case_id,
                     "family": manifest.metadata.family,
-                    "manifest_path": str((Path(args.manifest_root) / corpus / f"{case_id}.json").resolve()),
+                    "manifest_path": str((resolve_case_manifest_path(args.manifest_root, corpus, case_id)).resolve()),
                     "case_dir": str(case_root.resolve()),
                     "metric_mode": "judge-loop-eval",
                 }

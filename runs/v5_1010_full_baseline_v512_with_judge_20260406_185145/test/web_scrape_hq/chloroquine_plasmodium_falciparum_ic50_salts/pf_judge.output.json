@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chloroquine_plasmodium_falciparum_ic50_salts.json",
+  "case_id": "chloroquine_plasmodium_falciparum_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the FAQ salts pattern by defining the compound set via molecule_hierarchy from CHEMBL76 (parent) to include all related salt forms. It uses the proper provenance join path (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary) and includes the LEFT JOIN for compound_structures. The filter for standard_type='IC50' and target CHEMBL364 is correctly applied. The result set includes all requested columns: compound identifiers, structures, assay details, and literature references. The sample rows show multiple salt forms (CHEMBL1669, CHEMBL2052012) with different compound_keys and assay descriptions, confirming the hierarchy expansion worked correctly. The row count of 2139 indicates comprehensive coverage of activity records.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the FAQ salts pattern by defining the compound set via molecule_hierarchy from CHEMBL76 (parent) to include all related salt forms. It uses the proper provenance join path (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary) and includes the LEFT JOIN for compound_structures. The filter for standard_type='IC50' and target CHEMBL364 is correctly applied. The result set includes all requested columns: compound identifiers, structures, assay details, and literature references. The sample rows show multiple salt forms (CHEMBL1669, CHEMBL2052012) with different compound_keys and assay descriptions, confirming the hierarchy expansion worked correctly. The row count of 2139 indicates comprehensive coverage of activity records.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chloroquine_plasmodium_falciparum_ic50_salts/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chloroquine_plasmodium_falciparum_ic50_salts/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chloroquine_plasmodium_falciparum_ic50_salts/pf_judge.generated_artifact_record.json"
+  }
+}

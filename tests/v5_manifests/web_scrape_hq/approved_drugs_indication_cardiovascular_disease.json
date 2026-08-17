@@ -1,0 +1,59 @@
+{
+  "case_id": "approved_drugs_indication_cardiovascular_disease",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/uq.txt",
+    "up_exec": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/up_exec.txt",
+    "sql_gold": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/sqlite.sql",
+    "res_gold": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/source.sql",
+    "sqlite_sql": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/sqlite.sql",
+    "documentation": "tests/fixtures/web_scrape76/approved_drugs_indication_cardiovascular_disease/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "templated_from_sql",
+    "source_title": "Synthetic approved_drugs_with_indications_export case: approved_drugs_indication_cardiovascular_disease",
+    "source_url": "synthetic_generated",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "tags": [
+      "other",
+      "approved_drugs_with_indications_export",
+      "wave2"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    },
+    "column_rename_map": {},
+    "float_cols": [],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Staged other wave-2 case from approved_drugs_with_indications_export."
+  }
+}

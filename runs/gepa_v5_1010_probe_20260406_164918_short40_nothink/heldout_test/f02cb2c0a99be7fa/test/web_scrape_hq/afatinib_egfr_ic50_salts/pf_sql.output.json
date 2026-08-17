@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/afatinib_egfr_ic50_salts.json",
+  "case_id": "afatinib_egfr_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  child_mol.chembl_id AS compound_chembl_id,\\n  cs.canonical_smiles AS canonical_smiles,\\n  cr.compound_key AS compound_key,\\n  d.pubmed_id AS pubmed_id_or_doi,\\n  ass.description AS assay_description,\\n  a.standard_type AS standard_type,\\n  a.standard_relation AS standard_relation,\\n  a.standard_value AS standard_value,\\n  a.standard_units AS standard_units,\\n  a.activity_comment AS activity_comment,\\n  t.chembl_id AS target_chembl_id,\\n  t.pref_name AS target_name,\\n  t.organism AS target_organism\\nFROM molecule_dictionary AS parent_mol\\nJOIN molecule_hierarchy AS mh ON mh.parent_molregno = parent_mol.molregno\\nJOIN molecule_dictionary AS child_mol ON child_mol.molregno = mh.molregno\\nLEFT JOIN compound_records AS cr ON cr.molregno = child_mol.molregno\\nLEFT JOIN docs AS d ON d.doc_id = cr.doc_id\\nLEFT JOIN activities AS a ON a.record_id = cr.record_id\\n  AND a.standard_type = 'IC50'\\n  AND a.standard_relation = '='\\n  AND a.standard_units = 'nM'\\n  AND a.standard_value IS NOT NULL\\nLEFT JOIN assays AS ass ON ass.assay_id = a.assay_id\\nLEFT JOIN target_dictionary AS t ON t.tid = a.tid\\nLEFT JOIN compound_structures AS cs ON cs.molregno = child_mol.molregno\\nWHERE parent_mol.chembl_id = 'CHEMBL1173655'\\n  AND t.chembl_id = 'CHEMBL203';\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  child_mol.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles AS canonical_smiles,\n  cr.compound_key AS compound_key,\n  d.pubmed_id AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  a.standard_type AS standard_type,\n  a.standard_relation AS standard_relation,\n  a.standard_value AS standard_value,\n  a.standard_units AS standard_units,\n  a.activity_comment AS activity_comment,\n  t.chembl_id AS target_chembl_id,\n  t.pref_name AS target_name,\n  t.organism AS target_organism\nFROM molecule_dictionary AS parent_mol\nJOIN molecule_hierarchy AS mh ON mh.parent_molregno = parent_mol.molregno\nJOIN molecule_dictionary AS child_mol ON child_mol.molregno = mh.molregno\nLEFT JOIN compound_records AS cr ON cr.molregno = child_mol.molregno\nLEFT JOIN docs AS d ON d.doc_id = cr.doc_id\nLEFT JOIN activities AS a ON a.record_id = cr.record_id\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL\nLEFT JOIN assays AS ass ON ass.assay_id = a.assay_id\nLEFT JOIN target_dictionary AS t ON t.tid = a.tid\nLEFT JOIN compound_structures AS cs ON cs.molregno = child_mol.molregno\nWHERE parent_mol.chembl_id = 'CHEMBL1173655'\n  AND t.chembl_id = 'CHEMBL203';"
+    }
+  }
+}

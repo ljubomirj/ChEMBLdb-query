@@ -1,0 +1,59 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the full list of compound records (compound_key and compound_name) and their associated public ChEMBL identifiers (chembl_id) that are explicitly described as being reported in the document with the ChEMBL identifier CHEMBL5727410. The document identifier should be resolved using the docs table (doc_id), and the associated compounds should be obtained via the compound_records table, which links document IDs to molecule records through compound_records.record_id. The output should include: document identifier (as provided, CHEMBL5727410), molecule ChEMBL identifier (chembl_id), compound_key, and compound_name. No filtering by year, assay type, target, organism, confidence score, or other metadata is required beyond the document identifier.",
+    "sql": "SELECT CHEMBL5727410 AS doc_chembl_id, md.molecule_chembl_id AS chembl_id, cr.compound_key, md.pref_name AS compound_name\nFROM docs d\nJOIN compound_records cr ON d.doc_id = cr.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5727410';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: CHEMBL5727410",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: CHEMBL5727410",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the full list of compound records (compound_key and compound_name) and their associated public ChEMBL identifiers (chembl_id) that are explicitly described as being reported in the document with the ChEMBL identifier CHEMBL5727410. The document identifier should be resolved using the docs table (doc_id), and the associated compounds should be obtained via the compound_records table, which links document IDs to molecule records through compound_records.record_id. The output should include: document identifier (as provided, CHEMBL5727410), molecule ChEMBL identifier (chembl_id), compound_key, and compound_name. No filtering by year, assay type, target, organism, confidence score, or other metadata is required beyond the document identifier.",
+    "sql": "SELECT 'CHEMBL5727410' AS doc_chembl_id, md.molecule_chembl_id AS chembl_id, cr.compound_key, md.pref_name AS compound_name FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727410';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compound records (compound_key and compound_name) linked to the document with the ChEMBL identifier CHEMBL5727410. The result must include a column with the document identifier (as the exact string CHEMBL5727410), the molecule\u2019s public ChEMBL identifier (chembl_id), the compound_key from the compound_records table, and the molecule\u2019s preferred name (pref_name) as compound_name. Use the docs table to find the document, join through compound_records on doc_id, then join to molecule_dictionary on molregno. No additional filters (e.g., year, assay type, target, organism, confidence_score) are required beyond the document identifier.",
+    "sql": "SELECT 'CHEMBL5727410' AS doc_chembl_id, md.molecule_chembl_id AS chembl_id, cr.compound_key, md.pref_name AS compound_name FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727410';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compound records (compound_key and compound_name) linked to the document with the ChEMBL identifier CHEMBL5727410. Return a constant column 'doc_chembl_id' with the exact string CHEMBL5727410, the molecule\u2019s public ChEMBL identifier (chembl_id), the compound_key from compound_records, and the molecule\u2019s preferred name (pref_name) as compound_name. Join docs to compound_records via doc_id, then to molecule_dictionary via molregno. No additional filters are required beyond the document identifier; do not apply filters for year, assay type, target, organism, confidence_score, or other metadata.",
+    "sql": "SELECT 'CHEMBL5727410' AS doc_chembl_id, md.chembl_id AS chembl_id, cr.compound_key, md.pref_name AS compound_name FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727410';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n12 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 955,
+    "res_columns": [
+      "doc_chembl_id",
+      "chembl_id",
+      "compound_key",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

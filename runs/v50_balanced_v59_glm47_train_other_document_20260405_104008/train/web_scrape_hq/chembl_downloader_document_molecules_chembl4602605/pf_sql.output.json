@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl4602605.json",
+  "case_id": "chembl_downloader_document_molecules_chembl4602605",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name AS molecule_name,\n  md.max_phase,\n  md.molecule_type,\n  cs.canonical_smiles\nFROM docs d\nJOIN compound_records r ON d.doc_id = r.doc_id\nJOIN molecule_dictionary md ON r.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL4602605'\nORDER BY md.chembl_id\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name AS molecule_name,\n  md.max_phase,\n  md.molecule_type,\n  cs.canonical_smiles\nFROM docs d\nJOIN compound_records r ON d.doc_id = r.doc_id\nJOIN molecule_dictionary md ON r.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL4602605'\nORDER BY md.chembl_id"
+    }
+  }
+}

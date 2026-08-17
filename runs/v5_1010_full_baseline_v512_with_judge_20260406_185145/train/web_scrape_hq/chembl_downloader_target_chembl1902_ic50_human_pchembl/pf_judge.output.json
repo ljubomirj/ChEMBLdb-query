@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1902_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve IC50 activities (standard_relation = '=') for the human single-protein target CHEMBL1902 (FKBP1A) with pChEMBL values, but the result set is empty. The schema and sample data show that activities for this target and assay type should exist, and the filters appear correct. However, the result count is zero, indicating a potential mismatch in the filtering logic. The filters include assay_type = 'B' (Binding), which aligns with the target type, and standard_relation = '=', which is correct for IC50. The organism and tax_id filters are also appropriate. The lack of rows suggests that either the target CHEMBL1902 does not have binding assay data in the current release, or the assay_type filter may be too restrictive (e.g., some assays may be classified as 'F' for functional). Additionally, the join to compound_structures may exclude compounds without structures, but the sample data shows that many activities have associated structures. The query uses DISTINCT, which is appropriate for deduplication, but the zero rows indicate a deeper issue. The target_dictionary.tid = 1902 and tax_id = 9606 are correct for the human target, and the assay_organism filter is correctly set to 'Homo sapiens'. The standard_type filter is not applied, which is fine as it is not required. The query should be reviewed for possible misalignment with the actual data, such as the target being classified under a different target_type or the assay_type being mislabeled.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve IC50 activities (standard_relation = '=') for the human single-protein target CHEMBL1902 (FKBP1A) with pChEMBL values, but the result set is empty. The schema and sample data show that activities for this target and assay type should exist, and the filters appear correct. However, the result count is zero, indicating a potential mismatch in the filtering logic. The filters include assay_type = 'B' (Binding), which aligns with the target type, and standard_relation = '=', which is correct for IC50. The organism and tax_id filters are also appropriate. The lack of rows suggests that either the target CHEMBL1902 does not have binding assay data in the current release, or the assay_type filter may be too restrictive (e.g., some assays may be classified as 'F' for functional). Additionally, the join to compound_structures may exclude compounds without structures, but the sample data shows that many activities have associated structures. The query uses DISTINCT, which is appropriate for deduplication, but the zero rows indicate a deeper issue. The target_dictionary.tid = 1902 and tax_id = 9606 are correct for the human target, and the assay_organism filter is correctly set to 'Homo sapiens'. The standard_type filter is not applied, which is fine as it is not required. The query should be reviewed for possible misalignment with the actual data, such as the target being classified under a different target_type or the assay_type being mislabeled.",
+      "score": 0.65,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

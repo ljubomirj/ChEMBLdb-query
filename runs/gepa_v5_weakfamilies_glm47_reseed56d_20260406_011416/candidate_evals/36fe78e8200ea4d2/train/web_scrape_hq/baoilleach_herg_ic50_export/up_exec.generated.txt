@@ -1,0 +1,2 @@
+{
+  "up": "Select activity_id, assay_chembl_id, standard_relation, standard_value, standard_units, standard_type, molecule_chembl_id\nJoin assays ON activities.assay_id = assays.assay_id\nJoin molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nFilter assays.tid = 165\nFilter activities.standard_type = 'IC50'\nReturn\nSort activity_id, assay_chembl_id, molecule_chem

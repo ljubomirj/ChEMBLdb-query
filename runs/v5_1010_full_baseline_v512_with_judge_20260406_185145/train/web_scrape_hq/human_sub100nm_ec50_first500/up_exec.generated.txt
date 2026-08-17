@@ -1,0 +1,16 @@
+Select molecule_chembl_id as compound_chembl_id, canonical_smiles, standard_type, standard_value, standard_units
+Join molecule_dictionary on molecule_dictionary.molregno = activities.molregno
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.target_type = 'SINGLE PROTEIN'
+Filter assays.assay_organism = 'Homo sapiens'
+Filter activities.bao_endpoint = 'EC50'
+Filter activities.standard_type = 'EC50'
+Filter activities.standard_value < 100
+Filter activities.standard_units = 'nM'
+Filter activities.standard_relation = '='
+Filter activities.standard_value IS NOT NULL
+Filter activities.standard_units IS NOT NULL
+Sort by molecule_chembl_id, canonical_smiles, standard_type, standard_value, standard_units
+Limit 500

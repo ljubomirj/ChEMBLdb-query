@@ -1,0 +1,30 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds with measured activity (any activity type, any standard unit) against human Beta\u2011secretase 1 (target CHEMBL4822) that were tested in assays performed on human cells or organisms. Return each compound's canonical SMILES. Preserve assay provenance but do not add filters for activity relation, unit, or confidence score.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL4822' AND\n  ass.assay_organism = 'Homo sapiens' AND\n  ass.assay_type IN ('F','B','A','T','P','U');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find compounds tested in human assays against human Beta\u2011secretase 1 (target CHEMBL4822) and return their canonical SMILES. Restrict to activities where the assay organism is human (assays.assay_organism = 'Homo sapiens'). Include all activity types and standard units (no filters on standard_relation or pchembl_value). Return distinct canonical SMILES from compound_structures, joining molecules via molregno (activities.molregno = molecule_dictionary.molregno = compound_structures.molregno). No other filters, no limits, no activity relation restrictions, no confidence score filters, no DOI or doc type requirements.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL4822' AND ass.assay_organism = 'Homo sapiens' AND ass.assay_type IN ('F','B','A','T','P','U');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n10 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n15 | 0 | 224 | SCAN ass\n49 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n55 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n61 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n78 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 10323,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "n": 2,
+    "up": "Return a list of all approved drugs that have indications for cancer. For each drug, include the following columns: the ChEMBL ID of the drug (chembl_id), the preferred name of the drug (pref_name), the canonical SMILES structure (canonical_smiles), the indication details (drug_indication.mesh_heading), the specific indication ID (drug_indication.mesh_id), the EFO term for the indication (drug_indication.efo_term), the EFO ID for the indication (drug_indication.efo_id), and the maximum clinical phase reached for that indication (drug_indication.max_phase_for_ind). An 'approved drug' is defined as a drug with a max_phase of 4. Indications for cancer are identified by matching the mesh_heading to the string 'cancer'. Return all qualifying rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.mesh_id, di.efo_term, di.efo_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.mesh_heading LIKE '%cancer%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 42,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Return a list of all approved drugs indicated for cancer. For each drug, include the following columns: the ChEMBL ID of the drug (chembl_id), the preferred name of the drug (pref_name), the canonical SMILES structure (canonical_smiles), the indication details (mesh_heading), the MeSH ID (mesh_id), the EFO term (efo_term), the EFO ID (efo_id), and the maximum clinical phase reached for that indication (max_phase_for_ind). An 'approved drug' is defined as a drug in the molecule_dictionary table with a max_phase of 4. 'Indicated for cancer' is defined as having an entry in the drug_indication table where the mesh_heading matches 'Neoplasms' or contains specific cancer terminology such as 'Carcinoma', 'Adenocarcinoma', 'Leukemia', 'Lymphoma', 'Melanoma', 'Sarcoma', or 'Myeloma'. Do not include indications for 'Cancer Pain', 'Precancerous Conditions', or other non-cancer related indications that simply include the word 'cancer'. Join the molecule_dictionary table to drug_indication on molregno and join compound_structures on molregno to retrieve the structure. Return all qualifying rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.mesh_id, di.efo_term, di.efo_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading = 'Neoplasms' OR di.mesh_heading LIKE '%Carcinoma%' OR di.mesh_heading LIKE '%Adenocarcinoma%' OR di.mesh_heading LIKE '%Leukemia%' OR di.mesh_heading LIKE '%Lymphoma%' OR di.mesh_heading LIKE '%Melanoma%' OR di.mesh_heading LIKE '%Sarcoma%' OR di.mesh_heading LIKE '%Myeloma%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n34 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n65 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4751,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Return a list of all approved drugs that have approved indications for cancer. For each drug, include the following columns: the ChEMBL ID (chembl_id), the preferred name (pref_name), the canonical SMILES structure (canonical_smiles), the indication details (mesh_heading), the MeSH ID (mesh_id), the EFO term (efo_term), the EFO ID (efo_id), and the maximum clinical phase reached for that specific indication (max_phase_for_ind). An 'approved drug' is defined as a drug in the molecule_dictionary table with a max_phase of 4. An 'approved indication for cancer' is defined as having an entry in the drug_indication table where max_phase_for_ind equals 4 and the mesh_heading matches 'Neoplasms' or contains specific cancer terminology such as 'Carcinoma', 'Adenocarcinoma', 'Leukemia', 'Lymphoma', 'Melanoma', 'Sarcoma', or 'Myeloma'. Exclude indications for 'Cancer Pain', 'Precancerous Conditions', or other non-cancer related indications that simply include the word 'cancer'. Join molecule_dictionary to drug_indication on molregno and join compound_structures on molregno to retrieve the structure. Return all qualifying rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.mesh_id, di.efo_term, di.efo_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 4 AND (di.mesh_heading = 'Neoplasms' OR di.mesh_heading LIKE '%Carcinoma%' OR di.mesh_heading LIKE '%Adenocarcinoma%' OR di.mesh_heading LIKE '%Leukemia%' OR di.mesh_heading LIKE '%Lymphoma%' OR di.mesh_heading LIKE '%Melanoma%' OR di.mesh_heading LIKE '%Sarcoma%' OR di.mesh_heading LIKE '%Myeloma%') AND di.mesh_heading NOT LIKE '%Pain%' AND di.mesh_heading NOT LIKE '%Precancerous%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n73 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 676,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

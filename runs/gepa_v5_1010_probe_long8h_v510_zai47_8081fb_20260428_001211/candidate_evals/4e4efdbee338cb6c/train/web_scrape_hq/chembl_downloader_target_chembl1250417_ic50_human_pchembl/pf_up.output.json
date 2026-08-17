@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1250417_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1250417_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1250417 (Potassium/sodium hyperpolarization-activated cyclic nucleotide-gated channel 4), including assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value, ordered by molecule ChEMBL ID and assay ChEMBL ID.\n\nOutput: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\nSource: activities, assays, molecule_dictionary, compound_structures, target_dictionary\n\nLogic: Filter activities where standard_relation = '=' and pchembl_value is not null, join activities to assays on assay_id, join assays to target_dictionary on tid, join target_dictionary to molecule_dictionary on molregno, join molecule_dictionary to compound_structures on molregno, filter target_dictionary.tax_id = 9606 and target_dictionary.chembl_id = 'CHEMBL1250417', ensure assay_type = 'B' (Binding) or assay_type = 'F' (Functional) or assay_type = 'A' (ADME) or assay_type = 'P' (Physicochemical) or assay_type = 'T' (Toxicity) or assay_type = 'U' (Unassigned), order by molecule_chembl_id, assay_chembl_id, limit 1000.",
+    "parsed_json": {
+      "up": "Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1250417 (Potassium/sodium hyperpolarization-activated cyclic nucleotide-gated channel 4), including assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value, ordered by molecule ChEMBL ID and assay ChEMBL ID.\n\nOutput: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\nSource: activities, assays, molecule_dictionary, compound_structures, target_dictionary\n\nLogic: Filter activities where standard_relation = '=' and pchembl_value is not null, join activities to assays on assay_id, join assays to target_dictionary on tid, join target_dictionary to molecule_dictionary on molregno, join molecule_dictionary to compound_structures on molregno, filter target_dictionary.tax_id = 9606 and target_dictionary.chembl_id = 'CHEMBL1250417', ensure assay_type = 'B' (Binding) or assay_type = 'F' (Functional) or assay_type = 'A' (ADME) or assay_type = 'P' (Physicochemical) or assay_type = 'T' (Toxicity) or assay_type = 'U' (Unassigned), order by molecule_chembl_id, assay_chembl_id, limit 1000."
+    }
+  }
+}

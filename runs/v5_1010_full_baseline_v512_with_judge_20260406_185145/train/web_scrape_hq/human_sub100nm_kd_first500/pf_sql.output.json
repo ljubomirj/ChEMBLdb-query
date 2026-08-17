@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_sub100nm_kd_first500.json",
+  "case_id": "human_sub100nm_kd_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT m.chembl_id AS molecule_chembl_id, cs.canonical_smiles, a.standard_type, a.standard_value, a.standard_units\\nFROM activities a\\nJOIN assays ass ON a.assay_id = ass.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN compound_records cr ON a.record_id = cr.record_id\\nJOIN molecule_dictionary m ON cr.molregno = m.molregno\\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\\nWHERE a.bao_endpoint = 'Kd'\\n  AND a.standard_type = 'Kd'\\n  AND a.standard_relation = '='\\n  AND a.standard_value < 100\\n  AND a.standard_units = 'nM'\\n  AND a.standard_flag = 1\\n  AND a.potential_duplicate = 0\\n  AND a.standard_type IS NOT NULL\\n  AND a.standard_value IS NOT NULL\\n  AND a.standard_units IS NOT NULL\\n  AND a.standard_relation IS NOT NULL\\n  AND ass.assay_type = 'B'\\n  AND ass.assay_organism = 'Homo sapiens'\\n  AND td.target_type = 'SINGLE PROTEIN'\\nLIMIT 500;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT m.chembl_id AS molecule_chembl_id, cs.canonical_smiles, a.standard_type, a.standard_value, a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary m ON cr.molregno = m.molregno\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\nWHERE a.bao_endpoint = 'Kd'\n  AND a.standard_type = 'Kd'\n  AND a.standard_relation = '='\n  AND a.standard_value < 100\n  AND a.standard_units = 'nM'\n  AND a.standard_flag = 1\n  AND a.potential_duplicate = 0\n  AND a.standard_type IS NOT NULL\n  AND a.standard_value IS NOT NULL\n  AND a.standard_units IS NOT NULL\n  AND a.standard_relation IS NOT NULL\n  AND ass.assay_type = 'B'\n  AND ass.assay_organism = 'Homo sapiens'\n  AND td.target_type = 'SINGLE PROTEIN'\nLIMIT 500;"
+    }
+  }
+}

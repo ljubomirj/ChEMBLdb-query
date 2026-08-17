@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl5244223.json",
+  "case_id": "chembl_downloader_document_molecules_chembl5244223",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request by joining molecule_dictionary to compound_records and docs, filtering by the specified document CHEMBL ID, and LEFT JOINing compound_structures to include canonical SMILES. The output columns match the requested fields (molecule ChEMBL ID, name, max phase, type, SMILES), and the results are ordered by molecule ChEMBL ID. The sample rows show expected data patterns, including some compounds with missing names and max_phase values, which is consistent with the database content. The row count (246) is plausible for a document listing many compounds. No deduplication was applied, preserving the original record multiplicity as requested.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request by joining molecule_dictionary to compound_records and docs, filtering by the specified document CHEMBL ID, and LEFT JOINing compound_structures to include canonical SMILES. The output columns match the requested fields (molecule ChEMBL ID, name, max phase, type, SMILES), and the results are ordered by molecule ChEMBL ID. The sample rows show expected data patterns, including some compounds with missing names and max_phase values, which is consistent with the database content. The row count (246) is plausible for a document listing many compounds. No deduplication was applied, preserving the original record multiplicity as requested.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5244223/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5244223/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5244223/pf_judge.generated_artifact_record.json"
+  }
+}

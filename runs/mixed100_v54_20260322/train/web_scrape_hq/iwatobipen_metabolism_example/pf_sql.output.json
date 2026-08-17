@@ -1,0 +1,17 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_metabolism_example.json",
+  "case_id": "iwatobipen_metabolism_example",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  cr.compound_name,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN compound_structures cs ON cr.molregno = cs.molregno\nORDER BY cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key\nLIMIT 200;\n```",
+    "parsed_json": null
+  }
+}

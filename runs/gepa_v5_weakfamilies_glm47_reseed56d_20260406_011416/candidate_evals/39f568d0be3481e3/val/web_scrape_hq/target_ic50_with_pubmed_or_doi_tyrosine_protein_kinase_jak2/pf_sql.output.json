@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_39f568d0be3481e3.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_jak2.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_jak2",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "39f568d0be3481e3",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  md.molecule_type AS compound_key,\n  COALESCE(d.doi, d.pubmed_id) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nWHERE td.pref_name = 'JAK2'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  md.molecule_type,\n  COALESCE(d.doi, d.pubmed_id),\n  a.description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id,\n  td.pref_name,\n  td.organism\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  md.molecule_type AS compound_key,\n  COALESCE(d.doi, d.pubmed_id) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nWHERE td.pref_name = 'JAK2'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  md.molecule_type,\n  COALESCE(d.doi, d.pubmed_id),\n  a.description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id,\n  td.pref_name,\n  td.organism"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "n": 2,
+    "up": "Return the count of IC50 activities for each target type. Use the target types from the target_dictionary table. The counts should reflect the number of activity records associated with assays linked to each target type.",
+    "sql": "SELECT td.target_type, COUNT(a.activity_id) AS activity_count FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'IC50' GROUP BY td.target_type ORDER BY activity_count DESC;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n17 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n23 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n30 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY\n67 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 21,
+    "res_columns": [
+      "target_type",
+      "activity_count"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

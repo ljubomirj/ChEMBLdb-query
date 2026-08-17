@@ -1,0 +1,102 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds (with their pref_name and chembl_id) that are reported in the document identified by CHEMBL5729701. The result should include every molecule that appears in any activity row whose doc_id points to the document with chembl_id CHEMBL5729701. No additional filters (e.g., assay type, confidence score, or activity relations) are required. Return one row per distinct molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, a.molecule_chembl_id FROM activities a JOIN assay_records ar ON a.activity_id = ar.activity_id JOIN docs d ON ar.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: assay_records",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: assay_records",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the list of distinct molecules (pref_name and chembl_id) that appear in the document with chembl_id CHEMBL5729701. Include every molecule that is recorded in any activity row associated with that document. Return one row per distinct molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, a.molecule_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the distinct list of molecules (pref_name and chembl_id) reported in the document with chembl_id CHEMBL5729701. Include every molecule that appears in any activity row where the activity row's document identifier matches CHEMBL5729701. Return one row per distinct molecule without any additional filters (e.g., assay type, activity relation, or confidence score). Return the molecule's preferred name (pref_name) and the ChEMBL identifier (chembl_id) for each molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, md.molecule_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the distinct list of molecule names (pref_name) and their ChEMBL identifiers (chembl_id) for every compound that has at least one activity row whose associated document (d.docs.chembl_id) is CHEMBL5729701. Do not apply any filters on assay type, activity type, confidence score, or units. Return exactly two columns: pref_name (the preferred molecule name) and chembl_id (the public ChEMBL identifier for the molecule). One row per distinct molecule, regardless of how many activity rows it has in that document.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct list of molecule names (pref_name) and their ChEMBL identifiers (chembl_id) for every compound that has at least one activity row whose associated document (d.chembl_id) is CHEMBL5729701. Include every molecule that appears in any activity row where the activity row is linked to the given document. Return exactly two columns: the molecule's preferred name and the public ChEMBL identifier. No additional filters on assay type, activity type, confidence score, or units. One row per distinct molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729701';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 68 | SEARCH ass USING INDEX idx_assays_doc_id (doc_id=?)\n21 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 814,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the distinct list of molecule names (pref_name) and their public ChEMBL identifiers (chembl_id) for every compound that has at least one activity row whose associated document (d.chembl_id) is CHEMBL5729701. Include every molecule that appears in any activity row where the activity row is linked to the given document. Return exactly two columns: the molecule's preferred name and the public ChEMBL identifier. No additional filters on assay type, activity type, confidence score, or units. One row per distinct molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 68 | SEARCH ass USING INDEX idx_assays_doc_id (doc_id=?)\n21 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 814,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct list of molecule names (pref_name) and their public ChEMBL identifiers (chembl_id) for every compound that has at least one activity row whose associated document (d.chembl_id) is CHEMBL5729701. Include every molecule that appears in any activity row where the activity row is linked to the given document. Return exactly two columns: the molecule's preferred name and the public ChEMBL identifier. No additional filters on assay type, activity type, confidence score, or units. One row per distinct molecule.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON ass.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729701'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 68 | SEARCH ass USING INDEX idx_assays_doc_id (doc_id=?)\n21 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 814,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

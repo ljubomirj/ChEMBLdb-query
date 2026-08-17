@@ -1,0 +1,94 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve metabolism records where the enzyme name contains 'CYP3A4' or 'CYP3A5'. For each record, include the following details: substrate compound name (pref_name from molecule_dictionary), metabolite compound name (pref_name from molecule_dictionary for metabolite_record_id), metabolic conversion description (met_conversion), pathway key (pathway_key), and organism (taxon from organism_dictionary via substrate record). Order by met_id and limit results to the first 200 records.",
+    "sql": "WITH sub_met AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.organism, m.met_comment, m.substrate_record_id, m.metabolite_record_id, sub.pref_name AS sub_mol_name, met.pref_name AS met_mol_name\nFROM metabolism m\nJOIN molecule_dictionary sub ON m.substrate_record_id = sub.molregno\nJOIN molecule_dictionary met ON m.metabolite_record_id = met.molregno\nWHERE m.enzyme_name LIKE '%CYP3A4%' OR m.enzyme_name LIKE '%CYP3A5%'\n)\nSELECT\n  sub_mol_name AS substrate_compound_name,\n  met_mol_name AS metabolite_compound_name,\n  met_conversion AS metabolic_conversion,\n  pathway_key,\n  organism\nFROM sub_met\nORDER BY met_id\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n9 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n18 | 0 | 47 | SEARCH sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 47 | SEARCH met USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 183,
+    "res_columns": [
+      "substrate_compound_name",
+      "metabolite_compound_name",
+      "metabolic_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 200 metabolism records where the enzyme name contains 'CYP3A4' or 'CYP3A5'. For each record, return the substrate compound name, the metabolite compound name, the metabolic conversion description, the pathway key, and the organism. Include the substrate compound structure (canonical SMILES). Ensure the organism is described using the appropriate taxonomy. Order the results by met_id. Do not filter on additional fields such as assay confidence or target type. The result should list each record with the required details without limiting the number of rows beyond the explicit 'first 200' request.",
+    "sql": "WITH sub_met AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.organism, m.met_comment, m.substrate_record_id, m.metabolite_record_id, sub.pref_name AS sub_mol_name, met.pref_name AS met_mol_name, sub_struct.canonical_smiles AS substrate_canonical_smiles FROM metabolism m JOIN molecule_dictionary sub ON m.substrate_record_id = sub.molregno JOIN molecule_dictionary met ON m.metabolite_record_id = met.molregno LEFT JOIN compound_structures sub_struct ON sub.molregno = sub_struct.molregno WHERE m.enzyme_name LIKE '%CYP3A4%' OR m.enzyme_name LIKE '%CYP3A5%') SELECT sub_mol_name AS substrate_compound_name, met_mol_name AS metabolite_compound_name, met_conversion AS metabolic_conversion, pathway_key, organism, substrate_canonical_smiles AS substrate_canonical_smiles FROM sub_met ORDER BY met_id LIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH met USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 47 | SEARCH sub_struct USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 183,
+    "res_columns": [
+      "substrate_compound_name",
+      "metabolite_compound_name",
+      "metabolic_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 200 records from the metabolism table where the enzyme name includes 'CYP3A4' or 'CYP3A5'. For each record, return the substrate compound name (pref_name from molecule_dictionary), the metabolite compound name (pref_name from molecule_dictionary for metabolite_record_id), the metabolic conversion description (met_conversion), the pathway key (pathway_key), the organism (taxon), and the substrate structure (canonical SMILES from compound_structures). Ensure the organism is correctly represented, and order the results by met_id. Do not add any additional filters beyond the enzyme name and the explicit 'first 200' limit. Return exactly the requested columns without further reduction or DISTINCT.",
+    "sql": "WITH sub_met AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.organism, m.met_comment, m.substrate_record_id, m.metabolite_record_id, sub.pref_name AS substrate_compound_name, met.pref_name AS metabolite_compound_name, c.substrate_canonical_smiles AS substrate_canonical_smiles FROM metabolism m JOIN molecule_dictionary sub ON m.substrate_record_id = sub.molregno JOIN molecule_dictionary met ON m.metabolite_record_id = met.molregno JOIN compound_structures c ON sub.molregno = c.molregno WHERE m.enzyme_name LIKE '%CYP3A4%' OR m.enzyme_name LIKE '%CYP3A5%') SELECT substrate_compound_name AS substrate_compound_name, metabolite_compound_name AS metabolite_compound_name, met_conversion AS metabolic_conversion, pathway_key AS pathway_key, organism AS organism, substrate_canonical_smiles AS substrate_canonical_smiles FROM sub_met ORDER BY met_id LIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: c.substrate_canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: c.substrate_canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 200 records from the metabolism table where the enzyme name includes 'CYP3A4' or 'CYP3A5'. For each record, return the substrate compound name (pref_name from molecule_dictionary), the metabolite compound name (pref_name from molecule_dictionary for metabolite_record_id), the metabolic conversion description (met_conversion), the pathway key (pathway_key), the organism (taxon), and the substrate structure (canonical SMILES from compound_structures). Ensure the organism is correctly represented, and order the results by met_id. Do not add any additional filters beyond the enzyme name and the explicit 'first 200' limit. Return exactly the requested columns without further reduction or DISTINCT.",
+    "sql": "WITH sub_met AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.organism, m.met_comment, m.substrate_record_id, m.metabolite_record_id, sub.pref_name AS substrate_compound_name, met.pref_name AS metabolite_compound_name, cs.canonical_smiles AS substrate_canonical_smiles FROM metabolism m JOIN molecule_dictionary sub ON m.substrate_record_id = sub.molregno JOIN molecule_dictionary met ON m.metabolite_record_id = met.molregno JOIN compound_structures cs ON sub.molregno = cs.molregno WHERE m.enzyme_name LIKE '%CYP3A4%' OR m.enzyme_name LIKE '%CYP3A5%') SELECT substrate_compound_name AS substrate_compound_name, metabolite_compound_name AS metabolite_compound_name, met_conversion AS metabolic_conversion, pathway_key AS pathway_key, organism AS organism, substrate_canonical_smiles AS substrate_canonical_smiles FROM sub_met ORDER BY met_id LIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 0 | 47 | SEARCH met USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 183,
+    "res_columns": [
+      "substrate_compound_name",
+      "metabolite_compound_name",
+      "metabolic_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 200 records from the metabolism table where the enzyme name includes 'CYP3A4' or 'CYP3A5'. For each record, return the substrate compound name (pref_name from molecule_dictionary), the metabolite compound name (pref_name from molecule_dictionary for metabolite_record_id), the metabolic conversion description (met_conversion), the pathway key (pathway_key), the organism (taxon), and the substrate structure (canonical SMILES from compound_structures). Ensure the organism is correctly represented, and order the results by met_id. Do not add any additional filters beyond the enzyme name and the explicit 'first 200' limit. Return exactly the requested columns without further reduction or DISTINCT.",
+    "sql": "WITH sub_met AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.organism, m.met_comment, m.substrate_record_id, m.metabolite_record_id, sub.pref_name AS substrate_compound_name, met.pref_name AS metabolite_compound_name, cs.canonical_smiles AS substrate_canonical_smiles FROM metabolism m JOIN molecule_dictionary sub ON m.substrate_record_id = sub.molregno JOIN molecule_dictionary met ON m.metabolite_record_id = met.molregno JOIN compound_structures cs ON sub.molregno = cs.molregno WHERE m.enzyme_name LIKE '%CYP3A4%' OR m.enzyme_name LIKE '%CYP3A5%') SELECT substrate_compound_name AS substrate_compound_name, metabolite_compound_name AS metabolite_compound_name, met_conversion AS metabolic_conversion, pathway_key AS pathway_key, organism AS organism, substrate_canonical_smiles AS substrate_canonical_smiles FROM sub_met ORDER BY met_id LIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 0 | 47 | SEARCH met USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 183,
+    "res_columns": [
+      "substrate_compound_name",
+      "metabolite_compound_name",
+      "metabolic_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

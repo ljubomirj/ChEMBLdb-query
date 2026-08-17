@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123890.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123890",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT DISTINCT d.chembl_id, m.pref_name AS compound_name, cs.canonical_smiles FROM docs d INNER JOIN compound_records cr ON d.doc_id = cr.doc_id INNER JOIN molecule_dictionary m ON cr.molregno = m.molregno INNER JOIN compound_structures cs ON m.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123890' AND cs.canonical_smiles IS NOT NULL ORDER BY d.chembl_id ASC, m.pref_name ASC, cs.canonical_smiles ASC;"
+}

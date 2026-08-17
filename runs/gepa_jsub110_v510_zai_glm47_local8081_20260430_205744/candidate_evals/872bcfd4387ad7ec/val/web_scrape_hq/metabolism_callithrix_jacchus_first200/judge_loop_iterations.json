@@ -1,0 +1,39 @@
+[
+  {
+    "n": 1,
+    "up": "Select: metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, substrate.compound_name AS substrate_name, parent.compound_name AS parent_name, substrate_struct.canonical_smiles, parent_struct.canonical_smiles. Source: metabolism. Join: compound_records substrate_record ON metabolism.substrate_record_id = substrate_record.record_id; molecule_dictionary substrate ON substrate_record.molregno = substrate.molregno; compound_structures substrate_struct ON substrate.molregno = substrate_struct.molregno; compound_records parent_record ON metabolism.drug_record_id = parent_record.record_id; molecule_dictionary parent ON parent_record.molregno = parent.molregno; compound_structures parent_struct ON parent.molregno = parent_struct.molregno. Filter: metabolism.organism = 'Callithrix jacchus'. Sort: metabolism.met_id ASC. Limit: 200.",
+    "sql": "SELECT\n  metabolism.met_id,\n  metabolism.met_conversion,\n  metabolism.pathway_key,\n  metabolism.enzyme_name,\n  substrate.compound_name AS substrate_name,\n  parent.compound_name AS parent_name,\n  substrate_struct.canonical_smiles,\n  parent_struct.canonical_smiles\nFROM metabolism\nJOIN compound_records substrate_record\n  ON metabolism.substrate_record_id = substrate_record.record_id\nJOIN molecule_dictionary substrate\n  ON substrate_record.molregno = substrate.molregno\nJOIN compound_structures substrate_struct\n  ON substrate.molregno = substrate_struct.molregno\nJOIN compound_records parent_record\n  ON metabolism.drug_record_id = parent_record.record_id\nJOIN molecule_dictionary parent\n  ON parent_record.molregno = parent.molregno\nJOIN compound_structures parent_struct\n  ON parent.molregno = parent_struct.molregno\nWHERE metabolism.organism = 'Callithrix jacchus'\nORDER BY metabolism.met_id ASC\nLIMIT 200;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: substrate.compound_name",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: substrate.compound_name",
+    "judge_text": "{\"analysis\": \"Judge output malformed; treating as NO. preview='```json {   \\\"analysis\\\": \\\"The query failed because it attempted to select `substrate.compound_name` and `parent.compound_name`, but the `compound_records` table does not contain a `compound_name` colum'\", \"score\": 0.0, \"decision\": \"NO\"}",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, substrate.compound_name AS substrate_name, parent.compound_name AS parent_name, substrate_struct.canonical_smiles, parent_struct.canonical_smiles. Source: metabolism. Join: compound_records substrate_record ON metabolism.substrate_record_id = substrate_record.record_id; molecule_dictionary substrate ON substrate_record.molregno = substrate.molregno; compound_structures substrate_struct ON substrate.molregno = substrate_struct.molregno; compound_records parent_record ON metabolism.drug_record_id = parent_record.record_id; molecule_dictionary parent ON parent_record.molregno = parent.molregno; compound_structures parent_struct ON parent.molregno = parent_struct.molregno. Filter: metabolism.organism = 'Callithrix jacchus'. Sort: metabolism.met_id ASC. Limit: 200.",
+    "sql": "SELECT\n  metabolism.met_id,\n  metabolism.met_conversion,\n  metabolism.pathway_key,\n  metabolism.enzyme_name,\n  substrate_record.compound_name AS substrate_name,\n  parent_record.compound_name AS parent_name,\n  substrate_struct.canonical_smiles,\n  parent_struct.canonical_smiles\nFROM metabolism\nJOIN compound_records substrate_record\n  ON metabolism.substrate_record_id = substrate_record.record_id\nJOIN molecule_dictionary substrate\n  ON substrate_record.molregno = substrate.molregno\nJOIN compound_structures substrate_struct\n  ON substrate.molregno = substrate_struct.molregno\nJOIN compound_records parent_record\n  ON metabolism.drug_record_id = parent_record.record_id\nJOIN molecule_dictionary parent\n  ON parent_record.molregno = parent.molregno\nJOIN compound_structures parent_struct\n  ON parent.molregno = parent_struct.molregno\nWHERE metabolism.organism = 'Callithrix jacchus'\nORDER BY metabolism.met_id ASC\nLIMIT 200;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 0 | SCAN metabolism USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 0 | SEARCH substrate_record USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 0 | SEARCH substrate USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | SEARCH substrate_struct USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | SEARCH parent_record USING INDEX pk_comp_rec_recid (record_id=?)\n49 | 0 | 0 | SEARCH parent USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 0 | SEARCH parent_struct USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 14,
+    "res_columns": [
+      "met_id",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name",
+      "substrate_name",
+      "parent_name",
+      "canonical_smiles",
+      "canonical_smiles__dup2"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request for metabolism records in Callithrix jacchus. All requested columns are present: met_id, met_conversion, pathway_key, enzyme_name, substrate_name, parent_name, and both SMILES (canonical_smiles for substrate and parent). The filter on organism is correct, sorting by met_id ASC is correct, and the LIMIT of 200 is applied. The result shows 14 rows, which is within the requested limit. The column naming is clear and matches the UP specification.\",\n  \"score\": 1.0,\n  \"decision\": \"ACCEPT\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

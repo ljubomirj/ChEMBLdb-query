@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "From the ChEMBL database, for the assay with ChEMBL ID CHEMBL1267250 (join activities to assays on assay_id and filter assays.chembl_id = 'CHEMBL1267250'), retrieve all activity records that have exact activity measurements (standard_relation = '='). For each such activity record, provide the canonical SMILES of the tested compound (from compound_structures.canonical_smiles), the molecule ChEMBL ID (from molecule_dictionary.chembl_id, not the internal molregno), the standard type, standard relation, standard value, and standard units (all from the activities table). Do not limit the number of rows returned. Ensure the join path is: activities -> compound_records (on record_id) -> molecule_dictionary (on molregno) -> compound_structures (on molregno). Also ensure you do not add any extra filters (e.g., on standard_type, standard_units, or confidence_score) that were not explicitly requested.",
+    "sql": "SELECT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1267250' AND a.standard_relation = '=';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n16 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n24 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n30 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 519,
+    "res_columns": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_metabolism_example.json",
+  "case_id": "iwatobipen_metabolism_example",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno ORDER BY cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno ORDER BY cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key LIMIT 200"
+    }
+  }
+}

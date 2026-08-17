@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_c8e6b4d7a2724228.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_bos_taurus.json",
+  "case_id": "target_descriptions_bos_taurus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "c8e6b4d7a2724228",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://localhost:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select target_dictionary.pref_name AS target_description\\nJoin assays ON assays.tid = target_dictionary.tid\\nFilter assays.assay_organism = 'Bos taurus'\\nReturn Distinct target_description\\nSort target_description\"\n}",
+    "parsed_json": {
+      "up": "Select target_dictionary.pref_name AS target_description\nJoin assays ON assays.tid = target_dictionary.tid\nFilter assays.assay_organism = 'Bos taurus'\nReturn Distinct target_description\nSort target_description"
+    }
+  }
+}

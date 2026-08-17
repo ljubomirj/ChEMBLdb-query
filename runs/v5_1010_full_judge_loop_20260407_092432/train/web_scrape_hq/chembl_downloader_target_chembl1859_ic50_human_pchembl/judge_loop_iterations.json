@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity rows for human single-protein target CHEMBL1859 (Voltage-dependent T-type calcium channel subunit alpha-1H). Filter to exact standard relation '=', include only rows where pChEMBL value is present. Select assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Return the first 1000 rows ordered by molecule ChEMBL ID then assay ChEMBL ID. Specify that target is a single protein (target_dictionary.target_type = 'SINGLE PROTEIN') and assay organism is 'Homo sapiens'.",
+    "sql": "WITH activity_rows AS ( SELECT a.activity_id, a.pchembl_value, a.molecule_chembl_id, a.assay_id, a.standard_type, a.standard_relation, ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id LEFT JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE td.chembl_id = 'CHEMBL1859' AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ) SELECT DISTINCT assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value FROM activity_rows ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity records for the human single-protein target CHEMBL1859 (Voltage-dependent T-type calcium channel subunit alpha-1H). Filter for exact standard relation '=', keep only rows where pChEMBL value is present, and select assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Ensure the target is a single protein (target_dictionary.target_type = 'SINGLE PROTEIN') and the assay organism is 'Homo sapiens'. Return results ordered by molecule ChEMBL ID then assay ChEMBL ID.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pch_embl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id LEFT JOIN molecule_dictionary md ON md.chembl_id = a.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL1859' AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity records for the human single-protein target CHEMBL1859 (Voltage-dependent T-type calcium channel subunit alpha-1H). Filter for exact standard relation '=', keep only rows where pChEMBL value is present, and select assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Ensure the target is a single protein (target_dictionary.target_type = 'SINGLE PROTEIN') and the assay organism is 'Homo sapiens'. Return results ordered by molecule ChEMBL ID then assay ChEMBL ID.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pch_embl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id LEFT JOIN molecule_dictionary md ON md.chembl_id = a.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL1859' AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 activity records for the human single-protein target CHEMBL1859 (Voltage-dependent T-type calcium channel subunit alpha-1H). Filter for exact standard relation '=', keep only rows where pChEMBL value is present, and select assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Ensure the target is a single protein (target_dictionary.target_type = 'SINGLE PROTEIN') and the assay organism is 'Homo sapiens'. Return results ordered by molecule ChEMBL ID then assay ChEMBL ID.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pch_embl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN molecule_dictionary md ON md.molregno = a.molregno WHERE td.chembl_id = 'CHEMBL1859' AND td.target_type = 'SINGLE PROTEIN' AND ass.assay_organism = 'Homo sapiens' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 217 | SCAN ass USING INDEX idx_assays_chembl_id\n29 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n39 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n48 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n87 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n88 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 490,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pch_embl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_aa34fed8c70e0d01.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_btk.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_btk",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "aa34fed8c70e0d01",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activities in nM for compounds tested against human BTK (CHEMBL5251) that have a canonical SMILES and a PubMed ID or DOI. Use the join path molecule_dictionary -> compound_structures -> activities -> assays -> target_dictionary, with a LEFT JOIN to docs for provenance. Return all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep every qualifying activity row without deduplication. Sort by the full requested column list.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activities in nM for compounds tested against human BTK (CHEMBL5251) that have a canonical SMILES and a PubMed ID or DOI. Use the join path molecule_dictionary -> compound_structures -> activities -> assays -> target_dictionary, with a LEFT JOIN to docs for provenance. Return all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep every qualifying activity row without deduplication. Sort by the full requested column list."
+    }
+  }
+}

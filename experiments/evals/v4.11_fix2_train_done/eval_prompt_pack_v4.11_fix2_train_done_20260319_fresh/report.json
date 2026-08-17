@@ -1,0 +1,112 @@
+{
+  "ts_utc": "2026-03-19T17:55:01Z",
+  "eval_label": "eval_prompt_pack_v4.11_fix2_train_done_20260319_fresh",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.11.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.5_fix2_train_done.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--temperature",
+    "0.3",
+    "--up-temperature",
+    "0.2",
+    "--judge-temperature",
+    "0.2"
+  ],
+  "splits": {
+    "train": {
+      "n_cases": 2,
+      "n_pass": 2,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "metabolism_first200_parent_names",
+          "uq": "Retrieve the first 200 metabolism rows with canonical SMILES, substrate compound name, parent compound name, metabolic conversion, and pathway key. Use the substrate join path metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno. The substrate_compound_name must come from compound_records.compound_name. The parent_compound_name must come from molecule_dictionary.pref_name reached through molecule_hierarchy.parent_molregno. Do not substitute molecule_dictionary.pref_name for substrate_compound_name. Do not deduplicate rows; keep the first 200 rows from that join result. Return exactly canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_train_done/eval_prompt_pack_v4.11_fix2_train_done_20260319_fresh/train/web_scrape_hq/metabolism_first200_parent_names/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_train_done/eval_prompt_pack_v4.11_fix2_train_done_20260319_fresh/train/web_scrape_hq/metabolism_first200_parent_names/run.log",
+          "generated_sql": "SELECT cs.canonical_smiles, cr.compound_name AS substrate_compound_name, md_parent.pref_name AS parent_compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN molecule_hierarchy mh ON cr.molregno = mh.molregno JOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno LIMIT 200",
+          "judge_text": null,
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "substrate_compound_name",
+            "parent_compound_name",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate_compound_name",
+            "parent_compound_name",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_tyk2_ic50_human_pchembl",
+          "uq": "Show only IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL3553 (TYK2 tyrosine kinase 2). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only activity rows with a non-null pChEMBL value, exact standard relation '=', tax_id 9606, and standard_type exactly 'IC50'. Exclude Ki, Kd, EC50, and all other activity types. Keep the activity rows as they are rather than deduplicating them, and order the rows by molecule ChEMBL ID and assay ChEMBL ID.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_train_done/eval_prompt_pack_v4.11_fix2_train_done_20260319_fresh/train/web_scrape_hq/chembl_downloader_target_tyk2_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_fix2_train_done/eval_prompt_pack_v4.11_fix2_train_done_20260319_fresh/train/web_scrape_hq/chembl_downloader_target_tyk2_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL3553' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_dictionary.chembl_id, assays.chembl_id",
+          "judge_text": null,
+          "expected_rows": 5419,
+          "actual_rows": 5419,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    },
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 2,
+    "n_pass": 2,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

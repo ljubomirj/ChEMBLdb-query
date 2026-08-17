@@ -1,0 +1,61 @@
+{
+  "case_id": "metabolism_enzyme_cyp2b6_first200",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape82/metabolism_enzyme_cyp2b6_first200/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/da1514f8a353eedd/val/web_scrape_hq/metabolism_enzyme_cyp2b6_first200/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/da1514f8a353eedd/val/web_scrape_hq/metabolism_enzyme_cyp2b6_first200/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape82/metabolism_enzyme_cyp2b6_first200/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape82/metabolism_enzyme_cyp2b6_first200/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape82/metabolism_enzyme_cyp2b6_first200/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/da1514f8a353eedd/val/web_scrape_hq/metabolism_enzyme_cyp2b6_first200/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape82/metabolism_enzyme_cyp2b6_first200/documentation.txt"
+  },
+  "metadata": {
+    "family": "metabolism",
+    "origin": "templated_from_sql",
+    "source_title": "Synthetic metabolism case: metabolism_enzyme_cyp2b6_first200",
+    "source_url": "synthetic_generated",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "canonical_smiles",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "enzyme_name"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "enzyme_name"
+    ],
+    "tags": [
+      "metabolism",
+      "wave2"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {},
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Staged metabolism wave-2 case."
+  }
+}

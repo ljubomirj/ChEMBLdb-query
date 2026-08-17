@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_d1bddd9e179a6ab8.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/alogliptin_dpp4_ic50_salts.json",
+  "case_id": "alogliptin_dpp4_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "d1bddd9e179a6ab8",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"WITH compound_set AS (\\n    SELECT DISTINCT parent.molregno\\n    FROM molecule_dictionary parent\\n    WHERE parent.chembl_id = 'CHEMBL376359'\\n    UNION\\n    SELECT DISTINCT child.molregno\\n    FROM molecule_dictionary parent\\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\\n    JOIN molecule_dictionary child ON child.molregno = mh.molregno\\n    WHERE parent.chembl_id = 'CHEMBL376359'\\n)\\nSELECT\\n    m.chembl_id AS compound_chembl_id,\\n    cs.canonical_smiles,\\n    r.compound_key,\\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\\n    a.description AS assay_description,\\n    act.standard_type,\\n    act.standard_relation,\\n    act.standard_value,\\n    act.standard_units,\\n    act.activity_comment,\\n    td.chembl_id AS target_chembl_id,\\n    td.pref_name AS target_name,\\n    td.organism AS target_organism\\nFROM compound_set cs_base\\nJOIN molecule_dictionary m ON m.molregno = cs_base.molregno\\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\\nJOIN compound_records r ON r.molregno = m.molregno\\nJOIN docs d ON d.doc_id = r.doc_id\\nJOIN activities act ON act.record_id = r.record_id\\nJOIN assays a ON a.assay_id = act.assay_id\\nJOIN target_dictionary td ON td.tid = a.tid\\nWHERE act.standard_type = 'IC50'\\n  AND act.standard_units = 'nM'\\n  AND td.chembl_id = 'CHEMBL284'\\nORDER BY\\n    m.chembl_id,\\n    r.compound_key,\\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi),\\n    a.description,\\n    act.standard_type,\\n    act.standard_relation,\\n    act.standard_value,\\n    act.standard_units,\\n    td.chembl_id,\\n    td.pref_name,\\n    td.organism\"\n}\n```",
+    "parsed_json": {
+      "sql": "WITH compound_set AS (\n    SELECT DISTINCT parent.molregno\n    FROM molecule_dictionary parent\n    WHERE parent.chembl_id = 'CHEMBL376359'\n    UNION\n    SELECT DISTINCT child.molregno\n    FROM molecule_dictionary parent\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n    JOIN molecule_dictionary child ON child.molregno = mh.molregno\n    WHERE parent.chembl_id = 'CHEMBL376359'\n)\nSELECT\n    m.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    r.compound_key,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n    a.description AS assay_description,\n    act.standard_type,\n    act.standard_relation,\n    act.standard_value,\n    act.standard_units,\n    act.activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM compound_set cs_base\nJOIN molecule_dictionary m ON m.molregno = cs_base.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\nJOIN compound_records r ON r.molregno = m.molregno\nJOIN docs d ON d.doc_id = r.doc_id\nJOIN activities act ON act.record_id = r.record_id\nJOIN assays a ON a.assay_id = act.assay_id\nJOIN target_dictionary td ON td.tid = a.tid\nWHERE act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'\n  AND td.chembl_id = 'CHEMBL284'\nORDER BY\n    m.chembl_id,\n    r.compound_key,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi),\n    a.description,\n    act.standard_type,\n    act.standard_relation,\n    act.standard_value,\n    act.standard_units,\n    td.chembl_id,\n    td.pref_name,\n    td.organism"
+    }
+  }
+}

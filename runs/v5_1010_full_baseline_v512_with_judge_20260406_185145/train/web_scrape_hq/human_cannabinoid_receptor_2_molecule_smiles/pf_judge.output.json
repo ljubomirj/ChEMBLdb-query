@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_cannabinoid_receptor_2_molecule_smiles.json",
+  "case_id": "human_cannabinoid_receptor_2_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result set is empty (row_count: 0). The query correctly filters for human assays (assay_organism = 'Homo sapiens'), CB2 receptor (tid = 11004), binding assay type (assay_type = 'B'), IC50 activities with exact relation and non-null values, and retrieves canonical SMILES. However, no compounds meet all these criteria in the current dataset snapshot. This could be due to:\\n1. No human CB2 binding assays with exact IC50 values in the dataset.\\n2. Possible mismatch in target tid (11004 is correct for CB2).\\n3. The assay_type filter may be too restrictive (B = Binding, but some CB2 assays may be functional or ADME).\\n4. Standard_value may be NULL for many IC50 entries.\\nThe query structure is correct per the user's request, but the result set being empty suggests either no matching data or a potential data gap. The user asked for ordered results, but with zero rows, ordering is irrelevant. The SQL uses DISTINCT and proper joins, and column aliases match the request (molecule_chembl_id, canonical_smiles).\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result set is empty (row_count: 0). The query correctly filters for human assays (assay_organism = 'Homo sapiens'), CB2 receptor (tid = 11004), binding assay type (assay_type = 'B'), IC50 activities with exact relation and non-null values, and retrieves canonical SMILES. However, no compounds meet all these criteria in the current dataset snapshot. This could be due to:\n1. No human CB2 binding assays with exact IC50 values in the dataset.\n2. Possible mismatch in target tid (11004 is correct for CB2).\n3. The assay_type filter may be too restrictive (B = Binding, but some CB2 assays may be functional or ADME).\n4. Standard_value may be NULL for many IC50 entries.\nThe query structure is correct per the user's request, but the result set being empty suggests either no matching data or a potential data gap. The user asked for ordered results, but with zero rows, ordering is irrelevant. The SQL uses DISTINCT and proper joins, and column aliases match the request (molecule_chembl_id, canonical_smiles).",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cannabinoid_receptor_2_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cannabinoid_receptor_2_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cannabinoid_receptor_2_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

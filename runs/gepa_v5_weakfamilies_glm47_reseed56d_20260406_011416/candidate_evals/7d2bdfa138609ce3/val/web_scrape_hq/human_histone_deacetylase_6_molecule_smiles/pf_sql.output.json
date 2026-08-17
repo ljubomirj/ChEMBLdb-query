@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_7d2bdfa138609ce3.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_histone_deacetylase_6_molecule_smiles.json",
+  "case_id": "human_histone_deacetylase_6_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "7d2bdfa138609ce3",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN activities act ON md.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'histone deacetylase 6' AND td.organism = 'Homo sapiens' ORDER BY md.chembl_id\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN activities act ON md.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'histone deacetylase 6' AND td.organism = 'Homo sapiens' ORDER BY md.chembl_id"
+    }
+  }
+}

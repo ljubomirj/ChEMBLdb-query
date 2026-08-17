@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_457b37cd5e896ec8.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/drug_indications_max_phase_4.json",
+  "case_id": "drug_indications_max_phase_4",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "457b37cd5e896ec8",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_indication.mesh_id, drug_indication.mesh_heading, drug_indication.efo_id AS indication_curie, drug_indication.efo_term AS indication_label, drug_indication.max_phase_for_ind FROM molecule_dictionary INNER JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.max_phase_for_ind = 4 ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, drug_indication.mesh_id ASC, drug_indication.mesh_heading ASC, indication_curie ASC, indication_label ASC, drug_indication.max_phase_for_ind ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_indication.mesh_id, drug_indication.mesh_heading, drug_indication.efo_id AS indication_curie, drug_indication.efo_term AS indication_label, drug_indication.max_phase_for_ind FROM molecule_dictionary INNER JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.max_phase_for_ind = 4 ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, drug_indication.mesh_id ASC, drug_indication.mesh_heading ASC, indication_curie ASC, indication_label ASC, drug_indication.max_phase_for_ind ASC"
+    }
+  }
+}

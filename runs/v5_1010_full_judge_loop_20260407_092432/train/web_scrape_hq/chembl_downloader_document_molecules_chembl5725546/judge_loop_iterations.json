@@ -1,0 +1,49 @@
+[
+  {
+    "n": 1,
+    "up": "List all molecules (by CHEMBL ID) reported in document CHEMBL5725546, showing the document's title, year, and the CHEMBL ID, ensuring results include only the exact document CHEMBL5725546 without filtering on doc_type or requiring PubMed ID. Return one row per molecule found in this document.",
+    "sql": "SELECT DISTINCT md.chembl_id, d.title, d.year FROM compound_records cr JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE cr.chembl_id = 'CHEMBL5725546';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cr.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cr.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all molecules (by CHEMBL ID) reported in document CHEMBL5725546, showing the document's title, year, and the CHEMBL ID, ensuring results include only the exact document CHEMBL5725546 without filtering on doc_type or requiring PubMed ID. Return one row per molecule found in this document.",
+    "sql": "SELECT DISTINCT md.chembl_id, d.title, d.year\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725546') AND d.chembl_id = 'CHEMBL5725546';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n11 | 0 | 0 | SCALAR SUBQUERY 1\n16 | 11 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n31 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n38 | 0 | 0 | REUSE SUBQUERY 1\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2236,
+    "res_columns": [
+      "chembl_id",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List all molecules (by CHEMBL ID) reported in document CHEMBL5725546, showing the document's title, year, and the CHEMBL ID, ensuring results include only the exact document CHEMBL5725546 without filtering on doc_type or requiring PubMed ID. Return one row per molecule found in this document.",
+    "sql": "SELECT DISTINCT md.chembl_id, d.title, d.year\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725546')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n8 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n11 | 0 | 0 | SCALAR SUBQUERY 1\n16 | 11 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n29 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n36 | 0 | 0 | REUSE SUBQUERY 1\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2236,
+    "res_columns": [
+      "chembl_id",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

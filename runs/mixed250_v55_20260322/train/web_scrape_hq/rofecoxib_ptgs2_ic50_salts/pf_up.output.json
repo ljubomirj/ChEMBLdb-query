@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/rofecoxib_ptgs2_ic50_salts.json",
+  "case_id": "rofecoxib_ptgs2_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select activity details for CHEMBL122 (ROFECOXIB) and all its salts against target CHEMBL230 (Prostaglandin G/H synthase 2) where the standard_type is IC50 and standard_units is nM. Use molecule_hierarchy to define the compound set from the parent CHEMBL122, then retrieve activity provenance through the FAQ path: molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary. Include canonical_smiles via LEFT JOIN compound_structures. Return the exact columns compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select activity details for CHEMBL122 (ROFECOXIB) and all its salts against target CHEMBL230 (Prostaglandin G/H synthase 2) where the standard_type is IC50 and standard_units is nM. Use molecule_hierarchy to define the compound set from the parent CHEMBL122, then retrieve activity provenance through the FAQ path: molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary. Include canonical_smiles via LEFT JOIN compound_structures. Return the exact columns compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows."
+    }
+  }
+}

@@ -1,0 +1,133 @@
+[
+  {
+    "n": 1,
+    "up": "Find the first 1000 IC50 activity rows for human target CHEMBL1293226 (Lysine-specific demethylase 4E). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Include only rows where activity has standard type = 'IC50' and pChEMBL value is not null. Use exact standard relation '=' rows only. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH tgt AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT a.assay_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN tgt ON td.tid = tgt.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, a.assay_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\"text\":\"Retrieve the first 1000 activity records (not DOI) where a compound was measured against target CHEMBL1293226 (human lysine\u2011specific demethylase\u202f4E) with an IC50 standard type, exact relation \u2018=\u2019, and a non\u2011null pChEMBL value. Include assay CHEMBL ID (ass.chembl_id), target type (td.target_type), target tax_id (td.tax_id), canonical SMILES (cs.canonical_smiles), molecule CHEMBL ID (md.chembl_id) and standard type (a.standard_type). Use the raw pChEMBL value (a.pchembl_value). Filter for target chembl_id = 'CHEMBL1293226', activity standard type = 'IC50', standard relation = '=', and pChEMBL not null. Order by molecule chembl_id and assay chembl_id. Return up to the first 1000 rows.",
+    "sql": "WITH tgt AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN tgt ON td.tid = tgt.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity records where a compound was measured against the human target CHEMBL1293226 (Lysine\u2011specific demethylase\u202f4E) with an IC50 standard type (exact relation =) and a non\u2011null pChEMBL value. Return the assay CHEMBL ID (ass.chembl_id), the target type (td.target_type), the target tax_id (td.tax_id), the canonical SMILES (cs.canonical_smiles), the molecule CHEMBL ID (md.chembl_id) and the standard type (a.standard_type). Filter by target chembl_id = 'CHEMBL1293226', activity standard type = 'IC50', standard relation = '=', and a non\u2011null pChEMBL value. Order the results by molecule CHEMBL ID and assay CHEMBL ID. Return up to the first 1000 rows (the limit is implicit in the request).",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN target ON td.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n26 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n80 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 126,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 activity records where a compound was measured against the human target CHEMBL1293226 (Lysine\u2011specific demethylase\u202f4E) with an IC50 standard type (exact relation =) and a non\u2011null pChEMBL value. Return assay CHEMBL ID (ass.chembl_id), target type (td.target_type), target tax_id (td.tax_id), canonical SMILES (cs.canonical_smiles), molecule CHEMBL ID (md.chembl_id) and standard type (a.standard_type). Filter by target chembl_id = 'CHEMBL1293226', activity standard type = 'IC50', standard relation = '=', and a non\u2011null pChEMBL value. Order by molecule CHEMBL ID and assay CHEMBL ID. Return up to the first 1000 rows (the limit is implicit in the request).",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN target ON td.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n87 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 126,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 1000 activity rows with exact IC50 standard relation '=' and non\u2011null pChEMBL values for the human target CHEMBL1293226 (Lysine\u2011specific demethylase\u202f4E). Return assay ChEMBL ID (ass.chembl_id), target type (td.target_type), target tax_id (td.tax_id), canonical SMILES (cs.canonical_smiles), molecule CHEMBL ID (md.chembl_id), standard type (a.standard_type), and pChEMBL value (a.pchembl_value). Include only activities where the activity is measured against target CHEMBL1293226, activity standard type = 'IC50', standard relation = '=', and a.pchembl_value IS NOT NULL. Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures to obtain the required fields. Order the results by molecule CHEMBL ID and assay ChEMBL ID, and return up to 1000 rows (the limit is implicit in the request).",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN target ON td.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n87 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 126,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the first 1000 activity rows where a compound was measured against the human target CHEMBL1293226 (Lysine\u2011specific demethylase\u202f4E) with an IC50 standard type (exact relation '=') and a non\u2011null pChEMBL value. Return assay ChEMBL ID (ass.chembl_id), target type (td.target_type), target tax_id (td.tax_id), canonical SMILES (cs.canonical_smiles), molecule CHEMBL ID (md.chembl_id), standard type (a.standard_type), and pChEMBL value (a.pchembl_value). Include only activities for target chembl_id = 'CHEMBL1293226', standard type = 'IC50', standard relation = '=', and a.pchembl_value IS NOT NULL. Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures to obtain the required fields. Order the results by molecule CHEMBL ID and assay ChEMBL ID, and return up to 1000 rows (the limit is implicit in the request).",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN target ON td.tid = target.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n87 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 126,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the first 1000 activity rows with exact IC50 standard relation '=' and a non\u2011null pChEMBL value for the human single\u2011protein target CHEMBL1293226 (Lysine\u2011specific demethylase\u202f4E). Return assay CHEMBL ID (ass.chembl_id), target type (td.target_type), target tax_id (td.tax_id), canonical SMILES (cs.canonical_smiles), molecule CHEMBL ID (md.chembl_id), standard type (a.standard_type), and pChEMBL value (a.pchembl_value). Filter for activities where the target chembl_id = 'CHEMBL1293226', standard type = 'IC50', standard relation = '=', and a.pchembl_value IS NOT NULL. Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures to obtain the required fields. Order the results by molecule CHEMBL ID and assay CHEMBL ID. The query should return up to 1000 rows (the limit is implicit in the request).",
+    "sql": "WITH tgt AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1293226') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN tgt ON td.tid = tgt.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n27 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n87 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 126,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

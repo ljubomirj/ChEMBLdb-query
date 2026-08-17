@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) indicated for multiple myeloma. Return the ChEMBL ID, molecule name, canonical SMILES, indication details (mesh_id and mesh_heading), and the maximum clinical phase for that indication.",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.mesh_id,\n  di.mesh_heading,\n  di.max_phase_for_ind\nFROM molecule_dictionary md\nJOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading = 'Multiple Myeloma'\n  AND md.max_phase = 4;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 227,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_id",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

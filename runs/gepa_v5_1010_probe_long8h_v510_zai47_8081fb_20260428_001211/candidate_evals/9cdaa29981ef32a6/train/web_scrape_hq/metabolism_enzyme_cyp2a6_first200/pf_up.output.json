@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_9cdaa29981ef32a6.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2a6_first200.json",
+  "case_id": "metabolism_enzyme_cyp2a6_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "9cdaa29981ef32a6",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name. Source: metabolism, compound_structures, compound_records, molecule_dictionary. Join: metabolism.substrate_record_id = compound_records.record_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: metabolism.enzyme_name = 'CYP2A6'. Sort: canonical_smiles ASC, substrate_compound_name ASC, parent_compound_name ASC, met_conversion ASC, pathway_key ASC, organism ASC, enzyme_name ASC. Limit: 200.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name. Source: metabolism, compound_structures, compound_records, molecule_dictionary. Join: metabolism.substrate_record_id = compound_records.record_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: metabolism.enzyme_name = 'CYP2A6'. Sort: canonical_smiles ASC, substrate_compound_name ASC, parent_compound_name ASC, met_conversion ASC, pathway_key ASC, organism ASC, enzyme_name ASC. Limit: 200."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3183703_nacht__lrr_and_pyd_domains_con_ic50_salts.json",
+  "case_id": "chembl3183703_nacht__lrr_and_pyd_domains_con_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  child.chembl_id AS compound_chembl_id,\\n  cs.canonical_smiles AS canonical_smiles,\\n  r.compound_key AS compound_key,\\n  d.pubmed_id AS pubmed_id,\\n  d.doi AS doi,\\n  d.doi AS pubmed_id_or_doi,\\n  ass.description AS assay_description,\\n  a.standard_type AS standard_type,\\n  a.standard_relation AS standard_relation,\\n  a.standard_value AS standard_value,\\n  a.standard_units AS standard_units,\\n  a.activity_comment AS activity_comment,\\n  t.chembl_id AS target_chembl_id,\\n  t.pref_name AS target_name,\\n  t.organism AS target_organism\\nFROM molecule_dictionary parent\\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\\nLEFT JOIN compound_records r ON child.molregno = r.molregno\\nLEFT JOIN docs d ON r.doc_id = d.doc_id\\nLEFT JOIN activities a ON r.record_id = a.record_id\\nLEFT JOIN assays ass ON a.assay_id = ass.assay_id\\nLEFT JOIN target_dictionary t ON ass.tid = t.tid\\nLEFT JOIN compound_structures cs ON child.molregno = cs.molregno\\nWHERE parent.chembl_id = 'CHEMBL3183703'\\n  AND a.standard_type = 'IC50'\\n  AND a.standard_relation = '='\\n  AND ass.assay_organism = 'Homo sapiens'\\nORDER BY compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  child.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles AS canonical_smiles,\n  r.compound_key AS compound_key,\n  d.pubmed_id AS pubmed_id,\n  d.doi AS doi,\n  d.doi AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  a.standard_type AS standard_type,\n  a.standard_relation AS standard_relation,\n  a.standard_value AS standard_value,\n  a.standard_units AS standard_units,\n  a.activity_comment AS activity_comment,\n  t.chembl_id AS target_chembl_id,\n  t.pref_name AS target_name,\n  t.organism AS target_organism\nFROM molecule_dictionary parent\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\nJOIN molecule_dictionary child ON child.molregno = mh.molregno\nLEFT JOIN compound_records r ON child.molregno = r.molregno\nLEFT JOIN docs d ON r.doc_id = d.doc_id\nLEFT JOIN activities a ON r.record_id = a.record_id\nLEFT JOIN assays ass ON a.assay_id = ass.assay_id\nLEFT JOIN target_dictionary t ON ass.tid = t.tid\nLEFT JOIN compound_structures cs ON child.molregno = cs.molregno\nWHERE parent.chembl_id = 'CHEMBL3183703'\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND ass.assay_organism = 'Homo sapiens'\nORDER BY compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism;"
+    }
+  }
+}

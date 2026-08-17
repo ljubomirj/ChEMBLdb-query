@@ -1,0 +1,68 @@
+{
+  "case_id": "chembl_downloader_assay_chembl1217644_exact",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/4f9a11598b7685c6/train/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/4f9a11598b7685c6/train/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/4f9a11598b7685c6/train/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/documentation.txt"
+  },
+  "metadata": {
+    "family": "assay_exact",
+    "origin": "templated_from_sql",
+    "source_title": "chembl_downloader get_assay_sql instantiated for CHEMBL1217644",
+    "source_url": "https://github.com/mnowotka/chembl_mcp",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "tags": [
+      "assay_exact",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "canonical_smiles": "canonical_smiles",
+      "standard_type": "standard_type",
+      "standard_relation": "standard_relation",
+      "standard_value": "standard_value",
+      "standard_units": "standard_units",
+      "chembl_id": "molecule_chembl_id"
+    },
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

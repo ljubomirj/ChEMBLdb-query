@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 activity values in nM for compounds tested against human Bifunctional epoxide hydrolase 2 (CHEMBL ID: CHEMBL2409). For each activity record, return the compound's ChEMBL ID, canonical SMILES, compound key, and PubMed ID or DOI, together with the assay description, target ChEMBL ID, and target preferred name.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.standard_value AS ic50_nM, ass.description AS assay_description, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN compound_records cr ON a.record_id = cr.record_id LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL2409' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n97 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3011,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "ic50_nM",
+      "assay_description",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

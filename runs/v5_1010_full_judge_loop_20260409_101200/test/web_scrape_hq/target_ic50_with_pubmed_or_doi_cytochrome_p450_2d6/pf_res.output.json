@@ -1,0 +1,83 @@
+{
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6/result.generated.csv",
+    "row_count": 3281,
+    "column_names": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nM"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 6379,
+    "actual_rows": 3281,
+    "expected_cols": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "ic50_nm"
+    ],
+    "missing_cols": [
+      "compound_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id"
+    ],
+    "extra_cols": [
+      "chembl_id",
+      "ic50_nm"
+    ],
+    "status": "partial",
+    "score": 0.482661,
+    "column_recall": 0.461538,
+    "row_ratio": 0.514344
+  },
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "judge_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    }
+  }
+}

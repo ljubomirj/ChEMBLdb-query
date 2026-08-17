@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity values measured in nM for compounds tested against the target with ChEMBL ID CHEMBL238. For each matching activity, return the following details: the compound's ChEMBL ID, the canonical SMILES string, the compound key, the assay description, the target ChEMBL ID, and the PubMed ID or DOI. Include all standard relations (e.g., '>', '<', '='). Do not add a limit to the number of rows returned.",
+    "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  a.standard_relation,\n  a.standard_value,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL238'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n60 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 3020,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "standard_relation",
+      "standard_value",
+      "assay_description",
+      "target_chembl_id",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

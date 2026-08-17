@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay with ChEMBL ID CHEMBL1613995, retrieve all activity measurements. For each measurement, include the compound identifier (compound key from compound_records and ChEMBL ID from molecule_dictionary), standard type, standard value, standard relation, standard units, and pchembl value. Also include the assay ChEMBL ID for reference. Do not limit the number of rows.",
+    "sql": "SELECT cr.compound_key, md.chembl_id AS compound_chembl_id, a.standard_type, a.standard_value, a.standard_relation, a.standard_units, a.pchembl_value, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1613995' ORDER BY a.activity_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 6303,
+    "res_columns": [
+      "compound_key",
+      "compound_chembl_id",
+      "standard_type",
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "pchembl_value",
+      "assay_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

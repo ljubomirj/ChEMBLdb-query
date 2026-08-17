@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the canonical SMILES (from compound_structures), the molecule ChEMBL ID (from molecule_dictionary), and the exact activity values (type, relation, value, units from the activities table) for all compounds tested in the assay with ChEMBL ID CHEMBL4483864. The assay is identified by filtering assays.chembl_id. Return one row per activity measurement. Do not limit the number of rows.",
+    "sql": "SELECT cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.type, a.relation, a.value, a.units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4483864'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 19978,
+    "res_columns": [
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "type",
+      "relation",
+      "value",
+      "units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

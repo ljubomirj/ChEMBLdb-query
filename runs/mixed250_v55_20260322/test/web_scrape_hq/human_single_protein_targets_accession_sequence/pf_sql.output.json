@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_single_protein_targets_accession_sequence.json",
+  "case_id": "human_single_protein_targets_accession_sequence",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT \n  td.chembl_id AS target_chembl_id, \n  td.pref_name AS target_name, \n  td.target_type, \n  cs.accession AS protein_accession, \n  cs.sequence AS protein_sequence\nFROM target_dictionary td\nJOIN target_components tc ON td.tid = tc.tid\nJOIN component_sequences cs ON tc.component_id = cs.component_id\nWHERE td.target_type = 'SINGLE PROTEIN' \n  AND td.organism = 'Homo sapiens'\nORDER BY \n  td.chembl_id, \n  td.pref_name, \n  td.target_type, \n  cs.accession, \n  cs.sequence\n```",
+    "parsed_json": {
+      "sql": "SELECT \n  td.chembl_id AS target_chembl_id, \n  td.pref_name AS target_name, \n  td.target_type, \n  cs.accession AS protein_accession, \n  cs.sequence AS protein_sequence\nFROM target_dictionary td\nJOIN target_components tc ON td.tid = tc.tid\nJOIN component_sequences cs ON tc.component_id = cs.component_id\nWHERE td.target_type = 'SINGLE PROTEIN' \n  AND td.organism = 'Homo sapiens'\nORDER BY \n  td.chembl_id, \n  td.pref_name, \n  td.target_type, \n  cs.accession, \n  cs.sequence"
+    }
+  }
+}

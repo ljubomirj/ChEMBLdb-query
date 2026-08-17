@@ -1,0 +1,111 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities with exact Ki values. The target must be a single protein target. Activities must have a Ki value with no standard relation or units filter, but exact numeric values are required. Include all such activities regardless of source or target family. Return each unique target TID and preferred name pair only once.",
+    "sql": "WITH exact_ki AS (\n  SELECT a.molecule_chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE a.standard_type IS NOT NULL\n    AND a.standard_type = 'Ki'\n    AND a.standard_relation IS NULL\n    AND a.standard_value IS NOT NULL\n    AND a.standard_units IS NULL\n  GROUP BY a.molecule_chembl_id\n  HAVING COUNT(*) > 0\n)\nSELECT DISTINCT td.tid, td.pref_name\nFROM exact_ki ek\nJOIN activities a ON ek.molecule_chembl_id = a.molecule_chembl_id\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'Ki'\n  AND a.standard_relation IS NULL\n  AND a.standard_units IS NULL\n  AND a.standard_value IS NOT NULL\n  AND td.target_type = 'PROTEIN';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation and standard_units are NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "WITH exact_ki AS (\n  SELECT a.molregno,\n         a.standard_value AS ki_value,\n         a.standard_units,\n         a.standard_relation\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE a.standard_type = 'Ki'\n    AND a.standard_relation IS NULL\n    AND a.standard_units IS NULL\n    AND a.standard_value IS NOT NULL\n    AND td.target_type = 'PROTEIN'\n  GROUP BY a.molregno\n  HAVING COUNT(*) > 0\n)\nSELECT DISTINCT td.tid,\n                td.pref_name\nFROM exact_ki ek\nJOIN activities a2 ON ek.molregno = a2.molregno\nJOIN assays ass2 ON a2.assay_id = ass2.assay_id\nJOIN target_dictionary td ON ass2.tid = td.tid\nWHERE a2.standard_type = 'Ki'\n  AND a2.standard_relation IS NULL\n  AND a2.standard_units IS NULL\n  AND a2.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE exact_ki\n13 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n87 | 0 | 82 | SCAN ek\n90 | 0 | 60 | SEARCH a2 USING INDEX fk_act_molregno (molregno=?)\n105 | 0 | 47 | SEARCH ass2 USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n111 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n126 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation and standard_units are NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'Ki'\n  AND a.standard_relation IS NULL\n  AND a.standard_units IS NULL\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n25 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation and standard_units are NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'Ki' AND a.standard_relation IS NULL AND a.standard_units IS NULL AND a.standard_value IS NOT NULL AND td.target_type = 'PROTEIN';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n25 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation and standard_units are NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'Ki'\n  AND a.standard_relation IS NULL\n  AND a.standard_units IS NULL\n  AND a.standard_value IS NOT NULL\n  AND td.target_type = 'PROTEIN'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n25 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation and standard_units are NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'Ki'\n  AND a.standard_relation IS NULL\n  AND a.standard_units IS NULL\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n25 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve distinct target TID and preferred name pairs for activities where the activity type is Ki (inhibition constant) and the Ki value is provided exactly (i.e., standard_relation is '=' and standard_units is NOT NULL) with a non\u2011null standard_value. No other filters are applied; include any assay type or target family. Return each unique target TID and preferred name pair exactly once.",
+    "sql": "SELECT DISTINCT td.tid, td.pref_name\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'Ki'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND a.standard_units IS NOT NULL\n  AND a.standard_relation IS NOT NULL\n  AND a.standard_units IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3254,
+    "res_columns": [
+      "tid",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

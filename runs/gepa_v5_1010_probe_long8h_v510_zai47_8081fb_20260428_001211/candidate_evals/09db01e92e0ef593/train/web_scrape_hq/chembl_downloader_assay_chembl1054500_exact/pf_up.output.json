@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_09db01e92e0ef593.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1054500_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1054500_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "09db01e92e0ef593",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve exact activity values for compounds tested in a specific GSK malaria assay, restricted to measurements with an equality relation and a non-null numeric value.\n\n2. Output: canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units\n\n3. Source: activities, assays, molecule_dictionary, compound_structures\n\n4. Logic: Join activities to assays on assay_id and filter where assays.chembl_id = 'CHEMBL1054500'. Join activities to molecule_dictionary on molregno and join compound_structures on molregno to obtain structure identifiers. Filter activities where standard_relation = '=' and standard_value IS NOT NULL. Sort the result set by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve exact activity values for compounds tested in a specific GSK malaria assay, restricted to measurements with an equality relation and a non-null numeric value.\n\n2. Output: canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units\n\n3. Source: activities, assays, molecule_dictionary, compound_structures\n\n4. Logic: Join activities to assays on assay_id and filter where assays.chembl_id = 'CHEMBL1054500'. Join activities to molecule_dictionary on molregno and join compound_structures on molregno to obtain structure identifiers. Filter activities where standard_relation = '=' and standard_value IS NOT NULL. Sort the result set by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units."
+    }
+  }
+}

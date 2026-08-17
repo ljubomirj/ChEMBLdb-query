@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Show the exact activity values for compounds tested in assay CHEMBL4725212. Include the molecule ChEMBL ID, molecule preference name, standard activity type, standard value, standard units, and standard relation for each activity record.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, a.standard_type, a.standard_value, a.standard_units, a.standard_relation FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL4725212' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 8267,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

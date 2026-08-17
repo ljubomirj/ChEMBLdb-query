@@ -1,0 +1,143 @@
+[
+  {
+    "n": 1,
+    "up": "Find the first 1000 activity records with exact IC50 measurements that have a non\u2011null pChEMBL value for the human protein target Thioredoxin reductase 1 (CHEMBL1927, a single protein). Retrieve the assay ChEMBL ID, the target type, the target taxonomy ID, the compound's canonical SMILES, the compound's ChEMBL ID, the activity's standard type, and the pChEMBL value. Include only rows where the assay target is the molecule CHEMBL1927 (Thioredoxin reductase 1, cytoplasmic), the standard relation is exactly '=', and the pChEMBL value is not null. Return the results ordered first by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH target_ids AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN'), activity_rows AS (SELECT a.activity_id, a.assay_id, a.molecule_chembl_id AS compound_chembl_id, a.pchembl_value, a.standard_type, a.standard_relation FROM activities a JOIN assay_classification ac ON a.assay_id = ac.assay_id JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE td.tid = (SELECT tid FROM target_ids) AND a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND a.standard_relation = '=') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activity_rows a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows where the activity is measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (CHEMBL1927, cytoplasmic isoform). Return the assay ChEMBL identifier, the target type, the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES, the compound\u2019s ChEMBL ID (CHEMBL identifier), the activity\u2019s standard type, and the pChEMBL value. The rows must be filtered to include only exact standard relations \u2018=\u2019 and non\u2011null pChEMBL values. Order the output first by molecule ChEMBL ID and then by assay ChEMBL ID. No additional filters (such as assay confidence score or extra provenance fields) should be applied.",
+    "sql": "WITH target_ids AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN'),\nactivity_rows AS (\n  SELECT a.*, td.target_type, td.tax_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON a.tid = td.tid\n  WHERE td.tid = (SELECT tid FROM target_ids)\n    AND a.standard_type = 'IC50'\n    AND a.pchembl_value IS NOT NULL\n    AND a.standard_relation = '='\n  GROUP BY a.activity_id, a.assay_id, a.molregno, a.pchembl_value, a.standard_type, td.target_type, td.tax_id\n),\nsmiles AS (\n  SELECT md.molregno AS compound_molregno, cs.canonical_smiles\n  FROM compound_structures cs\n  JOIN molecule_dictionary md ON cs.molecule_chembl_id = md.molregno\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  s.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activity_rows a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN smiles s ON a.molregno = s.compound_molregno\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity records for which the activity is measured as IC50 with a non\u2011null pChEMBL value. The target must be the human single\u2011protein protein Thioredoxin reductase 1, cytoplasmic isoform, identified in the database by the molecule identifier CHEMBL1927. Return the assay ChEMBL identifier, the target type, the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES, the compound\u2019s ChEMBL identifier (chembl_id), the activity\u2019s standard type, and the pChEMBL value. Include only rows where the standard relation is exactly '=', and order the results by molecule ChEMBL identifier and then by assay ChEMBL identifier. Do not add any other filters such as assay confidence score, unit restrictions, or DOI restrictions.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN')\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molecule_chembl_id\nWHERE td.tid = (SELECT tid FROM target) \n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find the first 1000 activity records for which the activity is measured as IC50 with a non\u2011null pChEMBL value. The target must be the human single\u2011protein protein Thioredoxin reductase 1, cytoplasmic isoform, identified in the database by the molecule identifier CHEMBL1927. Return the assay ChEMBL identifier (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results by molecule ChEMBL identifier and then by assay ChEMBL identifier. Do not add any other filters such as assay confidence score, unit restrictions, or DOI restrictions.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN')\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molecule_chembl_id\nWHERE td.tid = (SELECT tid FROM target)\n  AND a.standard_type = 'IC50'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC, ass.chembl_id ASC\nLIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 1000 activity records that are measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (Thioredoxin reductase 1, cytoplasmic isoform, CHEMBL1927). Return the assay ChEMBL ID (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results first by molecule ChEMBL identifier and then by assay ChEMBL identifier. No additional filters (such as assay confidence score, unit restrictions, or provenance fields) should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN')\nSELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON cs.molecule_chembl_id = md.molregno WHERE md.chembl_id = 'CHEMBL1927' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the first 1000 activity records that are measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (Thioredoxin reductase 1, cytoplasmic isoform, CHEMBL1927). Return the assay ChEMBL identifier (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results first by molecule ChEMBL identifier and then by assay ChEMBL identifier. No additional filters (such as assay confidence score, unit restrictions, or provenance fields) should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molecule_chembl_id WHERE td.tid = (SELECT tid FROM target) AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the first 1000 activity records measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (Thioredoxin reductase 1, cytoplasmic isoform, CHEMBL1927). Return the assay ChEMBL ID (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results first by molecule ChEMBL identifier and then by assay ChEMBL identifier. No other filters (e.g., assay confidence score, unit restrictions, or provenance fields) should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE td.tid = (SELECT tid FROM target) AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n13 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n16 | 0 | 0 | SCALAR SUBQUERY 2\n21 | 16 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n36 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n45 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n61 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the first 1000 activity rows measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (Thioredoxin reductase 1, cytoplasmic isoform, CHEMBL1927). Return the assay ChEMBL ID (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results first by molecule ChEMBL identifier and then by assay ChEMBL identifier. No additional filters (e.g., assay confidence score, unit restrictions, or provenance fields) should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE td.tid = (SELECT tid FROM target) AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n13 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n16 | 0 | 0 | SCALAR SUBQUERY 2\n21 | 16 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n36 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n45 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n61 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Find the first 1000 activity records that are measured as IC50 with a non\u2011null pChEMBL value for the human single\u2011protein target Thioredoxin reductase 1 (Thioredoxin reductase 1, cytoplasmic isoform, CHEMBL1927). Return the assay ChEMBL ID (as assay_chembl_id), the target type (as target_type), the target taxonomy ID (tax_id), the compound\u2019s canonical SMILES (canonical_smiles), the compound\u2019s ChEMBL identifier (molecule_chembl_id), the activity\u2019s standard type (as standard_type), and the pChEMBL value (as pchembl_value). Include only rows where the standard relation is exactly '=', and order the results first by molecule ChEMBL identifier and then by assay ChEMBL identifier. No additional filters (e.g., assay confidence score, unit restrictions, or provenance fields) should be applied.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1927' AND target_type = 'SINGLE PROTEIN') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE td.tid = (SELECT tid FROM target) AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n13 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n16 | 0 | 0 | SCALAR SUBQUERY 2\n21 | 16 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n36 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n45 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n61 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

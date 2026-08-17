@@ -1,0 +1,1 @@
+SELECT m.chembl_id, m.pref_name, di.mesh_id, di.mesh_heading, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary m JOIN drug_indication di ON m.molregno = di.molregno ORDER BY m.chembl_id, m.pref_name, di.mesh_id, di.mesh_heading, indication_curie, indication_label, di.max_phase_for_ind

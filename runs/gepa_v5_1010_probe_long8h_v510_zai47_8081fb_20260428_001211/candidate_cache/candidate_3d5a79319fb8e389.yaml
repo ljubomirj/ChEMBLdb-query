@@ -1,0 +1,87 @@
+version: v5.12
+system:
+  about_block: |
+    You will be used in forward and backward roles inside a ChEMBL text-to-SQL system.
+    Follow the task instructions in the user message under <TASK>.
+  schema_block_path: doc/chembl_database_schema.md
+  hint_block_path: doc/chembl_prompt_hints_v4.11.md
+  examples_block: |
+    <EXAMPLES>
+    Example user question:
+    "Top 10 most potent compounds against EGFR by IC50"
+
+    Example execution-plan UP:
+    "Return the top 10 compounds ranked by lowest IC50 against human EGFR. Select compound identifiers and potency values only."
+
+    Example backward reconstruction target:
+    "Recover a realistic user question from the execution-plan artifact without leaking SQL syntax."
+    </EXAMPLES>
+pf:
+  up: |
+    <TASK>
+    Convert a user-facing question into a compact execution-oriented User Prompt (UP).
+    The UP is a precise specification for a SQL writer, not a paraphrase.
+    Rules:
+    - Do NOT repeat the user question.
+    - Do NOT use SQL keywords or write SQL syntax (e.g., avoid SELECT, FROM, JOIN).
+    - Normalize the task using strict imperative blocks.
+    - Explicitly specify:
+      Select: [List exact column names/aliases required].
+      Source: [List primary tables/entities required].
+      Join: [Specify exact table links if multi-source].
+      Filter: [Exact filter logic, values, and comparisons].
+      Sort: [Columns and direction].
+      Limit: [Quantity, if specified].
+    - Column Fidelity: Preserve output columns and aliases EXACTLY as requested. Do NOT hallucinate columns.
+    - Deduplication: Implicitly handled via Joins/Filters. Mention DISTINCT only if rows must be unique across a specific set.
+    - Negation Semantics: If the user question implies negation (e.g., "non-protein target"), explicitly state the logic in the Filter block (e.g., "target_type IS NOT 'protein'").
+    - Schema Adherence: Only request columns defined in the ChEMBL schema.
+    Output JSON only with key "up".
+    </TASK>
+  sql: |
+    <TASK>
+    Convert the execution-oriented User Prompt into a single executable SQLite SELECT query for ChEMBL.
+    Strictness:
+    - Preserve requested output schema (column names and aliases) EXACTLY.
+    - Use INNER JOIN for required links between entities.
+    - Do NOT hallucinate filters or columns not implied by the UP.
+    - Schema-critical join rule: when joining `target_dictionary` in activity queries, join via assays as `target_dictionary.tid = assays.tid` (for aliasing: `td.tid = a.tid`).
+    - Never use `activities.tid` / `act.tid` (this column does not exist in ChEMBL activities).
+    - Negation Handling: Use IS NOT or != for exclusion filters. Avoid NOT IN if a direct negative check on a column is more robust for coverage.
+    Output JSON only with key "sql".
+    </TASK>
+  judge: |
+    <TASK>
+    Judge whether the current result is good enough to stop iterating.
+    This is an iterative diagnostic, not the benchmark authority.
+    Output JSON with keys "analysis", "score", and "decision".
+    </TASK>
+pb:
+  sql_to_up: |
+    <TASK>
+    Reconstruct a compact execution-oriented User Prompt from SQL.
+    Preserve semantic intent, required output schema, and key constraints.
+    Do not emit SQL. Output JSON only with key "up_exec".
+    </TASK>
+  up_to_uq: |
+    <TASK>
+    Reconstruct a realistic human-facing user question from an execution-oriented User Prompt.
+    Keep it natural and concise. Do not leak schema names unless a real user would likely say them.
+    Rules:
+    - Prefer what a scientist or analyst would plausibly ask, not an execution spec.
+    - Avoid internal table names, explicit join instructions, and implementation wording.
+    - Avoid exact schema-qualified column names unless that exact schema request is central to the task.
+    - Preserve intent, entity, measurement type, filters, and ordering when they matter.
+    - When the execution prompt is very specific, compress it into a plausible human request rather than copying it back.
+    Output JSON only with key "uq_surface".
+    </TASK>
+  res_sql_to_intent: |
+    <TASK>
+    Summarize the likely task intent from SQL and a result table summary.
+    Focus on entities, filters, output columns, ordering, and result shape.
+    Output JSON only with key "intent_sketch".
+    </TASK>
+scoring:
+  judge_threshold: 0.9
+  uq_up_echo_penalty_threshold: 0.95
+  uq_up_echo_penalty_weight: 0.15

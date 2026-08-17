@@ -1,0 +1,71 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds that have a canonical SMILES string for the human kappa-type opioid receptor target (CHEMBL237). The compounds must be from assay data where the target is a human protein (tax_id 9606) and the assay is conducted in a human context (implicitly human assay type). The query should return one row per compound with its unique internal identifier (molregno), the public ChEMBL identifier (chembl_id) for the compound, and the compound's canonical SMILES representation (canonical_smiles). No further filtering on assay type, units, activity type, or document type is required. If a compound has multiple canonical SMILES entries, each distinct SMILES string should appear on a separate row.",
+    "sql": "WITH target_human AS (\n  SELECT tid\n  FROM target_dictionary\n  WHERE tid = 9606 AND pref_name = 'human kappa-type opioid receptor' AND chembl_id = 'CHEMBL237'\n), human_assays AS (\n  SELECT a.assay_id\n  FROM assays a\n  JOIN target_human th ON a.tid = th.tid\n  WHERE a.assay_type = 'F'\n)\nSELECT\n  a.molregno AS molregno,\n  md.chembl_id AS chembl_id,\n  cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN human_assays ha ON a.assay_id = ha.assay_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.pchembl_value IS NOT NULL\nGROUP BY a.molregno, md.chembl_id, cs.canonical_smiles",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compounds that have a canonical SMILES string for the human kappa-type opioid receptor (CHEMBL237). For each compound, return one row containing the internal molecule identifier (molregno), the public ChEMBL identifier (chembl_id) for the compound, and its canonical SMILES representation (canonical_smiles). The compounds must be associated with assay data where the target is CHEMBL237 and the assay organism is human (tax_id 9606). No other filtering is required; include all such compounds regardless of assay type or activity units.",
+    "sql": "WITH target_human AS (SELECT tid, chembl_id FROM target_dictionary WHERE chembl_id = 'CHEMBL237' AND tax_id = 9606), human_assays AS (SELECT assay_id, tid FROM assays a JOIN target_human th ON a.tid = th.tid WHERE a.assay_type = 'F'), compound_data AS (SELECT DISTINCT a.molregno, md.chembl_id, cs.canonical_smiles FROM activities a JOIN human_assays ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ha.tid = th.tid AND ha.chembl_id = 'CHEMBL237')) SELECT molregno, chembl_id, canonical_smiles FROM compound_data",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: near \")\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \")\": syntax error",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compounds that have a canonical SMILES string for the human kappa-type opioid receptor (CHEMBL237). For each compound, return one row containing the internal molecule identifier (molregno), the public ChEMBL identifier (chembl_id) for the compound, and its canonical SMILES representation (canonical_smiles). The compounds must be associated with assay data where the target is CHEMBL237 and the assay organism is human (tax_id 9606). No other filtering is required; include all such compounds regardless of assay type or activity units.",
+    "sql": "WITH target_human AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL237' AND tax_id = 9606), human_assays AS (SELECT assay_id FROM assays a JOIN target_human th ON a.tid = th.tid), compound_data AS (SELECT DISTINCT a.molregno, md.chembl_id, cs.canonical_smiles FROM activities a JOIN human_assays ha ON a.assay_id = ha.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id) SELECT molregno, chembl_id, canonical_smiles FROM compound_data",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compounds that have a canonical SMILES string for the human kappa-type opioid receptor (CHEMBL237). For each compound, return one row containing the internal molecule identifier (molregno), the public ChEMBL identifier (chembl_id) for the compound, and its canonical SMILES representation (canonical_smiles). The compounds must be associated with assay data where the target is CHEMBL237 and the assay organism is human (tax_id 9606). No other filtering is required; include all such compounds regardless of assay type or activity units. If a compound has multiple canonical SMILES entries, each distinct SMILES string should appear on a separate row.",
+    "sql": "WITH target_human AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL237' AND tax_id = 9606),\n human_assays AS (SELECT assay_id FROM assays a JOIN target_human th ON a.tid = th.tid),\n compound_data AS (\n   SELECT DISTINCT md.molregno, md.chembl_id, cs.canonical_smiles\n   FROM activities a\n   JOIN human_assays ha ON a.assay_id = ha.assay_id\n   JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\n   JOIN compound_structures cs ON md.molregno = cs.molregno\n)\nSELECT molregno, chembl_id, canonical_smiles\nFROM compound_data",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find compounds that have a canonical SMILES string for the human kappa-type opioid receptor (CHEMBL237). Return one row per compound with: the internal molecule identifier (molregno), the public ChEMBL identifier (chembl_id), and the canonical SMILES (canonical_smiles). The compounds must be linked to assay data where the target is CHEMBL237 and the assay organism is human (tax_id 9606). No other restrictions (assay type, activity type, units, document type, or date range) are required. If a compound has multiple distinct canonical SMILES strings, each should appear on a separate row.",
+    "sql": "WITH target_human AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL237' AND tax_id = 9606),\n human_assays AS (SELECT assay_id FROM assays a JOIN target_human th ON a.tid = th.tid),\n compound_data AS (\n   SELECT DISTINCT md.molregno, md.chembl_id, cs.canonical_smiles\n   FROM activities a\n   JOIN human_assays ha ON a.assay_id = ha.assay_id\n   JOIN molecule_dictionary md ON a.molregno = md.molregno\n   JOIN compound_structures cs ON md.molregno = cs.molregno\n )\n SELECT molregno, chembl_id, canonical_smiles\n FROM compound_data;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE compound_data\n14 | 2 | 218 | SCAN md USING INDEX sqlite_autoindex_molecule_dictionary_1\n17 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 2 | 0 | BLOOM FILTER ON target_dictionary (chembl_id=?)\n37 | 2 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n45 | 2 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n54 | 2 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n75 | 0 | 228 | SCAN compound_data",
+    "res_row_count": 10303,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -24,7 +24,7 @@ from db_llm_v5.workspace import persist_generated_step
 
 DEFAULT_SPLIT = REPO_ROOT / "experiments" / "case_splits_v4.7.json"
 DEFAULT_MANIFEST_ROOT = REPO_ROOT / "tests" / "v5_manifests"
-DEFAULT_EVAL_ROOT = REPO_ROOT / "experiments" / "evals" / "v5_forward_eval"
+DEFAULT_EVAL_ROOT = REPO_ROOT / "runs"
 
 
 def main() -> None:

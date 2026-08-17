@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_kit.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_kit",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\\nJoin molecule_dictionary m ON m.molregno = a.molregno\\nJoin activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL\\nJoin assays ass ON a.assay_id = ass.assay_id\\nJoin target_dictionary t ON ass.tid = t.tid\\nJoin compound_structures cs ON cs.molregno = m.molregno\\nJoin docs d ON a.doc_id = d.doc_id\\nFilter m.chembl_id = 'CHEMBL1936'\\nFilter t.target_type = 'SINGLE PROTEIN'\\nFilter t.organism = 'Homo sapiens'\\nFilter cs.canonical_smiles IS NOT NULL\\nFilter (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\\nReturn DISTINCT compound_chembl_id, canonical_smiles, compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism\\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\"\n}",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\nJoin molecule_dictionary m ON m.molregno = a.molregno\nJoin activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL\nJoin assays ass ON a.assay_id = ass.assay_id\nJoin target_dictionary t ON ass.tid = t.tid\nJoin compound_structures cs ON cs.molregno = m.molregno\nJoin docs d ON a.doc_id = d.doc_id\nFilter m.chembl_id = 'CHEMBL1936'\nFilter t.target_type = 'SINGLE PROTEIN'\nFilter t.organism = 'Homo sapiens'\nFilter cs.canonical_smiles IS NOT NULL\nFilter (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\nReturn DISTINCT compound_chembl_id, canonical_smiles, compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of ChEMBL identifiers and canonical SMILES for compounds that have been tested in assays associated with the target 'lethal malignant brain tumor-like protein 1' in Homo sapiens.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.pref_name = 'lethal malignant brain tumor-like protein 1'\n  AND td.organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List the ChEMBL identifiers and canonical SMILES for compounds tested in assays where the target name is 'Lethal malignant brain tumor-like protein 1' and the organism is Homo sapiens.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.pref_name = 'Lethal malignant brain tumor-like protein 1'\n  AND td.organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List the ChEMBL identifiers and canonical SMILES for compounds tested in assays where the target is the human protein 'Lethal(3) malignant brain tumor-like protein 1' (also known as LMBR1).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.pref_name = 'Lethal(3) malignant brain tumor-like protein 1'\n  AND td.organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n50 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List the ChEMBL identifiers and canonical SMILES for compounds tested in assays where the target name contains 'malignant brain tumor-like protein' and the organism is Homo sapiens.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.pref_name LIKE '%malignant brain tumor-like protein%'\n  AND td.organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 13928,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

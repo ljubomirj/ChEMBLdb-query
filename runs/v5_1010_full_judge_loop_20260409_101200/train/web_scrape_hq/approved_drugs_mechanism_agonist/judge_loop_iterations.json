@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs whose mechanism of action is classified as AGONIST. For each drug, return the following columns: the drug's ChEMBL ID, the drug's preferred name, the target's ChEMBL ID, the target's preferred name, and the drug's canonical SMILES. Only include drugs that are classified as AGONIST in the drug mechanism table and have a maximum approval phase of 4.",
+    "sql": "SELECT\n  md.chembl_id AS drug_chembl_id,\n  md.pref_name AS drug_pref_name,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name,\n  cs.canonical_smiles\nFROM drug_mechanism dm\nJOIN molecule_dictionary md ON dm.molregno = md.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  dm.action_type = 'AGONIST'\n  AND md.max_phase = 4;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 144 | SCAN dm\n12 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 441,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_pref_name",
+      "target_chembl_id",
+      "target_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

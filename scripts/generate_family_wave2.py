@@ -143,7 +143,7 @@ def main() -> None:
     ap.add_argument('--family', required=True, choices=['salts', 'metabolism', 'document'])
     ap.add_argument('--candidates-path', required=True)
     ap.add_argument('--base-registry', required=True)
-    ap.add_argument('--prompt-pack', default=str(REPO_ROOT / 'experiments/prompt_pack_v5.9.yaml'))
+    ap.add_argument('--prompt-pack', default=str(REPO_ROOT / 'configs/prompt_packs/prompt_pack_v5.9.yaml'))
     ap.add_argument('--limit', type=int, default=200)
     ap.add_argument('--start-index', type=int, default=0)
     ap.add_argument('--round-base', type=int, default=80)
@@ -255,7 +255,7 @@ def main() -> None:
     # Write outputs
     family_tag = args.family
     stage_registry = existing_cases + new_entries
-    stage_path = REPO_ROOT / f'tests/cases/web_scrape_hq_cases_v4.9_{family_tag}_wave2_staging.json'
+    stage_path = REPO_ROOT / f'cases/registries/archive/web_scrape_hq_cases_v4.9_{family_tag}_wave2_staging.json'
     frag_path = REPO_ROOT / f'experiments/{family_tag}_wave2_registry_fragment_v4.9.json'
     summary_path = REPO_ROOT / f'experiments/{family_tag}_wave2_generated_v4.9.json'
     report_path = REPO_ROOT / f'experiments/{family_tag}_wave2_generated_v4.9.md'

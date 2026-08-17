@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, drug_mechanism.action_type. Source: molecule_dictionary, drug_mechanism, target_dictionary. Join: molecule_dictionary.molregno = drug_mechanism.molregno AND drug_mechanism.tid = target_dictionary.tid. Filter: molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type IN ('AGONIST', 'PARTIAL AGONIST', 'POSITIVE ALLOSTERIC MODULATOR', 'ACTIVATOR', 'OPENER', 'POSITIVE MODULATOR', 'EXOGENOUS PROTEIN', 'EXOGENOUS GENE').",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, drug_mechanism.action_type FROM molecule_dictionary JOIN drug_mechanism ON molecule_dictionary.molregno = drug_mechanism.molregno JOIN target_dictionary ON drug_mechanism.tid = target_dictionary.tid WHERE molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type IN ('AGONIST', 'PARTIAL AGONIST', 'POSITIVE ALLOSTERIC MODULATOR', 'ACTIVATOR', 'OPENER', 'POSITIVE MODULATOR', 'EXOGENOUS PROTEIN', 'EXOGENOUS GENE')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_mechanism\n40 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 0 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 777,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "target_chembl_id",
+      "target_name",
+      "action_type"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs (max_phase = 4) with positive modulator mechanisms of action. The result includes 777 rows covering drug-target pairs with relevant action types like AGONIST, POSITIVE ALLOSTERIC MODULATOR, ACTIVATOR, OPENER, PARTIAL AGONIST, EXOGENOUS PROTEIN, and EXOGENOUS GENE. The output columns correctly include drug identifiers (chembl_id, pref_name), target information (target_chembl_id, target_name), and the specific action_type. The sample data shows diverse drug classes including hormones, receptor agonists, and gene therapies, confirming the query captures the intended scope of 'positive modulator' mechanisms.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

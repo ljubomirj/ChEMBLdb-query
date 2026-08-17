@@ -1,0 +1,15 @@
+Select molecule_chembl_id as compound_chembl_id, compound_structures.canonical_smiles as canonical_smiles
+Join activities on activities.record_id = compound_records.record_id
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Join molecule_dictionary on molecule_dictionary.molregno = compound_records.molregno
+Filter target_dictionary.target_type = 'SINGLE PROTEIN'
+Filter target_dictionary.pref_name = 'Human amine oxidase B (flavin‑containing)'
+Filter assays.assay_type = 'B'
+Filter assays.assay_organism = 'Homo sapiens'
+Filter activities.standard_type = 'IC50'
+Filter activities.standard_relation = '='
+Return compound_chembl_id, canonical_smiles
+Sort by compound_chembl_id
+Limit 0

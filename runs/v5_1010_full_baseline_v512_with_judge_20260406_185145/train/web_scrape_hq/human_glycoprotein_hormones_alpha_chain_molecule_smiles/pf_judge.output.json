@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_glycoprotein_hormones_alpha_chain_molecule_smiles.json",
+  "case_id": "human_glycoprotein_hormones_alpha_chain_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve SMILES for compounds tested against the human Glycoprotein hormones alpha chain target (CHEMBL2146305) with specific activity criteria (IC50, nM, pChEMBL 0-9). The result set is empty (row_count: 0). This could be due to several reasons: 1) No compounds meet all the strict criteria (IC50 '=', nM units, pChEMBL 0-9), 2) The target CHEMBL2146305 may not have associated assays with Homo sapiens, 3) The assay_organism filter may be too restrictive (target_dictionary.organism vs assays.assay_organism), 4) The standard_relation '=' may exclude '>' or '<' IC50 values that are common, 5) The pChEMBL filter may be excluding valid values. The query structure is generally correct but may need relaxation of filters or verification of target-assay mappings.\",\n  \"score\": 0.6,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve SMILES for compounds tested against the human Glycoprotein hormones alpha chain target (CHEMBL2146305) with specific activity criteria (IC50, nM, pChEMBL 0-9). The result set is empty (row_count: 0). This could be due to several reasons: 1) No compounds meet all the strict criteria (IC50 '=', nM units, pChEMBL 0-9), 2) The target CHEMBL2146305 may not have associated assays with Homo sapiens, 3) The assay_organism filter may be too restrictive (target_dictionary.organism vs assays.assay_organism), 4) The standard_relation '=' may exclude '>' or '<' IC50 values that are common, 5) The pChEMBL filter may be excluding valid values. The query structure is generally correct but may need relaxation of filters or verification of target-assay mappings.",
+      "score": 0.6,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycoprotein_hormones_alpha_chain_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycoprotein_hormones_alpha_chain_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycoprotein_hormones_alpha_chain_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

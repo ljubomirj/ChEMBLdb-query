@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (where max_phase = 4 in molecule_dictionary) whose mechanism of action has action_type = 'ACTIVATOR' in the drug_mechanism table. For each such drug, provide: the compound name (pref_name from molecule_dictionary), the canonical SMILES (canonical_smiles from compound_structures), the mechanism description (mechanism_of_action from drug_mechanism), and target information including the target name (pref_name from target_dictionary) and the target organism (organism from target_dictionary). Do not add any other filters or limits.",
+    "sql": "SELECT md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles, dm.mechanism_of_action AS mechanism_description, td.pref_name AS target_name, td.organism AS target_organism FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'ACTIVATOR';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 15,
+    "res_columns": [
+      "compound_name",
+      "canonical_smiles",
+      "mechanism_description",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

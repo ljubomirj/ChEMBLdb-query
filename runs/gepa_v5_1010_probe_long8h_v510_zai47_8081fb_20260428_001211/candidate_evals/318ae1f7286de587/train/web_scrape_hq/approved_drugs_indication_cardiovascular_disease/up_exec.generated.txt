@@ -1,0 +1,7 @@
+1. Objective: Retrieve all approved drugs indicated for cardiovascular disease, returning their ChEMBL identifiers, names, structures, and indication details.
+
+2. Output: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind
+
+3. Source: molecule_dictionary, drug_indication, compound_structures
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno. Filter drug_indication records where mesh_heading equals 'cardiovascular disease'. Filter molecule_dictionary for approved drugs (max_phase = 4). Sort by chembl_id.

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact activity values for compounds tested in assay CHEMBL1613910. Include the canonical SMILES and ChEMBL ID for each compound. Select: activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, molecule_dictionary.chembl_id, compound_structures.canonical_smiles. Source: activities, assays, molecule_dictionary, compound_structures. Join: activities.assay_id = assays.assay_id, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: assays.chembl_id = 'CHEMBL1613910'.",
+    "sql": "SELECT activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, molecule_dictionary.chembl_id, compound_structures.canonical_smiles FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE assays.chembl_id = 'CHEMBL1613910'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 0 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 11770,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "standard_type",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves exact activity values for compounds tested in assay CHEMBL1613910, including canonical SMILES and ChEMBL IDs. The result set contains 11,770 rows with all requested columns: standard_value, standard_units, standard_relation, standard_type, chembl_id, and canonical_smiles. The joins are correct (activities \u2192 assays \u2192 molecule_dictionary \u2192 compound_structures), and the filter properly restricts to the specified assay. The sample shows diverse compounds with valid SMILES and activity data, confirming the query works as intended.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_celegans_target_descriptions.json",
+  "case_id": "baoilleach_celegans_target_descriptions",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select distinct target_dictionary.pref_name aliased as target_description. Join assays to target_dictionary on assays.tid = target_dictionary.tid. Join activities on assays.assay_id = activities.assay_id. Filter assays.assay_organism = 'Caenorhabditis elegans'. Return target_description. Sort by target_description ascending.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct target_dictionary.pref_name aliased as target_description. Join assays to target_dictionary on assays.tid = target_dictionary.tid. Join activities on assays.assay_id = activities.assay_id. Filter assays.assay_organism = 'Caenorhabditis elegans'. Return target_description. Sort by target_description ascending."
+    }
+  }
+}

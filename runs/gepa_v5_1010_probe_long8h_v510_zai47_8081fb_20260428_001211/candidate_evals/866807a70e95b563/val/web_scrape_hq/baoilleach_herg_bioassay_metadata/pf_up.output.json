@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_866807a70e95b563.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/baoilleach_herg_bioassay_metadata.json",
+  "case_id": "baoilleach_herg_bioassay_metadata",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "866807a70e95b563",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "Objective: Retrieve assay metadata and publication provenance for binding assays against the hERG target (tid 165).\n\nOutput: assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi\n\nSource: assays, target_dictionary, docs\n\nLogic:\n1. Filter assays where assay_type = 'B' and tid = 165.\n2. Join target_dictionary on assays.tid = target_dictionary.tid to obtain target_name and target_organism.\n3. Join docs on assays.doc_id = docs.doc_id to obtain journal, year, volume, first_page, and doi.\n4. Order by assay_chembl_id, tid, journal, year, and doi.",
+    "parsed_json": {
+      "up": "Objective: Retrieve assay metadata and publication provenance for binding assays against the hERG target (tid 165).\n\nOutput: assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi\n\nSource: assays, target_dictionary, docs\n\nLogic:\n1. Filter assays where assay_type = 'B' and tid = 165.\n2. Join target_dictionary on assays.tid = target_dictionary.tid to obtain target_name and target_organism.\n3. Join docs on assays.doc_id = docs.doc_id to obtain journal, year, volume, first_page, and doi.\n4. Order by assay_chembl_id, tid, journal, year, and doi."
+    }
+  }
+}

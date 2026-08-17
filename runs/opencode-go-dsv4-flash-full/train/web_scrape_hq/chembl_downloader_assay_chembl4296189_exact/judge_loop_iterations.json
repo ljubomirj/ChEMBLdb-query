@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Show all exact activity measurements (standard_relation '=' with a non-null standard_value) for compounds tested in the assay with ChEMBL identifier CHEMBL4296189. For each measurement, output the compound's ChEMBL ID, the standard activity type, standard relation, standard value, standard units, and pChEMBL value. Do not restrict the number of rows.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL4296189' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 5455,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

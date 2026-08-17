@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl233_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query for IC50 activities against human single-protein target CHEMBL233 (Mu-type opioid receptor) returned 0 rows. The SQL appears correct: it filters for target CHEMBL233, assay type B (Binding), single-protein target, human tax_id 9606, standard relation '=', IC50 endpoint, and non-null pChEMBL values. However, the result set is empty, which suggests either no matching activities exist in the database or there may be a subtle mismatch in filters (e.g., assay_type 'B' vs. 'B' for Binding, tax_id as integer vs. string, or endpoint naming). The schema shows activities.bao_endpoint uses BAO_0000190 for IC50, but the query uses 'IC50' directly. The sample rows in activities show bao_endpoint values like 'IC50' (e.g., BAO_0000190), so 'IC50' should match. The target_dictionary.tax_id is stored as integer, and the query uses 9606 (integer), which is correct. The assay_type filter 'B' is correct for Binding. The pchembl_value filter is correct. The join conditions are correct. The empty result indicates no activities meet all criteria, which may be accurate for this target and endpoint combination in the dataset.\",\n  \"score\": 0.95,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The query for IC50 activities against human single-protein target CHEMBL233 (Mu-type opioid receptor) returned 0 rows. The SQL appears correct: it filters for target CHEMBL233, assay type B (Binding), single-protein target, human tax_id 9606, standard relation '=', IC50 endpoint, and non-null pChEMBL values. However, the result set is empty, which suggests either no matching activities exist in the database or there may be a subtle mismatch in filters (e.g., assay_type 'B' vs. 'B' for Binding, tax_id as integer vs. string, or endpoint naming). The schema shows activities.bao_endpoint uses BAO_0000190 for IC50, but the query uses 'IC50' directly. The sample rows in activities show bao_endpoint values like 'IC50' (e.g., BAO_0000190), so 'IC50' should match. The target_dictionary.tax_id is stored as integer, and the query uses 9606 (integer), which is correct. The assay_type filter 'B' is correct for Binding. The pchembl_value filter is correct. The join conditions are correct. The empty result indicates no activities meet all criteria, which may be accurate for this target and endpoint combination in the dataset.",
+      "score": 0.95,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Return the canonical SMILES for each distinct compound that has at least one activity measurement against human Histone acetyltransferase KAT2A (target name: \"Histone acetyltransferase KAT2A\") in an assay performed in a human organism. Each compound should be listed once, regardless of how many assays or measurements it has. Return exactly two columns: (1) the ChEMBL canonical SMILES (the field `compound_structures.canonical_smiles` from the `compound_structures` table, filtered via the molecule\u2011to\u2011compound link) and (2) the compound's public ChEMBL identifier (the field `molecule_dictionary.chembl_id` aliased as `compound_chembl_id`). The query must ensure that the target is human (`target_dictionary.organism = 'Homo sapiens'`) and that the target is the specific protein \"Histone acetyltransferase KAT2A\" (via `target_dictionary.pref_name`). No other filters (e.g., confidence score, assay date, document type, or activity units) are required. Ordering is not requested.",
+    "sql": "WITH assays_human AS (\n  SELECT a.assay_id, a.molecule_chembl_id, a.activity_id\n  FROM assays ass\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN activities a ON ass.assay_id = a.assay_id\n  WHERE td.organism = 'Homo sapiens'\n    AND td.pref_name = 'Histone acetyltransferase KAT2A'\n)\nSELECT DISTINCT cs.canonical_smiles AS canonical_smiles, md.chembl_id AS compound_chembl_id\nFROM assays_human a\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.molecule_chembl_id IS NOT NULL\n  AND md.molregno IS NOT NULL\n  AND cs.molregno IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Target: human histone acetyltransferase KAT2A (target_dictionary.pref_name = 'Histone acetyltransferase KAT2A' AND target_dictionary.organism = 'Homo sapiens'). Output columns: (1) compound_chembl_id: the public ChEMBL identifier of each qualifying compound, (2) compound_smiles: the canonical SMILES string for each compound. Return exactly one row per distinct compound that has at least one activity measurement in any assay linked to that target, regardless of assay or activity details. No additional filters (e.g., assay confidence, date, units, activity type, source, or document type) are required. Order of rows is not requested.",
+    "sql": "WITH target AS (\n  SELECT td.tid\n  FROM target_dictionary td\n  WHERE td.organism = 'Homo sapiens' AND td.pref_name = 'Histone acetyltransferase KAT2A'\n),\nhuman_assays AS (\n  SELECT a.assay_id, a.molecule_chembl_id\n  FROM assays ass\n  JOIN target AS t ON ass.tid = t.tid\n  JOIN activities a ON ass.assay_id = a.assay_id\n  WHERE a.molecule_chembl_id IS NOT NULL\n)\nSELECT DISTINCT md.chembl_id AS compound_chembl_id,\n       cs.canonical_smiles AS compound_smiles\nFROM human_assays ha\nJOIN molecule_dictionary md ON ha.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ha.molecule_chembl_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\"targets\":{\"organism\":\"Homo sapiens\",\"pref_name\":\"Histone acetyltransferase KAT2A\"},\"output_columns\":[\"compound_chembl_id:\" (target_dictionary.chembl_id of the compound), \"compound_smiles:\" (compound_structures.canonical_smiles)],\"filters\":[\"assays.assay_id must be linked to the target via target_dictionary.tid\",\"activities must have at least one activity measurement for the compound\",\"No additional filters (e.g., assay confidence, units, date, document type) are required\"],\"ranking\":null,\"notes\":null}",
+    "sql": "WITH target AS (\n  SELECT td.tid\n  FROM target_dictionary td\n  WHERE td.organism = 'Homo sapiens'\n    AND td.pref_name = 'Histone acetyltransferase KAT2A'\n),\nassays_human AS (\n  SELECT a.assay_id, a.molregno\n  FROM assays ass\n  JOIN target ON ass.tid = target.tid\n  JOIN activities a ON ass.assay_id = a.assay_id\n  WHERE a.molregno IS NOT NULL\n),\ncompounds AS (\n  SELECT DISTINCT md.chembl_id AS compound_chembl_id,\n         cs.canonical_smiles AS compound_smiles\n  FROM assays_human ah\n  JOIN molecule_dictionary md ON ah.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE md.molregno IS NOT NULL\n)\nSELECT compound_chembl_id, compound_smiles\nFROM compounds",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE compounds\n15 | 2 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n18 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 2 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n45 | 2 | 0 | BLOOM FILTER ON td (tid=?)\n56 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n77 | 0 | 226 | SCAN compounds",
+    "res_row_count": 13913,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

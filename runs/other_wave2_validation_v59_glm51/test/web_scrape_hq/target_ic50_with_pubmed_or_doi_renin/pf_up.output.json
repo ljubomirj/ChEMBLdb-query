@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_renin.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_renin",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity records for the human single-protein target Renin (CHEMBL286). Return columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures), compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Join path: activities -> assays on assay_id (indexed), assays -> target_dictionary on tid, activities -> molecule_dictionary on molregno, molecule_dictionary -> compound_structures on molregno (INNER JOIN, non-null SMILES required), activities -> compound_records on record_id, compound_records -> docs on doc_id (non-null provenance required). Filter: target_dictionary.chembl_id = 'CHEMBL286', activities.standard_type = 'IC50'. Do not deduplicate; preserve every qualifying activity row. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity records for the human single-protein target Renin (CHEMBL286). Return columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures), compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Join path: activities -> assays on assay_id (indexed), assays -> target_dictionary on tid, activities -> molecule_dictionary on molregno, molecule_dictionary -> compound_structures on molregno (INNER JOIN, non-null SMILES required), activities -> compound_records on record_id, compound_records -> docs on doc_id (non-null provenance required). Filter: target_dictionary.chembl_id = 'CHEMBL286', activities.standard_type = 'IC50'. Do not deduplicate; preserve every qualifying activity row. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

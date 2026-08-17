@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1830_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1830_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\\nJoin activities on activities.standard_type = 'IC50' and activities.standard_relation = '=' and activities.pchembl_value is not null and activities.tid = 1830 and assays.assay_type = 'B' and assays.assay_organism = 'Homo sapiens'\\nJoin assays on activities.assay_id = assays.assay_id\\nJoin target_dictionary on assays.tid = target_dictionary.tid\\nLeft Join compound_structures on compound_structures.molregno = activities.molregno\\nReturn assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\\nSort by molecule_chembl_id, assay_chembl_id\\nLimit 1000\"\n}",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nJoin activities on activities.standard_type = 'IC50' and activities.standard_relation = '=' and activities.pchembl_value is not null and activities.tid = 1830 and assays.assay_type = 'B' and assays.assay_organism = 'Homo sapiens'\nJoin assays on activities.assay_id = assays.assay_id\nJoin target_dictionary on assays.tid = target_dictionary.tid\nLeft Join compound_structures on compound_structures.molregno = activities.molregno\nReturn assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nSort by molecule_chembl_id, assay_chembl_id\nLimit 1000"
+    }
+  }
+}

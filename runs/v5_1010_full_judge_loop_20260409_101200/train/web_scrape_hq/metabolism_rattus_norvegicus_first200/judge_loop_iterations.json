@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the organism Rattus norvegicus. For each record, provide the substrate compound's canonical SMILES and structure, the substrate compound name, the metabolic conversion description, the enzyme name, and the enzyme target identifier.",
+    "sql": "WITH filtered_metabolism AS (\n  SELECT\n    met.met_id,\n    met.substrate_record_id,\n    met.met_conversion,\n    met.enzyme_name,\n    met.enzyme_tid,\n    met.tax_id,\n    ROW_NUMBER() OVER (ORDER BY met.met_id) AS rn\n  FROM metabolism met\n  WHERE met.tax_id = 10116\n  LIMIT 200\n)\nSELECT\n  cs.canonical_smiles,\n  cs.molfile,\n  COALESCE(md.pref_name, cr.compound_name) AS compound_name,\n  fm.met_conversion,\n  fm.enzyme_name,\n  td.chembl_id AS enzyme_target_chembl_id\nFROM filtered_metabolism fm\nJOIN compound_records cr ON fm.substrate_record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nLEFT JOIN target_dictionary td ON fm.enzyme_tid = td.tid;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE filtered_metabolism\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n9 | 5 | 132 | SCAN met USING INDEX sqlite_autoindex_metabolism_1\n30 | 2 | 106 | SCAN (subquery-3)\n85 | 0 | 92 | SCAN fm\n88 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n95 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n102 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n111 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN",
+    "res_row_count": 101,
+    "res_columns": [
+      "canonical_smiles",
+      "molfile",
+      "compound_name",
+      "met_conversion",
+      "enzyme_name",
+      "enzyme_target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

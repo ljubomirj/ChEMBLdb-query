@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compounds that are reported in the document with ChEMBL ID CHEMBL3886617. A compound is considered reported in a document if there is a record in compound_records linking the compound (via molregno) to that document (via doc_id). The document can be identified by its chembl_id in the docs table. Return the molecule ChEMBL ID (chembl_id) and preferred name (pref_name) for each such compound. Use INNER JOINs between compound_records and molecule_dictionary, and between compound_records and docs. Ensure the results are distinct.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM compound_records cr INNER JOIN docs d ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL3886617';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1518,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

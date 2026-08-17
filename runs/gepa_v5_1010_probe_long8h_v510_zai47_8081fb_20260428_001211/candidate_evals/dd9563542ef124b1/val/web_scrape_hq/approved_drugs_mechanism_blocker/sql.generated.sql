@@ -1,0 +1,24 @@
+SELECT
+  md.chembl_id,
+  md.pref_name,
+  cs.canonical_smiles,
+  md.max_phase,
+  dm.mechanism_of_action,
+  dm.action_type,
+  td.chembl_id AS target_chembl_id,
+  td.pref_name AS target_name
+FROM molecule_dictionary md
+INNER JOIN drug_mechanism dm ON dm.molregno = md.molregno
+INNER JOIN target_dictionary td ON td.tid = dm.tid
+INNER JOIN compound_structures cs ON cs.molregno = md.molregno
+WHERE md.max_phase = 4
+  AND dm.action_type = 'BLOCKER'
+ORDER BY
+  md.chembl_id ASC,
+  md.pref_name ASC,
+  cs.canonical_smiles ASC,
+  md.max_phase ASC,
+  dm.mechanism_of_action ASC,
+  dm.action_type ASC,
+  td.chembl_id ASC,
+  td.pref_name ASC

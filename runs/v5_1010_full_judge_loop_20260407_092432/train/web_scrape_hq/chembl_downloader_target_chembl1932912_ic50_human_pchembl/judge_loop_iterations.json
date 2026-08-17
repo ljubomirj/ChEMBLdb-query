@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Find up to 1000 rows of exact IC50 activity measurements with pChEMBL values for the human single-protein target with ChEMBL ID CHEMBL1932912 (Histone acetyltransferase KAT8). For each activity row, return the assay's ChEMBL ID, the target type, the organism tax ID, the canonical SMILES of the tested compound, the molecule's ChEMBL ID, the standard activity type (which will be 'IC50'), and the pChEMBL value. Filter activities to keep only rows where the standard relation equals '=' (i.e., exact numeric comparison), pChEMBL is not null, and the standard units are nanomolar (nM). Join activity records to the target information via the assay's target dictionary and to the molecule structure via the molecule dictionary to obtain the required fields. Join activity records to the compound structures to retrieve the canonical SMILES. Sort the final result set first by molecule ChEMBL ID in ascending order, then by assay ChEMBL ID in ascending order. Return no more than 1000 rows.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id AS tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE td.chembl_id = 'CHEMBL1932912' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL AND a.standard_units = 'nM' AND a.pchembl_value IS NOT NULL AND td.target_type = 'SINGLE PROTEIN' ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "target_type = 'SINGLE PROTEIN' AND target_chembl_id = 'CHEMBL1932912' AND activity_type = 'IC50' AND standard_relation = '=' AND standard_units = 'nM' AND pChEMBL_value IS NOT NULL",
+    "sql": "WITH activity_rows AS ( SELECT a.activity_id, a.molecule_chembl_id AS molregno, a.assay_id, a.standard_type, a.pchembl_value, a.standard_value, a.standard_units, a.standard_relation, ass.chembl_id AS assay_chembl_id, ass.tid, md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, a.doc_id, a.record_id FROM activities a LEFT JOIN assays ass ON a.assay_id = ass.assay_id LEFT JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE td.chembl_id = 'CHEMBL1932912' AND td.target_type = 'SINGLE PROTEIN' AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value <> 0 ) SELECT assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value FROM ( SELECT * FROM activity_rows ORDER BY molecule_chembl_id, assay_chembl_id ) GROUP BY assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value ORDER BY molecule_chembl_id, assay_chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target with CHEMBL ID CHEMBL1932912 (Histone acetyltransferase KAT8). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=', non-null pChEMBL values, and standard units nM. Filter activities for target CHEMBL1932912, target_type = 'SINGLE PROTEIN', standard_type = 'IC50', standard_units = 'nM', and standard_relation = '='. Join activities to assays to get assay_chembl_id and tid, then to target_dictionary for target_type and tax_id, then to molecule_dictionary for molecule_chembl_id and to compound_structures for canonical SMILES. Sort results by molecule ChEMBL ID and assay ChEMBL ID. Do not add any additional filters beyond those stated.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id AS tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE td.chembl_id = 'CHEMBL1932912' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' AND td.target_type = 'SINGLE PROTEIN' ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single\u2011protein target CHEMBL1932912 (Histone acetyltransferase KAT8). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type and pChEMBL value. Filter to activities where the target dictionary entry for the assay\u2019s tid has chembl_id = 'CHEMBL1932912', target_type = 'SINGLE PROTEIN', standard_relation = '=', standard_units = 'nM', standard_type = 'IC50', and pChEMBL is not null. Join activities to assays (to obtain assay_chembl_id and tid), to target_dictionary (for target_type and tax_id), to molecule_dictionary (for molecule_chembl_id and canonical SMILES via the compound_structures join). Sort the result set by molecule ChEMBL ID ascending then assay ChEMBL ID ascending. Do not add any further filters or limits beyond those described.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id AS tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1932912' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.pchembl_value IS NOT NULL AND a.standard_type = 'IC50' AND td.target_type = 'SINGLE PROTEIN' ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n51 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n82 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n83 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 351,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

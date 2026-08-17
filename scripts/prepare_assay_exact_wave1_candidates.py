@@ -8,7 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = REPO_ROOT / 'database/latest/chembl_36/chembl_36_sqlite/chembl_36.db'
-CASES_PATH = REPO_ROOT / 'tests/cases/web_scrape_hq_cases.json'
+CASES_PATH = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases.json'
 OUT_JSON = REPO_ROOT / 'experiments/assay_exact_wave1_candidates_v4.8.json'
 OUT_MD = REPO_ROOT / 'experiments/assay_exact_wave1_candidates_v4.8.md'
 

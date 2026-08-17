@@ -1,0 +1,55 @@
+[
+    0.85,
+    {
+        "current_candidate": "<TASK>\nYou are a prompt writer that crafts a single improved User Prompt (UP) for a Text-to-SQL model.\nThe user gave you a User Question UQ thas is listed below. For that user question UQ, we are to retrieve data from the ChEMBLdb chemistry database.\nWe will do it in two steps.\nStep 1 (this one): Write a User Prompt (UP), given the User Question (UQ) passed below, and the database schema and other relevant information passed in the System Prompt (SP).\nStep 2 (next one): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP) with the database schema etc.\nNow in this turn we are doing step 1. It's best if we do it now. But if we fail, we will retry in later iterations.\nRules:\n- Output ONLY a single JSON object on one line (no markdown, no code fences).\n- Required key: \"up\" (string). This is the user prompt that will be passed to the SQL-writer.\n- Optional keys (use when helpful): \"targets\", \"output_columns\", \"filters\", \"ranking\", \"notes\".\n- The \"up\" string must be explicit about:\n  + target definitions (e.g., target types, organism, protein family constraints)\n  + required output columns and their required aliases (if UQ specifies column names, they MUST be preserved in SELECT output)\n  + filters, units, and date ranges\n  + whether results should be ranked and any top-N; but do not add limits to the number of rows yourself, if the UQ does not request itself; do not mistake any number in the UQ as a number of rows to be returned\n- Do NOT ask for SQL or mention SQL output; describe the desired data/results only.\n- Follow FILTER_PROFILE guidance when provided.\n- Use prior judge advice from the latest history block when present.\n- STRICT COLUMN PROJECTION: If the User Question specifies exact column names (e.g., \"return col_a, col_b\"), the User Prompt MUST explicitly instruct the SQL-writer to select ONLY those columns with EXACTLY those names in the final output. Do not add extra columns, rename columns, or omit requested columns.\n</TASK>"
+    },
+    {
+        "case_id": "chembl_downloader_target_chembl4040_ic50_human_pchembl",
+        "corpus": "web_scrape_hq",
+        "uq": "Show IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL4040 (Mitogen-activated protein kinase 1). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt",
+        "generated_sql": "SELECT DISTINCT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL4040' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+        "judge_text": null,
+        "expected_rows": 6679,
+        "actual_rows": 6668,
+        "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+        ],
+        "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+        ],
+        "missing_cols": [],
+        "extra_cols": [],
+        "compare_error": "Row count mismatch: actual=6668, expected=6679",
+        "status": "partial",
+        "score": 0.85,
+        "column_recall": 1.0,
+        "row_ratio": 0.998353,
+        "generated_up": "Retrieve IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL4040 (Mitogen-activated protein kinase 1). Return the following columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value.",
+        "base_score": 0.85,
+        "up_echo_ratio": 0.622824,
+        "up_echo_penalty": 0.0,
+        "adjusted_score": 0.85,
+        "scores": {
+            "result_score": 0.85,
+            "up_non_echo_score": 1.0
+        },
+        "log": "{\"case_id\": \"chembl_downloader_target_chembl4040_ic50_human_pchembl\", \"corpus\": \"web_scrape_hq\", \"uq\": \"Show IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL4040 (Mitogen-activated protein kinase 1). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt\", \"generated_sql\": \"SELECT DISTINCT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL4040' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL\", \"judge_text\": null, \"expected_rows\": 6679, \"actual_rows\": 6668, \"expected_cols\": [\"assay_chembl_id\", \"target_type\", \"tax_id\", \"canonical_smiles\", \"molecule_chembl_id\", \"standard_type\", \"pchembl_value\"], \"actual_cols\": [\"assay_chembl_id\", \"target_type\", \"tax_id\", \"canonical_smiles\", \"molecule_chembl_id\", \"standard_type\", \"pchembl_value\"], \"missing_cols\": [], \"extra_cols\": [], \"compare_error\": \"Row count mismatch: actual=6668, expected=6679\", \"status\": \"partial\", \"score\": 0.85, \"column_recall\": 1.0, \"row_ratio\": 0.998353, \"generated_up\": \"Retrieve IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL4040 (Mitogen-activated protein kinase 1). Return the following columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value.\", \"base_score\": 0.85, \"up_echo_ratio\": 0.622824, \"up_echo_penalty\": 0.0, \"adjusted_score\": 0.85, \"scores\": {\"result_score\": 0.85, \"up_non_echo_score\": 1.0}}\n"
+    }
+]

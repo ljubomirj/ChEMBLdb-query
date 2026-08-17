@@ -1,0 +1,66 @@
+[
+  {
+    "n": 1,
+    "up": "Return the IC50 activity data for the compound tylophorine and its salt forms when tested in the RAW264.7 cell line. For each matching activity record, report the compound ChEMBL ID, the standard IC50 value, the standard units, and the assay ChEMBL ID.",
+    "sql": "WITH compound_hierarchy AS ( SELECT md.molregno, md.chembl_id, md.parent_molregno FROM molecule_dictionary md LEFT JOIN molecule_hierarchy mh ON md.molregno = mh.molregno ), tylophorine_set AS ( SELECT molregno FROM molecule_dictionary WHERE pref_name = 'tylophorine' UNION SELECT ch.molregno FROM compound_hierarchy ch JOIN molecule_dictionary parent ON ch.parent_molregno = parent.molregno WHERE parent.pref_name = 'tylophorine' ) SELECT DISTINCT md.chembl_id AS compound_chembl_id, a.standard_value, a.standard_units, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN tylophorine_set ts ON a.molregno = ts.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.standard_type = 'IC50' AND ass.assay_cell_type = 'RAW264.7';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.parent_molregno",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.parent_molregno",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return all IC50 activity records for tylophorine and all its related forms (including salts and prodrugs) when tested in the RAW264.7 cell line. For each activity, report the compound ChEMBL ID, the standard IC50 value, and the standard units. Include records regardless of the confidence score or document type.",
+    "sql": "WITH tylophorine_forms AS (\n  SELECT parent.molregno\n  FROM molecule_dictionary parent\n  WHERE parent.pref_name = 'tylophorine'\n  UNION\n  SELECT child.molregno\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.pref_name = 'tylophorine'\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN tylophorine_forms tf ON a.molregno = tf.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE a.standard_type = 'IC50'\n  AND ass.assay_cell_type = 'RAW264.7';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n2 | 0 | 0 | CO-ROUTINE tylophorine_forms\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 84 | SEARCH parent USING INDEX idx_moldict_pref_name (pref_name=?)\n17 | 3 | 0 | UNION USING TEMP B-TREE\n23 | 17 | 84 | SEARCH parent USING INDEX idx_moldict_pref_name (pref_name=?)\n28 | 17 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n34 | 17 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 91 | SCAN tf\n59 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n66 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n78 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Return all IC50 activity records for tylophorine and its salt forms when tested in the RAW264.7 cell line. For each activity record, report the compound ChEMBL ID, the standard IC50 value, and the standard units. To find all related forms, include the parent molecule (identified by the preferred name 'tylophorine') and all child molecules from the molecule_hierarchy table (where parent_molregno points to the parent's molregno). Filter activities where the standard_type is 'IC50' and the assay cell type is 'RAW264.7'.",
+    "sql": "WITH tylophorine_set AS (\n  SELECT parent.molregno\n  FROM molecule_dictionary parent\n  WHERE parent.pref_name = 'tylophorine'\n  UNION\n  SELECT mh.molregno\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  WHERE parent.pref_name = 'tylophorine'\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN tylophorine_set ts ON a.molregno = ts.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE a.standard_type = 'IC50'\n  AND (ass.assay_cell_type = 'RAW264.7' OR ass.description LIKE '%RAW264.7%');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n2 | 0 | 0 | CO-ROUTINE tylophorine_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 84 | SEARCH parent USING INDEX idx_moldict_pref_name (pref_name=?)\n17 | 3 | 0 | UNION USING TEMP B-TREE\n22 | 17 | 84 | SEARCH parent USING INDEX idx_moldict_pref_name (pref_name=?)\n27 | 17 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n50 | 0 | 91 | SCAN ts\n53 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n60 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n72 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Return all IC50 activity records for tylophorine and its related forms (salts, prodrugs) when tested in the RAW264.7 cell line. First, find the parent molecule by searching molecule_dictionary for the preferred name 'tylophorine'. Then, find all child molecules by joining molecule_hierarchy on parent_molregno (the parent's molregno). For each matching activity record, report the compound ChEMBL ID (chembl_id from molecule_dictionary), the standard IC50 value (standard_value), and the standard units (standard_units). Filter activities where standard_type is 'IC50' and the assay cell type (assay_cell_type) or assay description contains 'RAW264.7'. Use case-insensitive matching for the compound name.",
+    "sql": "WITH tylophorine_forms AS (\n  SELECT parent.molregno\n  FROM molecule_dictionary parent\n  WHERE LOWER(parent.pref_name) = 'tylophorine'\n  UNION\n  SELECT child.molregno\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE LOWER(parent.pref_name) = 'tylophorine'\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN tylophorine_forms tf ON a.molregno = tf.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE a.standard_type = 'IC50'\n  AND (ass.assay_cell_type = 'RAW264.7' OR ass.description LIKE '%RAW264.7%');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n2 | 0 | 0 | CO-ROUTINE tylophorine_forms\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n7 | 4 | 229 | SCAN parent\n16 | 3 | 0 | UNION USING TEMP B-TREE\n21 | 16 | 229 | SCAN mh\n23 | 16 | 47 | SEARCH parent USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 16 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n59 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n72 | 0 | 0 | BLOOM FILTER ON tf (molregno=?)\n83 | 0 | 54 | SEARCH tf USING AUTOMATIC COVERING INDEX (molregno=?)\n90 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 2,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

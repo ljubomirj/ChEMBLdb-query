@@ -1,0 +1,29 @@
+[
+  {
+    "n": 8,
+    "up": "I need all IC50 activity measurements for the compound dapagliflozin (including its salt forms) against the target sodium/glucose cotransporter 1 (SGLT1). Include the following details:\n\n- Compound information: preferred name, ChEMBL ID, and canonical SMILES.\n- Activity data: standard value, standard units, pchembl value, and relation.\n- Assay descriptions: the description of the assay.\n- Literature references: document title, journal, year, authors, and PubMed ID (or DOI if PubMed ID is not available).\n\nFor the target, use the protein sodium/glucose cotransporter 1, which should be identified by its pref_name in the target dictionary.\n\nFor the compound, start with dapagliflozin and expand to include all its salt forms using the molecule hierarchy (parent-child relationships). Do not restrict by organism or unit type.\n\nReturn all matching rows with the columns listed above.",
+    "sql": "WITH dapa_parent AS (SELECT molregno FROM molecule_dictionary WHERE UPPER(pref_name) = 'DAPAGLIFLOZIN'), compound_molregnos AS (SELECT molregno FROM dapa_parent UNION SELECT mh.molregno FROM molecule_hierarchy mh, dapa_parent dp WHERE mh.parent_molregno = dp.molregno) SELECT md.pref_name AS compound_pref_name, md.chembl_id AS compound_chembl_id, cs.canonical_smiles, a.standard_value, a.standard_units, a.pchembl_value, a.standard_relation AS relation, ass.description AS assay_description, d.title AS doc_title, d.journal, d.year, d.authors, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM activities a JOIN compound_molregnos cm ON a.molregno = cm.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN compound_structures cs ON a.molregno = cs.molregno JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE a.standard_type = 'IC50' AND td.pref_name = 'Sodium/glucose cotransporter 1';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 14\n3 | 0 | 0 | MATERIALIZE compound_molregnos\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n9 | 6 | 0 | SCAN molecule_dictionary\n18 | 5 | 0 | UNION USING TEMP B-TREE\n22 | 18 | 0 | SCAN mh\n24 | 18 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n58 | 0 | 0 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n71 | 0 | 0 | SEARCH cm USING AUTOMATIC COVERING INDEX (molregno=?)\n77 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n83 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n92 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n101 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n111 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 27,
+    "res_columns": [
+      "compound_pref_name",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "relation",
+      "assay_description",
+      "doc_title",
+      "journal",
+      "year",
+      "authors",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.6,
+    "judge_decision": false
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1966_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1966_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve IC50 activity rows for human Dihydroorotate dehydrogenase (quinone), mitochondrial (target tid 1966) with exact standard relation '=' and non-null pChEMBL values. The SQL appears correct: it joins activities to assays, filters by assay_organism = 'Homo sapiens', target tid = 1966, standard_relation = '=', and pchembl_value IS NOT NULL. It also joins to compound_structures for canonical SMILES and molecule_dictionary for molecule_chembl_id. The SELECT DISTINCT ensures no duplicate rows. However, the result set is empty (row_count: 0). This could be due to: (1) No activities for tid 1966 meet the criteria (exact '=' relation and non-null pChEMBL), (2) The target tid 1966 may not have human assays with IC50 activities, or (3) The assay_organism filter may be too restrictive (some assays may not have assay_organism populated). The query logic aligns with the user request, but the empty result suggests data may not exist for this specific target and activity type. The schema and joins are correctly applied.\",\n  \"score\": 0.9,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve IC50 activity rows for human Dihydroorotate dehydrogenase (quinone), mitochondrial (target tid 1966) with exact standard relation '=' and non-null pChEMBL values. The SQL appears correct: it joins activities to assays, filters by assay_organism = 'Homo sapiens', target tid = 1966, standard_relation = '=', and pchembl_value IS NOT NULL. It also joins to compound_structures for canonical SMILES and molecule_dictionary for molecule_chembl_id. The SELECT DISTINCT ensures no duplicate rows. However, the result set is empty (row_count: 0). This could be due to: (1) No activities for tid 1966 meet the criteria (exact '=' relation and non-null pChEMBL), (2) The target tid 1966 may not have human assays with IC50 activities, or (3) The assay_organism filter may be too restrictive (some assays may not have assay_organism populated). The query logic aligns with the user request, but the empty result suggests data may not exist for this specific target and activity type. The schema and joins are correctly applied.",
+      "score": 0.9,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1966_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1966_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1966_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

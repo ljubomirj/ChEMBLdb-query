@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_b4877c25b1214c34.yaml",
+  "prompt_pack_version": "v5.15",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_cytochrome_p450_2d6_molecule_smiles.json",
+  "case_id": "human_cytochrome_p450_2d6_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b4877c25b1214c34",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL289'\nORDER BY md.chembl_id\n```",
+    "parsed_json": {
+      "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.chembl_id = 'CHEMBL289'\nORDER BY md.chembl_id"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_phosphatidylinositol_4_5_bisphosphate_3_kinase_cat.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_phosphatidylinositol_4_5_bisphosphate_3_kinase_cat",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query correctly implements the user request: it filters for IC50 activities against human Phosphatidylinositol 4,5-bisphosphate 3\u2011kinase catalytic subunit alpha (target_dictionary.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3\u2011kinase catalytic subunit alpha' AND target_dictionary.tax_id = 9606), selects only rows with a SMILES (cs.canonical_smiles IS NOT NULL) and a PubMed ID or DOI (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL), and returns the required columns with appropriate aliases. The joins follow the FAQ salts provenance path (activities \u2192 assays \u2192 target_dictionary, compound_records, molecule_dictionary, compound_structures, docs). The WHERE clause includes all necessary filters (standard_type = 'IC50', standard_relation = '=', standard_units = 'nM', standard_value > 0). The result set is empty, which is plausible if no such activities exist in the current snapshot, but the SQL is syntactically correct and semantically matches the request. No extra columns are selected, and the output schema matches the requested aliases (e.g., molecule_chembl_id for the ChEMBL ID).\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it filters for IC50 activities against human Phosphatidylinositol 4,5-bisphosphate 3\u2011kinase catalytic subunit alpha (target_dictionary.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3\u2011kinase catalytic subunit alpha' AND target_dictionary.tax_id = 9606), selects only rows with a SMILES (cs.canonical_smiles IS NOT NULL) and a PubMed ID or DOI (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL), and returns the required columns with appropriate aliases. The joins follow the FAQ salts provenance path (activities \u2192 assays \u2192 target_dictionary, compound_records, molecule_dictionary, compound_structures, docs). The WHERE clause includes all necessary filters (standard_type = 'IC50', standard_relation = '=', standard_units = 'nM', standard_value > 0). The result set is empty, which is plausible if no such activities exist in the current snapshot, but the SQL is syntactically correct and semantically matches the request. No extra columns are selected, and the output schema matches the requested aliases (e.g., molecule_chembl_id for the ChEMBL ID).",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_phosphatidylinositol_4_5_bisphosphate_3_kinase_cat/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_phosphatidylinositol_4_5_bisphosphate_3_kinase_cat/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_phosphatidylinositol_4_5_bisphosphate_3_kinase_cat/pf_judge.generated_artifact_record.json"
+  }
+}

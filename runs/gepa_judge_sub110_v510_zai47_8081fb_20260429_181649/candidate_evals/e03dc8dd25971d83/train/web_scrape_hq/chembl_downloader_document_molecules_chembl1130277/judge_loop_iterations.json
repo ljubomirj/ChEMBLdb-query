@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Select: compound_chembl_id, compound_name, max_phase, molecule_type, canonical_smiles\nSource: molecule_dictionary, compound_records, compound_structures\nJoin: molecule_dictionary.molregno = compound_records.molregno; compound_records.doc_id = docs.doc_id; compound_records.molregno = compound_structures.molregno\nFilter: docs.chembl_id = 'CHEMBL1130277'\nSort: compound_chembl_id ASC\nLimit: none",
+    "sql": "SELECT DISTINCT d.chembl_id AS compound_chembl_id, d.pref_name AS compound_name, d.max_phase AS max_phase, d.molecule_type AS type, s.canonical_smiles AS canonical_smiles\nFROM molecule_dictionary d\nINNER JOIN compound_records r ON d.molregno = r.molregno\nINNER JOIN compound_structures s ON r.molregno = s.molregno\nINNER JOIN docs ON r.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL1130277'\nORDER BY compound_chembl_id ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH r USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n55 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 303,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "max_phase",
+      "type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\"analysis\": \"Judge output malformed; treating as NO. preview='{   \\\"analysis\\\": \\\"The query asks for compounds reported in document CHEMBL1130277, with ChEMBL ID, name, max phase, type, and canonical SMILES, sorted by ChEMBL ID. The provided SQL (SQL_1) correctly j'\", \"score\": 0.0, \"decision\": \"NO\"}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: compound_chembl_id, compound_name, max_phase, type, canonical_smiles\nSource: molecule_dictionary, compound_records, compound_structures, docs\nJoin: molecule_dictionary.molregno = compound_records.molregno; compound_records.doc_id = docs.doc_id; compound_records.molregno = compound_structures.molregno\nFilter: docs.chembl_id = 'CHEMBL1130277'\nSort: compound_chembl_id ASC",
+    "sql": "SELECT DISTINCT d.chembl_id AS compound_chembl_id, d.pref_name AS compound_name, d.max_phase AS max_phase, d.molecule_type AS type, s.canonical_smiles AS canonical_smiles\nFROM molecule_dictionary d\nINNER JOIN compound_records r ON d.molregno = r.molregno\nINNER JOIN compound_structures s ON r.molregno = s.molregno\nINNER JOIN docs ON r.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL1130277'\nORDER BY compound_chembl_id ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH r USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n55 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 303,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "max_phase",
+      "type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The current result returns 303 rows of compounds associated with document CHEMBL1130277, but the user request asks for compounds reported in that document with specific columns (ChEMBL ID, name, max phase, type, canonical SMILES) sorted by ChEMBL ID. The SQL query correctly joins molecule_dictionary, compound_records, compound_structures, and docs, filters by the document, and selects the required columns with DISTINCT and ordering. However, the sample output shows many rows with NULL values for compound_name, max_phase, and type, which suggests the query may be returning rows where these fields are missing (e.g., due to LEFT JOINs or incomplete data). The user expects a clean list of compounds with their details, but the presence of NULLs in the sample indicates potential data gaps or incorrect joins. The query uses INNER JOINs, so NULLs should not arise from missing joins, but the data itself may lack these fields. The plan shows efficient indexing, and the result set size (303) is plausible for a document with many activities. The sample includes rows with actual data (e.g., CHEMBL12014 with name 'HARMAN'), confirming the query works. However, the user explicitly asked for 'compound_name' and 'max_phase', which are present but often NULL in the sample. This is likely due to the source data, not the query. The query meets the requirements: correct columns, filtering, sorting, and distinctness. No further iteration is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Select: compound_chembl_id, compound_name, max_phase, type, canonical_smiles\nSource: molecule_dictionary, compound_records, compound_structures, docs\nJoin: molecule_dictionary.molregno = compound_records.molregno; compound_records.doc_id = docs.doc_id; compound_records.molregno = compound_structures.molregno\nFilter: docs.chembl_id = 'CHEMBL1130277'\nSort: compound_chembl_id ASC",
+    "sql": "SELECT DISTINCT d.chembl_id AS compound_chembl_id, d.pref_name AS compound_name, d.max_phase AS max_phase, d.molecule_type AS type, s.canonical_smiles AS canonical_smiles\nFROM molecule_dictionary d\nINNER JOIN compound_records r ON d.molregno = r.molregno\nINNER JOIN compound_structures s ON r.molregno = s.molregno\nINNER JOIN docs ON r.doc_id = docs.doc_id\nWHERE docs.chembl_id = 'CHEMBL1130277'\nORDER BY compound_chembl_id ASC;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH r USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n55 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 303,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "max_phase",
+      "type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query asks for compounds reported in document CHEMBL1130277 with specific fields. The provided SQL correctly joins molecule_dictionary, compound_records, compound_structures, and docs, filters by docs.chembl_id = 'CHEMBL1130277', and selects the required columns with DISTINCT and ordering. The execution plan shows efficient indexed searches and proper ordering. The result set contains 303 rows, but the sample shows 200 rows with correct column values (compound_chembl_id, compound_name, max_phase, type, canonical_smiles). The sample includes entries like ('CHEMBL1161185', 'NULL', 'NULL', 'Small molecule', 'COc1cc(C2=NCCN2)ccc1OCCCCCOc1ccc(C2=NCCN2)cc1OCCCCOc1ccc(C2=NCCN2)cc1OC'), which matches the expected schema. The DISTINCT and ORDER BY are correctly applied. The only minor issue is that some compound_name and max_phase values are NULL, but this is acceptable as the schema allows it. The result is complete and correctly formatted.\",\n  \"score\": 0.95,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

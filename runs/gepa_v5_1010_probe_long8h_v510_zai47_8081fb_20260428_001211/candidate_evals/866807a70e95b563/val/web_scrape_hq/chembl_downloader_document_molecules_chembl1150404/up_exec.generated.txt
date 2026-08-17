@@ -1,0 +1,13 @@
+Objective: Retrieve all molecules associated with a specific document and list their identifiers, names, development phases, types, and structures in ascending identifier order.
+
+Output: molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+
+Source: docs, compound_records, molecule_dictionary, compound_structures
+
+Logic: 
+1. Filter docs where chembl_id equals 'CHEMBL1150404'.
+2. Join compound_records to docs via doc_id.
+3. Join molecule_dictionary to compound_records via molregno.
+4. Join compound_structures to molecule_dictionary via molregno.
+5. Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, and compound_structures.canonical_smiles.
+6. Sort by molecule_chembl_id ascending.

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_maob_multi_type_activities_first500.json",
+  "case_id": "target_maob_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 500 activity measurements for monoamine oxidase B (CHEMBL221). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter by target chembl_id CHEMBL221. Join compound_structures on molregno to require structures. Return chembl_id, canonical_smiles, standard_type, standard_value, standard_units. Sort by potency ascending (standard_value ascending). Limit to 500 rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 500 activity measurements for monoamine oxidase B (CHEMBL221). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter by target chembl_id CHEMBL221. Join compound_structures on molregno to require structures. Return chembl_id, canonical_smiles, standard_type, standard_value, standard_units. Sort by potency ascending (standard_value ascending). Limit to 500 rows."
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl4689853_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4689853_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query returned 215,949 rows, which is an extremely large result set for a single assay. The sample rows show duplicate entries for the same compound (CHEMBL1489369) with identical values, suggesting that the query is returning multiple activity records per compound (likely from different assay runs or replicates). The user asked to 'list compounds', which implies they want one row per compound, but the current SQL returns all activity rows. The execution plan explicitly said 'Keep all qualifying activity rows without deduplication', which contradicts the likely user intent of listing unique compounds. Additionally, the query joins activities directly on molregno, which is correct for this type of query. The result is technically correct per the execution plan but likely not what the user wants due to the massive row count and duplicates.\",\n  \"score\": 0.4,\n  \"decision\": \"iterate\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query returned 215,949 rows, which is an extremely large result set for a single assay. The sample rows show duplicate entries for the same compound (CHEMBL1489369) with identical values, suggesting that the query is returning multiple activity records per compound (likely from different assay runs or replicates). The user asked to 'list compounds', which implies they want one row per compound, but the current SQL returns all activity rows. The execution plan explicitly said 'Keep all qualifying activity rows without deduplication', which contradicts the likely user intent of listing unique compounds. Additionally, the query joins activities directly on molregno, which is correct for this type of query. The result is technically correct per the execution plan but likely not what the user wants due to the massive row count and duplicates.",
+      "score": 0.4,
+      "decision": "iterate"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4689853_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4689853_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4689853_exact/pf_judge.generated_artifact_record.json"
+  }
+}

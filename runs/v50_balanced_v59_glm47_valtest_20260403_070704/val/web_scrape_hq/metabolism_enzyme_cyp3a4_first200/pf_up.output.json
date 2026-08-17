@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_enzyme_cyp3a4_first200.json",
+  "case_id": "metabolism_enzyme_cyp3a4_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 metabolism records for CYP3A4. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures to retrieve canonical_smiles and to molecule_dictionary for the substrate compound name. Optionally join molecule_hierarchy from the substrate molregno to parent_molregno and then to molecule_dictionary to obtain the parent compound name. Return canonical_smiles, substrate compound name, parent compound name, met_conversion, pathway_key, organism, and enzyme_name. Do not add sorting; preserve source row order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 metabolism records for CYP3A4. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures to retrieve canonical_smiles and to molecule_dictionary for the substrate compound name. Optionally join molecule_hierarchy from the substrate molregno to parent_molregno and then to molecule_dictionary to obtain the parent compound name. Return canonical_smiles, substrate compound name, parent compound name, met_conversion, pathway_key, organism, and enzyme_name. Do not add sorting; preserve source row order."
+    }
+  }
+}

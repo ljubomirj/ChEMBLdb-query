@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1217643_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1217643_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  cs.canonical_smiles,\\n  md.chembl_id AS molecule_chembl_id,\\n  a.standard_type,\\n  a.standard_relation,\\n  a.standard_value,\\n  a.standard_units\\nFROM activities a\\nJOIN assays ass ON a.assay_id = ass.assay_id\\nJOIN target_dictionary td ON ass.tid = td.tid\\nJOIN molecule_dictionary md ON a.molregno = md.molregno\\nJOIN compound_structures cs ON md.molregno = cs.molregno\\nWHERE ass.assay_id = 'CHEMBL1217643'\\n  AND a.standard_type IS NOT NULL\\n  AND a.standard_relation IS NOT NULL\\n  AND a.standard_relation = '='\\n  AND a.standard_value IS NOT NULL\\n  AND td.target_type = 'SINGLE PROTEIN'\\nORDER BY cs.canonical_smiles,\\n         md.chembl_id,\\n         a.standard_type,\\n         a.standard_relation,\\n         a.standard_value,\\n         a.standard_units;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ass.assay_id = 'CHEMBL1217643'\n  AND a.standard_type IS NOT NULL\n  AND a.standard_relation IS NOT NULL\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\n  AND td.target_type = 'SINGLE PROTEIN'\nORDER BY cs.canonical_smiles,\n         md.chembl_id,\n         a.standard_type,\n         a.standard_relation,\n         a.standard_value,\n         a.standard_units;"
+    }
+  }
+}

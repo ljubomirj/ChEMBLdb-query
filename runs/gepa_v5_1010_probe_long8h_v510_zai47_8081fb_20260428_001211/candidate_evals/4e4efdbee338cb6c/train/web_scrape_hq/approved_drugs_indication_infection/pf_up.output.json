@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_infection.json",
+  "case_id": "approved_drugs_indication_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "Objective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication.\n\nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind\n\nSource: molecule_dictionary (parent compounds), drug_indication (indication details), compound_structures (canonical SMILES)\n\nLogic: \n- Join molecule_dictionary to drug_indication on molregno = molregno\n- Join compound_structures on molregno = molregno\n- Filter molecule_dictionary.therapeutic_flag = 1\n- Filter drug_indication.max_phase_for_ind = 4\n- Filter drug_indication.efo_id = 'EFO:0000404' AND drug_indication.efo_term = 'infection'\n- Ensure molecule_dictionary.molregno is parent (not salt) by using molecule_hierarchy? Not needed as therapeutic_flag=1 and max_phase_for_ind=4 already target approved parent compounds. \n- Use LEFT JOIN for compound_structures to include all approved drugs even if structure missing (but all should have). \n- Select distinct rows to avoid duplicates from multiple indications (but infection is specific). \n- Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind. \n- Limit not required as per benchmark. \n\nNote: Use drug_indication.efo_id = 'EFO:0000404' for precise infection indication. Do not use other indication labels. \n\nFinal UP: \nObjective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication. \nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind \nSource: molecule_dictionary, drug_indication, compound_structures \nLogic: \n- Join molecule_dictionary to drug_indication on molregno = molregno \n- Join compound_structures on molregno = molregno \n- Filter molecule_dictionary.therapeutic_flag = 1 \n- Filter drug_indication.max_phase_for_ind",
+    "parsed_json": {
+      "up": "Objective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication.\n\nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind\n\nSource: molecule_dictionary (parent compounds), drug_indication (indication details), compound_structures (canonical SMILES)\n\nLogic: \n- Join molecule_dictionary to drug_indication on molregno = molregno\n- Join compound_structures on molregno = molregno\n- Filter molecule_dictionary.therapeutic_flag = 1\n- Filter drug_indication.max_phase_for_ind = 4\n- Filter drug_indication.efo_id = 'EFO:0000404' AND drug_indication.efo_term = 'infection'\n- Ensure molecule_dictionary.molregno is parent (not salt) by using molecule_hierarchy? Not needed as therapeutic_flag=1 and max_phase_for_ind=4 already target approved parent compounds. \n- Use LEFT JOIN for compound_structures to include all approved drugs even if structure missing (but all should have). \n- Select distinct rows to avoid duplicates from multiple indications (but infection is specific). \n- Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind. \n- Limit not required as per benchmark. \n\nNote: Use drug_indication.efo_id = 'EFO:0000404' for precise infection indication. Do not use other indication labels. \n\nFinal UP: \nObjective: List approved drugs (therapeutic_flag=1, max_phase_for_ind=4) indicated for infection (EFO:0000404), returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase for indication. \nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind \nSource: molecule_dictionary, drug_indication, compound_structures \nLogic: \n- Join molecule_dictionary to drug_indication on molregno = molregno \n- Join compound_structures on molregno = molregno \n- Filter molecule_dictionary.therapeutic_flag = 1 \n- Filter drug_indication.max_phase_for_ind"
+    }
+  }
+}

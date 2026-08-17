@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_single_protein_targets_accession_sequence.json",
+  "case_id": "human_single_protein_targets_accession_sequence",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select target_chembl_id, target_name, target_type, protein_accession, protein_sequence from target_dictionary joined to target_components on tid, then joined to component_sequences on component_id. Filter target_dictionary where target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Map chembl_id to target_chembl_id, pref_name to target_name, accession to protein_accession, and sequence to protein_sequence. Sort by target_chembl_id, target_name, target_type, protein_accession, protein_sequence.\"}\n```",
+    "parsed_json": {
+      "up": "Select target_chembl_id, target_name, target_type, protein_accession, protein_sequence from target_dictionary joined to target_components on tid, then joined to component_sequences on component_id. Filter target_dictionary where target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Map chembl_id to target_chembl_id, pref_name to target_name, accession to protein_accession, and sequence to protein_sequence. Sort by target_chembl_id, target_name, target_type, protein_accession, protein_sequence."
+    }
+  }
+}

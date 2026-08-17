@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 200 metabolism records for the organism Macaca fascicularis. Include the names and SMILES of the substrate and parent compounds, along with the conversion details, pathway key, and enzyme name. Use the metabolism table to filter by organism, join with compound_structures via the substrate and parent record IDs to get SMILES, and use metabolism_refs if needed for the pathway key.",
+    "sql": "SELECT\n  m.met_conversion,\n  m.pathway_key,\n  m.enzyme_name,\n  m.organism,\n  sub_cr.compound_name AS substrate_name,\n  sub_cs.canonical_smiles AS substrate_smiles,\n  par_cr.compound_name AS parent_name,\n  par_cs.canonical_smiles AS parent_smiles\nFROM metabolism m\nLEFT JOIN compound_records sub_cr ON m.substrate_record_id = sub_cr.record_id\nLEFT JOIN compound_structures sub_cs ON sub_cr.molregno = sub_cs.molregno\nLEFT JOIN compound_records par_cr ON m.drug_record_id = par_cr.record_id\nLEFT JOIN compound_structures par_cs ON par_cr.molregno = par_cs.molregno\nWHERE m.organism LIKE 'Macaca fascicularis%'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 126 | SCAN m\n16 | 0 | 47 | SEARCH sub_cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n25 | 0 | 47 | SEARCH sub_cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n34 | 0 | 47 | SEARCH par_cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n43 | 0 | 47 | SEARCH par_cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 11,
+    "res_columns": [
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name",
+      "organism",
+      "substrate_name",
+      "substrate_smiles",
+      "parent_name",
+      "parent_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

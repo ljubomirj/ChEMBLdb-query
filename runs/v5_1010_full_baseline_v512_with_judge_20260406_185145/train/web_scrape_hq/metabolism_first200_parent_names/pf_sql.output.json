@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_parent_names.json",
+  "case_id": "metabolism_first200_parent_names",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT cs.canonical_smiles AS canonical_smiles,\\n       cr.compound_name AS substrate_compound_name,\\n       parent.pref_name AS parent_compound_name,\\n       m.met_conversion AS met_conversion,\\n       m.pathway_key AS pathway_key\\nFROM metabolism m\\nJOIN compound_records cr ON cr.record_id = m.substrate_record_id\\nJOIN molecule_dictionary substrate ON substrate.molregno = cr.molregno\\nLEFT JOIN molecule_hierarchy mh ON mh.molregno = substrate.molregno AND mh.parent_molregno = substrate.molregno\\nLEFT JOIN molecule_dictionary parent ON parent.molregno = mh.parent_molregno\\nJOIN compound_structures cs ON cs.molregno = substrate.molregno\\nWHERE m.pathway_key IS NOT NULL\\nLIMIT 200\"\n}",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles AS canonical_smiles,\n       cr.compound_name AS substrate_compound_name,\n       parent.pref_name AS parent_compound_name,\n       m.met_conversion AS met_conversion,\n       m.pathway_key AS pathway_key\nFROM metabolism m\nJOIN compound_records cr ON cr.record_id = m.substrate_record_id\nJOIN molecule_dictionary substrate ON substrate.molregno = cr.molregno\nLEFT JOIN molecule_hierarchy mh ON mh.molregno = substrate.molregno AND mh.parent_molregno = substrate.molregno\nLEFT JOIN molecule_dictionary parent ON parent.molregno = mh.parent_molregno\nJOIN compound_structures cs ON cs.molregno = substrate.molregno\nWHERE m.pathway_key IS NOT NULL\nLIMIT 200"
+    }
+  }
+}

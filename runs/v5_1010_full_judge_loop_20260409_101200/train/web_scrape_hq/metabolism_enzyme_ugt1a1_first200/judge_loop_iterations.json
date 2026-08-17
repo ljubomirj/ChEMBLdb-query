@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records for the enzyme UGT1A1. For each record, return the following details: the substrate structure (canonical SMILES), the substrate compound name, the metabolic conversion description, the pathway key, and the organism. Ensure that results are linked to the enzyme UGT1A1 by name or target ID.",
+    "sql": "WITH substrate_records AS (\n  SELECT\n    cr_sub.record_id,\n    cs_sub.canonical_smiles,\n    md_sub.pref_name AS substrate_name\n  FROM metabolism m\n  JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\n  JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\n  LEFT JOIN compound_structures cs_sub ON md_sub.molregno = cs_sub.molregno\n  WHERE m.enzyme_name = 'UGT1A1'\n  LIMIT 200\n)\nSELECT\n  sr.canonical_smiles,\n  sr.substrate_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM substrate_records sr\nJOIN metabolism m ON sr.record_id = m.substrate_record_id\nWHERE m.enzyme_name = 'UGT1A1'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE substrate_records\n11 | 2 | 122 | SCAN m USING COVERING INDEX sqlite_autoindex_metabolism_2\n15 | 2 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n22 | 2 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 2 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n50 | 0 | 126 | SCAN m\n56 | 0 | 0 | BLOOM FILTER ON sr (record_id=?)\n69 | 0 | 48 | SEARCH sr USING AUTOMATIC COVERING INDEX (record_id=?)",
+    "res_row_count": 10,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,749 @@
+{
+  "run_dir": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744",
+  "generated_at": "2026-04-30T23:06:08.289133",
+  "runtime": {
+    "n_files": 935,
+    "start_time_iso": "2026-04-30T20:58:05.603455",
+    "end_time_iso": "2026-04-30T21:48:58.422142",
+    "elapsed_seconds": 3052.819,
+    "elapsed_hms": "50:52.819"
+  },
+  "summary_json": {
+    "run_dir": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744",
+    "best_prompt_pack": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/best_prompt_pack.yaml",
+    "seed_prompt_pack": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.10.yaml",
+    "seed_candidate_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+    "best_candidate_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+    "train_split": "train",
+    "val_split": "val",
+    "test_split": "test",
+    "train_cases": 55,
+    "val_cases": 25,
+    "test_cases": 30,
+    "metric_mode": "judge-loop",
+    "mutable_fields": [
+      "pf.judge"
+    ],
+    "judge_loop_max_iterations": 10,
+    "judge_score_threshold": 0.5,
+    "judge_no_override_threshold": 0.99,
+    "judge_max_tokens": 4096,
+    "local_enable_thinking": true,
+    "local_reasoning_budget_tokens": 1024,
+    "max_metric_calls": 120,
+    "reflection_minibatch_size": 3,
+    "test_report": {
+      "candidate_hash": "e03dc8dd25971d83",
+      "candidate_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+      "split": "test",
+      "manifest_root": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010",
+      "eval_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test",
+      "summary": {
+        "n_cases": 30,
+        "n_pass": 13,
+        "pass_rate": 0.433333,
+        "mean_score": 0.863497
+      },
+      "by_family": {
+        "other": {
+          "n_cases": 7,
+          "n_pass": 0,
+          "mean_score": 0.781163,
+          "pass_rate": 0.0
+        },
+        "assay_exact": {
+          "n_cases": 4,
+          "n_pass": 1,
+          "mean_score": 0.874908,
+          "pass_rate": 0.25
+        },
+        "document": {
+          "n_cases": 9,
+          "n_pass": 4,
+          "mean_score": 0.826667,
+          "pass_rate": 0.444444
+        },
+        "target_pchembl": {
+          "n_cases": 9,
+          "n_pass": 8,
+          "mean_score": 0.990476,
+          "pass_rate": 0.888889
+        },
+        "metabolism": {
+          "n_cases": 1,
+          "n_pass": 0,
+          "mean_score": 0.582857,
+          "pass_rate": 0.0
+        }
+      },
+      "cases": [
+        {
+          "case_id": "approved_drugs_mechanism_activator",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.7,
+          "result_success": true,
+          "result_rows": 14,
+          "result_cols": [
+            "pref_name",
+            "canonical_smiles",
+            "mechanism_of_action",
+            "target_chembl_id",
+            "target_pref_name"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_activator"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_agonist",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.925,
+          "result_success": true,
+          "result_rows": 441,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "mechanism_of_action",
+            "action_type",
+            "target_chembl_id",
+            "target_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_agonist"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_antagonist",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.832329,
+          "result_success": true,
+          "result_rows": 498,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "mechanism_of_action",
+            "action_type",
+            "target_chembl_id",
+            "target_name"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_antagonist"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_chelating_agent",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.775,
+          "result_success": true,
+          "result_rows": 17,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "target_chembl_id",
+            "target_name"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_chelating_agent"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_modulator",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.925,
+          "result_success": true,
+          "result_rows": 33,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "mechanism_of_action",
+            "action_type",
+            "target_chembl_id",
+            "target_name"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_modulator"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_partial_agonist",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.85,
+          "result_success": true,
+          "result_rows": 24,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "mechanism_of_action",
+            "target_chembl_id",
+            "target_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_partial_agonist"
+        },
+        {
+          "case_id": "approved_drugs_mechanism_positive_modulator",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "other",
+          "status": "partial",
+          "score": 0.460811,
+          "result_success": true,
+          "result_rows": 777,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "target_chembl_id",
+            "target_name",
+            "mechanism_of_action",
+            "action_type"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/approved_drugs_mechanism_positive_modulator"
+        },
+        {
+          "case_id": "chembl_downloader_assay_chembl1613842_exact",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "assay_exact",
+          "status": "partial",
+          "score": 0.899631,
+          "result_success": true,
+          "result_rows": 33647,
+          "result_cols": [
+            "activity_id",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_assay_chembl1613842_exact"
+        },
+        {
+          "case_id": "chembl_downloader_assay_chembl1613910_exact",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "assay_exact",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 11770,
+          "result_cols": [
+            "activity_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "standard_type",
+            "canonical_smiles",
+            "chembl_id"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_assay_chembl1613910_exact"
+        },
+        {
+          "case_id": "chembl_downloader_assay_chembl1613914_exact",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "assay_exact",
+          "status": "partial",
+          "score": 0.7,
+          "result_success": true,
+          "result_rows": 39711,
+          "result_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_assay_chembl1613914_exact"
+        },
+        {
+          "case_id": "chembl_downloader_assay_chembl1613930_exact",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "assay_exact",
+          "status": "partial",
+          "score": 0.9,
+          "result_success": true,
+          "result_rows": 4970,
+          "result_cols": [
+            "activity_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "standard_type",
+            "canonical_smiles",
+            "standard_inchi",
+            "standard_inchi_key"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_assay_chembl1613930_exact"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1135798",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "partial",
+          "score": 0.76,
+          "result_success": true,
+          "result_rows": 211,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "max_phase",
+            "molecule_type",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1135798"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1138844",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 100,
+          "result_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1138844"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1139796",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 100,
+          "result_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1139796"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1140357",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 100,
+          "result_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1140357"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1140610",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "partial",
+          "score": 0.76,
+          "result_success": true,
+          "result_rows": 478,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "max_phase",
+            "molecule_type",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1140610"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1140846",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "partial",
+          "score": 0.76,
+          "result_success": true,
+          "result_rows": 233,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "max_phase",
+            "molecule_type",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1140846"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1141299",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "partial",
+          "score": 0.76,
+          "result_success": true,
+          "result_rows": 299,
+          "result_cols": [
+            "chembl_id",
+            "pref_name",
+            "max_phase",
+            "molecule_type",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1141299"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1142268",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "partial",
+          "score": 0.4,
+          "result_success": true,
+          "result_rows": 225,
+          "result_cols": [
+            "compound_chembl_id",
+            "compound_pref_name",
+            "compound_max_phase",
+            "compound_molecule_type",
+            "compound_canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1142268"
+        },
+        {
+          "case_id": "chembl_downloader_document_molecules_chembl1142695",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "document",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 100,
+          "result_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1142695"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1628468_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 128,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1628468_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1681611_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 101,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1681611_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1697668_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 170,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1697668_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741179_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 495,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741179_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741208_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 806,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741208_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741213_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 900,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741213_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741214_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 29,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741214_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741215_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "pass",
+          "score": 1.0,
+          "result_success": true,
+          "result_rows": 751,
+          "result_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741215_ic50_human_pchembl"
+        },
+        {
+          "case_id": "chembl_downloader_target_chembl1741220_ic50_human_pchembl",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "target_pchembl",
+          "status": "partial",
+          "score": 0.914286,
+          "result_success": true,
+          "result_rows": 86,
+          "result_cols": [
+            "assay_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/chembl_downloader_target_chembl1741220_ic50_human_pchembl"
+        },
+        {
+          "case_id": "metabolism_canis_lupus_familiaris_first200",
+          "split": "test",
+          "corpus": "web_scrape_hq",
+          "family": "metabolism",
+          "status": "partial",
+          "score": 0.582857,
+          "result_success": true,
+          "result_rows": 3,
+          "result_cols": [
+            "met_id",
+            "met_conversion",
+            "pathway_key",
+            "enzyme_name",
+            "pref_name",
+            "canonical_smiles"
+          ],
+          "case_root": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/web_scrape_hq/metabolism_canis_lupus_familiaris_first200"
+        }
+      ],
+      "report_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/heldout_test/e03dc8dd25971d83/test/report.json"
+    }
+  },
+  "candidate_stats": {
+    "n_candidate_cache_files": 2,
+    "candidate_cache_files": [
+      "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_872bcfd4387ad7ec.yaml",
+      "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml"
+    ],
+    "seed_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+    "best_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+    "seed_sha256": "e03dc8dd25971d83c3257f35331e155c53542d031240a5fc08161a3ff9b61ba7",
+    "best_sha256": "e03dc8dd25971d83c3257f35331e155c53542d031240a5fc08161a3ff9b61ba7",
+    "prompt_changed_vs_seed": false
+  },
+  "step_stats": {
+    "n_step_files": 288,
+    "n_case_error_files": 3,
+    "selected_step_counts": {
+      "res": 96,
+      "sql": 96,
+      "up": 96
+    },
+    "provider_counts": {},
+    "base_url_counts": {},
+    "model_counts": {},
+    "step_provider_counts": {},
+    "step_base_url_counts": {},
+    "step_model_counts": {},
+    "phase_step_counts": {
+      "candidate_evals_res": 66,
+      "candidate_evals_sql": 66,
+      "candidate_evals_up": 66,
+      "heldout_test_res": 30,
+      "heldout_test_sql": 30,
+      "heldout_test_up": 30
+    },
+    "candidate_split_counts": {
+      "e03dc8dd25971d83": {
+        "val": 75,
+        "train": 45
+      },
+      "872bcfd4387ad7ec": {
+        "val": 69,
+        "train": 9
+      }
+    },
+    "fallback_hits": [],
+    "res_status_counts": {
+      "partial": 50,
+      "pass": 46
+    },
+    "res_success_counts": {
+      "True": 96
+    },
+    "res_error_counts": {},
+    "res_fail_cases": [],
+    "case_errors": [
+      {
+        "path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_evals/e03dc8dd25971d83/val/web_scrape_hq/approved_drugs_indication_non_small_cell_lung_carcinoma/case_error.json",
+        "error_stage": null,
+        "status": "run_failed",
+        "error": "Judge-loop query returned no result",
+        "case_id": "approved_drugs_indication_non_small_cell_lung_carcinoma",
+        "split": "val",
+        "family": "other"
+      },
+      {
+        "path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_evals/e03dc8dd25971d83/val/web_scrape_hq/approved_drugs_indication_pancreatic_carcinoma/case_error.json",
+        "error_stage": null,
+        "status": "run_failed",
+        "error": "Judge-loop query returned no result",
+        "case_id": "approved_drugs_indication_pancreatic_carcinoma",
+        "split": "val",
+        "family": "other"
+      },
+      {
+        "path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_evals/e03dc8dd25971d83/val/web_scrape_hq/approved_drugs_indication_pain/case_error.json",
+        "error_stage": null,
+        "status": "run_failed",
+        "error": "Judge-loop query returned no result",
+        "case_id": "approved_drugs_indication_pain",
+        "split": "val",
+        "family": "other"
+      }
+    ]
+  },
+  "qa": {
+    "how_long_did_run_take": "50:52.819",
+    "primary_provider_worked": false,
+    "fallback_was_used": false,
+    "providers_used": {},
+    "base_urls_used": {},
+    "models_used": {},
+    "pf_res_success_counts": {
+      "True": 96
+    },
+    "top_pf_res_errors": {},
+    "prompt_changed_vs_seed": false,
+    "heldout_test_summary": {
+      "n_cases": 30,
+      "n_pass": 13,
+      "pass_rate": 0.433333,
+      "mean_score": 0.863497
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "case_id": "baoilleach_herg_bioassay_metadata",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/c4024da2cb802fe9/val/web_scrape_hq/baoilleach_herg_bioassay_metadata/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/c4024da2cb802fe9/val/web_scrape_hq/baoilleach_herg_bioassay_metadata/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/c4024da2cb802fe9/val/web_scrape_hq/baoilleach_herg_bioassay_metadata/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/documentation.txt"
+  },
+  "metadata": {
+    "family": "assay_exact",
+    "origin": "inferred_from_public_sql_and_concrete_tid",
+    "source_title": "chembl_mysql gist: assay descriptions export narrowed to hERG tid 165",
+    "source_url": "https://gist.github.com/baoilleach/4953366",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "assay_chembl_id",
+      "tid",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "journal",
+      "year",
+      "volume",
+      "first_page",
+      "doi"
+    ],
+    "sort_keys": [
+      "assay_chembl_id",
+      "tid",
+      "journal",
+      "year",
+      "doi"
+    ],
+    "tags": [
+      "assay_exact",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "assay_chembl_id"
+    },
+    "float_cols": [],
+    "int_cols": [
+      "tid",
+      "year"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

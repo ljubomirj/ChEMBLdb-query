@@ -1,0 +1,9 @@
+Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, molecule_dictionary.max_phase AS max_phase, drug_mechanism.mechanism_of_action AS mechanism_of_action, action_type.action_type AS action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name
+Join molecule_dictionary ON molecule_dictionary.molregno = drug_mechanism.molregno
+Join drug_mechanism ON drug_mechanism.molregno = molecule_dictionary.molregno AND drug_mechanism.action_type = 'BLOCKER'
+Join action_type ON action_type.action_type = drug_mechanism.action_type
+Join assays ON assays.assay_id = drug_mechanism.tid
+Join target_dictionary ON target_dictionary.tid = assays.tid
+Left Join compound_structures ON compound_structures.molregno = molecule_dictionary.molregno
+Where molecule_dictionary.therapeutic_flag = 1
+Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name

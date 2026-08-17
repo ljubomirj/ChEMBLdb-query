@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT m.chembl_id AS chembl_id,\\n       m.pref_name AS pref_name,\\n       cs.canonical_smiles AS canonical_smiles,\\n       m.max_phase AS max_phase,\\n       dm.mechanism_of_action AS mechanism_of_action,\\n       at.action_type AS action_type,\\n       td.chembl_id AS target_chembl_id,\\n       td.pref_name AS target_name\\nFROM molecule_dictionary m\\nJOIN drug_mechanism dm ON dm.molregno = m.molregno\\nJOIN action_type at ON at.action_type = dm.action_type\\nJOIN assays a ON a.tid = dm.tid\\nJOIN target_dictionary td ON td.tid = a.tid\\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\\nWHERE m.therapeutic_flag = 1\\n  AND dm.action_type = 'BLOCKER'\\nORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, at.action_type, td.chembl_id, td.pref_name;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS chembl_id,\n       m.pref_name AS pref_name,\n       cs.canonical_smiles AS canonical_smiles,\n       m.max_phase AS max_phase,\n       dm.mechanism_of_action AS mechanism_of_action,\n       at.action_type AS action_type,\n       td.chembl_id AS target_chembl_id,\n       td.pref_name AS target_name\nFROM molecule_dictionary m\nJOIN drug_mechanism dm ON dm.molregno = m.molregno\nJOIN action_type at ON at.action_type = dm.action_type\nJOIN assays a ON a.tid = dm.tid\nJOIN target_dictionary td ON td.tid = a.tid\nLEFT JOIN compound_structures cs ON cs.molregno = m.molregno\nWHERE m.therapeutic_flag = 1\n  AND dm.action_type = 'BLOCKER'\nORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, at.action_type, td.chembl_id, td.pref_name;"
+    }
+  }
+}

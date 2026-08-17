@@ -1,0 +1,10 @@
+SELECT cs.canonical_smiles AS canonical_smiles, md.chembl_id AS chembl_id, act.standard_type AS standard_type, act.standard_relation AS standard_relation, act.standard_value AS standard_value, act.standard_units AS standard_units
+FROM activities act
+JOIN assays a ON act.assay_id = a.assay_id
+JOIN target_dictionary td ON a.tid = td.tid
+JOIN molecule_dictionary md ON act.molregno = md.molregno
+JOIN compound_structures cs ON md.molregno = cs.molregno
+WHERE a.chembl_id = 'CHEMBL1614236'
+  AND act.standard_value IS NOT NULL
+  AND act.standard_relation = '='
+ORDER BY canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units;

@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds that are associated with the document having ChEMBL ID 'CHEMBL5728575'. For each compound, provide its ChEMBL ID (from molecule_dictionary.chembl_id), its preferred name (from molecule_dictionary.pref_name), and its canonical SMILES (from compound_structures.canonical_smiles). Only include compounds that have a recorded structure (canonical SMILES not null). The document is identified in the docs table by chembl_id. The association between document and compound occurs via compound_records: compound_records.doc_id = docs.doc_id and compound_records.molregno = molecule_dictionary.molregno. Compound structures are linked via molecule_dictionary.molregno = compound_structures.molregno. Return one row per distinct compound. Do not apply any additional filters or limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5728575' AND cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 715,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

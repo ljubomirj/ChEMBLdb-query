@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact activity values and canonical SMILES for all compounds tested in assay CHEMBL1614280. For each activity record, include the standard value, standard relation, standard units, and the standard type.",
+    "sql": "SELECT DISTINCT a.standard_value, a.standard_relation, a.standard_units, a.standard_type, cs.canonical_smiles FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL1614280';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 47 | SEARCH assy USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13804,
+    "res_columns": [
+      "standard_value",
+      "standard_relation",
+      "standard_units",
+      "standard_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

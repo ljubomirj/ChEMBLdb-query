@@ -1,0 +1,42 @@
+{
+  "version": "v4.2-gepa-fast3",
+  "description": "Fast inner-loop GEPA split after trimming slow provenance-heavy and correlated-selectivity cases. Keeps one selectivity case in train, keeps document metadata coverage, and uses a lightweight assay-exact case in validation to keep the optimizer loop practical.",
+  "splits": {
+    "train": [
+      { "corpus": "web_scrape_hq", "id": "baoilleach_celegans_target_descriptions" },
+      { "corpus": "web_scrape_hq", "id": "baoilleach_human_hsp90_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "human_egfr_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "human_jak2_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "all_single_protein_targets_accession_sequence" },
+      { "corpus": "web_scrape_hq", "id": "chembl_downloader_document_molecules_chembl1123859" },
+      { "corpus": "web_scrape_hq", "id": "iwatobipen_ki_target_tid_pref_name" },
+      { "corpus": "web_scrape_hq", "id": "iwatobipen_metabolism_example" },
+      { "corpus": "web_scrape_hq", "id": "chembl_downloader_id_name_pairs" },
+      { "corpus": "web_scrape_hq", "id": "chembl_downloader_drug_indications" },
+      { "corpus": "web_scrape_hq", "id": "approved_drugs_with_mechanisms" },
+      { "corpus": "web_scrape_hq", "id": "selective_cdk2_over_cdk5_smiles_exact" },
+      { "corpus": "faq_hq", "id": "faq_cdk2_selective_over_cdk5" },
+      { "corpus": "web_scrape_hq", "id": "baoilleach_herg_bioassay_metadata" },
+      { "corpus": "web_scrape_hq", "id": "leelasd_approved_drugs_with_structures" }
+    ],
+    "val": [
+      { "corpus": "web_scrape_hq", "id": "baoilleach_human_cgmp_target_descriptions" },
+      { "corpus": "web_scrape_hq", "id": "human_pde5_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "metabolism_first200_with_record_keys" },
+      { "corpus": "web_scrape_hq", "id": "leelasd_approved_drugs_with_indications" },
+      { "corpus": "faq_hq", "id": "faq_levofloxacin_pk" },
+      { "corpus": "web_scrape_hq", "id": "baoilleach_herg_ic50_export" },
+      { "corpus": "web_scrape_hq", "id": "chembl_downloader_assay_chembl829152_exact" }
+    ],
+    "test": [
+      { "corpus": "web_scrape_hq", "id": "human_single_protein_targets_accession_sequence" },
+      { "corpus": "web_scrape_hq", "id": "human_dpp4_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "human_erbb2_molecule_smiles" },
+      { "corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_dpp4" },
+      { "corpus": "web_scrape_hq", "id": "approved_drugs_with_indications_and_efo" },
+      { "corpus": "web_scrape_hq", "id": "selective_jak2_over_jak1_smiles_exact" },
+      { "corpus": "web_scrape_hq", "id": "abhik_human_sub50nm_single_protein_first200" },
+      { "corpus": "web_scrape_hq", "id": "chembl_downloader_target_pde5_single_protein_pchembl" }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+Select molecule_chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles
+Join activities ON activities.record_id = compound_records.record_id
+Join assays ON assays.assay_id = activities.assay_id
+Join target_dictionary ON target_dictionary.tid = assays.tid
+Join molecule_dictionary ON molecule_dictionary.molregno = compound_records.molregno
+Join compound_structures ON compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.pref_name = 'Bromodomain-containing protein 4' AND assays.assay_organism = 'Homo sapiens'
+Sort by molecule_chembl_id
+Limit 0

@@ -1,0 +1,51 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct molecule records (including their internal identifier molregno and the document identifier chembl_id) that are associated with the document CHEMBL5727678, along with their associated compound name and the document title. This requires selecting all molecule entries linked to the specified document ID in the activities table, ensuring that the selected compounds are tied to the specified document for provenance, and preserving the document's information for context. The result should include the unique internal identifier for the molecule (molregno), the public ChEMBL identifier for the molecule (chembl_id), the human-readable compound name (pref_name), and the title of the source document (title), maintaining the association between the activity source and the original publication for verification.",
+    "sql": "SELECT DISTINCT\n  d.molregno,\n  d.chembl_id AS compound_chembl_id,\n  d.pref_name,\n  doc.title\nFROM activities a\nJOIN molecule_dictionary d ON a.molecule_chembl_id = d.chembl_id\nJOIN docs doc ON a.doc_id = doc.doc_id\nWHERE doc.chembl_id = 'CHEMBL5727678';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all distinct molecules (with their internal identifier molregno, the public ChEMBL identifier chembl_id, and the human\u2011readable molecule name pref_name) that are linked to the document CHEMBL5727678, and also return the exact document title for this CHEMBL5727678. The results should include every qualifying compound without any extra filters, and the output must contain the columns molregno, chembl_id, pref_name, and title.",
+    "sql": "SELECT DISTINCT a.molregno, d.chembl_id, d.pref_name, doc.title FROM activities a JOIN molecule_dictionary d ON a.molregno = d.molregno JOIN docs doc ON a.doc_id = doc.doc_id WHERE doc.chembl_id = 'CHEMBL5727678';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1023,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "pref_name",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all distinct molecules (with their internal identifier molregno, the public ChEMBL identifier chembl_id, the molecule name pref_name, and the document title) that are linked to the document CHEMBL5727678. The result must include exactly these four columns and no additional filters or limits.",
+    "sql": "SELECT DISTINCT d.molregno, d.chembl_id, d.pref_name, doc.title\nFROM activities a\nJOIN molecule_dictionary d ON a.molregno = d.molregno\nJOIN docs doc ON a.doc_id = doc.doc_id\nWHERE doc.chembl_id = 'CHEMBL5727678';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1023,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "pref_name",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

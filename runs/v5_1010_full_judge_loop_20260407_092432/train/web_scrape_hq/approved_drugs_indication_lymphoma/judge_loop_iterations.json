@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs that have an indication for lymphoma, including the following details for each drug: ChEMBL ID, molecule name, canonical SMILES, indication details (mesh heading and EFO term), and the maximum phase for the specific indication.",
+    "sql": "SELECT\n  md.chembl_id AS chembl_id,\n  md.pref_name AS molecule_name,\n  cs.canonical_smiles,\n  di.mesh_heading,\n  di.efo_term,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.max_phase_for_ind = 4\n  AND LOWER(di.mesh_heading) LIKE '%lymphoma%';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 90,
+    "res_columns": [
+      "chembl_id",
+      "molecule_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

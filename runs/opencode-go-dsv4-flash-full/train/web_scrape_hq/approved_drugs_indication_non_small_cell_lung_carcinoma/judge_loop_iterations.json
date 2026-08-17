@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List approved drugs indicated for non-small cell lung carcinoma. For each drug, provide the drug's ChEMBL ID, preferred name, canonical SMILES, the EFO ID for the indication, the indication label (e.g., mesh_heading or efo_term from the drug_indication table), and the maximum clinical phase for that specific indication (max_phase_for_ind). Restrict to entries where the indication matches non-small cell lung carcinoma (e.g., mesh_heading containing 'Non-Small-Cell Lung' or efo_term containing 'non-small cell lung carcinoma') and where max_phase_for_ind = 4 (approved). Use the drug_indication table joined with molecule_dictionary on molregno for drug identifiers and names, and join compound_structures on molregno for SMILES. Return one row per drug\u2013indication pair.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id,\n    md.pref_name,\n    cs.canonical_smiles,\n    di.efo_id,\n    COALESCE(di.mesh_heading, di.efo_term) AS indication_label,\n    di.max_phase_for_ind\nFROM drug_indication di\nINNER JOIN molecule_dictionary md ON di.molregno = md.molregno\nLEFT JOIN compound_structures cs ON di.molregno = cs.molregno\nWHERE (di.mesh_heading LIKE '%Non-Small-Cell Lung%' OR di.efo_term LIKE '%non-small cell lung carcinoma%')\n  AND di.max_phase_for_ind = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n50 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 44,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for non-small cell lung carcinoma. For each drug, provide the following columns: ChEMBL ID, preferred name (pref_name), canonical SMILES (if available), EFO ID for the indication, the MeSH heading as the indication label, and the maximum clinical phase for that specific indication (max_phase_for_ind). Only include drugs where the indication corresponds to non\u2011small cell lung carcinoma, i.e., the mesh_heading contains 'Carcinoma, Non-Small-Cell Lung' or the efo_term contains 'non\u2011small cell lung carcinoma'. Additionally, only include approved drugs, meaning max_phase_for_ind equals 4. Use the drug_indication table as the starting point. Join with molecule_dictionary on molregno to retrieve drug identifiers and names. Left join with compound_structures on molregno to retrieve SMILES (allow missing SMILES). Return one row per drug\u2011indication pair, with no limit on the number of rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.mesh_heading AS indication_label, di.max_phase_for_ind FROM drug_indication di INNER JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE (di.mesh_heading LIKE '%Carcinoma, Non-Small-Cell Lung%' OR di.efo_term LIKE '%non-small cell lung carcinoma%') AND di.max_phase_for_ind = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 44,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

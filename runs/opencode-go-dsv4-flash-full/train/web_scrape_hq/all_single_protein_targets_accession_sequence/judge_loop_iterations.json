@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve target ChEMBL ID, target name, target type, protein accession, and protein sequence for all single-protein targets. Return exactly target_chembl_id, target_name, target_type, protein_accession, and protein_sequence. Only include targets with target_type = 'SINGLE PROTEIN'.",
+    "sql": "SELECT td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.target_type, cs.accession AS protein_accession, cs.sequence AS protein_sequence FROM target_dictionary td LEFT JOIN target_components tc ON td.tid = tc.tid LEFT JOIN component_sequences cs ON tc.component_id = cs.component_id WHERE td.target_type = 'SINGLE PROTEIN';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SEARCH td USING INDEX idx_td_t_type (target_type=?)\n11 | 0 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n18 | 0 | 0 | SEARCH cs USING INDEX sqlite_autoindex_component_sequences_1 (component_id=?)",
+    "res_row_count": 10964,
+    "res_columns": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

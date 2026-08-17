@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_p450_first200.json",
+  "case_id": "metabolism_enzyme_p450_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result set is empty (row_count: 0) for a query that should return the first 200 metabolism records involving P450 enzymes with substrate structures, compound names, metabolic conversion, pathway, and organism. The SQL query attempts to join metabolism records to compound structures and target dictionary for P450 proteins, but the join condition for parent compound appears incorrect: `JOIN molecule_dictionary parent ON m.substrate_record_id = parent.molregno` should likely be `JOIN molecule_dictionary parent ON m.metabolism.substrate_record_id = parent.molregno` or similar to correctly link to the parent compound. Additionally, the target dictionary join uses `m.enzyme_tid = t.tid` but the filter on `t.pref_name LIKE '%P450%'` may not capture all P450 enzymes if the name pattern is not exact (e.g., 'Cytochrome P450 2D6' vs 'P450'). The empty result suggests the joins are not matching expected data, possibly due to incorrect parent compound linkage or P450 target identification. The query also lacks filtering for metabolism records where `m.metabolism.substrate_record_id` is valid, and the parent compound join may be failing. The sample rows CSV is empty, confirming no rows passed the filters.\",\n  \"score\": 0.3,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result set is empty (row_count: 0) for a query that should return the first 200 metabolism records involving P450 enzymes with substrate structures, compound names, metabolic conversion, pathway, and organism. The SQL query attempts to join metabolism records to compound structures and target dictionary for P450 proteins, but the join condition for parent compound appears incorrect: `JOIN molecule_dictionary parent ON m.substrate_record_id = parent.molregno` should likely be `JOIN molecule_dictionary parent ON m.metabolism.substrate_record_id = parent.molregno` or similar to correctly link to the parent compound. Additionally, the target dictionary join uses `m.enzyme_tid = t.tid` but the filter on `t.pref_name LIKE '%P450%'` may not capture all P450 enzymes if the name pattern is not exact (e.g., 'Cytochrome P450 2D6' vs 'P450'). The empty result suggests the joins are not matching expected data, possibly due to incorrect parent compound linkage or P450 target identification. The query also lacks filtering for metabolism records where `m.metabolism.substrate_record_id` is valid, and the parent compound join may be failing. The sample rows CSV is empty, confirming no rows passed the filters.",
+      "score": 0.3,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_p450_first200/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_p450_first200/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_p450_first200/pf_judge.generated_artifact_record.json"
+  }
+}

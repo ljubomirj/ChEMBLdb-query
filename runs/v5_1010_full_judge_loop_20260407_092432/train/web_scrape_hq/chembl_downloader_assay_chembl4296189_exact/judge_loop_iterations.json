@@ -1,0 +1,41 @@
+[
+  {
+    "n": 1,
+    "up": "Return all activity rows for assay CHEMBL4296189, including the compound ChEMBL ID, standard type (e.g., IC50), standard relation, standard value, standard units, and the target ChEMBL ID. The output must preserve the exact activity values as stored (including exact relations and values); do not aggregate or de-duplicate the rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, td.chembl_id AS target_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN target_dictionary td ON ass.tid = td.tid WHERE ass.chembl_id = 'CHEMBL4296189';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6227,
+    "res_columns": [
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return all activity rows for assay CHEMBL4296189. Include the compound ChEMBL ID (molecule_chembl_id), the standard type (standard_type), the standard relation (standard_relation), the standard value (standard_value), and the standard units (standard_units). Do not de-duplicate rows; return every individual activity record for the assay.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL4296189';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 6236,
+    "res_columns": [
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

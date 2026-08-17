@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements the user request: it joins molecule_dictionary, drug_indication, and compound_structures; filters for max_phase_for_ind = 4 with non-null EFO ID and label; and returns DISTINCT rows for the exact requested columns. The result set (6706 rows) includes the expected columns with proper aliases (indication_curie, indication_label). The sample rows show valid data with multiple indications per drug (e.g., CETIRIZINE has two EFO indications), which is expected behavior. The query is complete and accurate.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements the user request: it joins molecule_dictionary, drug_indication, and compound_structures; filters for max_phase_for_ind = 4 with non-null EFO ID and label; and returns DISTINCT rows for the exact requested columns. The result set (6706 rows) includes the expected columns with proper aliases (indication_curie, indication_label). The sample rows show valid data with multiple indications per drug (e.g., CETIRIZINE has two EFO indications), which is expected behavior. The query is complete and accurate.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.generated_artifact_record.json"
+  }
+}

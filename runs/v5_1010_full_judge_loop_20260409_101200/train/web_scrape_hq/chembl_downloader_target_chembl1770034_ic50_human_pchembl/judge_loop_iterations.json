@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity rows from the ChEMBL database for the target with ChEMBL ID 'CHEMBL1770034' (Phosphatidylinositol 5-phosphate 4-kinase type-2 gamma). Return the first 1000 rows where the standard type is 'IC50', the standard relation is '=', and the pChEMBL value is not null. The output should include the assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target_info AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1770034') SELECT DISTINCT ass.chembl_id AS assay_chembl_id, ti.target_type, ti.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM target_info ti JOIN assays ass ON ass.tid = ti.tid JOIN activities a ON a.assay_id = ass.assay_id AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n75 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 63,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "n": 3,
+    "up": "For all compounds tested in assay CHEMBL1054502, return the exact activity values. Provide the ChEMBL identifier of the compound, the activity type (e.g., IC50), the precise numeric value, and the units.",
+    "sql": "SELECT md.chembl_id, a.standard_type, a.standard_value, a.standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.assay_id = (SELECT assay_id FROM assays WHERE chembl_id = 'CHEMBL1054502') AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n5 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n8 | 0 | 0 | SCALAR SUBQUERY 1\n13 | 8 | 39 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 13533,
+    "res_columns": [
+      "chembl_id",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

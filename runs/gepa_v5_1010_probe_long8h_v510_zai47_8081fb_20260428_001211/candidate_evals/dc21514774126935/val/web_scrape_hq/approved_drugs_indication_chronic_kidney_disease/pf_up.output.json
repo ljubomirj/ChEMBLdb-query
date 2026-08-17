@@ -1,0 +1,60 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_dc21514774126935.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease.json",
+  "case_id": "approved_drugs_indication_chronic_kidney_disease",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "dc21514774126935",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"List all approved drugs indicated for chronic kidney disease. Return the ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label, and max phase for the indication. Filter for the indication 'chronic kidney disease' and max phase 4. Sort by ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label, and max phase. No limit.\",\n  \"select\": [\n    \"chembl_id\",\n    \"pref_name\",\n    \"canonical_smiles\",\n    \"efo_id AS indication_curie\",\n    \"mesh_heading AS indication_label\",\n    \"max_phase_for_ind\"\n  ],\n  \"source\": [\n    \"molecule_dictionary\",\n    \"compound_structures\",\n    \"drug_indication\"\n  ],\n  \"join\": [\n    \"molecule_dictionary.molregno = compound_structures.molregno\",\n    \"molecule_dictionary.molregno = drug_indication.molregno\"\n  ],\n  \"filter\": [\n    \"mesh_heading = 'chronic kidney disease'\",\n    \"max_phase_for_ind = 4\"\n  ],\n  \"sort\": [\n    \"chembl_id ASC\",\n    \"pref_name ASC\",\n    \"canonical_smiles ASC\",\n    \"indication_curie ASC\",\n    \"indication_label ASC\",\n    \"max_phase_for_ind ASC\"\n  ],\n  \"limit\": \"None\"\n}\n```",
+    "parsed_json": {
+      "up": "List all approved drugs indicated for chronic kidney disease. Return the ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label, and max phase for the indication. Filter for the indication 'chronic kidney disease' and max phase 4. Sort by ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label, and max phase. No limit.",
+      "select": [
+        "chembl_id",
+        "pref_name",
+        "canonical_smiles",
+        "efo_id AS indication_curie",
+        "mesh_heading AS indication_label",
+        "max_phase_for_ind"
+      ],
+      "source": [
+        "molecule_dictionary",
+        "compound_structures",
+        "drug_indication"
+      ],
+      "join": [
+        "molecule_dictionary.molregno = compound_structures.molregno",
+        "molecule_dictionary.molregno = drug_indication.molregno"
+      ],
+      "filter": [
+        "mesh_heading = 'chronic kidney disease'",
+        "max_phase_for_ind = 4"
+      ],
+      "sort": [
+        "chembl_id ASC",
+        "pref_name ASC",
+        "canonical_smiles ASC",
+        "indication_curie ASC",
+        "indication_label ASC",
+        "max_phase_for_ind ASC"
+      ],
+      "limit": "None"
+    }
+  }
+}

@@ -42,6 +42,29 @@ def save_case_manifest(manifest: V5CaseManifest, path: str | Path) -> None:
     path.write_text(json.dumps(manifest.to_dict(), indent=2) + "\n")
 
 
+def resolve_case_manifest_path(
+    manifest_root: str | Path, corpus: str, case_id: str
+) -> Path:
+    """Resolve a (corpus, case_id) pair to a manifest file path.
+
+    Supports the post-reorg layout (cases/v5.1010/cases/<safe_id>/manifest.json,
+    where safe_id replaces '/' with '__') and the legacy layout
+    (<manifest_root>/<corpus>/<case_id>.json) as fallback. The legacy layout
+    may exist transiently as symlink bridges during migration.
+    """
+    root = Path(manifest_root)
+    safe_id = case_id.replace("/", "__")
+    new_style = root / safe_id / "manifest.json"
+    if new_style.exists():
+        return new_style
+    legacy = root / corpus / f"{case_id}.json"
+    if legacy.exists():
+        return legacy
+    # prefer the canonical (new) path even when only the legacy path exists,
+    # so writers/readers converge on the new layout after migration completes
+    return new_style if (root / safe_id).exists() else legacy
+
+
 def _require_dict(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise TypeError(f"{label} must be a mapping")

@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "{\"Select\": \"DISTINCT m.chembl_id AS chembl_id, m.pref_name AS compound_name, s.canonical_smiles AS canonical_smiles\", \"Source\": \"molecule_dictionary m, compound_records r, compound_structures s, docs d\", \"Join\": \"m.molregno = r.molregno AND r.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL1134488' AND m.molregno = s.molregno\", \"Filter\": \"s.canonical_smiles IS NOT NULL\", \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\", \"Limit\": null}",
+    "sql": "SELECT DISTINCT m.chembl_id AS chembl_id, m.pref_name AS compound_name, s.canonical_smiles AS canonical_smiles FROM molecule_dictionary m INNER JOIN compound_records r ON m.molregno = r.molregno INNER JOIN compound_structures s ON m.molregno = s.molregno INNER JOIN docs d ON r.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL1134488' AND s.canonical_smiles IS NOT NULL ORDER BY m.chembl_id ASC, m.pref_name ASC, s.canonical_smiles ASC",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH r USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH s USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly retrieves distinct molecules from document CHEMBL1134488, joining molecule_dictionary, compound_records, compound_structures, and docs, filtering for non\u2011null canonical_smiles, and ordering as requested. The result set contains 100 rows with chembl_id, compound_name (pref_name), and canonical_smiles, all filtered for smiles availability. The output matches the specification: distinct molecules, required columns, only rows with smiles, ordered by chembl_id, compound_name, canonical_smiles. No obvious errors or missing semantics are present. The result appears complete and correct for the given task.\",\n  \"score\": 0.92,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

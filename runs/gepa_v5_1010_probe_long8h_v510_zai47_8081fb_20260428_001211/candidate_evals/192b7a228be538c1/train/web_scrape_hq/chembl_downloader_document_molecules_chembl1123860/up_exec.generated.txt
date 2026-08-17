@@ -1,0 +1,7 @@
+1. Objective: Retrieve distinct molecules associated with a specific document, ensuring structures are available and ordering by the requested fields.
+
+2. Output: chembl_id, compound_name, canonical_smiles
+
+3. Source: docs, compound_records, molecule_dictionary, compound_structures
+
+4. Logic: Join docs on chembl_id = 'CHEMBL1123860' to get doc_id. Join compound_records on doc_id to link to molecules. Join molecule_dictionary on molregno to get identifiers. Join compound_structures on molregno to enforce availability of canonical_smiles. Filter to keep only rows where canonical_smiles IS NOT NULL. Apply DISTINCT to the projection. Order the result set by chembl_id, compound_name, and canonical_smiles.

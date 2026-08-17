@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_metabolism_example.json",
+  "case_id": "iwatobipen_metabolism_example",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the requested join path (metabolism -> compound_records on substrate_record_id -> compound_structures on molregno) and returns the first 200 rows without deduplication or sorting, as specified. The output columns match the user request: canonical_smiles, compound_name, met_conversion, and pathway_key. The sample rows show valid data with the expected schema. No issues detected.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the requested join path (metabolism -> compound_records on substrate_record_id -> compound_structures on molregno) and returns the first 200 rows without deduplication or sorting, as specified. The output columns match the user request: canonical_smiles, compound_name, met_conversion, and pathway_key. The sample rows show valid data with the expected schema. No issues detected.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/iwatobipen_metabolism_example/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/iwatobipen_metabolism_example/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/iwatobipen_metabolism_example/pf_judge.generated_artifact_record.json"
+  }
+}

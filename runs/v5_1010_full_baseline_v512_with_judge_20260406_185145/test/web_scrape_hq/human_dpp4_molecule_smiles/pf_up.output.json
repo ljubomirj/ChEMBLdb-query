@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_dpp4_molecule_smiles.json",
+  "case_id": "human_dpp4_molecule_smiles",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL284. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Filter by target_dictionary.chembl_id = 'CHEMBL284' and assays.assay_organism = 'Homo sapiens'. Inner join compound_structures on molregno to require canonical SMILES. Return columns molecule_chembl_id and canonical_smiles. Sort by molecule_chembl_id and canonical_smiles.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL284. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Filter by target_dictionary.chembl_id = 'CHEMBL284' and assays.assay_organism = 'Homo sapiens'. Inner join compound_structures on molregno to require canonical SMILES. Return columns molecule_chembl_id and canonical_smiles. Sort by molecule_chembl_id and canonical_smiles."
+    }
+  }
+}

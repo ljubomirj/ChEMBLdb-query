@@ -1,0 +1,7 @@
+1. Objective: Extract the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1293289 (Bromodomain-containing protein 2), restricted to exact standard relation '=' rows with non-null pChEMBL values.
+
+2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+
+3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures
+
+4. Logic: Join activities to assays on assay_id, assays to target_dictionary on tid, activities to molecule_dictionary on molregno, and molecule_dictionary to compound_structures on molregno. Filter where target_dictionary.chembl_id = 'CHEMBL1293289', activities.standard_type = 'IC50', activities.standard_relation = '=', and activities.pchembl_value IS NOT NULL. Order by molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value. Limit to 1000 rows.

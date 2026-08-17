@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles.json",
+  "case_id": "selective_cdk2_over_cdk1_ic50_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Identify compounds with selective activity for CDK2 over CDK1. Retrieve compounds that have an IC50 measurement below 1000 nM against CDK2 and an IC50 measurement above 10000 nM against CDK1. Return the compound ChEMBL identifier, canonical SMILES, the IC50 value for CDK2 (aliased as ic50_target1_nM), and the IC50 value for CDK1 (aliased as ic50_target2_nM). Require exact IC50 measurements (standard_relation = '='). Include compound structures via an INNER JOIN to compound_structures. Sort the results by compound ChEMBL identifier, canonical SMILES, IC50 for CDK2, and IC50 for CDK1.\"\n}\n```",
+    "parsed_json": {
+      "up": "Identify compounds with selective activity for CDK2 over CDK1. Retrieve compounds that have an IC50 measurement below 1000 nM against CDK2 and an IC50 measurement above 10000 nM against CDK1. Return the compound ChEMBL identifier, canonical SMILES, the IC50 value for CDK2 (aliased as ic50_target1_nM), and the IC50 value for CDK1 (aliased as ic50_target2_nM). Require exact IC50 measurements (standard_relation = '='). Include compound structures via an INNER JOIN to compound_structures. Sort the results by compound ChEMBL identifier, canonical SMILES, IC50 for CDK2, and IC50 for CDK1."
+    }
+  }
+}

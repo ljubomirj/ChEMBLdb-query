@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Identify all compounds mentioned in the specific document identified by CHEMBL ID 'CHEMBL5729568' that have a chemical structure available. Return the following columns for each compound: the molecule's preferred name, the molecule's CHEMBL ID, and the canonical SMILES string.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5729568' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 703,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

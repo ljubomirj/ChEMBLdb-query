@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "List all distinct molecules that appear in the document with ChEMBL ID CHEMBL1126796. For each molecule, I need its ChEMBL ID, the compound name associated with it in that document, and its canonical SMILES. Only include molecules for which a canonical SMILES is available. Order the output by ChEMBL ID, compound name, and canonical SMILES. Ensure each molecule is listed only once, so if multiple compound names exist for the same molecule in the document, pick any one.",
+    "sql": "SELECT md.chembl_id, MIN(cr.compound_name) AS compound_name, cs.canonical_smiles FROM compound_records cr JOIN docs d ON cr.doc_id = d.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1126796' AND cs.canonical_smiles IS NOT NULL GROUP BY cr.molregno, md.chembl_id, cs.canonical_smiles ORDER BY md.chembl_id, compound_name, cs.canonical_smiles;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY\n89 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

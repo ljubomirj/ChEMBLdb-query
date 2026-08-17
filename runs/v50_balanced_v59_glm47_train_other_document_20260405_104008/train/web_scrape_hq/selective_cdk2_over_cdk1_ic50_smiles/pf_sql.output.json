@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles.json",
+  "case_id": "selective_cdk2_over_cdk1_ic50_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nWITH cdk2_hits AS (\n  SELECT DISTINCT act.molregno, act.standard_value AS ic50_cdk2\n  FROM activities act\n  JOIN assays a ON act.assay_id = a.assay_id\n  JOIN target_dictionary t ON a.tid = t.tid\n  WHERE t.pref_name = 'CDK2'\n    AND act.standard_type = 'IC50'\n    AND act.standard_relation = '='\n    AND act.standard_value < 1000\n),\ncdk1_hits AS (\n  SELECT DISTINCT act.molregno, act.standard_value AS ic50_cdk1\n  FROM activities act\n  JOIN assays a ON act.assay_id = a.assay_id\n  JOIN target_dictionary t ON a.tid = t.tid\n  WHERE t.pref_name = 'CDK1'\n    AND act.standard_type = 'IC50'\n    AND act.standard_relation = '='\n    AND act.standard_value > 10000\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  c2.ic50_cdk2 AS ic50_target1_nM,\n  c1.ic50_cdk1 AS ic50_target2_nM\nFROM cdk2_hits c2\nJOIN cdk1_hits c1 ON c2.molregno = c1.molregno\nJOIN molecule_dictionary md ON md.molregno = c2.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nORDER BY md.chembl_id, cs.canonical_smiles, c2.ic50_cdk2, c1.ic50_cdk1\n```",
+    "parsed_json": {
+      "sql": "WITH cdk2_hits AS (\n  SELECT DISTINCT act.molregno, act.standard_value AS ic50_cdk2\n  FROM activities act\n  JOIN assays a ON act.assay_id = a.assay_id\n  JOIN target_dictionary t ON a.tid = t.tid\n  WHERE t.pref_name = 'CDK2'\n    AND act.standard_type = 'IC50'\n    AND act.standard_relation = '='\n    AND act.standard_value < 1000\n),\ncdk1_hits AS (\n  SELECT DISTINCT act.molregno, act.standard_value AS ic50_cdk1\n  FROM activities act\n  JOIN assays a ON act.assay_id = a.assay_id\n  JOIN target_dictionary t ON a.tid = t.tid\n  WHERE t.pref_name = 'CDK1'\n    AND act.standard_type = 'IC50'\n    AND act.standard_relation = '='\n    AND act.standard_value > 10000\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  c2.ic50_cdk2 AS ic50_target1_nM,\n  c1.ic50_cdk1 AS ic50_target2_nM\nFROM cdk2_hits c2\nJOIN cdk1_hits c1 ON c2.molregno = c1.molregno\nJOIN molecule_dictionary md ON md.molregno = c2.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nORDER BY md.chembl_id, cs.canonical_smiles, c2.ic50_cdk2, c1.ic50_cdk1"
+    }
+  }
+}

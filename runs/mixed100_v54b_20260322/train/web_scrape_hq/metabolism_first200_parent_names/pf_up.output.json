@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_parent_names.json",
+  "case_id": "metabolism_first200_parent_names",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key. Join metabolism to compound_records on substrate_record_id, then to compound_structures on molregno. Join molecule_hierarchy on parent_molregno to molecule_dictionary for parent_compound_name. Filter to first 200 rows without sorting. Do not deduplicate.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key. Join metabolism to compound_records on substrate_record_id, then to compound_structures on molregno. Join molecule_hierarchy on parent_molregno to molecule_dictionary for parent_compound_name. Filter to first 200 rows without sorting. Do not deduplicate."
+    }
+  }
+}

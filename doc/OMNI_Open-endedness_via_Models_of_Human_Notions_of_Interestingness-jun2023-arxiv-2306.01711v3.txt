@@ -1,0 +1,1001 @@
+
+OMNI_Open-endedness_via_Models_of_Human_Notions_of_Interestingness-jun2023-arxiv-2306.01711v3.pdf
+
+LJ:
+Help me learn. Talk me through this paper step by step using simple language.
+
+AtlasGPT:
+Confidence: 0.86/1.0
+
+Here’s the paper **“OMNI: Open-endedness via Models of human Notions of Interestingness”** explained step by step in plain language. ([arXiv][1])
+
+## 1) What problem are they trying to solve?
+
+Open-ended learning is the dream where an agent **keeps learning new skills forever**. The headache is: there are *tons* of possible tasks.
+
+Even if you filter to tasks the agent can currently learn (using “learning progress”), you still get lots of **junk tasks**:
+
+* tiny variations,
+* repetitive busywork,
+* “learnable but boring” stuff.
+
+So the missing piece is: **how do we prioritize tasks that are not only learnable, but also *interesting* (worthwhile/novel)?** ([arXiv][1])
+
+## 2) Their key idea (the OMNI punchline)
+
+They propose OMNI: use a **foundation model** (think large language model / multimodal model) as a proxy for **human notions of “interestingness.”**
+
+Why might that work?
+
+* FMs are trained on huge amounts of human text/images.
+* Humans mostly write about what they find *interesting*, meaningful, non-trivial.
+  So the FM implicitly learns patterns of “this seems noteworthy vs mundane.”
+
+They call this an FM-based **Model of Interestingness (MoI)**. ([arXiv][1])
+
+## 3) What OMNI actually does (mechanically)
+
+OMNI isn’t replacing learning-progress curricula; it **adds a “boringness filter” on top**.
+
+### Step A — Start with a standard learning-progress (LP) curriculum
+
+The agent estimates where it’s improving fastest and samples those tasks more. ([ar5iv][2])
+
+### Step B — Ask the FM: “is this task boring?”
+
+The FM/MoI predicts whether candidate tasks are “interesting” or “boring” (based on how humans would likely see them). ([ar5iv][2])
+
+### Step C — Downweight boring tasks hard
+
+If a task is labeled boring, OMNI multiplies its sampling weight by something tiny (they mention **0.001**), so it *almost never* gets trained on. ([ar5iv][2])
+
+**Result:** the agent mostly trains on tasks that are **(1) learnable now, and (2) interesting**.
+
+## 4) Where do the tasks come from?
+
+They test in two styles of settings:
+
+### A) Finite task sets (benchmark environments)
+
+They use environments like **Crafter** and **BabyAI**, where you can enumerate a big set of tasks and track progress across them. ([ar5iv][2])
+
+### B) “Infinite” / growing task space
+
+They also show a more open-ended setup where tasks are **generated during training** using a pretrained FM (they describe using GPT-4 to propose next tasks and even specify success-check “state conditions”). ([ar5iv][2])
+
+This is meant to mimic true open-endedness: you can’t pre-list every task, so you **grow the task set** as the agent improves.
+
+## 5) What experiments show (high level)
+
+Across the benchmarks, they compare:
+
+1. **Uniform sampling** (pick tasks randomly)
+2. **Learning progress only**
+3. **OMNI** (learning progress + FM interestingness)
+
+They report OMNI:
+
+* learns **more tasks**,
+* gets **higher overall success**,
+* even though it *biases away* from many tasks (because those were deemed boring). ([ar5iv][2])
+
+In the infinite/growing-task setting, they evaluate only on tasks that were ever sampled (since you can’t evaluate infinite tasks), and OMNI completes **more tasks above a success threshold** than baselines. ([ar5iv][2])
+
+## 6) Why this is conceptually important
+
+This paper is basically saying:
+
+> “Learning progress tells you what’s learnable next.
+> Foundation models tell you what’s *worth learning* next.”
+
+It reframes FMs as **task-picking engines** (auto-curriculum designers), not just text generators. ([arXiv][1])
+
+## 7) Limitations / things to be skeptical about
+
+A few natural “watch-outs” the paper itself motivates:
+
+* **Whose interestingness?** The FM reflects the training data’s human preferences/biases.
+* **Shortcut risk:** “Interesting” might correlate with surface novelty rather than deep skill-building.
+* **Domain dependence:** works nicely in these benchmarks; the harder question is how robust it is in messier real-world task spaces.
+
+(Those are the big practical concerns you’d want in mind when reusing the idea.)
+
+---
+
+If you want, I can go **section-by-section** next (Intro → Related Work → Method → Experiments → Discussion), and I’ll also translate their OMNI pipeline into a simple “box diagram” explanation you could reuse in your own notes. **Do you want the walkthrough to focus more on the *algorithm details* or the *experimental setups/results*?**
+
+[1]: https://arxiv.org/abs/2306.01711 "[2306.01711] OMNI: Open-endedness via Models of human Notions of Interestingness"
+[2]: https://ar5iv.org/pdf/2306.01711 "[2306.01711] OMNI: Open-endedness via Models of human Notions of Interestingness"
+
+AtlasGPT:
+Lovely paper choice, by the way — it’s deceptively simple but conceptually quite deep.
+I’ll go **section by section**, keep the language plain, and flag *why each part matters*. I’ll also occasionally pause to translate “paper-speak → intuition”.
+
+---
+
+## Section 1 — Introduction
+
+### What they’re worried about
+
+The long-term goal in RL is **open-ended learning**:
+
+> an agent that never stops discovering new skills.
+
+But in practice, two big problems show up:
+
+1. **Too many tasks**
+
+   * The task space is huge (or infinite).
+   * Most tasks are irrelevant, redundant, or trivial.
+
+2. **Learning-progress alone isn’t enough**
+
+   * Popular solution: train on tasks where performance is improving fastest.
+   * Problem: this still includes a lot of *boring* tasks.
+
+     * Tiny variations
+     * Busywork
+     * Skills that don’t unlock anything new
+
+So you get agents that are **busy but not meaningfully expanding their abilities**.
+
+### The key missing ingredient
+
+Humans don’t just ask:
+
+> “What can I learn next?”
+
+We also ask:
+
+> “What is *worth* learning next?”
+
+That second notion — *interestingness* — is missing from most curricula.
+
+### Their big idea
+
+Foundation models (LLMs, VLMs) are trained on **human-produced content**.
+
+Humans mostly produce:
+
+* surprising things
+* useful things
+* meaningful things
+* non-trivial things
+
+So FMs implicitly learn a statistical notion of:
+
+> “Humans find this interesting.”
+
+**OMNI = use an FM as a proxy for human interestingness to guide task selection.**
+
+---
+
+## Section 2 — Related Work
+
+This section is basically answering:
+
+> “How is this different from what people already tried?”
+
+### 2.1 Learning Progress & Intrinsic Motivation
+
+Classic ideas:
+
+* curiosity
+* novelty
+* prediction error
+* learning progress
+
+**Strength:** automatically adapts to agent capability
+**Weakness:** doesn’t distinguish *important novelty* from *pointless novelty*
+
+Example intuition:
+
+* Learning to stack blocks in 20 slightly different colors
+* LP says: “great, still learning!”
+* Humans say: “this is the same thing again…”
+
+OMNI is meant to **filter out that redundancy**.
+
+---
+
+### 2.2 Task Generation with Language Models
+
+Recent work:
+
+* LLMs generate tasks, goals, instructions.
+* Sometimes LLMs even generate reward functions.
+
+But:
+
+* Tasks are usually **accepted blindly**
+* No strong mechanism to *rank or prune* bad tasks
+
+OMNI’s contribution:
+
+> Don’t just generate tasks — **judge them**.
+
+---
+
+### 2.3 Open-endedness
+
+Open-ended learning research wants:
+
+* continual novelty
+* increasing complexity
+* no fixed endpoint
+
+Their critique:
+
+* Without a notion of *value*, open-ended systems drift or stall.
+* You get novelty without progress, or progress without meaning.
+
+OMNI explicitly targets that gap.
+
+---
+
+## Section 3 — Method: OMNI
+
+This is the core. Let’s go slowly.
+
+---
+
+### 3.1 The overall loop (big picture)
+
+At every training step:
+
+1. Propose candidate tasks
+2. Estimate **learning progress** on each task
+3. Estimate **interestingness** using a foundation model
+4. Combine the two
+5. Sample tasks to train on
+
+Think of it as:
+
+> **LP tells you *what you can learn***
+> **FM tells you *what’s worth learning***
+
+---
+
+### 3.2 Learning Progress (LP) recap
+
+They don’t reinvent LP — they reuse standard ideas.
+
+Roughly:
+
+* Track success rate over time for each task
+* Compute improvement (slope or delta)
+* Prefer tasks with **positive recent improvement**
+
+This ensures:
+
+* No wasting time on tasks already mastered
+* No wasting time on tasks too hard (no progress yet)
+
+LP answers:
+**“Is this task learnable *right now*?”**
+
+---
+
+### 3.3 Model of Interestingness (MoI)
+
+This is the novel part.
+
+#### What is the MoI?
+
+A foundation model classifier that predicts:
+
+* Is this task *boring* or *interesting* (from a human perspective)?
+
+They don’t require the FM to be perfect.
+They just need it to **roughly agree with human intuition**.
+
+#### How does the FM see a task?
+
+Tasks are represented in natural language or symbolic descriptions like:
+
+* instructions
+* goal descriptions
+* environment states
+* task names
+
+The FM outputs a score or label.
+
+#### Important detail
+
+They don’t *rank everything finely*.
+
+They mostly do:
+
+* **binary-ish filtering**
+* boring → almost zero probability
+* interesting → normal LP-based probability
+
+This makes the system robust to noisy FM judgments.
+
+---
+
+### 3.4 Combining LP and Interestingness
+
+This is intentionally simple.
+
+If:
+
+* LP(task) = learning progress score
+* MoI(task) = {interesting, boring}
+
+Then sampling weight is roughly:
+
+```
+if boring:
+    weight = LP * 0.001
+else:
+    weight = LP
+```
+
+So:
+
+* Boring tasks are not forbidden
+* They’re just **almost never sampled**
+
+This is crucial:
+
+> OMNI is *soft biasing*, not hard constraints.
+
+---
+
+### 3.5 Finite vs Infinite Task Sets
+
+They handle two scenarios:
+
+#### Finite tasks
+
+* Tasks are predefined
+* OMNI filters among them
+
+#### Infinite / growing tasks
+
+* Tasks are generated over time (using an FM)
+* OMNI decides which generated tasks are worth pursuing
+
+This is where open-endedness really comes in.
+
+---
+
+## Section 4 — Experimental Setup
+
+Now they test whether this idea actually helps.
+
+---
+
+### 4.1 Environments used
+
+They focus on:
+
+* **Crafter** (Minecraft-like survival)
+* **BabyAI** (instruction-following gridworld)
+
+These environments are nice because:
+
+* They have many compositional tasks
+* You can measure success clearly
+* They’re standard RL benchmarks
+
+---
+
+### 4.2 Baselines compared
+
+They compare OMNI against:
+
+1. **Uniform sampling**
+
+   * Random task choice
+2. **Learning Progress only**
+
+   * Smart but value-agnostic
+3. **OMNI (LP + MoI)**
+
+So the question is:
+
+> Does interestingness add anything *beyond* learning progress?
+
+---
+
+### 4.3 Metrics
+
+They measure things like:
+
+* Number of tasks solved
+* Final success rates
+* Speed of skill acquisition
+* Coverage of task space
+
+For infinite tasks:
+
+* Only evaluate tasks that were ever sampled
+* Otherwise evaluation would be undefined
+
+---
+
+## Section 5 — Results
+
+This is the “does it work?” section.
+
+---
+
+### 5.1 Main results
+
+Across environments:
+
+* OMNI solves **more tasks**
+* Learns **faster**
+* Avoids getting stuck on repetitive task variants
+
+Key observation:
+
+> Even though OMNI ignores many tasks, it ends up learning *more* overall.
+
+Why?
+
+* Because boring tasks don’t unlock new abilities
+* Interesting tasks tend to compose into future skills
+
+---
+
+### 5.2 Task diversity
+
+OMNI-trained agents:
+
+* Cover a broader *set of skills*
+* Avoid overspecialization
+* Discover longer task chains
+
+This supports the intuition that:
+
+> Interestingness ≈ usefulness for future learning
+
+---
+
+### 5.3 Infinite task setting
+
+In task-generation setups:
+
+* OMNI avoids exploding task sets full of nonsense
+* Focuses training on tasks that “matter”
+
+Without OMNI:
+
+* The agent drowns in low-value tasks
+* Learning slows or plateaus
+
+---
+
+## Section 6 — Discussion
+
+This is where they zoom out.
+
+---
+
+### 6.1 Why this works
+
+Their hypothesis:
+
+* Human interestingness correlates with:
+
+  * novelty
+  * compositionality
+  * reusability
+  * meaning
+
+Those properties are *exactly* what helps open-ended learning.
+
+So FMs act as:
+
+> compressed priors over “what tends to matter”.
+
+---
+
+### 6.2 Limitations (important!)
+
+They are honest here.
+
+* **Bias**
+
+  * FM reflects training data
+  * Some tasks may be unfairly ignored
+* **Overfitting to human taste**
+
+  * Not all valuable skills are “interesting”
+* **Domain dependence**
+
+  * What works in text-friendly domains may fail elsewhere
+
+This is not a solved problem — more like a promising lever.
+
+---
+
+### 6.3 Bigger picture
+
+They argue this reframes foundation models as:
+
+* curriculum designers
+* task critics
+* meta-controllers
+
+Not agents themselves — **guides for other agents**.
+
+---
+
+## Section 7 — Conclusion
+
+The core takeaway:
+
+> Open-ended learning needs *both* competence signals (learning progress)
+> and *value signals* (interestingness).
+
+OMNI shows that:
+
+* You can inject human-like value judgments
+* Without hand-coding rewards
+* Using pretrained foundation models
+
+---
+
+## One-sentence summary
+
+**OMNI filters “what to learn next” by asking both “can I learn this now?” and “would a human find this worth learning?”**
+
+---
+
+If you want next, we can:
+
+* 🔧 translate OMNI into **pseudocode**
+* 🧠 compare it to **curiosity / intrinsic motivation mathematically**
+* 🧪 discuss **how this would transfer to science problems** (e.g. hypothesis generation, experiment selection — very relevant to your ML-in-science interests)
+
+Just say the word.
+
+AtlasGPT:
+Perfect — I’ll do **all three**, in the same calm, practical style:
+
+1. **OMNI as pseudocode**
+2. **How it relates to curiosity / intrinsic motivation (conceptually + lightly mathematically)**
+3. **How this idea transfers to scientific discovery & ML-for-science (your turf)**
+
+---
+
+## 1️⃣ OMNI as pseudocode (clean + intuitive)
+
+Think of OMNI as a *task-sampling wrapper* around any RL system.
+
+```python
+# Maintain stats
+for task in task_set:
+    success_history[task] = []
+    interestingness[task] = FM_judge(task)  # {interesting, boring}
+
+while training:
+    for task in task_set:
+        # Estimate learning progress
+        LP[task] = slope(success_history[task][-k:])
+
+        # Apply interestingness filter
+        if interestingness[task] == "boring":
+            weight[task] = LP[task] * 0.001
+        else:
+            weight[task] = LP[task]
+
+    # Normalize sampling distribution
+    P = normalize(weight)
+
+    # Sample a task
+    task = sample(P)
+
+    # Train agent
+    result = train_on(task)
+
+    # Update stats
+    success_history[task].append(result)
+```
+
+### Key intuition
+
+* **LP** keeps learning *efficient*
+* **FM filter** keeps learning *meaningful*
+* Nothing is hard-forbidden → system stays flexible
+
+If you remove the FM line, you get a standard LP curriculum.
+
+---
+
+## 2️⃣ Relation to curiosity & intrinsic motivation
+
+This is where the paper quietly reframes a whole subfield.
+
+---
+
+### Classical intrinsic motivation (simplified)
+
+Most intrinsic rewards look like:
+
+[
+r_{int}(t) = | \hat{s}*{t+1} - s*{t+1} |
+]
+
+or
+
+[
+r_{LP}(t) = \left| \text{error}_{t-k} - \text{error}_t \right|
+]
+
+Interpretation:
+
+* “I’m curious because I’m surprised”
+* or “I’m curious because I’m improving”
+
+**Problem:**
+Surprise ≠ importance
+
+A TV with static noise is infinitely surprising and totally useless.
+
+---
+
+### What OMNI adds (conceptually)
+
+OMNI introduces a **prior over task value**:
+
+[
+P(\text{task is worth learning})
+]
+
+estimated from **human data**, not agent error.
+
+So the effective objective becomes:
+
+[
+\text{Train on task} \propto
+\underbrace{\text{Learnability}}*{\text{LP}}
+\times
+\underbrace{\text{Worthwhileness}}*{\text{FM prior}}
+]
+
+This is *huge* conceptually:
+
+> Curiosity asks: *“Can I learn something?”*
+> OMNI asks: *“Is this the kind of thing that matters?”*
+
+---
+
+### Why this works better
+
+Humans have already solved (imperfectly!) the value-selection problem:
+
+* which skills compound
+* which discoveries unlock others
+* which variations are redundant
+
+Foundation models compress that judgment.
+
+OMNI is basically:
+
+> **Bayesian curiosity with a human-derived prior**
+
+---
+
+## 3️⃣ How this transfers to ML-for-science (this is the fun part)
+
+This idea maps *beautifully* to scientific workflows.
+
+---
+
+### A) Experiment selection / active learning
+
+Replace:
+
+* task = RL task
+* agent = model
+* success = prediction improvement
+
+With:
+
+* task = experiment / simulation / assay
+* agent = surrogate model
+* success = uncertainty reduction / error decrease
+
+Then:
+
+* LP → *where the model is currently learning*
+* FM interestingness → *which experiments are scientifically meaningful*
+
+Example:
+
+* Many experiments reduce uncertainty
+* Only some change theory, mechanism, or design space
+
+OMNI ≈ **theory-aware active learning**
+
+---
+
+### B) Hypothesis generation
+
+LLMs already generate hypotheses.
+The real problem is **which ones to test**.
+
+OMNI-style loop:
+
+1. Generate hypotheses (LLM)
+2. Predict learnability (can we test this now?)
+3. Predict interestingness (would this matter if true?)
+4. Test only the intersection
+
+This prevents:
+
+* trivial confirmations
+* endless parameter tweaks
+* “yes-but-who-cares” results
+
+---
+
+### C) MD / ADMET / formulation space (very close to your work)
+
+Translate directly:
+
+| OMNI concept      | Science analogue                         |
+| ----------------- | ---------------------------------------- |
+| Task              | Molecule / formulation / simulation      |
+| Learning progress | Model improvement on that region         |
+| Interestingness   | Mechanistic novelty / delivery relevance |
+| FM                | Literature-trained chemical LM           |
+
+You already *feel* this pain:
+
+* thousands of molecules improve RMSE
+* only a few teach you something about **mechanism**
+
+OMNI gives you a principled way to say:
+
+> “Ignore easy-but-uninformative regions.”
+
+---
+
+### D) Scientific open-endedness (big picture)
+
+Science itself is open-ended learning.
+
+OMNI is essentially a computational version of:
+
+> **“Work on problems that are both solvable and important.”**
+
+That’s how humans do PhDs.
+
+---
+
+## Final mental model (keep this)
+
+> **Learning progress tells you where to push.
+> Interestingness tells you where pushing matters.**
+
+OMNI is not about making agents more curious.
+It’s about making them **less stupidly curious**.
+
+---
+
+If you want next, we can:
+
+* 🔬 design an **OMNI-style loop for your ADMET / MD pipeline**
+* 📐 formalise interestingness as a learned latent variable
+* 🧠 discuss whether this is *proto-AGI-ish* or just good engineering
+
+Just tell me which direction you want to go.
+
+AtlasGPT:
+Confidence: 0.82/1.0
+
+Alright — here are the three, **one after the other**, and in a way you can actually plug into your workflow.
+
+---
+
+## 1) An OMNI-style loop for your ADMET + MD pipeline
+
+### Step-by-step plan
+
+1. **Define what a “task” is** in your setting
+   Pick *one* of these (you can extend later):
+
+   * **Task = pick a molecule** (to label / simulate / curate)
+   * **Task = pick an endpoint** (LogD, solubility, permeability, ER, etc.)
+   * **Task = pick a “region” of chemical space** (scaffold cluster, property quantile bucket, etc.)
+   * **Task = pick a simulation action** (run MD replicate, longer trajectory, alternative excipient condition)
+
+2. **Define “learning progress” (LP)**
+   LP should be “how much better did the model get *recently* on this task bucket?”
+
+   * For molecule buckets: Δ(validation error on that bucket over last N training rounds)
+   * For endpoints: Δ(endpoint-specific MAE/RMSE)
+   * For clusters/scaffolds: Δ(cluster error or Δcalibration
+
+3. **Define “interestingness” (MoI) for chemistry**
+   The crucial trick: MoI isn’t “fun”; it’s **scientific/value relevance**. Examples:
+
+   * “Mechanistically informative” (explains why solubility changes with excipient)
+   * “Delivery-relevant” (connects to absorption/permeability/lymphatic uptake)
+   * “Novel but plausible” (not just weird outliers / assay noise)
+
+4. **Combine them like OMNI**
+
+   * Sample probability ∝ **LP × InterestingnessWeight**
+   * If “boring”: multiply by 1e-3 (or 1e-2 if you want gentler filtering)
+
+### A concrete implementation that fits your stack
+
+**Task bucket definition (good default):**
+
+* Bucket = (Butina scaffold cluster) × (endpoint) × (label-density tier)
+  where label-density tier = {dense, medium, sparse}
+
+**Learning progress:**
+
+* Keep a rolling window of per-bucket validation MAE
+* LP(bucket) = MAE(t−k) − MAE(t)  (positive = improving)
+
+**Interestingness model options (pick one to start):**
+
+* **Heuristic MoI (fast & robust)**
+
+  * Interesting if bucket is:
+
+    * sparse labels (information gain potential)
+    * high uncertainty but not extreme outlier
+    * known delivery-critical endpoints (e.g., solubility/permeability/ER)
+    * under-represented scaffolds
+* **LLM-assisted MoI (closer to the paper)**
+
+  * Feed bucket summary text to an LLM:
+
+    * scaffold family name / nearest known drugs
+    * endpoint context (“inhaled dissolution”, “oral excipient solubilization”, etc.)
+    * uncertainty + predicted error + any mechanistic descriptors
+  * Ask for: “interesting vs boring” + one-line justification
+  * Cache results; you don’t want to call it repeatedly.
+
+**Pseudo-loop**
+
+* Every training “epoch block” (say every 1–3 hours of training):
+
+  1. recompute LP across buckets
+  2. update uncertainty estimates (ensemble / MC dropout / conformal residuals)
+  3. compute MoI label for buckets (cached)
+  4. sample next batch of *data acquisition actions*:
+
+     * which molecules to curate next
+     * which MD sims to run next
+     * which assay endpoints to target next
+
+**Why this is powerful**
+It turns your pipeline into a **closed-loop system**:
+
+> the model decides what data to acquire next, but under a value filter that keeps it from chasing trivial wins.
+
+---
+
+## 2) Formalising “interestingness” as a latent variable
+
+Here’s a clean, ML-friendly formulation that matches the OMNI spirit but is more “scientific ML” than “prompting.”
+
+### Step-by-step formal model
+
+1. **Introduce a latent variable**
+
+* Let ( z \in {0,1} ) denote “interesting” (1) vs “boring” (0)
+* Each *candidate task* ( \tau ) (bucket/molecule/experiment) has features ( x_\tau )
+
+2. **Model interestingness probabilistically**
+
+* ( p(z=1 \mid x_\tau) = \sigma(g_\phi(x_\tau)) )
+* ( g_\phi ) can be:
+
+  * a small classifier
+  * a graph model + metadata
+  * an LLM-score distilled into a smaller model
+
+3. **Define learnability / learning progress**
+
+* Let LP((\tau)) be your measured recent improvement (as above)
+* Or use expected improvement:
+
+  * ( \mathbb{E}[\Delta \text{error} \mid \tau] )
+
+4. **Task sampling distribution**
+   A direct OMNI-like rule:
+
+[
+P(\tau) \propto \text{LP}(\tau),\big(\epsilon + p(z=1\mid x_\tau)\big)
+]
+
+* (\epsilon) is small (like 1e-3) so boring tasks aren’t impossible.
+
+### How to train (p(z=1|x)) in practice (3 options)
+
+**Option A — Distill from an LLM (closest to paper)**
+
+* Prompt LLM to label tasks as interesting/boring
+* Train (g_\phi) on those labels
+* You now have a cheap MoI you can run at scale
+
+**Option B — Learn from human/PI preferences**
+
+* If you ever choose “these experiments matter,” log that
+* Use those choices as supervision for (z)
+
+**Option C — Self-supervised proxy**
+Define “interesting” as tasks that:
+
+* unlock downstream improvements broadly (transfer)
+* increase coverage/diversity
+* reduce uncertainty in high-impact regions
+  Then (z) is learned as “predicts downstream value.”
+
+### Why this latent-variable view is useful
+
+* You can measure calibration: “Is my MoI overconfident?”
+* You can debug: “What features are driving boringness?”
+* You can combine multiple notions (mechanistic + novelty + feasibility) as separate latents.
+
+---
+
+## 3) Is this proto-AGI, or just solid engineering?
+
+Both, but in different senses. Here’s a clear way to think about it.
+
+### Step-by-step framing
+
+1. **AGI-ish ingredient: value-guided exploration**
+   Open-endedness needs two things:
+
+* exploration (try new stuff)
+* value (try *the right* new stuff)
+
+OMNI injects a **learned value prior** (“humans tend to care about X”).
+
+That’s a real ingredient of generally intelligent behaviour:
+
+> choosing problems that compound.
+
+2. **But it’s not “full AGI”**
+   Why not?
+
+* It doesn’t create a grounded, self-consistent objective system
+* It borrows human preferences via a model trained on human artifacts
+* The “interestingness” signal can be shallow, biased, or misaligned
+
+3. **It’s best understood as “curriculum alignment”**
+   OMNI aligns the agent’s self-generated curriculum with:
+
+* human salience
+* human usefulness priors
+* human compression of what tends to matter
+
+That’s powerful, but still *a tool*, not autonomy.
+
+### The practical verdict
+
+* **Engineering win:** yes — it’s a clean way to reduce wasted learning.
+* **Scientific win:** yes — it gives you a framework for “what’s worth testing next.”
+* **AGI relevance:** yes — but as a *component* (value selection), not a whole agent.
+
+### The failure mode to watch (important)
+
+If your MoI is wrong, you can get:
+
+* **premature narrowing** (miss weird-but-important regions)
+* **trend-following** (learn what literature talks about, not what’s true)
+  So you want the “epsilon leak” (boring tasks occasionally sampled), plus periodic exploration.
+
+---
+
+If you want to go one notch more actionable: tell me which of these you want as your “task unit” **right now**:
+
+* **(A)** molecule selection for new labels/curation
+* **(B)** MD simulation scheduling (what to simulate next)
+* **(C)** endpoint targeting / assay planning
+  …and I’ll sketch a concrete scoring function + data structures for it (Polars-friendly, cache-friendly, HPC-friendly).
+

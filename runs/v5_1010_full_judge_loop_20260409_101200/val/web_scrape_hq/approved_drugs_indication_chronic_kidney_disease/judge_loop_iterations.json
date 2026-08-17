@@ -1,0 +1,82 @@
+[
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for chronic kidney disease. For each drug, include the ChEMBL ID, name, canonical SMILES, EFO ID, indication label, and max phase for that indication.",
+    "sql": "WITH ckd_indications AS (\n  SELECT\n    di.molregno,\n    di.mesh_heading AS indication_label,\n    di.efo_id,\n    di.max_phase_for_ind\n  FROM drug_indication di\n  WHERE di.mesh_heading LIKE '%chronic kidney disease%'\n), ckd_drugs AS (\n  SELECT DISTINCT\n    md.molregno,\n    md.chembl_id,\n    md.pref_name\n  FROM ckd_indications di\n  JOIN molecule_dictionary md ON di.molregno = md.molregno\n  WHERE md.max_phase = 4\n)\nSELECT\n  cd.chembl_id,\n  cd.pref_name,\n  cs.canonical_smiles,\n  ci.efo_id,\n  ci.indication_label,\n  ci.max_phase_for_ind\nFROM ckd_drugs cd\nJOIN ckd_indications ci ON cd.molregno = ci.molregno\nJOIN compound_structures cs ON cd.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE ckd_drugs\n7 | 2 | 174 | SCAN di\n12 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n34 | 0 | 174 | SCAN di\n39 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | BLOOM FILTER ON cd (molregno=?)\n61 | 0 | 50 | SEARCH cd USING AUTOMATIC COVERING INDEX (molregno=?)",
+    "res_row_count": 4,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List all approved drugs indicated for chronic kidney disease (CKD). For each drug, include the ChEMBL ID, name, canonical SMILES, EFO ID, indication label (mesh_heading), and max phase for that indication. Use the drug_indication table filtered by the mesh_heading for 'Chronic Kidney Disease' and join with molecule_dictionary for approved drugs (max_phase=4) and compound_structures for SMILES.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.mesh_heading AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno AND md.max_phase = 4 JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading = 'Chronic Kidney Disease'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List all approved drugs indicated for chronic kidney disease. For each drug, include the ChEMBL ID, name, canonical SMILES, EFO ID, indication label, and max phase for that indication. Filter the drug_indication table for the MeSH heading 'Kidney Diseases, Chronic' and join with molecule_dictionary to include only approved drugs (max_phase = 4).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.mesh_heading AS indication_label,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno AND md.max_phase = 4\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading = 'Kidney Diseases, Chronic';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "List all approved drugs indicated for chronic kidney disease. For each drug, include the ChEMBL ID, name, canonical SMILES, EFO ID, indication label, and max phase for that indication. Filter the drug_indication table where the mesh_heading contains the word 'Chronic' and also contains the word 'Kidney' to capture relevant indications. Join with molecule_dictionary to include only approved drugs (max_phase = 4).",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.mesh_heading AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno AND md.max_phase = 4 JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading LIKE '%Chronic%' AND di.mesh_heading LIKE '%Kidney%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 55,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

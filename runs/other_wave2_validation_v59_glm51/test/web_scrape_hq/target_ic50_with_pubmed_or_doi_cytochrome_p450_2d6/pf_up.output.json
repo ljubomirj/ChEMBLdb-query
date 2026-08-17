@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id (molecule_dictionary.chembl_id), canonical_smiles (compound_structures.canonical_smiles), compound_key (compound_records.compound_key), pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi), assay_description (assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (target_dictionary.chembl_id), target_name (target_dictionary.pref_name), target_organism (target_dictionary.organism). Join molecule_dictionary to activities on molregno, activities to assays on assay_id, assays to target_dictionary on tid, activities to compound_records on record_id, compound_records to docs on doc_id, molecule_dictionary to compound_structures on molregno (INNER JOIN). Filter target_dictionary.chembl_id = 'CHEMBL289', activities.standard_type = 'IC50', compound_structures.canonical_smiles IS NOT NULL, and at least one of docs.pubmed_id or docs.doi IS NOT NULL. Return all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id (molecule_dictionary.chembl_id), canonical_smiles (compound_structures.canonical_smiles), compound_key (compound_records.compound_key), pubmed_id_or_doi (prefer docs.pubmed_id, fallback to docs.doi), assay_description (assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (target_dictionary.chembl_id), target_name (target_dictionary.pref_name), target_organism (target_dictionary.organism). Join molecule_dictionary to activities on molregno, activities to assays on assay_id, assays to target_dictionary on tid, activities to compound_records on record_id, compound_records to docs on doc_id, molecule_dictionary to compound_structures on molregno (INNER JOIN). Filter target_dictionary.chembl_id = 'CHEMBL289', activities.standard_type = 'IC50', compound_structures.canonical_smiles IS NOT NULL, and at least one of docs.pubmed_id or docs.doi IS NOT NULL. Return all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

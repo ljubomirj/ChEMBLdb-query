@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_type_2_diabetes_mellitus.json",
+  "case_id": "approved_drugs_indication_type_2_diabetes_mellitus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query returned 0 rows because the filter condition `di.mesh_heading = 'type 2 diabetes mellitus'` is too strict. The `drug_indication` table stores MeSH headings in a specific format (e.g., 'Diabetes Mellitus, Type 2'), and the exact string 'type 2 diabetes mellitus' does not match any rows. Additionally, the query filters for `max_phase_for_ind = 4`, which corresponds to 'Approved' drugs, but this filter might be too narrow if some approved drugs have a different phase recorded or if the indication data uses a different phase value. The query logic is sound, but the filter condition needs to be relaxed to match the actual data in the `drug_indication` table.\",\n  \"score\": 0.2,\n  \"decision\": \"CONTINUE\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows because the filter condition `di.mesh_heading = 'type 2 diabetes mellitus'` is too strict. The `drug_indication` table stores MeSH headings in a specific format (e.g., 'Diabetes Mellitus, Type 2'), and the exact string 'type 2 diabetes mellitus' does not match any rows. Additionally, the query filters for `max_phase_for_ind = 4`, which corresponds to 'Approved' drugs, but this filter might be too narrow if some approved drugs have a different phase recorded or if the indication data uses a different phase value. The query logic is sound, but the filter condition needs to be relaxed to match the actual data in the `drug_indication` table.",
+      "score": 0.2,
+      "decision": "CONTINUE"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/approved_drugs_indication_type_2_diabetes_mellitus/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/approved_drugs_indication_type_2_diabetes_mellitus/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/approved_drugs_indication_type_2_diabetes_mellitus/pf_judge.generated_artifact_record.json"
+  }
+}

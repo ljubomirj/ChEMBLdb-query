@@ -1,0 +1,7 @@
+Select molecule_chembl_id AS compound_chembl_id, canonical_smiles, compound_records.compound_key AS compound_key, COALESCE(pubmed_id, doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism
+Join activities ON activities.record_id = compound_records.record_id
+Join assays ON activities.assay_id = assays.assay_id
+Join target_dictionary ON assays.tid = target_dictionary.tid
+Join compound_structures ON compound_structures.molregno = activities.molregno
+Join compound_records ON compound_records.record_id = activities.record_id
+Where activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.chembl_id = 'CHEMBL5658'

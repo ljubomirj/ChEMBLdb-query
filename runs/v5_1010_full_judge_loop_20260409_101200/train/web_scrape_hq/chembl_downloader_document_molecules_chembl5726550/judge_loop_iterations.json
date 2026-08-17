@@ -1,0 +1,33 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compound records reported in the specific document with the identifier CHEMBL5726550. Return the compound's ChEMBL identifier (as `compound_chembl_id`), the internal molecule numeric identifier (as `molregno`), the document's title, and the PubMed identifier (as `pubmed_id`). Ensure each qualifying molecule appears only once in the result set.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS compound_chembl_id, md.molregno, d.title, d.pubmed_id\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5726550';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all molecules reported in the document CHEMBL5726550, returning the public ChEMBL identifier (as `compound_chembl_id`), the internal numeric molecule identifier (as `molregno`), the document title, and the PubMed identifier (as `pubmed_id`). Ensure each molecule is listed once only, without duplicate rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.molregno, d.title, d.pubmed_id\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5726550';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1352,
+    "res_columns": [
+      "compound_chembl_id",
+      "molregno",
+      "title",
+      "pubmed_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

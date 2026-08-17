@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_parent_names.json",
+  "case_id": "metabolism_first200_parent_names",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 200 rows of metabolism data with the requested columns, but there are critical issues: 1) The parent_compound_name is incorrectly populated with the substrate compound name (e.g., 'Epirubicinol' and 'Epirubicin' both appear as parent_compound_name), indicating the molecule_hierarchy join logic is flawed. 2) The join condition for molecule_hierarchy is incorrect: it uses `mh.parent_molregno = substrate.molregno` instead of `mh.parent_molregno = substrate.molregno` (which would be correct for finding parent), but the sample rows show the same molregno for child and parent, suggesting the join is not retrieving the actual parent. 3) The sample rows show duplicate entries for the same compound (Epirubicinol/Epirubicin) with identical pathway_key, indicating no deduplication but the requirement is to keep first 200 rows without deduplication, which is acceptable. However, the parent_compound_name is wrong, making the result semantically incorrect. The query also incorrectly joins molecule_hierarchy with `mh.parent_molregno = substrate.molregno` (should be `mh.parent_molregno = substrate.molregno` to find parent, but the sample rows show the same molregno for child and parent, meaning the join is not working as intended). The correct join should be `mh.parent_molregno = substrate.molregno` to get the parent, but the sample rows show the same molregno for child and parent, indicating the join is not retrieving the actual parent. The result is not good enough to stop iterating because the parent_compound_name is incorrect, and the join logic needs to be fixed to retrieve the actual parent compound name from molecule_dictionary via molecule_hierarchy.parent_molregno.\",\n  \"score\": 0.4,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 200 rows of metabolism data with the requested columns, but there are critical issues: 1) The parent_compound_name is incorrectly populated with the substrate compound name (e.g., 'Epirubicinol' and 'Epirubicin' both appear as parent_compound_name), indicating the molecule_hierarchy join logic is flawed. 2) The join condition for molecule_hierarchy is incorrect: it uses `mh.parent_molregno = substrate.molregno` instead of `mh.parent_molregno = substrate.molregno` (which would be correct for finding parent), but the sample rows show the same molregno for child and parent, suggesting the join is not retrieving the actual parent. 3) The sample rows show duplicate entries for the same compound (Epirubicinol/Epirubicin) with identical pathway_key, indicating no deduplication but the requirement is to keep first 200 rows without deduplication, which is acceptable. However, the parent_compound_name is wrong, making the result semantically incorrect. The query also incorrectly joins molecule_hierarchy with `mh.parent_molregno = substrate.molregno` (should be `mh.parent_molregno = substrate.molregno` to find parent, but the sample rows show the same molregno for child and parent, meaning the join is not working as intended). The correct join should be `mh.parent_molregno = substrate.molregno` to get the parent, but the sample rows show the same molregno for child and parent, indicating the join is not retrieving the actual parent. The result is not good enough to stop iterating because the parent_compound_name is incorrect, and the join logic needs to be fixed to retrieve the actual parent compound name from molecule_dictionary via molecule_hierarchy.parent_molregno.",
+      "score": 0.4,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_first200_parent_names/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_first200_parent_names/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_first200_parent_names/pf_judge.generated_artifact_record.json"
+  }
+}

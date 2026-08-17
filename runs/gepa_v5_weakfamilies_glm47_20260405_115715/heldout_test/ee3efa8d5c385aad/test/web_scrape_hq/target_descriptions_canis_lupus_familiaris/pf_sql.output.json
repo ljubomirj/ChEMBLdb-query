@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_canis_lupus_familiaris.json",
+  "case_id": "target_descriptions_canis_lupus_familiaris",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nWHERE a.assay_organism = 'Canis lupus familiaris'\nORDER BY td.pref_name\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nWHERE a.assay_organism = 'Canis lupus familiaris'\nORDER BY td.pref_name"
+    }
+  }
+}

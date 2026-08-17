@@ -1,0 +1,41 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ces2_multi_type_activities_first500.json",
+  "case_id": "target_ces2_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_chembl_id as chembl_id, canonical_smiles, standard_type, standard_value, standard_units\",\n    \"From activities\",\n    \"Join assays on activities.assay_id = assays.assay_id\",\n    \"Join target_dictionary on assays.tid = target_dictionary.tid\",\n    \"Join compound_structures on activities.molregno = compound_structures.molregno\",\n    \"Where target_dictionary.chembl_id = 'CHEMBL206'\",\n    \"Filter standard_type = 'IC50'\",\n    \"Filter standard_value IS NOT NULL\",\n    \"Filter standard_relation = '='\",\n    \"Order by standard_value\",\n    \"Limit 500\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_chembl_id as chembl_id, canonical_smiles, standard_type, standard_value, standard_units",
+        "From activities",
+        "Join assays on activities.assay_id = assays.assay_id",
+        "Join target_dictionary on assays.tid = target_dictionary.tid",
+        "Join compound_structures on activities.molregno = compound_structures.molregno",
+        "Where target_dictionary.chembl_id = 'CHEMBL206'",
+        "Filter standard_type = 'IC50'",
+        "Filter standard_value IS NOT NULL",
+        "Filter standard_relation = '='",
+        "Order by standard_value",
+        "Limit 500"
+      ]
+    }
+  }
+}

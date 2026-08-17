@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293267_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293267_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "Select: assay.chembl_id AS assay_chembl_id, target.target_type, target.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value. Source: activities (act), assays (assay), target_dictionary (target), molecule_dictionary (md), compound_structures (cs). Join: act.assay_id = assay.assay_id, assay.tid = target.tid, act.molregno = md.molregno, md.molregno = cs.molregno. Filter: target.chembl_id = 'CHEMBL1293267', act.standard_type = 'IC50', act.standard_relation = '=', act.pchembl_value IS NOT NULL. Sort: md.chembl_id ASC, assay.chembl_id ASC. Limit: 1000."
+}

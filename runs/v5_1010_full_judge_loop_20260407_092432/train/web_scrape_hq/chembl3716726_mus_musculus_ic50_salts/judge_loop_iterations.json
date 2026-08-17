@@ -1,0 +1,36 @@
+[
+  {
+    "n": 2,
+    "up": "Return all IC50 activity data for the compound CHEMBL3716726 and any of its salt forms against target CHEMBL375. For each matching activity record, provide the following columns: the compound ChEMBL ID (CHEMBL3716726 or any related salt), canonical SMILES, assay ChEMBL ID, assay description, target ChEMBL ID, document PubMed ID (if available), and document DOI. Include all records with standard_type = 'IC50', regardless of units, relation, or data validity flags.",
+    "sql": "WITH target_mols AS (\n    SELECT parent.molregno\n    FROM molecule_dictionary parent\n    WHERE parent.chembl_id = 'CHEMBL3716726'\n    UNION\n    SELECT mh.molregno\n    FROM molecule_dictionary parent\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n    WHERE parent.chembl_id = 'CHEMBL3716726'\n)\nSELECT\n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    a.assay_chembl_id,\n    ass.description AS assay_description,\n    td.chembl_id AS target_chembl_id,\n    d.pubmed_id,\n    d.doi\nFROM activities a\nJOIN target_mols tm ON a.molregno = tm.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n    td.chembl_id = 'CHEMBL375'\n    AND a.standard_type = 'IC50';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.assay_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Return all IC50 activity data for CHEMBL3716726 and its salt forms against target CHEMBL375. Include the parent molecule and all child molecules from the molecule_hierarchy table. For each activity record, provide: the compound ChEMBL ID (from molecule_dictionary), canonical SMILES (from compound_structures), assay ChEMBL ID (from assays), assay description (from assays), target ChEMBL ID (from target_dictionary), document PubMed ID (from docs), and document DOI (from docs). Filter by standard_type = 'IC50' and target chembl_id = 'CHEMBL375'. Do not filter on units, standard_relation, or data validity.",
+    "sql": "WITH target_mols AS (\n    SELECT parent.molregno\n    FROM molecule_dictionary parent\n    WHERE parent.chembl_id = 'CHEMBL3716726'\n    UNION\n    SELECT mh.molregno\n    FROM molecule_dictionary parent\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n    WHERE parent.chembl_id = 'CHEMBL3716726'\n)\nSELECT\n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    ass.chembl_id AS assay_chembl_id,\n    ass.description AS assay_description,\n    td.chembl_id AS target_chembl_id,\n    d.pubmed_id,\n    d.doi\nFROM activities a\nJOIN target_mols tm ON a.molregno = tm.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN docs d ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n    td.chembl_id = 'CHEMBL375'\n    AND a.standard_type = 'IC50';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE target_mols\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n21 | 16 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n26 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n54 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n59 | 0 | 32 | SCAN tm\n62 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n69 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n81 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n90 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n99 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 8,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "assay_chembl_id",
+      "assay_description",
+      "target_chembl_id",
+      "pubmed_id",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

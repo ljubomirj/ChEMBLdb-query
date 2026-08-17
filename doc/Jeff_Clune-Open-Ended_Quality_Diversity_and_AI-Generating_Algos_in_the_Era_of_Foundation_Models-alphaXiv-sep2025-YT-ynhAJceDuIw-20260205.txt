@@ -1,0 +1,1318 @@
+
+========================================================================
+
+https://youtu.be/ynhAJceDuIw?si=xNMVIZFv2MhzYYOn
+
+Jeff_Clune-Open-Ended_Quality_Diversity_and_AI-Generating_Algos_in_the_Era_of_Foundation_Models-alphaXiv-sep2025-YT-ynhAJceDuIw-20260205.mp4
+
+https://x.com/bohannon_bot/status/1969137714575405432
+
+========================================================================
+
+https://www.appblit.com/scribe?v=ynhAJceDuIw
+
+AppBlit
+Scribe
+Instant YouTube Transcripts
+
+Jeff Clune: Open-Ended, Quality Diversity, and AI-Generating Algos in the Era of Foundation Models
+@alphaXiv
+5 months ago (Sep 19, 2025) — 1:52:03
+
+English
+Summary
+
+The speaker discusses their research on algorithms for quality, diversity, and open-ended AI, emphasizing the importance of exploration and goal switching. They introduce quality diversity algorithms like Map Elites, which generate a diverse set of high-quality solutions. The speaker then moves on to open-ended algorithms, which aim for continuous innovation, and presents Poet, an algorithm that generates increasingly complex learning environments and solutions. They also discuss AI generating algorithms, particularly Omni, which uses language models to identify interesting tasks, and Omni Epic, which generates code for environments. Finally, the speaker touches on foundation models like Genie and their potential for creating advanced AI systems, and the use of pre-training to improve learning efficiency. The talk concludes with a discussion of AI safety and the potential for these algorithms to drive scientific discovery.
+
+3 classes of algorithms that you may or may not be familiar with✨
+
+0:00
+Well, hello everybody. Thank you for showing up. I am super excited to speak to you about what I have been researching for the last 20 years or so. I'm super passionate about this topic. So, super I'm very happy to debate it. 
+
+0:14
+So, if you disagree with anything I say, then ask me questions and let's discuss or if you don't understand anything, I also I prefer that you understand more than I just, you know, say a bunch of words. So, today I want to motivate three different classes of algorithms that you may or may not be familiar with. quality, diversity, open ended and AI generating algorithms. 
+
+0:33
+And then I want to spend like the second half of the talk talking about how there's been a huge number of things that have been unlocked in these algorithms because of foundation models. So there's a paradox in life which I want to start with which is if you try too hard to solve a really ambitious problem, you will fail. In contrast, if you completely ignore the problem, you are much more likely to succeed. 
+
+0:57
+So, as a metaphor for that, imagine that you are an agent and you start in this maze here and you are only rewarded for going closer to the goal. Well, that is actually this plot here. The algorithm over time just bumps it goes north and it bumps its head against this wall forever. 
+
+1:12
+Every once in a while through random exploration, it goes somewhere else, but it's incentivized to only go north and so it never solves the problem. In contrast, if you just say, "Hey, go to new places," you trivially solve this problem. Now you might think that is an overly simplistic problem but I think probably this is the most important slide of the whole talk. These kind of problems are everywhere. 
+
+1:34
+They are throughout science and throughout technology throughout culture. For example, go back thousands of years to cooking over an open fire. Imagine if you're the queen and you say, "I will only fund scientists in my queendom that give me more cooking per minute with less smoke." You will never get the modern microwave because to invent the modern microwave, you had to have been working on radar technology and notice that a chocolate bar melted in your pocket. Similarly, go back to the time of the abacus. Only fund people who give you more compute per second. 
+
+2:07
+You will never get the modern computer because to invent that you had to have invented electricity and vacuum tubes which were not technologies invented because they help with computation. You just have to go invent and discover interesting stuff forever and eventually you can solve really hard problems. Trying to get to a specific location will cause you to fail. 
+
+How to create a variety of algorithms that are high quality✨
+
+2:28
+So the conjecture here is that the only way to solve really hard problems may be by creating the problems while you solve them and then goal switching between them. Goal switching means hey if I'm a scientist or an algorithm and I'm trying to solve a particular goal like I'm a roboticist and I want bipedal locomotion and I start seeing something else happening in my algorithm like it starts crawling or it starts balancing on one leg. 
+
+2:55
+Don't throw that out because it doesn't measurably improve forward speed. Instead say hey that's interesting let's try to practice that skill also add that to the set of things that we are trying to get good at and maybe those end up being stepping stones that ultimately are on the path to our real goal which was bipedal locomotion. 
+
+3:17
+So we want our algorithms to capture serendipitous discoveries to say that's funny and go after new and interesting opportunities. So that leads us to this field called quality diversity algorithms that my friends and I have been you know creating over the last almost you know 1.10 years now. 
+
+3:34
+And the idea here is that we want to create not just the single best solution we can find in a search space but instead to create a huge diversity of high quality solutions. Just like nature, Darwinian evolution produced all of these amazing engineering marvels you see on the screen here that are all weird and different, but they're really high quality at whatever it is that they do. 
+
+Map Elites: A Basic Playbook for the Future✨
+
+4:00
+You know, like I'm not better at a tiger at being a tiger or a frog. Thank god. So, map elites is the poster child of quality diversity algorithms at this point. It's the most popular algorithm by a lot. It was co invented by Jean Baptiste Mor and I a decade ago now. So we're celebrating its birthday. Uh and the idea here is pretty simple. 
+
+4:21
+So we are going to say, hey, we're searching for something like high erforming robots. We're searching in the space of robot bodies. We want a fast robot. That's our performance measure. We are also going to pick dimensions of variation, ways that these robot bodies can vary that we care about. So we might say, I want robots of different heights and different weights. And then those are the multiple dimensions, dimensions of variation. 
+
+4:45
+And then what we're going to do is run a pretty simple algorithm. We're going to parameterize the agent with a parameter vector like theta. Evaluate it. Figure out its performance. That's shown in color here. But also its properties, its height and its weight. In biology, these are called phenotypic properties. That's why we call it the archive of phenotypic elites. And then we're going to put that agent in the right place in the grid. 
+
+5:10
+And then we're going to run a simple loop. Take something out of the grid. perturb it a little bit, re evaluate it, and put it back in the grid. And if it is the best thing we've ever seen at that location in the grid, swap it in. It becomes the new elite. Otherwise, throw it out. That's the algorithm. Now, this basic playbook is going to be the basic playbook for the rest of the talk. 
+
+How this simple algorithm is going to do really powerful things in a variety of domains✨
+
+5:34
+I'm going to show you how this simple idea, which is grow an archive of interestingly different things that may be stepping stones to other things, is going to do really powerful things in a variety of different domains. So that's why I want to walk you through this algorithm. So we just loop that forever. 
+
+5:51
+And what's really cool about this algorithm is, as I said earlier, rather than give you a single best go player, it gives you this huge diversity of high quality yet different solutions for whatever search space that you were searching for. It teaches you for example there are local optima here and here and this is a really bad place in the search space. So when we first invented this algorithm, I had just done this paper here. 
+
+6:14
+This is a paper on soft robots and we this went viral at the time and it produced some really a lot of interest in the idea that you could use search to produce interesting robot bodies automatically. The the cheat that we didn't like you know the cheat in this video is that the diversity is not coming from one run. Each thing that you see here came from a separate run of optimization. 
+
+6:37
+And if you look within search in that run they're all slight variance on one of these things. And so we're only getting diversity in like the dumbest way, which is to restart the algorithm, which is a lot of the ways that we got diversity in neural net training as well. But I didn't want that. 
+
+6:50
+We wanted to be able to launch one run, like one run of evolution and get this explosion of diversity within one run. And so we said, hey, let's see if map elites can do that. So if you run classic optimization on this soft robotics problem, you get poor performing solutions. They're all black and it doesn't explore the search space very well. 
+
+7:08
+If you specifically add diversity, which we have been doing for decades, but you do it in the classic way like a multi objective optimization algorithm that's rewarding diversity and performance, you do get higher performance. These things are yellow. But it look at how poorly it explored this search base even though it was explicitly being incentivized to be diverse in these two dimensions. 
+
+7:29
+Now with the same amount of compute, look at the sea change that map elites gives you. It is complete revolution in what is possible within a search algorithm. It teaches you so much about the space and it shows you so much about what's possible and not possible in your search space. So what's also cool is you can start doing science on these algorithms to see whether these principles I mentioned are important. 
+
+How to find a robot that works despite damage✨
+
+7:53
+So how for example how important is goal switching? If you take a final best solution that sits here in the map and you can say, hey, where does its where were its ancestors over time and what you can see is that the this lineage from start to finish start to finish took this long circuit path through the search space. 
+
+8:12
+Like you would never have known that the right way to end up at a really good solution here is to walk this path. And you would also probably have guessed that I should start here and just get better. But that is not at all what happens. So this is what we need in our algorithms. we're starting to see it. So, we took these ideas in a nature paper in 2015. We Here's a map. 
+
+8:29
+You can actually see on the floor here. Um, what we did was we had we learned in simulation ahead of time a lot of diverse highquality ways to walk with this robot. Walk on two legs, five legs, three legs, whatever. 
+
+8:44
+And do then if the real robot becomes damaged in the real world then you can quickly use basian optimization to search through this archive of highquality yet wildly different gates to find a gate that still works despite the damage. 
+
+Go Explore: A Complete Guide to the Atari Suite of Games✨
+
+8:58
+So within 1 to two minutes 6 to 12 trials we were able to find a robotic gate that still performed really well on these robots and that's a ve that's a key to rapid robot adaptation to damage. We also use the same basic ideas in a different way in a nature paper we had in 2021. Uh so you might have heard of the algorithm called go explore. 
+
+9:20
+The general idea here is that there were there are many problems in reinforcement learning where you have to do a bunch of actions before you get any reward. And if you don't know how to intelligently explore, you never stumble across that reward. So you never get any signal. So learning just stops. 
+
+9:36
+And so for a long time this Atari suite the Atari suite of games was a benchmark that the field was pounding away on and the hard exploration go games within Atari we were making no progress on. 
+
+9:51
+Uh and so go explore we showed up and we said hey what if you try to effectively go to as many different states as possible that's the diversity part in the highest quality way possible like the highest scoring way and the most efficient way. And that plus a couple insights led us to go explore and it really just blew the roof off of this domain. 
+
+10:11
+So all of these blue dots here were different previous papers their performance on this Monzuma's revenge thing which had become kind of a grand challenge in the field. And what you see is everything basically is failing. Some of these papers specifically and only targeted Monzuma's revenge and still did not do that well. And then look what go explore does. 
+
+10:29
+So a quality diversity algorithm beats the best the human world record and effectively can produce arbitrarily high scores on this game, but it wasn't specifically tailored to that game. It's just a really good exploration algorithm. So we tried it on all of the Atari games in this benchmark suite and it beat all of them. 
+
+10:46
+So it passed state of the art or human performance on all of the games and effectively solved this benchmark which the community had been working on for a very long time at that point. It also solves some really hard exploration robotics tasks here where it the robot only gets a point if it puts its toys away. So it does better than my children at this task and it does better than intrinsically motivated PO. 
+
+Open End Algorithms: How To Create A Robotic Algorithm✨
+
+11:10
+So PO state of the art RL plus intrinsic motivation doesn't do anything on these problems. That's orange. Go explore is in blue solves the problem reliably every single time. So I hope I've convinced you though we can debate. I hope I've convinced you that QD algorithms produce this diverse set of high performing agents and they do that via exploration and goal switching. So what's missing? Well, I think the answer is they're still stuck in one single environment. 
+
+11:38
+No matter how long I run it, I'm just going to get a Monzuma's revenge playing agent. And this is how machine learning traditionally works. We pick a problem like chess or go or Dota. We hammer away at it for a long time. We make better and better algorithms. Eventually, we scale the heck out of them. We solve that problem. and then we manually pick the next challenge. But that is not what we really want. 
+
+11:58
+So that brings us to the second class of algorithms I want to introduce which are called open ended algorithms. I've been working on these my entire career which is over 20 years now with many awesome colleagues. What we want with open ended algorithms are algorithms that truly endlessly innovate forever. And I mean forever. So evolution has been running for 3.5 billion years and it continues to surprise us as we saw with the co epidemic. 
+
+12:27
+It produced jaguars, hawks, the human, the human brain and all these other weird things you see in this thing and it's still going. It never stops. So the question is could we make an algorithm that we would want to give billions of years to compute with where you'd want to come back and check on the billionth and first year to see what it did versus the billionth year. 
+
+12:50
+Right now we have no algorithms that are worth running very long and that I think is a grand challenge of computer science. I think a touring award or more is waiting for the person who can crack this. So, I also want to point out that the only other open ended algorithm we know of besides Darwinian evolution is human culture. So, science doesn't end. 
+
+13:10
+Every time you solve a new scientific problem, you've unlocked more questions, more techniques to allow you to go study other questions and on and on and on and this expanding sphere of knowledge. And we want algorithms that learn in the same way. 
+
+13:24
+So I think one of the key ingredients maybe the key ingredient of open ended algorithms is the fact that the algorithm when it solves one problem that creates new problems, new learning opportunities, new learning environments. For example, evolution produced leaves high up in a tree which was the solution to a problem of how to get sunlight more than the people the plants that are below you. 
+
+13:47
+But that learn that solution then beget an opportunity for caterpillars and giraffes to figure out how to eat those leaves. And caterpillars and giraffes now create an opportunity for things to eat them, live inside them, live on their waste products, etc., etc., etc. So, can we create algorithms that invent more and more problems as they go? So, our one of our first big pushes in this direction was the paired open ended trailblazer algorithm or poet. 
+
+How to Create a System of Using Goal Switching✨
+
+14:14
+The idea here is in the subtitle of the paper. We want to endlessly generate increasingly complex and diverse learning environments and their solutions all in one algorithm all in one run. So the way that this works is we are and this was a first at the time. 
+
+14:28
+We're going to encode the environment in a parameter vector and we're going to start searching for environments and what we're going to do is we're going to have population of agents or a single agent that's learning to try to solve the environments. And periodically, we're going to have this archive of stepping stones, which are environments, we'll take out one of the environments, change it a little bit. 
+
+14:50
+And then if it's not too easy and not too hard for the current agent or set of agents and if it's new, it's different than anything we've seen before, then we'll add it to the system and that will grow our set of environmental stepping stones, we will also allow goal switching. So if we have individual agents specializing in different environments, we'll let them invade other niches. 
+
+15:11
+So maybe for a while the best thing that's ever solving this particular environment is one agent, but there's an innovation in this other environment that allows it to invade and become the dominant species if you will in this environment. So you can create these weird counterintuitive curricula. All the goal switching magic can happen in the algorithm. If you're training a generalist agent, you kind of get that implicitly for free. 
+
+15:31
+So every environment you see here was produced by the system, not by hand. So, it first chose to create obstacles that have very easy challenges. So, little stumps, little gaps, rugged terrain, usually by themselves. Later, it starts to put those challenges together, and then eventually it kind of cranks them all to 11. You get the biggest trees this robot can handle, the biggest gaps, the most rugged terrain, all in the same environment. 
+
+15:57
+Now, what's really nice about these sorts of studies is you can kind of do what you can't do in evolutionary biology, which is you can replay the tape of life and see what would have happened in a different setup. So, we take these final environments that were solved by the agent and we say, "Hey, do I need the weird counterintuitive curricula? Do I need the open endedness? 
+
+16:16
+Or can I just solve that environment?" So, we take the same exact learning algorithm that initially solved it in poet and we say, "Target that particular environment. can you solve it? And in every single case, the answer is no. You needed a curricula to solve that problem. Now, you might say, okay, fine, but I didn't need the weird counterintuitive curricula. 
+
+16:35
+So, we created basically like a beline approach, like work your way up specifically to try to solve that environment. And that also failed in every single case. So, you really need the open endedness to solve this problem just like you needed it to solve to create modern computers and microwaves. 
+
+phoggenetic tree of environments in poet✨
+
+16:53
+An enhanced version of this algorithm with a better or the cooler search space produced all of the diversity you see in environments and the agents that solve these environments in one run. So no longer are we cheating across multiple runs. We're now seeing a flourishing of diversity pop up within a run, which is really encouraging. 
+
+17:12
+This is one of my favorite plots of my entire scientific career because I literally was trying to make this for about 10 to 15 years in evolution. And one of the things you see are what I like to call deep phoggenetic branches. 
+
+17:26
+So if you think of like the tree of life basically it's not the case that every living thing is like a recent like they're all we're all related like you know like a hundred years ago 100 million years ago. 
+
+17:36
+There's like early on there was this split of like fungi and single you know bacteria and animals and you know the big cats and like the aquatic creatures and then evolution has been systematically riffing on that those different themes simultaneously pushing in different directions. You're not seeing a collapse of diversity down to one thing. And here is a phoggenetic tree of environments in poet. 
+
+17:59
+And what you can see is really early on it in advents different types of environments and then it kind of continues to push and riff on that theme for a very long time. 
+
+poets' adventures in the midst of a big swathe of environments✨
+
+18:08
+People took poet and they basically used it as domain randomization to train robots in simulation and then they transferred them to the real world and they were out doing this stuff which at the time is like mind blowing science fiction to see robots handling these environments. Increasingly we're starting to get used to this. 
+
+18:24
+So poet I think shows the benefits of quality diversity and of generating challenges while you are solving them which is a theme that we're going to spend a lot of time on for the rest of the talk. So it's I think poets's exciting what is it missing? Well I think that it is still kind of stuck in this small tiny distribution of environments right all those environments look pretty similar. 
+
+How to handdesign AGI for Turring✨
+
+18:45
+So I want to take a step back and think about the big challenges of our field. John, I don't know if and when you want to jump in for discussion, so I'm just going to keep going till you say something to this. 
+— I was gonna I was gonna give it another five minutes to the clean halfway mark of your talk. 
+
+19:00
+We've only got two questions so far, so I'm going to give folks a chance to throw them in. 
+— All right, let me maybe tee this up. This will be f for discussion here. So, if we zoom way out, 
+— One of the big goals of our field all the way back to Turring is trying to produce what we now call artificial general intelligence or even artificial super intelligence nowadays. 
+
+19:18
+So if you think we should make it and that is a topic for a different talk you know I still think we have a long way to go although it's this slide's becoming dated in recent years but the question is still how will we get all the way there to the finish line I think there's a clear trend in machine learning throughout my career that I've observed which is that handdesigned pipelines get replaced by entirely learned pipelines as we have more compute and more data we've seen this with features architectures hyperparameters RL algorithms and other things that we have in our algorithm MS and I think that suggests an alternate path to trying to handdesign AGI and that's what I called in my 2019 position paper AI generating algorithms. 
+
+19:58
+So the idea here is that we're going to do a lot of search and we're going to be searching for AGI. Uh and we're going to ultimately with a lot of compute we're ultimately going to produce an extremely sample efficient learning agent. And we have an existence proof that this can work on Earth where we had a planet sized computer in 3.5 billion years and that ultimately produced you. So congratulations. 
+
+20:20
+You're the smartest thing we know of so far in the universe and that formula produced it. So if we want to make progress on this goal, I think we need three pillars. We need to metalarn the architectures themselves. We need to metalarn the learning algorithms. And we need to automatically generate effective learning environments. 
+
+20:40
+And I think handcrafting each of these would be very slow and ultimately will be replaced by letting machine learning and compute and scale do the heavy lifting here. So so far in this talk we've talked about pillar 3. We're going to spend a lot more time on pillar 3. We're also going to briefly visit pillar 2. I'm not going to touch pillar one because that's its own community that I haven't been that active in lately. 
+
+21:02
+But it says here, I'm predicting a machine learning algorithm, a neural architecture search will find something better than a transformer. It's shocking that it hasn't happened yet, but it will. My prediction is that it will happen. Okay, that is the clean break in the talk. So far, I've motivated QD, open endedness, and AI generating algorithms. And then for the rest of the talk, we're going to talk about new possibilities unlocked by foundation models. 
+
+How to Jump Off of a DM with a QD algorithm✨
+
+21:25
+But I'm going to let John and the question askers jump in. 
+— Perfect. All right. 
+— You want me to kill the slides while we talk? No, no, that's okay. Um, so, I just got a DM from, Jacob Helwig, which probably is pronounced Jakob Helvig. He says he's in a bad audio environment, and wants me to read his question for him. 
+— Okay. 
+
+21:45
+— Um, his question is, how do the QD algorithms actually support the goal switching? Like, how does that actually work? 
+— The way that it works is because first of all, you're not think about what a traditional search algorithm does, like a hill climbing algorithm. It says, "I have a thing. I'm going to try some stuff. 
+
+22:02
+If I get something better, that's my new thing, and then I'm going to try off of that." So, I always only have one stepping stone to leap off of. A QD algorithm says, I don't want only one leaping off point. I want to collect a whole variety of different things that are different from each other, but each as high quality as we have seen so far of that type of thing. 
+
+22:26
+That then gives me a huge archive of stepping stones and I could periodically take any one of them, try to change it and riff off of it, use it as inspiration. I could also take two and combine them. Uh, and then if that is interestingly different or higher performing of a certain type, add it to my archive. 
+
+22:46
+So I have this growing archive of stepping stones and I can leap off of any of those stepping stones to produce the next innovation. In the same way that in the next hour we will have children of humans and children of butterflies and children of dolphins and children of duck build platypuses. 
+
+Evolution is simultaneously trying new things not off of the current best thing whatever that even means but off✨
+
+23:05
+Evolution is simultaneously constantly trying new things not off of the current best thing whatever that even means but off of many different stepping stones any one of which could produce the next innovation. Before humans, we didn't know that it was going to be the apes and not the dolphins that produced the most intelligent, you know, intelligence that would dominate the planet. So, we were simultaneously pursuing branching off of each of those stepping stones. 
+
+23:30
+— Does that answer your question? Maybe he can answer in DM. 
+— On his behalf, I'm going to say yes. 
+— Okay. 
+— Uh what I'm getting from this is it's like actually the traditional bag of tricks but a population approach. Well, so we have just to be clear, it is I don't know what you mean by traditional bag of tricks. 
+— I mean, you're still doing gradient descent. 
+
+23:49
+You're still, you know, like you're not doing something like completely different. It's just 
+— That's right. 
+— Yeah. 
+— I'd even go more agnostic. I don't even care if you want to use gradient descent or an evolutionary algorithm where you're mutating something like a differentiable algorithm. 
+— You have a search algorithm, an optimization algorithm. What's different is you're not optimizing toward one specific objective and always following the reward signal. 
+
+24:11
+You are willing to get weird and be different in many ways to ignore the reward signal. Not entirely, but this is one of the key things about this algorithm. Imagine if I want everything to be high quality. So I want cheetahs to be fast, but I also want ants to be fast. And so I don't want the fact that cheetahs are really fast to preclude the ant, right? 
+
+How to Make a cheetah faster and ants faster✨
+
+24:34
+Like I shouldn't be competing a cheetah and an ant. That doesn't make any sense. And so the like in a traditional optimization algorithm, if you're the best, you win and everything else dies out. But in this kind of an algorithm, I can simultaneously work on making cheetahs faster while also making ants faster. And then I get ants and cheetahs. So yes, we're using optimization, but it's very different in what it's being asked to do. 
+
+24:56
+And it is a population, although I actually don't like the word population for one reason, which is a little insider baseball, but for a couple decades in evolutionary algorithms, you had these populations. But the population was always one population and then you created the next one and you threw out the previous one. And so it's the equivalent of on Earth right now, the next generation of offspring come from the current set of living things. 
+
+25:19
+That's a population based approach, but you don't have the archive. You can't currently branch off of the dinosaurs because we lost them. 
+— So one slight difference here is we have what I call an archive. So it has the interesting stuff from the entire run, not just the thing that you maintained in the present mode. 
+
+25:34
+You might think that's a minor difference, but actually it was really really hard in evolutionary algorithms to get the population not to forget good stuff and just like cycle around and you lost a lot of good stuff. So that subtle and relatively simple change actually has a huge amount of payoff. 
+— Cool. Um I know that you still have half a talk to give yet. So I want to bring at least one person. 
+
+Uh Luis: You want to ask your question?✨
+
+25:57
+— Uh Luis 
+— You want to ask your question? 
+— Yeah. Um, so I I believe you're you're answering the question in part for with the optimization piece as far as the archive. 
+
+26:16
+Um so I guess the only part left that's with the question in that I that I sent was the dealing with the safe state meaning or is that more like a I guess mechanical problem versus the open ended algorithm or search of an optimized algorithm. Um 
+— I missed the key word. Did you say dealing with the safety 
+— State? 
+
+26:46
+So his question was um the explosion isn't there an explosion of memory problem you know do you put b yeah you know do you use like branching like kind of inspired by git family classification inspired by fogyny how do you deal with it 
+— Good question so you can't save everything that would explode your memory and so you know in the ideal case you would and that would be great but in truth that one not only do you run out of memory but you end up generating a lot of stuff off of stepping stones that aren't that different from each other or that promising. 
+
+The Ultimate Guide to Compression✨
+
+27:18
+So you want some filtering mechanism. Uh in the original map elites, we handdeided these are the dimensions we want to see variation in. We don't care about all the other dimensions and we discretize the space. And so anything that ends up in the same square. It's kind of like being conflated and saying, hey, I've got a mill I've so far generated a thousand things that land in this square. 
+
+27:39
+I'm only keeping one of them, the best one I've seen according to performance. 
+— It's kind of a compression algorithm, actually. Yeah, it's one it's one version of compression. Um, the rest of the talk is going to get into some much cooler ways to do that. So, I'll just let's just save that thought for the rest of the talk. 
+
+27:57
+— We we've got the audience understood the assignment and now there's all these awesome questions coming in, but what worries me is you're like honoring every question like so well and I feel like it's going to gobble up all the time. There's probably 
+— Yeah, I've got a lot more to go. I'm actually not at the halfway point. I'm almost at like the 
+— One. 
+
+28:13
+So yeah, there's probably a bunch of people in the room who can't even stay beyond the hour and I want to I want to get as much of the goodness as possible for them. So carry on. Oops. Now you're muted, Jeff. I see your mouse cursor moving around. I know you're live. 
+— I didn't mute myself. 
+— There you go. Now I hear you. 
+— Okay, somebody muted me. That wasn't me. 
+
+Omni: How to Drive Open Endness✨
+
+28:40
+All right, let's keep going. Uh what I said was I'm happy to answer questions for a long time at the end. So maybe let's push through. All right. So speaking of a different way to figure out what should go in the archive, let's talk about Omni. So this is work led by Jenny here who is awesome. And the idea is that we're going to try to drive open endedness via a model of human notions of interestingness. 
+
+29:03
+That's where the acronym comes from. I'll tell you what I mean by that in a second. So to produce open ended algorithms and AIGAs, what we need is a truly vast environment search space, right? We don't want to be just in one tiny little type of environment. 
+
+29:16
+So the problem is that's a once you have a really big search space, now you have a needle in the haststack problem because most of the problems are impossible, nonsensical, too hard, too easy. What we want is that each new environment that we train our agent on is both learnable. There's something to be learned there and interestingly new versus what we've already discovered and learned. So how do we find those needles in the haststack? 
+
+29:42
+Well, for the learning progress part, is it learnable? There are plenty of methods that exist. My team at OpenAI had this paper here. We're going to use that. It's basically like, is your success rate on this task changing over time? But the new thing here in Omni is that we're trying to go after this thing that for a long time I call the grand challenge of the field. 
+
+30:02
+And that is how do you decide what is interestingly new. So it's easy to have learning progress without it being interesting learning progress. As an example, imagine if I generate a trilliondigit random number. I can give John 10 digits to memorize. He's very good. He'll do that. And then 10 more and he'll learn that. And 10 more and he'll learn that. There'll always be some more learning to be done. 
+
+30:25
+And so learning progress is through the roof, but it's completely useless. Like I don't want to waste John's brain for the rest of his life memorizing this trillion digit long digit. You're welcome, John. He's got other things to do with his time. So what we want to do is have our agents or John always focus on problems that are interestingly new. The problem is for decades we've known this. 
+
+Language Models: What Does It Mean to Be Interesting?✨
+
+30:48
+But when we try to quantify to handcode what counts as interesting, we always fail. Okay? Whenever we write up a function where we say, "Oh, I think I know what defines interesting and then you optimize against that function. You get pathologies. 
+
+31:03
+You get what you asked for, not what you wanted." For example, tell a robot to go to new states and it will just sit there and stare at a dead TV, a TV tuned to a dead channel because that's always a new states, new patterns of dots. Tell a robot to get new body configurations. You're hoping for back flips and cartwheels. 
+
+31:21
+You just get it twitching its muscles randomly forever because it's those are all new configurations. So this gets to what Justice Potter Stewart said in a very different context which is that there are many things in life for which we don't know how to define them but we know it when we see it and I think we just finally got a hopeful answer to this challenge which is that language models also know it when they see it lang we can just ask language models hey I've generated these 15 environments and I have learned them here's a new proposal for an environment would this be an interestingly new problem to solve given what I already know how to do? 
+
+32:02
+And so language models have read the entire internet including lots of people on Reddit complaining about what they find boring and about four of them admitting they found something interesting. And so language models have distilled the entire internet into the weights of the model to figure out what humans count consider interesting and boring. And so we can just ask them. And so that leads us to omni. 
+
+32:22
+So, we're going to do open endedness with this model of human notions of interestingness inside that's provided by a language model. So, the general idea here is we're going to have a learning agent. It's trying to learn as many tasks as we can give it. We're going to measure whether or not a newly proposed environment has high learning progress with the method from my team at OpenAI led by Ingmar. 
+
+32:43
+And then we're going to ask a foundation model. Hey, given the current set of environments we already know how to do and have tried to learn, does this new one count as interesting? What's the next interesting challenge we should do? What's the next interesting challenge we should do? And then we're going to just run RL on that. 
+
+33:00
+So if you do that in these two domains, crafter and baby AI, what you find is if you uniformly sample tasks from a distribution of tasks that we figure picked ahead of time, you don't learn anything interesting because there's too many tasks. If you use learning progress, that works quite well. We show that at OpenAI, but if you use Omni, it works even better. 
+
+How to Measure Tasks in an infinite task space✨
+
+33:20
+Now, you might wonder what how are we measuring tasks, like which tasks do we consider when we measure performance. Well, before we did the run, we picked a subset of tasks we thought would be useful and interesting to learn in this domain. And then we let Omni go with no guidance, no knowledge of that, but we measure how it's doing on that set of tasks. And that's what you're seeing here on the Y axis. 
+
+33:41
+However, that's still operating within a predefined set of tasks. We want to really open this up and see if we can operate in an infinite task space. So we said, hey, let's take a complicated environment like this kitchen and then let's generate tasks forever with words. And in the space of any task that you can express in words, that's now infinite. However, there's a challenge. 
+
+34:04
+If I ask you to put the plant inside the toaster and throw it through the window, I can say that in words, but I now need to measure whether you did that. So I need what we call a universal reward function that can tell me for any task did the agent succeed so I can automatically drive reinforcement learning. 
+
+34:21
+So the real answer I think ultimately which we suggest in the paper is you use like a video language model to watch the video and tell you if you did it. But at the time those things didn't work very well. 
+
+34:31
+So, we figured out there's another answer here, which is you can just ask GPT to write code to define a reward function using the state of the simulator that will tell you if your plant got went through the window or whatever. So, in this much larger task space, if you use uniform sampling of tasks, you get nowhere. And also, if you do learning progress, now you get nowhere as well. 
+
+How to Create a Quick Guide to the Most Rich Environment Search Space✨
+
+34:53
+There's too many there's too much hay and not enough needles. But if you use Omni, it can go through and pick the right task and systematically make progress on this task, which is pretty cool. It also creates its own curricula. It first finds an apple, then figures out how to pick up a knife, and then it learns how to slice an apple with a knife, and on and on. So, Omni is really good. 
+
+35:14
+We're now in an infinite task space. A con though is it's still trapped in one kind of environment. It's in that kitchen, and I really, really want to push and try to go for a truly vast environment search space. In fact, I want to go for the most vast environment search space imaginable. 
+
+35:31
+So, in my 2019 AIGA paper, I put out this idea that like the most rich search space imaginable is a search space that can express any conceivable or more technically any computable environment. So, it could have logic problems, coding problems, math problems. It could have the kitchen that I just showed you. It could have Mario Kart. 
+
+35:53
+It could also create its own simulator like a fluix dynamics simulator or whatever and have you do something in there. So what you want is a search base that has everything that is conceivable and that would be rich enough like Darwin Darwinian evolution had a really rich environment that would be like on that order and so I call it Darwin complete as a nod both to Darwinian evolution and Turing completeness. 
+
+36:17
+And at the time I wrote this paper I could only think of one search base that would fit that would meet that theoretical definition. I will return to that later. 
+
+Darwin Complete Search Space: How to Create a Darwin Complete Search Space✨
+
+36:24
+But recently I was teaching a cla not recently anymore a few years ago I was teaching a class here at UBC and one of my students mentioned something that caused me to realize something that at the time felt wildly surprising and new and that is that code actually could be a Darwin complete search space. And so that leads us to this paper omni epic. 
+
+36:41
+So we're going to do omni but now rather than give it an environment we're going to let the system also program its own environment. And so that's the environments programmed in code or epic led by Jenny and Maxense. And so the idea here is that we are going to have Omni write the code for environments and the reward function. It's Darwin complete if your programming language is Turing complete. And so it can create anything. 
+
+37:05
+So here we asked it just to create environments in PI bullet. But we could very easily have asked it to do anything logic, math, a different simulator, write its own simulator, whatever. That's future work. But I want to show you what it did. So every task you see here, it wrote the code for that learning environment. We seated it with, I think, one or three environments and then it did all the rest. 
+
+37:25
+So it creates an agent that's going across these moving platforms. The agent then kicks a ball through goalposts. Then it creates a new environment where the platforms have gaps between them. It creates an obstacle course. It knocks over, it learns to knock over some domino thing. It has to knock all the dominoes over or knock all the blocks off of the top block. emulating my children. So this is pretty cool. 
+
+37:49
+What actually the limit right now in this algorithm is that it takes so long for the agent to learn each next environment that we couldn't run it for very long. So we wanted to simulate what would happen if we could had a more sample efficient learning algorithm. And so here we just pretend that the agent can solve every environment that Omni generates. And now we can really let it go and see what happens. 
+
+38:08
+And what you do is you see this explosion of diversity. Here's kind of another view of a phoggenetic tree. And you see sustained innovation in different branches in different species of environments if you will. So some of the environments are like explore a big complicated building. Some of them are walk up a ramp or a flight of stairs. 
+
+38:28
+You've got kick a ball through goalpost, kick a ball through moving goalpost, kick a ball off of a wall through a moving goalpost. You even have things like a full soccer game or I love these in the top left corner. create a cluttered construction site or even a cluttered restaurant and you have to clear all the dishes off of the table. That's what the robot has to do. 
+— Jeff, quick question. 
+
+How do you maximize the diversity of those learning environments?✨
+
+38:49
+How do you maximize the diversity of those learning environments? 
+— Very good. So, we are using Omni. So, we go to a language model and we say, "Hey, I'm going to pull an environment out of the archive." So, everything you see on the screen here is a subset of the archive. So, imagine we're going to generate the next environment. I pull one of these environments out. 
+
+39:11
+I show the code and the description of the environment to a language model and I say I want an interestingly new ver like environment inspired by this environment that will be good for my agent to learn on next. The language model gets to see the current set of environments that the agent knows how to act on and how well it performs on them. It generates a new environment for us. 
+
+39:34
+So it might take a I'm kicking a ball through a goalpost and say now I'm going to have the goalpost move. Then like any graduate student who comes to a professor and says I have a new idea. We want to check if it's actually new or if it's been done before. 
+
+39:47
+So once we have this proposed new environment like the moving goalpost thing, we then do retrieval augmented generation from the archive to say go get the most similar environments to that environment. Put those back in the context of the model and say hey you just proposed this environment. Here are the five most similar environments we've seen so far. Do you really think that's new or was that already done? 
+
+40:08
+If it still thinks that's new, boom, we go and we add it to the soup. 
+— Cool. So, it gets another shot on goal. 
+— It gets another shot on goal. Well, well done with the extended metaphor, including a moving goal post. Uh because it changes over time what counts as interestingly new, right? That's really important. Uh okay. 
+
+Omni Epic: How It Will Work✨
+
+40:27
+So to conclude, Omni, Omni finally allows us to focus on interesting tasks because foundation models have learned that ineffable concept from humans. Omni epic allows us to generate any possible environment. It is Darwin complete. And this is one of the first algorithms I have created in my career that I would like would it be interesting to run it for a billion years. 
+
+40:51
+I'm sure it would fail and we'd have to patch the failures, but I don't know exactly how it would fail. And so it would be at least interesting to start putting massive compute behind this thing and seeing where it takes us. All right, I want to return to this thing of this daring complete notion. I mentioned when I first wrote the paper, I had one idea for a daring complete and then I realized code. 
+
+41:10
+Well, that original idea, it was so crazy at the time. I remember walking around the offices at Uber and I was like, I think this will work, but it's so futuristic. It's so nearly inconceivable that I'm like people will think I'm a crackpot and they will dismiss my whole paper because I'm the kind of person who thinks that this might work. 
+
+41:31
+So I almost didn't say it out loud because I thought people would like dismiss me. And the idea was what if we just had the neural net be the simulator, be the entire world environment. So basically the neural net puts out an observation which could be an image or an image in sound. 
+
+41:47
+Uh, and then the agent looks at that, takes an action, and you give the action to this neural net world model and it steps the to the next frame, which could be a new visual picture, maybe new sounds, maybe new coding challenges, whatever. And that's it. It's the transition function. The entire simulator, the entire video game, the entire 3D world, whatever, is in the mind of the neural net. 
+
+42:09
+And it's hard to imagine now, but in 2019, that was like maybe you lose tenure for saying that because people will say you're crazy. But I included it because I could not find a reason in my brain rationally why that wouldn't work. It just seemed so far out there. 
+
+Genie: A World Model that is a neural net that gives you the next observation✨
+
+42:23
+But here we are about four years later, maybe five, and my a team that I was fortunate enough to be on led by these awesome people produces Genie, which stands for generative interactive environments where we go after this exact idea. So Genie is a world model that is a neural net that from one frame and given an action will give you the next observation. give it another action that gives you the next observation. 
+
+42:48
+So to start it, you can either provide a picture that you draw or that you make with an like a Dolly 3. So you can ask via text to Dolly3 to produce an image of a game you want to play, give it to Genie and Genie will when you give it an action let you basically control that and play it like a video game. 
+
+43:07
+So, for example, we say to this, we say over here, you know, I want to you just give it this image and it's like, oh, I know you probably want to control that orange thing in the middle. I'll let you jump up and down, move right and left. Or you could ask here, generate a world in whatever this cartoon is, and you get to play it, which is pretty cool. 
+
+43:26
+So, it produced all these 2D platformer games. Each one could only last a second or two before it would kind of fizzle out, but it showed signs of life. As a fun experiment, we actually took my children's art to see could a kid draw a world and then step into that world and control the characters and walk around in that world. 
+
+43:44
+And sure enough, for a second or two, you can like my kids could control the eagles in their drawing or the football player that they sketched out. You also can use it to simulate robotics tasks, etc. So what I want you to realize though is that this is a foundation world model. And like foundation models, they have similar properties. They're very general. So you can create any world you want. They're foundational. 
+
+44:08
+You can do lots of things on top of them. You can improve them with similar techniques like supervised finetuning, RLHF, and most importantly, scaling laws apply. So we even study this in the original Genie paper. More compute, more data, more better. So not 9 months later, we had Genie 2. So when I put out Genie 1, people were like, "That'll never do anything interesting. 
+
+44:30
+Those are only works for like a second or two on 2D platformers." And I was like on Twitter, I literally said, "This is the worst it will ever be. Soon it will be perfect." And people mocked me, but you know, we'll see what happens. So you see these different environments here, controlling a sailboat, walking above a waterfall, you know, having an archer walk around a forest, etc., etc., etc. 
+
+44:51
+You also can, these things allow you to take different actions. So, here is one thing that we made with an image model. And sure enough, you can walk through the left door into an avatar world or walk into a tunnel like world or walk up the stairs in this environment. So, very rich. Now, you also can do fine grain control. 
+
+45:11
+You get object interactions like blowing up this thing of kerosene or what I think would be really fun, walking around a world and slashing at balloons with a samurai sword, etc. And then about what a month ago, three weeks ago, DeepMind put out Genie 3. Take the same idea, scale it again, scale it more. Now you can control a helicopter in an extremely high resolution almost AAA looking video game. 
+
+45:38
+You can like drive a jet ski around you know with water and have object interactions with the lanterns, fly a bumblebee around this beautiful magical forest or one of my kids favorites, run around on a rainbow bridge with this furry fluffy foxy thing. 
+
+Open ended algorithms like Omni paired with Genie✨
+
+45:54
+So, I just want to remind you this is like a year or two from two second clips of fuzzy blurry platformers and five yearsish from when it was so inconceivable that this might work that I almost was afraid to put it out there with my name behind it. So, that's kind of the lesson of deep learning. 
+
+46:15
+Um, so I want you to imagine now open ended algorithms like Omni paired with Genie, paired with a Darwin complete search space. And if you don't like Genie right now, you don't think it's rich enough, just imagine, wait for four, Genie 4 or Genie 5 or Genie 10. Like it will be amazing very very soon. Very powerful. Okay, so we spent a lot of time on pillar three. 
+
+46:36
+We have QD algorithms, open ended algorithms, poet, omni, omni epic, we have foundation world models like genie. I now want to switch to pillar 2 pretty briefly. and the idea here is based on some work that I did on my team at OpenAI called VPT or video pre training. 
+
+46:54
+So, as I mentioned, when you're trying to learn an in open ended systems, now what the bottleneck is no longer can I generate the next interesting environment like we did a lot of work on that. The bottleneck now is once I do, I still have to learn how to solve that environment. And reinforcement learning is very compute inefficient. It takes a long time and a lot of compute. 
+
+How to Create a Game with Minecraft✨
+
+47:14
+So, right now, open ended algorithms, the thing that's not letting them run off to the races is just that it's so slow to learn in these successive environments. So, as Josh Tenbomb asked me in front of all of I clear and sprung this question on me, you know, I like your AIGA philosophy, but can we do it without a planet sized computer? And I think the answer is yes. 
+
+47:35
+To borrow from Newton, AI sees further by standing on the shoulders of giant human data sets. And so, we want to use the modern GPT playbook pre trained on the internet that gives you a lot of skills to then go solve the next challenge that's put in front of you. So for embodied agents, that means looking at online videos. So we chose Minecraft as our example because there's ungodly amounts of Minecraft videos online. 
+
+47:59
+The problem is that when you're learning how to generate music or audio or text, you get the lab the next token for free, the next pixel, the next word, the next note. When you're trying to watch somebody play a video game, you don't actually know what buttons they're pressing or their keyboard shortcuts. very rarely are they showing you their keyboard on the actual video. 
+
+48:21
+So we had what we did was we said oh well okay what if we train a neural net that we call an inverse dynamics model to look at the past and the future of a small set of videos for which we do have actions and it will just learn oh if I see this past and this future the person must have pressed this button at that transition. 
+
+48:41
+For example if you see this image and then this image you know they must have hit the jump button. Once this thing can do that, we can just show it all of the videos online and have it label them and infer the actions. Now I have an action label data set for the entire internet. And we took eight years, 70,000 hours of video. 
+
+How to Build a Stronger Learning Agent with Pre Training✨
+
+49:00
+We trained a half billion parameter neural net at OpenAI with a lot of GPUs. And what we showed is scaling laws work. The more data you give it, the more it starts to learn zero shot out of pre training. Pretty complicated skills that take humans roughly, you know, 2 minutes and about 3,000 actions. And I really want to call your attention to this right video here. 
+
+49:23
+What's amazing is that these agents come into the world and they know how to see the world and how to explore the world. So gone are the days where we need to have reinforcement learning agents that try to figure out what to do in the environment by just randomly mashing buttons in an epsilon greeting way hoping that some reward signal pops out of the system. Instead, look at that agent on the right. 
+
+49:44
+We dropped it in a Minecraft village. We didn't tell it anything. It knows how to systematically explore the village. It goes from one building to the next. It opens doors. If it sees a chest, it knows it should open the chest and check inside. it's much more likely to discover the rewards for whatever thing we want to reward it to do because it kind of already knows how to operate in the world. 
+
+50:06
+And that's the kind of pre the benefit of pre training that we can give our open ended algorithms to. So to show that we can do reinforcement learning much more efficiently with pre training, we said, "Hey, let's go after what was then a mini grand challenge of the Minecraft RL community, which was get this diamond pickaxe." Um, and we said we're going to reward everything in the tech tree up to that according to that reward schedule. 
+
+50:29
+And what you see is if you don't do pre training, you basically learn nothing. You learn the the first task in the tech tree to get to Diamond Tools. But with pre training here in red, you slowly over time learn the next challenge and the next challenge and the next challenge because you have these priors, these behavioral priors on how to explore and operate in the world. 
+
+50:49
+And in the end, this agent learned how to do something with a mouse and a keyboard. same controls as humans that human skilled human Minecraft players take 20 minutes and 24,000 actions to learn how to do, which is remarkable. Uh, so I can't show you this video. I don't have time, but you can watch it online if you want. The agent is remarkably fast and efficient at getting through Minecraft. 
+
+51:12
+He's way better at Minecraft than I am. Okay. We also at DeepMind, the team that I'm currently on, we're working on this project called SIMA. We basically do a similar thing. We train in 12 really fancy video games. And remarkably, what we see is you now get transferred to the 13th game. 
+
+How to Train Pre trained Agents in Genie Dreamed environments✨
+
+51:28
+So you transfer about as well to the 13th game, which is the blue line, as if you had trained directly in that environment, which is the black line. So that is pretty cool. In fact, this thing that I showed you earlier was the SIM agent in Genie. So, we're already pairing pre trained agents that know how to operate and act in genie created dreamed environments. Okay. So, I've already kind of said those things for time. 
+
+51:55
+I'm going to push on. So, for the last like third of the talk, depending on how long you could stay, I want to show you that this playbook is very general and very powerful. We're going to combine openness plus foundation models plus omni. So the first thing I want to mention is the automatic design of agentic systems led by Sen and Song here who are both awesome. 
+
+52:18
+So as you probably know we used to use language models where we give it a prompt it would give us an answer all text. Nowadays we situate a language model as the core of some more complicated thing that we call an agentic system. It might call a web browser take the results put them in context. 
+
+52:35
+It might call a web browser, take the results, have three different agents provide three different summaries, another agent provide, figure out which summary is the best, take that summary, put it back in the original thing, and ask it to act or whatever. Chain of thought, reflection. There's lots of these that people are inventing. We're going to call all those things agentic systems. 
+
+How to Make Things By Hand - A Quick Answer✨
+
+52:53
+Well, we looked around the world and we said, hey, people are inventing these things by hand. They do lift performance, but we know from history that making things by hand is the wrong way to do it. Let's use m machine learning and search to make them automatically. So that's why we call 
+— Yep. 
+— One quick sec. Since we're at t minus one minute to the hour, I'm getting some messages from folks who have to jump. 
+
+53:18
+— Um and they're saying, "Oh, can you ask Jeff this question? Um I'm going to give a blanket answer real quick to everyone, which is join us over at Alphacive. Um Raj, Ron, folks, can you post the link again to the Alphacive community?" I promise you I'm gonna collect all your questions there and I will personally ask Jeff to maybe get an answer to at least some of them. 
+
+53:44
+Um so I don't I don't want to I don't want to burden you Jeff with the all the questions that are dumping in but a lot of people are really eager. So let's use the community. That's what it's for. So everyone click on that link. It's free to join. It's super easy. And I promise I will do my best to get all of the interesting questions in front of Jeff eventually. Okay, back to the show. 
+
+54:05
+— That sounds good. I might even have I like your community based method. Uh you could even challenge the community to try to answer them as best they can. Then I could like go through and like be like I like this answer. I would add this little wrinkle here. That could be a fun exercise. 
+— That is so that is so lab PI of you. 
+— Totally. That's right. 
+
+How to Create a Growing Archive of Agentic Systems✨
+
+54:21
+I will say to anyone who needs to jump, I'm sorry that this is running over, but I'm sorry. I'm like a kid in a candy shop and there's too much fun candy to share with you. So I think this is being recorded and maybe it will be shared later. Is that right, John? 
+— Correct. 
+— Yeah. 
+
+54:36
+So at least you can watch the rest later and then you can add your questions to the pile and we can have a fun discussion there. All right. Should I keep going? 
+— Yes. Yes. 
+— Okay. So we're going to automatically design agentic systems. That's ADAS. We're also going to use the principles of open endedness. So, we're going to create a growing archive of agentic systems that are all highquality yet different from each other. 
+
+55:03
+Pull them out, try to improve upon them, maybe pull two out, combine the best of both. If it's interesting or high quality, put it back in, rinse, repeat. So, that same playbook. So, the specific search algorithm we create created, we called meta agent search. We're going to define our search space in code in Python. That was a first for agentic systems for searching them. And then we're that is turning complete. 
+
+55:28
+So it can in theory create any agentic system. And then we're going to do what I just told you about. We're going to have this growing archive of stepping stones. Take one out, change it, add it back in if it's interesting or high quality or the highest quality of that type. 
+
+55:42
+So what you see here is that it starts out very poor in performance, but it soon over time via search gets better and better and better and surpasses many of the state of the art agenting systems that were handd designed, which is pretty cool to see. If you take out the best of those, you can see it creates this pretty complicated thing. And what it's doing is not overfitting and hacking. It's actually got some really clever ideas here. 
+
+How Open AI Cost Effectively Costed UBC Lab✨
+
+56:06
+Created an ensemble of three experts and then something to look at those and like go with I think a majority vote or maybe like is like a meta like an area chair that looks at all their comments and comes up with a final decision or something like that. 
+— Jeff quick question. How expensive was that? 
+— It's everything I do is expensive. 
+— Okay, just asking. 
+
+56:25
+— Now to be fair, we did this work in my academic lab. Now I've been fortunate enough to get decent resources for my lab here at UBC, but this was an academic project. This is not open AI expensive. This is decently funded UBC lab expensive. 
+— Cool. 
+— Um, okay. Those are my units of measurement. Is it OpenAI expensive or is it wellunded lab or not so wellunded lab or individual with our laptop? 
+
+56:50
+Those are my measures. Um, we also showed Oh, I didn't say this. So, we applied it to different math tasks and reading comprehension tasks. I think probably the cooler and it outperformed all this stuff this state of the art that had come before of course. Um, but the cool thing here is that you also could take these agentic systems and transfer them to new domains like math. 
+
+Darwin Goal Machine: How to Build a System That Will Improve Your Domain✨
+
+57:09
+Like if you learned on one math domain, you put it on a new math domain or you even put it on a non math domain and it still does really well because it's a generally cool thing. Like creating an ensemble of experts and then like pooling their thoughts is a pretty good idea no matter what domain you're in. It's not as good as if you just tackle that one domain. 
+
+57:26
+So if you have one domain, you can target it, but if you want something general, you can learn that too and then it kind of helps you on the next domain. All right. So, we were like, okay, was really cool. The obvious next step is we have to see if the system can improve itself. And I have one system that's kind of spitting out agentic systems that are better and better and better. 
+
+57:45
+But what we really want is a system that is put that is improving itself. So, it gets even better at producing the next improvement to itself and the next improvement to itself and the next improvement to itself. So, we call this the Darwin Goal machine led by Jenny Sun and Song and Roberts. 
+
+58:01
+Uh, and the idea here is that Schmidt Hoover in the early 2000s proposed this theoretical idea of a gotal machine, which is an AI that looks at its own code and proposes a change to the code, but it only accepts that diff if it can theoretically prove that diff is better than its previous code. And while in theory that sounds interesting, in practice that will never happen. 
+
+58:23
+That is never that is impossible to prove that a change is going to be not beneficial. Uh, at any hard domain that's not possible. So the Darwin goal machine says, "Hey, let's first just rely on empirical evidence. We'll make a change and we'll test it a bunch and if it looks empirically better, we're willing to take it. But also, we don't have to put all of our eggs in one basket. 
+
+58:44
+We can do the Darwinian search, the open endedness, where we grow this archive of different stepping stones, which means that even if we get it wrong and one thing isn't actually better, fine. That's just an extra stepping stone in there. Maybe it'll ultimately end up better. Maybe it's a dead end. Who knows? But we're not always relying on everything being perfect. So we don't have to worry about those theoretical guarantees. So yeah, I said all that. 
+
+59:05
+So here is yet another phoggenetic tree. This time for the Darwin Goal machine. And you can see it's doing a lot of deep exploration of different ideas. I wish I could scale this up a millionfold, but that would be even more than open AI level compute. This is Sakana level compute just to be clear. So pretty wellunded startup. 
+
+59:22
+Um, what I want to point out on the right here is this is the path to this final star agent. So, this black line here ultimately produced our best agent, but notice that at least twice it went down in performance. 
+
+59:34
+So, if you weren't doing the open endedness thing where you were willing to collect stepping stones that don't immediately look promising, you would not have allowed it to suck for a while and then ultimately prove its value. So on average performance goes up, the max goes up over time and the path to these better maxes is often through a fitness valley to use the language of evolutionary biology. Um also cool you can do some science. 
+
+Open ended AI Risk & AI X Risk: How to prioritize it✨
+
+59:58
+Blue is the Darwin Goal machine and if you don't allow it to improve itself then you get green. This is And if you don't do the open endedness thing of a growing archive of stepping stones that are with like quality diversity ideas, if you just do like hill climbing, then you get orange. It doesn't work at all. 
+
+1:00:19
+So I do want to mention here unfortunately some people already jumped so I should have mentioned this earlier but I safety is really a first class citizen for me. I worry a lot about AI safety. I've put out papers with Benjio and Hinton and Conoran and others saying that AI risk and AI X risk is really something we should prioritize. 
+
+1:00:37
+We've written a paper down here with Adrian and Joel on how there's particular challenges with open ended sorry with open ended search and self improving AI because you're actively asking the thing to go invent entirely new and weird things and to surprise you and be creative. So, it's even more dangerous. You can look into this paper for how we think about it. For this particular work, we tried to follow all the best practices we could think of. 
+
+1:00:59
+We container, we made it sure it was operating only in a container. We monitored it with human oversight. Uh but in the future, I'd like to get even better by injecting values into the system. So it doesn't even want to go and explore dangerous directions. All right. So to conclude, and DGM, you go from handcrafted agents to learned agents. They can self improve. 
+
+1:01:20
+As predicted by the AIGA philosophy, the learned agents are higher performing than handcreated agents and the principles of open endedness really help out. Okay, I think I have two more papers and I'm going to give John the option to cancel the last one when I get there, but I can't not tell you about this one. This one is kind of the theme of this workshop. So, this is where we were headed. 
+
+AI scientist: How to automate science✨
+
+1:01:40
+So, this is a project called the AI scientist. You may have heard of it, led by these awesome people. So the question here is, you know, science is the ultimate open ended domain, right? It never ends and there's we don't think there's going to be a limit to knowledge. So could AI automate all of science? Could it begin to start searching for entirely new scientific knowledge all on its own? 
+
+1:02:00
+Not in one domain, but in any domain. So we chose machine learning as a place to demonstrate that. That's because here the computer is the real world. like if you produce a better transformer or a better imageet score, there isn't like some other real world where you have to check it. That is it. 
+
+1:02:16
+Um but you could apply this to other scientific domains like if you had an automated chemistry lab or with really good simulators etc. or if you had humans conducting your experiments. So the TLDDR on the AI scientist is that it does the whole scientific pipeline. It generates its own hypotheses and research ideas. It designs experiments to test that hypothesis. It then runs those experiments. 
+
+OpenAI level compute: How to write a paper, add it to the archive, add✨
+
+1:02:42
+It checks the data and if need be, it fixes bugs, changes the code, runs different experiments. It analyzes the results, visualizes them, creates plots. It writes the entire scientific manuscript, and you can see a thumbnail of an entire manuscript that it generated from the first word of the title to the last period and references. and it conducts its own peer review to figure out if the thing it just produced is any good. 
+
+1:03:06
+Now, we didn't do this yet, but in the future, if you give me OpenAI level compute again, I want to unleash this like a community of AI scientists. I don't want to produce one paper. 
+
+1:03:17
+I wanted to write a paper, add it to the archive, make a new interestingly different paper, add that to the archive, grow a set of stepping stones of scientific discoveries like the human scientific community does, and continue to look at it and leap off of it into the unknown and generate new scientific knowledge. So, our peer reviewer here is about as good as humans. 
+
+1:03:39
+So, humans agree with other humans about as much as our LLM reviewer agrees with humans. that allows us to get automated scores for papers like this one. In general, our scores in the AI scientists V1 were about three or two to six on like a Nurops level, the old Nurops level scale that went 1 to 10. So these are roughly on the border of being accepted at a conference. 
+
+1:04:01
+Um, and there was one case where I looked at a paper idea that came out of the system and I was like telling other people on our team like, "Wow, that is a really clever idea. Like if a grad student came to me with that idea, I would think that's creative. you should go do that. So, a lot of people think LLMs can't be creative and come up with novel scientific hypotheses. 
+
+1:04:18
+I don't think that's true. Um, and what one little proof point here is that like three weeks later, a human team of scientists, I think it was from Stanford published work that did the exact same idea and it was like completely celebrated by the community and welcomed like as a like a nice paper and it was the same idea. Now, they did it they executed better but the idea was the exact same. 
+
+1:04:39
+So, we then went on to V2 of the AI scientist. a lot of we basically improved lots of pieces of the engine. Um and ultimately it produced up 30 papers. We didn't want to submit all 30 to a conference to a workshop because that would overwhelm the system. 
+
+1:04:55
+So we manually chose the top three but we didn't change them like the system generated every word of those papers and then we submitted those three to a workshop at iClar with the permission of the organizers and one of them was rated higher than 55% of human authored submissions and was accepted to the conference. 
+
+1:05:16
+So this is the first AI science the paper produced by AI that has survived peer review at a workshop not a conference but still this is all this work is currently in review at nature so wish us luck with that so I do want to mention again the safety thing we containerized it we watermark everything we believe in a full transparency you should always tell people what is AI generated with one exception which is that some peerreview processes you should have be blind to the reviewers is whether it's AI or human authored and our particular case we told reviewers there was a chance that they would have a AI authored paper but you know they didn't know which paper was which so I think that's a pretty good model so but for publication you should never publish something that's AI generated without saying so we need a lot more work needed especially on safety we want to make sure this scientist does not explore unethical or dangerous scientific goals like we don't want it to do gain of function research on COVID for example and we have to think about what we want to do as a community in terms of AI science, you know, does it do humans compete with AI and let the science, you know, be judged on its own merits or do we have like a human track, you know, and a and a machine track just like we have human chess now and machine chess? 
+
+Open endedness: How to Build a Better Model✨
+
+1:06:27
+We have to figure that out. So, to conclude this chapter of the talk, the entire process can be automated. It's very far from perfect, but if you're a skeptic that looks at our papers and it's like, oh, it's not that good here and look at this problem there and D, I would just say remember this is the worst it will ever be. Think about image generation. 
+
+1:06:45
+Look at 2014 to 2024. Or look at Genie from 2 years ago to today. Things are improving rapidly. So whatever you think of the current AI scientist output, I guarantee you it's going to get a lot better real soon. Happy to debate that. So future work here, we want to scale it up, different domains, better models. But really what I want to do is that community growing open endedness version of it. We haven't done that yet. 
+
+1:07:10
+And that is obviously ripe low hanging fruit. So, I do have one very quick final paper. I'm gonna let John, you decide. I could punt on it and go straight to my conclusions or I could quickly tell you about this one. 
+— Um, how about an extremely accelerated version of the final paper? 
+— There you go. So, here I'm going to use open endedness to help with safety. Uh, it's called automated capability discovery. 
+
+1:07:35
+And the general idea is if you have a new model like GPT6, you don't know what it's capable of. It might have surprising what new things that it can do that are dangerous might also have embarrassing failure modes so you don't you're not aware of it's like your red team at OpenAI no matter how big it is will not uncover all of those things. 
+
+1:07:54
+We usually find it out via crowd sourcing once we release the model but we want to know that ahead of time and so what you can do is just get an AI to act like the crowd. So you take one AI model to study we call it the scientist to study the subject AI model and then you use the open endedness playbook. 
+
+1:08:10
+It grows an archive of interesting things that it has found, new tasks that the system can either solve or can't solve. And then the scientist looks at its answer to those questions and says, "Was that a surprising failure or success? If so, let us know." And then it kind of uses those ideas as inspiration for the next thing to try. 
+
+1:08:30
+So once you discover that it can't do three Rs in Strawberry, you check for three Rs in something else or you check for five S's or whatever it is, and it kind of open endedly explores. You can do clustering to figure out what are the classes of failure modes and surprising capabilities. You can have it write you a little report automatically where you can read up on your new model before you deploy it. 
+
+Open endedness and AIGS: A real powerful playbook✨
+
+1:08:50
+It's not perfect, but it might unearth some stuff you weren't aware of. So that is the accelerated version of that paper. So what I want to return to is the idea and I'm concluding now so I'll be done in like two minutes that this playbook here is very powerful. We we saw the DGM, the AI scientist, that ACD I just mentioned. I didn't have time to tell you about these two papers here in green. 
+
+1:09:12
+Same playbook, different domain. Really exciting results. So, three conclusion slides. Thank you for bearing with me. I've introduced quality diversity algorithms. They explore well. They create and collect stepping stones as they go. They harness goal switching and serendipity. They invent these effective counterintuitive curricula. 
+
+1:09:33
+I've also introduced open ended algorithms where the goal is to endlessly learn and innovate forever like natural evolution and human culture and also AI generating algorithms which is basically open endedness but focused specifically on producing ever better AI. I think this is the fastest path to AGI and ASI. We've introduced omni. We can finally pursue what is interesting that we couldn't do up until language models really and the idea of Darwin complete search spaces. 
+
+1:10:02
+So you can search in a huge like theoretically the largest search base possible with things like Omni Epic and Genie. We can get more sample efficient open ended learning with pre training with things like VPT and SIMA. So evolution took 3.5 billion years to produce you. And look at what you have done in 100 to 200,000 years. You know, humanity is off to the races, but it took a while to get there. 
+
+1:10:30
+So with pre training, it's like skipping over the boring parts and getting right to the dawn of intelligence and then seeing a new human civilization flourish. Um, I also have just kind of argued that open endedness, AIGAs plus foundation models plus using foundation models for the omni component, that's a real powerful playbook that we've used in all the different ways that I just mentioned and they've almost everywhere we go and apply this playbook, really interesting things happen. 
+
+1:10:59
+So, I want to leave you with these thoughts. I think open endedness and AIGS are the next wave in AI and I would encourage you with whatever domain you're working on or set of questions you're working on like what could you do with this set of ideas. Thank you very much. 
+— Lovely. Thank you so much Jeff. All right, we're going to dive right into questions. Um and I'll kick it off with a quick one. 
+
+Population Based Approach: A Complete Guide✨
+
+1:11:24
+Um I noticed that you have this population approach. Uh, that's kind of like one of your secret weapons. 
+— Yeah. 
+— Um, and there's only one thing I didn't hear you apply the population approach to, and I wonder if you've ever thought about that. Your judge of interestingness, could you have a population based approach of what counts as interesting? 
+— Absolutely. We're working on it right now. 
+— Cool. 
+— Okay. Great point. Great observation. 
+
+1:11:54
+I actually think that I'll actually give you well I'll scoop I shouldn't scoop my own lab but 
+— No don't scoop it don't scoop it I'll see the paper when it comes out 
+— Fine well there's that one and there are other places you could apply the playbook I'll just say that are important unsolved pieces of the puzzle 
+— Neat Raj you want to take the next one 
+— Oh yeah Jeff great talk I was just wondering I know when you were talking about generating environments one of the things you said was like you would check first if it already exists and you do that by doing rag on top of archive Like is that effective? 
+
+1:12:26
+Like I imagine like you know archive is so vast and like finding papers with relevant environments must be tricky. 
+— Yeah. So it's interesting you say that when I said that I actually meant the archive of the algorithm what it had generated so far. 
+
+1:12:41
+So in Omni if it's generated 80 environments when it goes to generate the 80 first 
+— It we took one out and we said make a new version of this or maybe we took five out. We said make a new version from this cluster. It produces the 80 first. 
+
+1:12:55
+Then we go into that archive of 80, pull out the most similar and ask it, hey, is this actually new in this archive and then it tells us. But for the AI scientists, we actually went to the real archive. We use semantic scholar, but whatever. Same story. And there it generates a new we, you know, it generates a scientific hypothesis. And then we do a semantic scholar search with that abstract. 
+
+1:13:19
+And we say give us the 20 papers that are closest to this abstract and then it reads the abstracts of those 20 papers before it decides oh actually that idea has already been done or no it hasn't now I'm going to go launch the whole thing so we did actually use the real archive for that I will say that you are right that archive is huge and semantic scholar is huge but modern language models are pretty good so if you put in a whole title in an abstract and you have it return the top 20 to 30 hits read all of them you know it's pretty unlikely that the exact idea was done and it didn't show up in the top 20 to 30. There are some people who recently kind of attacked the AI scientist and said, "Oh, it's plagiarizing ideas." And they specifically said like, "We took the paper, we put it into Semantic Scholar and the top 20 papers, it didn't return this thing, but we found some paper that is obviously the same exact idea and it was semantic scholar didn't surface it. 
+
+How to Find Limits to Knowledge in the Real World✨
+
+1:14:15
+So, there's proof that semantic scholar doesn't work." But actually, I went and looked at that paper that they say is similar to this paper, and they're crazy wildly different. I think their claims are completely inaccurate. So, I just want to put it out there in case you want to go check it out. Some people are saying that this process doesn't work, but I'm not one of them. I think it works pretty well. 
+
+1:14:33
+— Next up, we want to bring Noah to the stage to ask his question. Um, 
+— There are a lot of people still here. Thank you all for sticking around. 
+— This was such a 
+— 12 I think 127 at the end of the talk made it. So that's pretty good. 
+— Hi guys. 
+— Hey Nor. 
+— Let's say machine learning is science. Okay. What's it the science of? 
+
+1:14:55
+It seems like it's trying to be a science of what we're doing right now. It's trying to understand or be a model for language. There are limits to knowledge. We know this from the law of gravity. It shows in the case of gravity, we can never know what really want to know. The mechanism of gravity. 
+
+1:15:10
+And it seems that we've somehow missed this crucial turn in the history of science in the context of these language models. The question is how can we use machine learning or whatever to help us find the limits to human knowledge by discovering how the real world actually works. In the case of gravity, it works at a distance without a mechanism as you know. 
+
+1:15:32
+— Well, I actually am going to take the other side of that one. I don't know that there are limits to knowledge. I'm not saying that there aren't, but I'm not sure that there are. I don't I think that's an open question. I also think that it's possible that in a 100 to 500 years we will have a pretty good understanding of how gravity works and we'll think of our current understanding as laughably ignorant. 
+
+AI Scientists: The Way That We'll Get There is Through the Scientific Method and Ex✨
+
+1:15:52
+And the way that we'll get there is through the scientific method and experimentation. And my prediction is that the way that we'll get there is through a lot of AIdriven scientific experimentation and hypothesis generation. So I think the answer to your question is actually AI scientists. 
+
+1:16:08
+The way that we will push the frontiers of human knowledge and find the limits if there are any is to rapidly catalyze and accelerate scientific discovery and AI is going to play is going to be the driving engine behind that. 
+— Let me bring to the stage Parival, that's probably not your real name. Um because you've been sharing a ton of good thoughts in the chat and you actually did pose a question about cyber life. 
+
+1:16:33
+You are you there? Did we lose him? 
+— Yeah. Yeah. Hey guys, can you hear me? 
+— Yeah, right there. 
+— Yeah. I just wondered about how you think about the word cyber life in the context of self evolving and self replicating autonomous agents. 
+— I don't know enough about what you're asking about the word cyber life. 
+
+1:16:52
+— Um so my benchmark for AGI is when these things can survive on the open internet when they can generate enough income that they can copy and run themselves in a way that they grow. Um, and that's like my vision of the future and especially if you apply Omni to something like an RL on an agent cluster. I think that's that could break it there. So, I see it is a really interesting definition. 
+
+1:17:19
+I don't know if I would agree that's the definition of AI or AGI or whatever. Um but I do think it is an interesting thing to give a name to. Uh self s surviving AI should have a name. Uh, I think it's a interesting concept, but I also want to flag that it terrifies me a lot. I'm not sure want that out there on the internet. 
+
+1:17:38
+Uh, that almost certainly will lead to all sorts of bad outcomes. So, while I think we should give it a name so that we know what to stop and try to fight rather than to try to encourage it. But I do think if I just if I take off my safety hat and I put on my pure intellectual curiosity hat, it's a fascinating notion and I do think something like these algorithms could produce it. 
+
+How to Use Omni to Look at Frontier Science✨
+
+1:18:00
+So I'm begging everyone who's listening to this, don't use our ideas to make that, 
+— Please. 
+— Um, I'm sorry. I'm already using your idea to do that. 
+— All right, take care. 
+— Then read at least read my safety papers before you continue. 
+— Yeah, I'll Yeah, I'll proceed with caution. Is Sean Markin in the room still? He asked a great question about quantum mechanics. 
+— Uh yeah. 
+— Hey buddy, 
+— How's it going? 
+
+1:18:28
+First of all, Jeff, amazing talk. I am Spellbond and John, thank you for organizing all of this. 
+— Thank you. 
+— I continuously as you were talking had I mean I could ask questions for four hours honestly, but basically where a lot of my questions went was you're talking about Omni. It's a language model. It's sort of domain is what we currently know. 
+
+1:18:51
+How do you sort of envision or do you envision using this to sort of look at frontier science? Um and sort of the analogy that I would that I used was how could this help early sort of physicists who are making that transition from classical mechanics to quantum mechanics sort of make that sort of framework shift or you know because it wasn't just more of the same. It wasn't just a linear progression. 
+
+1:19:22
+It was sort of a leap in a change of the way we perceived the universe. So, how could this how could this help that sort of the meta layer behind what's being learned? 
+— That's a fascinating and great question. Uh I have a couple things to say on it. First, I want to try out the Newton quote again. I think that we all see scientists see further by standing on the shoulders of giants. 
+
+1:19:48
+And oftentimes we think that people are geniuses and had these massive leaps and like they're so much smarter than you and I like Newton and Linets. But the fact that Newton and Lightnet simultaneously invent calculus means it was kind of like this the shoulders the giant's shoulders were set right to see off into the future. The the stage was set for that next that next leap. 
+
+1:20:11
+And so similarly, I think that foundation models, they don't have to have be so smart that they can make these massive leaps. They can just do a little bit and then a little bit and then a little bit, grow the archive, grow the archive, grow the archive. Most science, the vast majority of science is a little tiny delta off of the current archive pushing out the frontier. 
+
+1:20:32
+And then after 10 years of a whole bunch of little deltas, you've gone really far. Right? So that is I think one way that AI science and things like what I've been talking about will actually produce wildly new discoveries in science over time. Maybe not in one leap but in over time. Now I do not think that current systems are at the level of an Einstein where you could make this big conceptual leap. 
+
+1:20:56
+I think we're still kind of more like in the early PhD where you kind of always do like an incremental idea for most early PhD people. Um, but if you want like an Einstein or Newton, I just we're probably going to need better models, but you know, give it a few years. We'll probably have those models. So, I think even the conceptual shifts you're talking about, I don't see any reason why AI won't do that. 
+
+1:21:18
+And I'll just say I'll put my cards on the table like metaphysically, philosophically, like you are just a collection of atoms moving around. I don't see any reason, there's nothing special in you. So silicon computer intelligence can definitely be as smart as you and probably a lot smarter than you. It's not there yet, but it will be. 
+— We've got a Oh, go ahead. Go ahead, John. You have a followup. 
+
+1:21:41
+— Yeah, just a follow up to that. It seemed to me like your QD approach if it wasn't applied directly to sort and forgive me this is going to be clumsy as hell but like if you didn't apply it to sort of the physics layer but you applied it to sort of the meta layer or some kind of overarchitecture of the knowledge you would be able to sort of use that and maybe I'm wrong on this but you might be able to use that to do those conceptual leaps. 
+
+1:22:09
+So it's instead of searching sort of the physical space of how do I you know you talked about height versus I forget what it exactly it was but instead of using that physics based or sort of 3D you know physical world you use sort of a conceptual space and 
+— So we do that just to be clear like in Omni it's saying what's the next interesting thing to do what's the next interesting thing to do in the AI scientist when we when we get the scientist version the community of scientist version it will read its own papers. 
+
+1:22:40
+Maybe it'll read all the papers or like a big subset of the papers to propose the next paper. So, it's doing the same thing that you and Einstein did. It's reading the science that came before and proposing the next idea to test. 
+— Well, he and I are very similar. So, I'm glad I'm glad. 
+— Except for the hair. The hair is not quite there yet. You got a little ways to go on that. 
+
+How to Write a Short Title:  You got Thanks, Sean.✨
+
+1:23:03
+— You got Thanks, Sean. Thanks, Sean. Jeff, we got a couple related questions. So, our good friend Doug was asking in the chat, can you point us to like any fun versions of the Darwin style exploration that you could actually run at home like on a tip on typical compute you know like locally? And we also got a related question from Richard Lawrence. Is Richard still in the room? 
+— He just waved. He's muted. 
+
+1:23:31
+— Hey, hey, Richard. 
+— I am I am here actually. Yeah, it's basically the same question. I think I rephrased it a little bit funnier, but 
+— Go for it. Reask your question or elaborate if you want to. 
+— I'll just read so you hear a human voice instead of reading my text. 
+
+What Sub problems in hypothetical scenario would you be worth investigating✨
+
+1:23:45
+But so I asked kind of in the hypothetical scenario where you don't have an open AI or even a wellunded lab budget, but perhaps you have something more like a high school car wash fundraiser level budget for compute. which sub problems in that scenario would you be do you think would be worthwhile investigating? 
+— Yeah, great question. 
+
+1:24:08
+So I think first of all many people have told us that they are shocked at how unlike many ac I don't want to throw shade on most academic papers but a lot of academic papers is like the code is out there and you run it and like it's a mess. 
+
+1:24:20
+It doesn't work and like the results are super finicky and the hyperparameters had to be just so we've had some feedback that the Darwin goal machine repo works quite well out of the box. 
+
+1:24:30
+Um it is true that the current well sorry yeah so the short answer to your question is I would say you can do things like the Darwin go to machine or and just do them on textbased problems so not like 3D physics simulated environments but if you're doing math or proofs or language games or text board games or text adventure games kind of stuff you can do a lot of work and instead of using GPT5 which is expensive. 
+
+1:25:02
+You can get like some open source model that's pretty good, run it on your machine and you can definitely do research on your local machine with that setup. 
+— Jeff, do does this approach work equally for adversarial problem spaces? For example, if you had let's say a debate game and you have you know and the and the goal is to find ever more interesting arguments. Um you know so it's an adversarial setting. 
+
+1:25:31
+The environment is also another version of yourself. 
+— Yeah. Any problems? Yeah. Just like does that work still? 
+— Uh well you could think of omni in some sense as the environment is getting harder while you're learning. But more to your point, we the one of the papers I didn't mention that was in green in the final slide was foundation model selfplay. 
+
+1:25:52
+It's a new paper out of my lab where we basically have like, you know, it's like a game where one agent is playing against another agent like Starcraft or Warcraft or whatever. 
+
+1:26:02
+And what we have is that we have a foundation model playing this side and it's looking at the archive of strategies that this player has tried and the archive of strategies that the other player has tried to produce the next thing that might beat that guy. And then it tries that and if the strategy is better or interestingly different, add it to the archive. 
+
+1:26:21
+And then this guy gets a turn and it's like, hey, I get to see my own history and their history, including the thing they just did. What's the next thing to try? And so you basically create a self play arms race between two adversaries using open endedness and that also worked really well. 
+— Cool. Uh we've got a big question from Kandid Onigan which if that's a real name that's amazing. 
+— It is a real is amazing. 
+
+How to Unmute Kandid in Language & How to Write a Short Title✨
+
+1:26:45
+I agree. 
+— Um but I don't think Kandid is still here but it's such a good question. I wanted to actually ask it on their behalf. 
+— He's there. He just clipped. 
+— Oh sweet. Hey Kandid, how's your audio environment? Can you just jump in? 
+— He's still clapping which might mean he can't jump in. 
+— Um Raj, can we unmute Kandid? Yeah, 
+— Otherwise I'll just read the question. 
+
+1:27:12
+— I just asked them to Okay, unmuted. 
+— Um hello. 
+— Hey. Um, so I think my question was kind of similar to what John kind of said, but my question was wondering if it would not be easier to kind of use it on language and not specifically like environments because in language you can come up with like way more abstract things that you've never even experienced before and then it kind of allows you I guess to make more discoveries than like the world generated things. 
+
+1:27:52
+I don't know if my question makes sense, but yeah. 
+— Yeah. No, I think it's a good it's a good point and that's why language is super exciting. It's like a cheap way to see like how much exploration you can do. And I think you'll really quickly confront what I consider to be one of the hardest problems. 
+
+1:28:10
+Which is not only to judge what's interesting but to judge whether you have accomplished what it's like it's that universal reward function. 
+— So in a debate for example, how do I know if I won? How do I judge that? Because you have to have an automated judge in the system if you want to make any progress. 
+
+1:28:27
+— Um so that's like something that's going to show up real fast in most language stuff because you don't usually just get to like play a game and get a score in a language game, 
+— Right? There are a couple cases like proofs, you know, maybe math where it's easy to quant like to check whether you're right, but in most languagey stuff, it's like, hey, is this poem better than that poem? 
+
+John Bohannan's latest science gorilla journalism better than his last attempt✨
+
+1:28:49
+Is John Bohannan's latest science gorilla journalism better than his last attempt? You know, it's hard to hard to judge that. Although the answer is going to be yes. H well the population in the room has gotten pretty manageable. Raj, do you want to try the experiment of just unmuting everyone and see if we can have a more natural discussion? 
+— Yep. Uh everyone can unmute now. 
+— All right, folks. 
+— 72 unmuted people at once. 
+
+1:29:21
+Let's see what happens. 
+— Let's see who I hear first. I'm gonna jump in since I was already talking. 
+— All right, you got the call. Um, and I think it kind of fits into the last, you know, to the end of the last statement, which was I mean I'm kind of I know you've worked a bunch with Ken Stanley in the past and he's now kind of working on life science problems at Leela and I'm just I don't know how much we can talk about what they're doing, but I'm just curious sort of what your thoughts are on how you know, how Can you we approach using this kind of these ideas in a life science type setting where we just don't have that we don't have availability of kind of really high efficiency closed loop sort of feedback for the ideas that we propose and evaluate. 
+
+1:30:22
+— Okay. 
+— Yeah, great question. So, Ken is a total genius. Um, I think that Ken deserves a touring award personally for his work on open endedness. We'll see if that happens. I think there's a there's a chance of it. Um, I encourage everyone to read everything he's ever done. It's all really good. 
+
+1:30:40
+Uh, including he and I, but mostly led by him and Akar had a paper very recently that was his first paper out of Laya. Um, but it was a carryover project. So, it's not a pure LIO based thing, but it's on to what extent neural nets have good representations under the hood and how might open endedness help us get them. So, if you haven't read that, I encourage you to read that. 
+
+1:31:02
+Um, to answer your question directly, even before Ken went to Laya, I for like five years have thought one of the best applications of open endedness would be in synthetic biology. Uh I think that it is again a wonderful place to do open endedness. Um because it is the search space is extremely rich and extremely complicated. It's very difficult for human brains to wrap their heads around all these little nano machines that operate inside of our body. 
+
+1:31:34
+And like even like untangling like what causes genetic disease, we know heritability is high and we can't figure out what's going on. Like GIWA studies have mostly been a fail. So, we need really powerful AI to like get in there and like help us deal with this space that's frankly kind of beyond the complexity of the human mind to really deeply understand. 
+
+1:31:56
+Um, I'm actually going to take the other side of your claim that synthetic biology is really expensive. And this was a big change for me. So, for a while I was like, I can't do this work until we have a good simulator because wet lab work is so crazy. And I kept on challenging graduate students, including Jenny, hey, let's go run Omnon synthetic biology, go find a simulator that's cheap and good. 
+
+1:32:20
+And basically the answer every time I've asked a graduate student to go look into that has been they don't exist, right? So we can't use a simulator. But recently I started talking to some synthetic biology nonprofits and discovered that nowadays we actually do have relatively good automated labs and high throughput screening. 
+
+1:32:42
+So you can test out like a crazy like number of molecules or proteins or whatever mRNA strands to see their effects in some big parallel screen thing and you have machines that can do all of this. 
+
+1:32:56
+So, for a while, I was talking to a nonprofit about hooking our open ended algorithms up to their automated labs, and in the end, they got busy with other things, and I got busy with other things, and we haven't ended up doing it. I have talked with Ken many times about if I could clone myself. One of me would join him at Laya and go try to do this there. 
+
+1:33:13
+So, we'll see if Ken want does that there. I don't want to speak and scoop Ken on what he's working on. Uh, but you can ask him. But I do think somebody soon should do this. I also talked to Maxi Edberg who's used to run the openendis team at Deepmind and is now running isomorphic labs which is a synthetic biology AIdriven synthetic biology and drug discovery company. I was like let's do this. 
+
+1:33:35
+So anyway, basically this is one of those things where like soon you're going to start to see massive breakthroughs. You could check out the work of Future House. They they have some work. 
+— Yeah, there you go. So, the stage is set for like big papers to come out soon and I think it's going to involve open endedness and we just haven't quite seen it happen yet, but I very soon. 
+
+1:33:59
+— Jeeoff, you're not you're not bullish on simulating cells and, you know, fully simulating 
+— Oh, I'm bullish on it eventually. I'm just saying right now they don't seem high fidelity and they don't they're certainly not computationally cheap enough to run in the inner loop of our algorithms, but yeah, eventually for sure. I'm bullish on pretty much I don't I'm not there's not too many things I'm not bullish on. 
+
+How Long Will It Be and What will be there first?✨
+
+1:34:20
+I mean eventually science and technology figures out almost everything. 
+— Just a question of time scale. 
+— Yeah. How long how long will it be and what will be there first? Like what will this is a I think a really interesting question. Will it be open endedness plus real automated lab experiments first or will it be open endedness plus simulation first or some hybrid in the in the mean? 
+
+1:34:42
+And that I think is a is a it's always like predicting is easy. It's the timing that's hard. 
+— Sean, you've been polite enough to put your hand up. 
+— Yeah. I wanted to use the functionalities Dune provides. Are you familiar with Paul Jensen, the Jensen Lab at University of Michigan? 
+— So, he they did something interesting a few years ago. 
+
+1:35:02
+I think it's related to what Richard was talking about and what we've been talking about in general, but they created an automated system that ran bacterial experiments and I'm gonna butcher this, but essentially they sort of were trying to predict they created a robot that basically and then an AI system that sort of controlled it and they generated a bunch of hypotheses implemented them on I think it was like being able to predict what nutrient bath would grow these bacteria the fastest and they were really just testing the system. 
+
+1:35:38
+— Yeah. And they used two AI systems to sort of evaluate it. First they did sort of I think reinforcement learning and they were able to get to a point where it is based on these experiments. It would run an experiment, see what the results were, hypothesize another experiment, run it again, run it again, run it again. 
+
+1:35:55
+And eventually they got to the place where RL was, I think, predicting 90% success rate or something like that. And then they did symbolic and they wanted to find something could they translate that into a way that was human understandable and human replicable as opposed to these you know this sort of what I would call like an unconscious sort of understanding of what works and that was only 70% but they were still able to get it to that. 
+
+1:36:21
+I thought that was one I think that AI difference is interesting and sort of is like in my head the way I understand that is there's a difference between explaining how you ride a bike to someone and sort of intuitively knowing how you ride it. But the other part of that was they were able to sort of conduct essentially if they extrapolated over a million experiments a year. 
+
+1:36:43
+So one those experiments are you know sort of compounding on top of each other. the value is compounding and you could think very, you know, if you did a back of the napkin experiment, it was about a cubic meter size experiment. 
+
+1:36:58
+You stack a whole bunch of those together and all of a sudden they're all doing these experiments feedbacking from the real world and you're getting very quickly a explosion of the ability to do science at scale even within very sort of small spaces. So 
+— Yeah, I think it's a really promising approach. 
+
+1:37:18
+I think you want the real world grounds you which is nice and you can learn a simulator of the real world to make your so you don't have to do everything in the real world 
+— And creating a loop where you're like creating a simulator of the real world using it to optimize and search against and then periodically checking how good it is and improving it when it's not good. 
+
+1:37:41
+That sort of a thing is extremely powerful and I think is coming and no one's really figured it out yet for automating science but as you said people are beginning down that road there are a couple other scient there actually many labs at this point that are working on automated abs and then AI that are running like loops inside of them I don't think most of them have really heard of or drunk the Kool Aid and open endedness so I'm trying to kind of tell these people whenever I run across them like hey when and if you go to actually start doing like search to try to like find good stuff in your setup, I think you should be using this playbook and these ideas and I think that it will all just work better. 
+
+How to Build a Good Open Endness Business✨
+
+1:38:21
+Uh and so you guys, all of you probably can help kind of spread that gospel to people that are doing this kind of automation and automated science. Uh so that's all extremely powerful. Also, I went to Michigan, so go blue. 
+— Go Blue. Um, what was the sorry, I don't want to but you have a follow up quick followup. 
+
+1:38:41
+What do you when you're talking to people and trying to convince them about an open ended approach, is there resistance? What is the what are you what are you running? 
+— Oh, yeah. There's so much resistance. I mean, okay, many people get really excited about it, right, when they hear about it. 
+
+1:38:55
+But the thing that people really do not want to believe, they say they even like sometimes you can see their like their cognitive dissonance roing in their soul is they can get excited about everything you talk about, but then they snap back to the idea, but sure we really need an objective and a goal to optimize against. 
+
+1:39:14
+Like surely we shouldn't just abandon the reward function and just go do interesting weird search and hope that good things happen. Like surely we should like bake the objective in there somewhere or like how do you measure this open endedness thing? I don't even know if I'm making progress, you know? You know, you run into a lot of stuff like that. 
+
+1:39:33
+Like if you were going to pitch an open endedness company, could you really go to VCs and be like we don't have plans to do any specific thing. It's just going to do awesome stuff. 
+— The world doesn't want to just like embrace that. Even though 
+— I, you know, hopefully I've convinced you that actually is a path towards greatness. So, the title of Ken's book, Why Greatness Cannot Be Planned, is great. 
+
+How to Plan for Greatness: What to Do✨
+
+1:39:53
+People do not want to give up on trying to plan for greatness. 
+— Got it. 
+— Thank you. So, we are approaching the two hour mark. 
+— Yeah, I do actually really I definitely cannot go beyond the two hour mark. I need a couple minutes apart from my noon meeting. 
+— I definitely don't want to be the one to tell a bunch of super interested people who have your attention to like leave. 
+
+1:40:17
+So, I think I'm just going to be hands off at this point and Jeff, you stay as long as you're comfortable and folks you can ask any question you want. 
+— Yeah, I'd say nine minutes and then I definitely have to deal but we don't have to stay for nine minutes but if people have questions I'm happy to answer questions. People are dropping off now. So, 
+— Just one quick question. 
+
+1:40:35
+I wanted to know your opinion in term of when we have like approximate of environment like when we have access to something like genie is approximate of a reality it's not reality so do you think that combined with omni damages what omni can reach at the end of the day or do you think we need to have a real environment necessarily first 
+— This is a really great question. 
+
+1:41:06
+Um, so one thing is there's nothing that stops Omni from being from interacting with the real world either initially you could run it now and like challenge humans to go or challenge robots to go do things in the real world. 
+
+1:41:18
+So in principle it doesn't even have to be anything simulation but obviously you can do a lot more if you can have as we just talked about some simulator or surrogate model that you're optimizing against that's fast and you're kind of periodically grounding it in the real world. So this is my preferred approach. 
+
+1:41:34
+I think that Omni, like for example, you could challenge Omni to have AI or robots that are learning skills that are helpful in the real world and it generates a whole bunch of training environments, but periodically it's going to want to check, does this AI actually help in the real world, help people do what they want to do, help solve cancer? Does it help a robot pick up trash in the forest? 
+
+How to prevent a hacking from happening✨
+
+1:41:59
+Whatever it is that you're kind of testing for, you do want to ultimately ground it because I think if you completely let it go and never check against the real world, it's probably just going to become ungrounded and weird and it's going to end up doing the equivalent of memorizing random digits. Fooling itself is one way to think about it. 
+— Uh I can go but Fut had their hands on first. 
+— Yeah. 
+
+1:42:27
+Okay, I will go. Yeah, thank you very much for the fantastic talk. I have a question regarding like AI safety stuff. So when you like when you like doing like agent like searching or evolve itself how to like I want to know your comment how to prevent it like in like implement some code like a back door or like doing some misalignment like stuff during this kind of evolution process. 
+
+1:42:54
+— How do you know there's two different questions in there. One is how do you know it doesn't like pawn itself and like hurt itself? But I think I heard you say something different at the end which is how do you know it's not injecting its own unsafe backdoor code or some malware. 
+— Yeah. Yeah. Yeah. Yeah. Also like Yeah. Like like a Yeah. Like go like Yeah. like involve yourself to get Yeah. 
+
+1:43:14
+And in the kind of evolution process how Yeah. But this two are related. you need to detect and I think for prevention you need to detect also like figure out ways to like prevent this from happening. 
+— Yeah. Okay. So for the how do you know how do you for the first one how do you make sure it doesn't like damage itself. 
+
+How to prevent AI from doing something unsafe✨
+
+1:43:34
+Um well you run it you test it after it makes it change you test it on a whole bunch of things that you think are like somewhat indicative. Like you maybe have it try to solve a bunch of software engineering challenges and if it got better at them that's probably better. And if it suddenly sucks at all of them, then you probably throw it out. Uh, and you've got some criterion there. 
+
+1:43:54
+Um, but it's not perfect, right? Like it could do well in these tasks and actually have subtly pawned itself on some other set of tasks. You don't really know. But you're also remember you're not your eggs are not all in one basket. You're growing this archive of different agentic systems. 
+
+1:44:06
+And so if one of them pawns itself, then that's probably not going to end up being it's probably going to be like a dead end almost like from an evolutionary perspective. You might periodically go back to it, try to step off it. 
+
+1:44:16
+All of its children's also suck, but this other thing ends up producing all these awesome things that kind of fill up the archive and end up being the things that tend to be branched off of more and more. And so, it's kind of self correcting in that way. How do you prevent it from doing something unsafe, either intentionally or unintentionally? This is a super hard question. 
+
+1:44:34
+I mean, I don't think it would want to do that, but if for some reason somebody tricked our AI into creating a backdoor or something, how would we prevent it? We don't have all the answers here. This is why I think we need more research into oversight of open ended and self improving and AI generating algorithms. Um, one thing that I like is that you could have an external AI that's looking at everything. 
+
+1:45:00
+Uh, and so it can read the code and the diffs and that external thing can flag to a human or just kill it and say like this doesn't look right to me. This doesn't look safe or hey human this seems fishy. And that external thing you want to be very make you want to make sure that thing is not incentivized to do whatever the main system is trying to do. 
+
+1:45:19
+Its only job is to be like policeman or judge. It's not trying to maximize learning or scientific discovery or whatever. So it at least doesn't have an it doesn't have it's not going to get tricked because it's trying it's being incentivized to do this other thing. But this system might learn to trick it. And that's I think the really hard part. as this system learns, it might learn to evade this overseer. 
+
+What Are the Best Ideas For Open Endness?✨
+
+1:45:42
+And how do you prevent that? And I don't really have a good answer for that, which is why I'm encouraging the community to start doing a lot of research on this question. 
+— Thank you very much. 
+— Yep. So, thank you very much for the talk. It was amazing. So, I think like just as you said like we have a great community of like a lot of people having different mindsets. 
+
+1:46:01
+What are some ideas generally in the direction of open endedness which are which you think are promising enough but not on your priority list? So the sweet spot ideas that are worth exploring for diverse people like from researchers from around the world. 
+— Yeah, that's a fun one. 
+
+1:46:21
+So, um, one thing that I am, that I think would be really cool would be if somebody could push like Omni, into text domains and see how they, how far they could go with it there. Like we did it in a pretty expensive domain. Could you do it in a text a cheaper domain to let it really go? 
+
+1:46:40
+Another one, if people have the budget or they can get it onto a Jack Space Simulator or something, would be to do something like Omni, but really for really long runs. some maybe crowdsource thing that gets left in the background. That would be pretty cool. 
+
+1:46:53
+Uh, another one that I'm really bullish on, if somebody basically had like humans in the loop, like this thing where we talked about where you might have like a model of interestingness. Um, first you want to see where that thing breaks down. Can you run the algorithm so long that the model of interestingness is out really far out of distribution? So, how far until that thing breaks down was one whole scientific question. 
+
+1:47:16
+I actually have a hypothesis that it will go much farther than people think because the question of what counts as interesting is actually not that hard because you get to condition on what came before in the archive. So like go I could go back and I could ask somebody from the 1800s is an iPhone interesting and they wouldn't know what an iPhone was. That's not what we're going to ask the model though. 
+
+1:47:38
+We're going to say hey here's all the technology that existed right up until the iPhone was presented condition on that. Is the iPhone interesting? And I think a person in the 1800s could have told me yes. And I think our language models can do the same as they get out of distribution. But that is an open question. And that's actually the most common objection I get to omni. 
+
+How do you improve a model of interestingness on online✨
+
+1:47:55
+So studying that would be a really good thing to study. And then if it does start to break down, what do you do to fix that? That is a wildly cool thing. And it doesn't take a big budget, I think, to figure out like how do we improve a model of interestingness on online. Um I think that is really cool. And then back to the other one, how do you automatically judge the universal reward function? 
+
+1:48:19
+You know, like how do you judge if something has been accomplished that in a way that doesn't get hacked or maybe even assume that it is hacked, it will be hacked, but then how do you improve it in response to that hackery? Could you figure that out? That's like another really important piece of the puzzle that we don't have a good answer to yet. 
+
+1:48:38
+— Alec, do you want to ask the final question and then we can free Jeff? calling Alex Seagal. Maybe he stepped away from his computer. 
+— Maybe. All right. Well, I will say 45. 
+— We got him. We got him. Yep. Yeah. 
+
+1:48:58
+I know it's undeserved honor but I just personally I'm very interested and follow religiously just work and I'm just thinking about you know we know like right now our idea of language thinking is LLMs but the we know they have like very serious limitations for example like abstraction and thinking in a concept space abstract space is probably improve search and will help a lot and in general but moving up the ladder I mean when we are talking about interestingness we are talking about like what's interesting to a human like brain as result of evolution so it's like meta level so what do you think is missing in LMS what we should improve should we inspire from brain science brain structure what would accelerate this search and what would be promised direction to try. 
+
+1:50:02
+— Yeah. Um well, I think perhaps unsurprisingly, I would not try to do it by hand. I would go all in on these kind of open ended search for the next best thing would be my take. So, I don't want to prejudge it and I don't even want to try to figure it out. I'd rather try to create the system that we'll figure it out. Um now, that is a bit of a long term bet. 
+
+1:50:23
+Like if you hired me right now at, you know, OpenAI and like we have to make GPT6 and it's got to be better than GPT5. I wouldn't do that. I would have I would take my best ideas and I would talk to all the people there and we'd put all the best ideas manually into the system. 
+
+1:50:38
+But I think ultimately if you really want to make strides, you know, like why haven't we seen LLM driven neural architecture search blow transformers out of the water? Like somebody should be doing that and it's going to work and they could found a trillion dollar company or at least a billion dollar company the second they get it to work. 
+
+1:50:58
+Not just because they invented something better than the transformer, but because they have this system that can invent things that are better than the transformer. Why isn't that a thing? You know, that should be a thing. So, I would be creating systems like that. 
+— And with that, Jeff, thank you so much. This was fantastic. 
+
+1:51:16
+Um, we're going to get this on YouTube and Raj is about to post the link again for the Alphacive community where I'm we've actually captured all the questions that we didn't get to and we're going to put them there and at some point Jeff I'll beg you to check them out and maybe we could do your experiment of I you know you'll answer every question that someone takes a crack at first, which I think is a really interesting frame. 
+
+1:51:43
+— Yeah. Or the Yeah. already comment on them, you know, like this is perfect. I would I couldn't have said it any better or like I would disagree. I'd say this differently or whatever. That would be actually more fun for me than just having like here's 50 questions to answer. 
+— Yeah. Yeah. Right on. Okay, folks. Well, thank you. This was the best talk yet by Miles. Um, and we'll see you at the next 
+
+
+Table of ContentsChapters Timestamps 
+3 classes of algorithms that you may or may not be familiar with✨
+0:00
+How to create a variety of algorithms that are high quality✨
+2:28
+Map Elites: A Basic Playbook for the Future✨
+4:00
+How this simple algorithm is going to do really powerful things in a variety of domains✨
+5:34
+How to find a robot that works despite damage✨
+7:53
+Go Explore: A Complete Guide to the Atari Suite of Games✨
+8:58
+Open End Algorithms: How To Create A Robotic Algorithm✨
+11:10
+How to Create a System of Using Goal Switching✨
+14:14
+phoggenetic tree of environments in poet✨
+16:53
+poets' adventures in the midst of a big swathe of environments✨
+18:08
+How to handdesign AGI for Turring✨
+18:45
+How to Jump Off of a DM with a QD algorithm✨
+21:25
+Evolution is simultaneously trying new things not off of the current best thing whatever that even means but off✨
+23:05
+How to Make a cheetah faster and ants faster✨
+24:34
+Uh Luis: You want to ask your question?✨
+25:57
+The Ultimate Guide to Compression✨
+27:18
+Omni: How to Drive Open Endness✨
+28:40
+Language Models: What Does It Mean to Be Interesting?✨
+30:48
+How to Measure Tasks in an infinite task space✨
+33:20
+How to Create a Quick Guide to the Most Rich Environment Search Space✨
+34:53
+Darwin Complete Search Space: How to Create a Darwin Complete Search Space✨
+36:24
+How do you maximize the diversity of those learning environments?✨
+38:49
+Omni Epic: How It Will Work✨
+40:27
+Genie: A World Model that is a neural net that gives you the next observation✨
+42:23
+Open ended algorithms like Omni paired with Genie✨
+45:54
+How to Create a Game with Minecraft✨
+47:14
+How to Build a Stronger Learning Agent with Pre Training✨
+49:00
+How to Train Pre trained Agents in Genie Dreamed environments✨
+51:28
+How to Make Things By Hand - A Quick Answer✨
+52:53
+How to Create a Growing Archive of Agentic Systems✨
+54:21
+How Open AI Cost Effectively Costed UBC Lab✨
+56:06
+Darwin Goal Machine: How to Build a System That Will Improve Your Domain✨
+57:09
+Open ended AI Risk & AI X Risk: How to prioritize it✨
+59:58
+AI scientist: How to automate science✨
+1:01:40
+OpenAI level compute: How to write a paper, add it to the archive, add✨
+1:02:42
+Open endedness: How to Build a Better Model✨
+1:06:27
+Open endedness and AIGS: A real powerful playbook✨
+1:08:50
+Population Based Approach: A Complete Guide✨
+1:11:24
+How to Find Limits to Knowledge in the Real World✨
+1:14:15
+AI Scientists: The Way That We'll Get There is Through the Scientific Method and Ex✨
+1:15:52
+How to Use Omni to Look at Frontier Science✨
+1:18:00
+How to Write a Short Title: — You got Thanks, Sean.✨
+1:23:03
+What Sub problems in hypothetical scenario would you be worth investigating✨
+1:23:45
+How to Unmute Kandid in Language & How to Write a Short Title✨
+1:26:45
+John Bohannan's latest science gorilla journalism better than his last attempt✨
+1:28:49
+How Long Will It Be and What will be there first?✨
+1:34:20
+How to Build a Good Open Endness Business✨
+1:38:21
+How to Plan for Greatness: What to Do✨
+1:39:53
+How to prevent a hacking from happening✨
+1:41:59
+How to prevent AI from doing something unsafe✨
+1:43:34
+What Are the Best Ideas For Open Endness?✨
+1:45:42
+How do you improve a model of interestingness on online✨
+1:47:55
+Play/pause
+
+========================================================================

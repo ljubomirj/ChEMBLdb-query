@@ -1,0 +1,11 @@
+SELECT
+  a.chembl_id AS assay_chembl_id,
+  a.tid,
+  d.journal,
+  d.year,
+  d.doi
+FROM assays a
+JOIN docs d ON a.doc_id = d.doc_id
+WHERE a.assay_type = 'B'
+  AND a.tid = 165
+ORDER BY a.chembl_id, a.tid, d.journal, d.year, d.doi

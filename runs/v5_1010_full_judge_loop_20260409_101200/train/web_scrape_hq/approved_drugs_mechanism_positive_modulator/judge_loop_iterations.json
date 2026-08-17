@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of all approved drugs (max_phase = 4) whose mechanism of action is classified as a positive modulator. For each drug, include its ChEMBL ID, preferred name, and the following target information: target ChEMBL ID, target preferred name, target organism, and the specific action type describing the positive modulation.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS drug_chembl_id,\n  md.pref_name AS drug_name,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism,\n  dm.action_type\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN action_type at ON dm.action_type = at.action_type\nWHERE\n  md.max_phase = 4\n  AND at.parent_type = 'POSITIVE MODULATOR';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 144 | SCAN dm\n12 | 0 | 0 | BLOOM FILTER ON at (action_type=?)\n20 | 0 | 33 | SEARCH at USING INDEX sqlite_autoindex_action_type_1 (action_type=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n56 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 773,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "target_chembl_id",
+      "target_name",
+      "target_organism",
+      "action_type"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

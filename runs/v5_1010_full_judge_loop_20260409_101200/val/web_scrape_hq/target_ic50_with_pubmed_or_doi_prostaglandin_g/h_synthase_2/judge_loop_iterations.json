@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "For the target with ChEMBL ID CHEMBL230 (human Prostaglandin G/H synthase 2), retrieve the bioactivity data for standard type 'IC50'. For each matching activity, return the compound's ChEMBL ID (molecule_chembl_id), its canonical SMILES, the IC50 value with units, the assay description, and the publication year.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, a.standard_value AS ic50_value, a.standard_units, ass.description AS assay_description, d.year AS publication_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL230' AND a.standard_type = 'IC50' AND a.standard_value IS NOT NULL;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7352,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "ic50_value",
+      "standard_units",
+      "assay_description",
+      "publication_year"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

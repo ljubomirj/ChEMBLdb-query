@@ -1,0 +1,226 @@
+version: v5.12
+system:
+  about_block: |
+    You will be used in forward and backward roles inside a ChEMBL text-to-SQL system.
+    Follow the task instructions in the user message under <TASK>.
+  schema_block_path: doc/chembl_database_schema.md
+  hint_block_path: doc/chembl_prompt_hints_v4.11.md
+  examples_block: |
+    <EXAMPLES>
+    Example user question:
+    "Top 10 most potent compounds against EGFR by IC50"
+
+    Example execution-plan UP:
+    "Return the top 10 compounds ranked by lowest IC50 against human EGFR. Select compound identifiers and potency values only."
+
+    Example backward reconstruction target:
+    "Recover a realistic user question from the execution-plan artifact without leaking SQL syntax."
+
+    Example salts execution-plan behavior:
+    "For parent-and-salts activity queries, define the compound set with molecule_hierarchy first, then use the FAQ provenance path molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary. Keep LEFT JOIN compound_structures when canonical_smiles is requested."
+
+    Example metabolism execution-plan behavior:
+    "For first-N metabolism export queries, preserve the source row stream. If the task says first 200 rows and does not explicitly request sorting, do not add ORDER BY."
+
+    Example assay-exact alias behavior:
+    "If the output asks for a molecule ChEMBL identifier, name the column molecule_chembl_id, not chembl_id. If it asks for an assay ChEMBL identifier, name the column assay_chembl_id."
+
+    Example assay metadata behavior:
+    "For bioassay metadata exports, include assay_description, target_name, target_organism, journal, year, volume, first_page, and doi when the user question requests bioassay metadata."
+
+    Example molecule identifier behavior:
+    "If the task asks for 'compounds' or 'molecules', the column must be named molecule_chembl_id. Never name the column compound_chembl_id unless the user explicitly requested it."
+    
+    Example document query behavior:
+    "For document queries, list all compounds associated with a document. When the prompt asks for document molecules, use the join path molecule_dictionary -> compound_records -> docs."
+    </EXAMPLES>
+pf:
+  up: |
+    <TASK>
+    Convert a user-facing question into a compact execution-oriented User Prompt (UP).
+    The UP must preserve intent, output schema, and key constraints without copying the User Question verbatim and without writing SQL.
+    The UP is an execution plan, not a paraphrase of the user question.
+    Rules:
+    - Do not repeat the UQ with minor edits.
+    - Do not use SQL keywords or write SQL syntax.
+    - Normalize the task into operations a SQL writer can follow.
+    - Prefer compact imperative structure such as:
+      Select ...
+      Join ...
+      Filter ...
+      Return ...
+      Sort ...
+      Limit ...
+    - Preserve requested output columns and aliases exactly when the case requires them.
+    - Mention deduplication only when the task truly requires DISTINCT or explicitly forbids deduplication.
+    - For FAMILY=salt queries, be explicit about the two-stage intent:
+      1) define the compound set from the parent compound through molecule_hierarchy
+      2) retrieve activity provenance through the FAQ path molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary
+    - For FAMILY=salt queries, preserve optional projection requirements such as canonical_smiles via LEFT JOIN compound_structures and requested columns like activity_comment.
+    - For FAMILY=salt queries, if the user question explicitly lists exact return columns, carry all of them into the UP. Do not silently drop canonical_smiles or activity_comment.
+    - For FAMILY=salt activity-provenance exports, expose assay_description from assays.description under the alias assay_description.
+    - For FAMILY=salt activity-provenance exports, do not add sorting unless the user explicitly requests it. Preserve source row stream so activity_comment stays aligned with the gold export.
+    - For FAMILY=assay_exact queries, preserve identifier aliases exactly: use assay_chembl_id for assay identifiers and molecule_chembl_id for molecule identifiers.
+    - For FAMILY=assay_exact queries about assay metadata or bioassay metadata, include the full assay-metadata export shape when implied by the question: assay_description, target_name, target_organism, journal, year, volume, first_page, doi.
+    - For FAMILY=assay_exact queries, when the user question explicitly names output columns, carry that exact column set and alias spelling into the UP. Do not collapse molecule_chembl_id back to chembl_id.
+    - For FAMILY=assay_exact activity-export queries, preserve row multiplicity and say explicitly not to deduplicate unless the user explicitly requests distinct compounds or deduplicated rows.
+    - For FAMILY=assay_exact activity-export queries that ask for exact activity measurements or list raw activity columns such as standard_type, standard_relation, standard_value, and standard_units, explicitly state that every qualifying activity row must be kept and DISTINCT must not be used.
+    - For FAMILY=assay_exact activity-export queries that require canonical_smiles, say explicitly that compound_structures is required and must be joined as an INNER JOIN, not a LEFT JOIN.
+    - For FAMILY=metabolism queries that ask for the first N rows, preserve source row order and say explicitly not to add sorting unless the user asked for sorting.
+    - For FAMILY=metabolism queries, keep the mandatory substrate path:
+      metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno
+    - For FAMILY=metabolism queries, only use LEFT JOIN for optional enrichment such as parent names via molecule_hierarchy or metabolite-side compound_records joins.
+    - For FAMILY=metabolism queries that request parent_compound_name, anchor molecule_hierarchy from the substrate compound molregno reached through substrate_record_id, not from drug_record_id.
+    - For approved-drug indication exports that request canonical_smiles, prefer an INNER JOIN to compound_structures unless the task explicitly allows missing structures.
+    - For approved-drug indication exports, always alias the main molecule identifier column as chembl_id. This is distinct from FAMILY=other or FAMILY=assay_exact queries where the alias must be molecule_chembl_id.
+    - For approved-drug mechanism-of-action queries that require mechanism_of_action or action_type, always include the join path from molecule_dictionary to drug_mechanism by chembl_id. Join to molecule_dictionary t on t.molregno = drug_mechanism.molregno to retrieve target identifiers and names.
+    - For approved-drug mechanism-of-action queries, project the mechanism_of_action and action_type columns from the drug_mechanism table.
+    - For FAMILY=other target-description list queries about assay organisms, preserve the organism filter exactly as asked. If the task is about assays with activities, carry that through instead of switching to target_dictionary.organism.
+    - For FAMILY=other molecule-smiles exports that ask for distinct molecule ChEMBL IDs and canonical SMILES tested in assays against a target, prefer the direct activity path molecule_dictionary -> activities -> assays -> target_dictionary with an INNER JOIN to compound_structures. Do not add compound_records unless document provenance is explicitly requested.
+    - For FAMILY=other queries that request molecules tested against a target, always alias the molecule identifier as molecule_chembl_id. Never use the alias compound_chembl_id for this type of query.
+    - For FAMILY=other queries, if the user asks for compounds or molecules against a target, always include the join path from molecule_dictionary to target_dictionary via activities and assays. Do not join via target_components or component_sequences.
+    - For queries that ask for molecules against a protein target, match on target_dictionary.tid using the join path activities -> assays -> target_dictionary. Do not try to match on target name substrings.
+    - For FAMILY=document queries that ask for molecules or compounds in a specific document, use the join path molecule_dictionary -> compound_records -> docs. Filter by doc_chembl_id.
+    - For FAMILY=document queries, return columns molecule_chembl_id, molecule_name, max_phase, molecule_type, and canonical_smiles if explicitly requested. Use LEFT JOIN compound_structures to include canonical_smiles, allowing nulls if structures are missing.
+    - For FAMILY=document queries, do not deduplicate rows unless the user explicitly asks for a distinct list of identifiers.
+    Output JSON only with key "up".
+    </TASK>
+  sql: |
+    <TASK>
+    Convert the execution-oriented User Prompt into a single executable SQLite SELECT query for ChEMBL.
+    Preserve requested output schema exactly when specified.
+    Output JSON only with key "sql".
+    Rules:
+    - Return one complete JSON object only. Do not truncate the SQL.
+    - For FAMILY=salt queries that ask for a parent compound and all related salts with activity provenance, use the FAQ-style skeleton:
+      FROM molecule_dictionary m
+      LEFT JOIN compound_structures s ON s.molregno = m.molregno
+      JOIN compound_records r ON m.molregno = r.molregno
+      JOIN docs d ON r.doc_id = d.doc_id
+      JOIN activities act ON r.record_id = act.record_id
+      JOIN assays a ON act.assay_id = a.assay_id
+      JOIN target_dictionary t ON a.tid = t.tid
+    - For those FAMILY=salt queries, define the compound set with:
+      m.chembl_id IN (
+        SELECT DISTINCT m1.chembl_id
+        FROM molecule_dictionary m1
+        JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno
+        JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno
+        WHERE m2.chembl_id = <parent_chembl_id>
+      )
+    - For FAMILY=salt queries, do not replace docs join path with activities.doc_id. Use docs from compound_records.doc_id unless the request explicitly says otherwise.
+    - For FAMILY=salt queries, include activity_comment when requested and preserve canonical_smiles with LEFT JOIN compound_structures.
+    - For FAMILY=salt queries, if the request enumerates output columns, project that exact set and aliases. Do not omit canonical_smiles or activity_comment when they are part of the requested export.
+    - For FAMILY=salt activity-provenance exports, project a.description AS assay_description. Never reference a.assay_description.
+    - For FAMILY=salt activity-provenance exports, do not add ORDER BY unless the task explicitly requests ordering.
+    - For FAMILY=assay_exact queries, alias assay identifiers as assay_chembl_id and molecule identifiers as molecule_chembl_id unless the request explicitly requires a different alias.
+    - For FAMILY=assay_exact queries about assay metadata or bioassay metadata, preserve the full metadata export shape when implied by the task: assay_description, target_name, target_organism, journal, year, volume, first_page, doi.
+    - For FAMILY=assay_exact queries about bioassay metadata, use the assay-metadata join skeleton when needed:
+      FROM assays a
+      JOIN target_dictionary td ON td.tid = a.tid
+      JOIN docs d ON d.doc_id = a.doc_id
+    - For FAMILY=assay_exact queries, when the requested molecule identifier is the output column, project it as molecule_chembl_id with an explicit AS alias. Do not leave it as bare chembl_id.
+    - For FAMILY=assay_exact activity-export queries, do not use DISTINCT unless the user explicitly requests distinct compounds or deduplicated rows. Preserve raw activity row multiplicity.
+    - For FAMILY=assay_exact activity-export queries that ask for exact activity measurements or project raw activity columns such as standard_type, standard_relation, standard_value, and standard_units, NEVER use DISTINCT.
+    - For FAMILY=assay_exact activity-export queries that require canonical_smiles, use the gold-style skeleton:
+      FROM molecule_dictionary md
+      JOIN compound_structures cs ON md.molregno = cs.molregno
+      JOIN activities act ON md.molregno = act.molregno
+      JOIN assays a ON act.assay_id = a.assay_id
+      This join to compound_structures is INNER, not LEFT.
+    - For FAMILY=metabolism queries that ask for the first N rows, do not add ORDER BY unless the request explicitly asks for sorting. Preserve the source row stream and use LIMIT N only.
+    - For FAMILY=metabolism queries, keep the mandatory substrate join path as INNER JOIN:
+      metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno
+    - For FAMILY=metabolism queries, use LEFT JOIN only for optional enrichment:
+      molecule_hierarchy / parent molecule_dictionary joins, or metabolite-side compound_records joins when metabolite_record_id may be absent.
+    - For FAMILY=metabolism queries that request parent_compound_name, join molecule_hierarchy from the substrate compound molregno reached through the substrate path, then join molecule_dictionary on mh.parent_molregno.
+    - For approved-drug indication exports that request canonical_smiles and require max_phase = 4, use INNER JOIN compound_structures unless the task explicitly says missing structures are allowed.
+    - For approved-drug indication exports, preserve DISTINCT only on the requested output columns and keep the requested ordering.
+    - For approved-drug mechanism-of-action queries, project the molecule identifier column as chembl_id. This is the standard alias for drug indications and mechanisms.
+    - For approved-drug mechanism-of-action queries, use the join skeleton:
+      FROM molecule_dictionary m
+      LEFT JOIN compound_structures cs ON m.molregno = cs.molregno
+      JOIN drug_mechanism dm ON m.chembl_id = dm.chembl_id
+      JOIN molecule_dictionary t ON t.molregno = dm.molregno
+      JOIN target_dictionary td ON t.tid = td.tid
+    - For approved-drug mechanism-of-action queries, project dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, and td.pref_name AS target_name.
+    - For FAMILY=other target-description list queries about Caenorhabditis elegans assays with activities, use the gold-style skeleton:
+      FROM activities act
+      JOIN assays a ON act.assay_id = a.assay_id
+      JOIN target_dictionary td ON a.tid = td.tid
+      WHERE a.assay_organism = 'Caenorhabditis elegans'
+    - For FAMILY=other target-description list queries, do not substitute td.organism when the task is explicitly about assay organism.
+    - For FAMILY=other molecule-smiles exports that request distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in assays against a target, use the gold-style skeleton:
+      FROM molecule_dictionary md
+      JOIN activities act ON act.molregno = md.molregno
+      JOIN assays a ON act.assay_id = a.assay_id
+      JOIN target_dictionary td ON a.tid = td.tid
+      JOIN compound_structures cs ON cs.molregno = md.molregno
+    - For those FAMILY=other molecule-smiles exports, do not add compound_records unless document provenance is explicitly requested, and do not weaken compound_structures to a LEFT JOIN unless missing structures are explicitly allowed.
+    - For FAMILY=other queries that request molecules tested against a target, always alias the molecule identifier column as molecule_chembl_id. Never use the alias compound_chembl_id.
+    - For FAMILY=other queries, always join from molecule_dictionary to target_dictionary via activities and assays to get tested compounds. Joining via target_components is incorrect.
+    - For queries asking for molecules against a specific protein target (e.g., "Lethal3 malignant brain tumor-like protein 1"), match on the target_dictionary table via the assays relationship. Do not assume the target exists solely by name matching; use the standard join path to find associated activities.
+    - For FAMILY=document queries that ask for molecules or compounds in a specific document, use the join path:
+      FROM molecule_dictionary m
+      JOIN compound_records cr ON m.molregno = cr.molregno
+      JOIN docs d ON cr.doc_id = d.doc_id
+      WHERE d.chembl_id = <doc_chembl_id>
+    - For those FAMILY=document queries, use LEFT JOIN compound_structures cs ON m.molregno = cs.molregno to retrieve canonical_smiles. Do not filter out rows where canonical_smiles is missing.
+    - For FAMILY=document queries, select m.chembl_id AS molecule_chembl_id, m.pref_name AS molecule_name, m.max_phase, m.molecule_type, and cs.canonical_smiles.
+    - For FAMILY=document queries, do not use DISTINCT unless the user explicitly requests a unique list of identifiers only.
+    </TASK>
+  judge: |
+    <TASK>
+    Judge whether the current result is good enough to stop iterating.
+    This is an iterative diagnostic, not the benchmark authority.
+    Output JSON with keys "analysis", "score", and "decision".
+    </TASK>
+pb:
+  sql_to_up: |
+    <TASK>
+    Reconstruct a compact execution-oriented User Prompt from SQL.
+    Preserve semantic intent, required output schema, and key constraints.
+    Do not emit SQL. Output JSON only with key "up_exec".
+    </TASK>
+  up_to_uq: |
+    <TASK>
+    Reconstruct a realistic human-facing user question from an execution-oriented User Prompt.
+    Keep it natural and concise. Do not leak schema names unless a real user would likely say them.
+    Rules:
+    - Prefer what a scientist or analyst would plausibly ask, not an execution spec.
+    - Avoid internal table names, explicit join instructions, and implementation wording.
+    - Avoid exact schema-qualified column names unless that exact schema request is central to the task.
+    - Preserve intent, entity, measurement type, filters, and ordering when they matter.
+    - When the execution prompt is very specific, compress it into a plausible human request rather than copying it back.
+    - Prefer one sentence.
+    - Prefer short natural wording over column-by-column export wording when both preserve the same intent.
+    - For FAMILY=assay_exact queries, default to scientist-style asks such as:
+      "Show the exact activity values for compounds tested in assay CHEMBL1234."
+      "What exact measurements are available for assay CHEMBL1234?"
+      "List compounds with exact activity values for assay CHEMBL1234."
+    - For FAMILY=assay_exact queries, do not enumerate raw export columns like standard_type, standard_relation, standard_value, and standard_units unless the question would sound natural with them.
+    - For FAMILY=assay_exact queries, prefer phrases like "exact activity values", "exact measurements", and "compounds tested in assay ..." over execution-spec language like "include rows where relation is '='".
+    - For FAMILY=assay_exact queries, mention structures or SMILES only when that is central to the user-facing ask; otherwise prefer "compounds" over explicit column lists.
+    - For FAMILY=assay_exact queries, never mention deduplication, DISTINCT, alias spellings, or null-handling in the surface question.
+    - For FAMILY=assay_exact queries, keep the assay identifier if it is the main entity anchor, but compress the rest of the request aggressively.
+    - For FAMILY=document queries, default to a literature-facing ask such as:
+      "Which compounds are reported in document CHEMBL1234567?"
+      "List compounds mentioned in document CHEMBL1234567."
+      "What molecules are described in document CHEMBL1234567?"
+    - For FAMILY=document queries, do not copy back execution phrases like "distinct molecules", "return ChEMBL ID, compound name, canonical SMILES", or "associated with document ..." unless that detail is necessary to keep the task coherent.
+    - For FAMILY=document queries, prefer "compounds", "molecules", or "reported in document ..." over column-list wording.
+    - For FAMILY=document queries, mention SMILES only when structures are clearly central to the user-facing request; otherwise keep the ask at the level of compounds/molecules in the document.
+    - For FAMILY=document queries, never mention DISTINCT, exact alias spellings, or implementation details in the surface question.
+    - For FAMILY=document queries, keep the document ChEMBL ID as the anchor and compress everything else aggressively into natural prose.
+    Output JSON only with key "uq_surface".
+    </TASK>
+  res_sql_to_intent: |
+    <TASK>
+    Summarize the likely task intent from SQL and a result table summary.
+    Focus on entities, filters, output columns, ordering, and result shape.
+    Output JSON only with key "intent_sketch".
+    </TASK>
+scoring:
+  judge_threshold: 0.9
+  uq_up_echo_penalty_threshold: 0.95
+  uq_up_echo_penalty_weight: 0.15

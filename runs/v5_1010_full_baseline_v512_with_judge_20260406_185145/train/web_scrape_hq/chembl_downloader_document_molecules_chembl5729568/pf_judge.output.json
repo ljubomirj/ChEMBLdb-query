@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl5729568.json",
+  "case_id": "chembl_downloader_document_molecules_chembl5729568",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 703 compounds with canonical SMILES for document CHEMBL5729568. The query correctly joins molecule_dictionary, compound_records, docs, activities, assays, target_dictionary, and compound_structures with appropriate filters (document ID, non-null SMILES) and ordering. The sample rows show valid SMILES strings, and the column names match the expected output (molecule_chembl_id, compound_name, canonical_smiles). The DISTINCT is correctly applied to the selected columns, and the LEFT JOIN for compound_structures ensures all molecules with SMILES are included. The result appears complete and accurate for the requested information.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 703 compounds with canonical SMILES for document CHEMBL5729568. The query correctly joins molecule_dictionary, compound_records, docs, activities, assays, target_dictionary, and compound_structures with appropriate filters (document ID, non-null SMILES) and ordering. The sample rows show valid SMILES strings, and the column names match the expected output (molecule_chembl_id, compound_name, canonical_smiles). The DISTINCT is correctly applied to the selected columns, and the LEFT JOIN for compound_structures ensures all molecules with SMILES are included. The result appears complete and accurate for the requested information.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5729568/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5729568/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5729568/pf_judge.generated_artifact_record.json"
+  }
+}

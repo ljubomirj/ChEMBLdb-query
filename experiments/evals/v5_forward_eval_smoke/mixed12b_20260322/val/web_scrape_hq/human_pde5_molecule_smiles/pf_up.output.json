@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_pde5_molecule_smiles.json",
+  "case_id": "human_pde5_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select distinct molecule ChEMBL IDs aliased as compound_chembl_id and canonical SMILES from compound_structures for compounds with activity records linked to target CHEMBL1827 via assays where assay_organism equals 'Homo sapiens'. Join target_dictionary to assays to activities to molecule_dictionary to compound_structures. Sort by compound_chembl_id then canonical_smiles.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL IDs aliased as compound_chembl_id and canonical SMILES from compound_structures for compounds with activity records linked to target CHEMBL1827 via assays where assay_organism equals 'Homo sapiens'. Join target_dictionary to assays to activities to molecule_dictionary to compound_structures. Sort by compound_chembl_id then canonical_smiles."
+    }
+  }
+}

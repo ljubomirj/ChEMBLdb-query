@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs from ChEMBL together with preferred name, canonical SMILES, EFO identifier, EFO indication label, and max phase for indication. Keep only approved drugs with max_phase = 4, require non-null EFO identifier and non-null EFO indication label, and return DISTINCT rows only for exactly chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN drug_indication di ON md.molregno = di.molregno\nWHERE md.max_phase = 4\n  AND di.efo_id IS NOT NULL\n  AND di.efo_term IS NOT NULL;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 172 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 31760,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve approved drugs from ChEMBL with preferred name, canonical SMILES, EFO identifier, EFO indication label, and max phase for indication. Keep only indications with max_phase_for_ind = 4, require non-null EFO identifier and non-null EFO indication label, and return DISTINCT rows for exactly chembl_id, pref_name, canonical_smiles, efo_id (as indication_curie), efo_term (as indication_label), and max_phase_for_ind.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN drug_indication di ON md.molregno = di.molregno\nWHERE di.max_phase_for_ind = 4\n  AND di.efo_id IS NOT NULL\n  AND di.efo_term IS NOT NULL;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6706,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

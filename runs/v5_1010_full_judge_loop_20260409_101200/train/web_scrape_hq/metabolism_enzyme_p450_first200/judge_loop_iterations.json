@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 200 records from the metabolism table where the enzyme name contains 'P450'. For each record, include the metabolic conversion, pathway key, organism, and the substrate compound information. Specifically, retrieve the substrate compound name and its canonical SMILES structure. Join the metabolism table with compound_records using the substrate_record_id to get the compound name, and then join with molecule_dictionary and compound_structures to get the canonical SMILES.",
+    "sql": "SELECT\n  met.met_conversion,\n  met.pathway_key,\n  met.organism,\n  md_sub.pref_name AS substrate_name,\n  cs_sub.canonical_smiles\nFROM metabolism met\nJOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id\nJOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nJOIN compound_structures cs_sub ON md_sub.molregno = cs_sub.molregno\nWHERE met.enzyme_name LIKE '%P450%'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN met\n14 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 60,
+    "res_columns": [
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

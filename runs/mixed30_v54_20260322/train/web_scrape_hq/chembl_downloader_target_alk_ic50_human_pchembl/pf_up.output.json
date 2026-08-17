@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_alk_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_alk_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value from activities joined to assays, target_dictionary, molecule_dictionary, and compound_structures. Filter to target chembl_id CHEMBL4247, target_type SINGLE PROTEIN, target_dictionary tax_id 9606, standard_type IC50, standard_relation '=', and pchembl_value not null. Do not deduplicate. Order by molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value.\"}\n```",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value from activities joined to assays, target_dictionary, molecule_dictionary, and compound_structures. Filter to target chembl_id CHEMBL4247, target_type SINGLE PROTEIN, target_dictionary tax_id 9606, standard_type IC50, standard_relation '=', and pchembl_value not null. Do not deduplicate. Order by molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value."
+    }
+  }
+}

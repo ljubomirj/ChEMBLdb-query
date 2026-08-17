@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs indicated for HIV infection. For each drug, return the ChEMBL ID, the drug name, the canonical SMILES, the EFO ID associated with the indication, the EFO term (indication label), and the maximum phase for that specific indication.",
+    "sql": "WITH hiv_drugs AS (\n  SELECT DISTINCT\n    di.molregno,\n    di.efo_id AS efo_id,\n    di.efo_term AS indication_label,\n    di.max_phase_for_ind\n  FROM drug_indication di\n  WHERE di.mesh_heading = 'HIV Infections'\n    AND di.max_phase_for_ind = 4\n)\nSELECT\n  md.chembl_id,\n  md.pref_name AS drug_name,\n  cs.canonical_smiles,\n  hd.efo_id,\n  hd.indication_label,\n  hd.max_phase_for_ind AS max_phase\nFROM hiv_drugs hd\nJOIN molecule_dictionary md ON hd.molregno = md.molregno\nLEFT JOIN compound_structures cs ON hd.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n2 | 0 | 0 | CO-ROUTINE hiv_drugs\n5 | 2 | 174 | SCAN di\n20 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n26 | 0 | 124 | SCAN hd\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 80,
+    "res_columns": [
+      "chembl_id",
+      "drug_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

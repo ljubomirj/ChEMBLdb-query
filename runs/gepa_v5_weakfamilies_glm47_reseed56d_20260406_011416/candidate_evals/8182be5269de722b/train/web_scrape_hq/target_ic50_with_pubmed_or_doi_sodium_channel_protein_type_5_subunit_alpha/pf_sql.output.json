@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_8182be5269de722b.yaml",
+  "prompt_pack_version": "v5.15",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_5_subunit_alpha.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_5_subunit_alpha",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "8182be5269de722b",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, act.molregno || '_' || act.assay_id || '_' || act.record_id AS compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, NULLIF(act.activity_comment, 'Not Active') AS activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism FROM molecule_dictionary m JOIN compound_structures cs ON m.molregno = cs.molregno JOIN activities act ON m.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN docs d ON a.doc_id = d.doc_id JOIN target_dictionary t ON a.tid = t.tid WHERE t.chembl_id = 'CHEMBL1980' AND act.standard_type = 'IC50' ORDER BY m.chembl_id, cs.canonical_smiles, compound_key, pubmed_id_or_doi, a.description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, activity_comment, t.chembl_id, t.pref_name, t.organism\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, act.molregno || '_' || act.assay_id || '_' || act.record_id AS compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, NULLIF(act.activity_comment, 'Not Active') AS activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism FROM molecule_dictionary m JOIN compound_structures cs ON m.molregno = cs.molregno JOIN activities act ON m.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN docs d ON a.doc_id = d.doc_id JOIN target_dictionary t ON a.tid = t.tid WHERE t.chembl_id = 'CHEMBL1980' AND act.standard_type = 'IC50' ORDER BY m.chembl_id, cs.canonical_smiles, compound_key, pubmed_id_or_doi, a.description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, activity_comment, t.chembl_id, t.pref_name, t.organism"
+    }
+  }
+}

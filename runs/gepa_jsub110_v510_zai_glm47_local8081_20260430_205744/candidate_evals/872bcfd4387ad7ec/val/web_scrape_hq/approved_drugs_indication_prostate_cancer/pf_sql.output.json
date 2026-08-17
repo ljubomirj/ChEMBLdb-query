@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_872bcfd4387ad7ec.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_prostate_cancer.json",
+  "case_id": "approved_drugs_indication_prostate_cancer",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "872bcfd4387ad7ec",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.efo_term FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND (drug_indication.mesh_heading = 'Prostatic Neoplasms' OR drug_indication.efo_term LIKE '%prostate cancer%')"
+}

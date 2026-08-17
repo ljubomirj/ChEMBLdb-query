@@ -1,0 +1,1 @@
+Select chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, first_approval from molecule_dictionary joined with drug_indication on molregno and inner joined with compound_structures on molregno. Filter to approved drugs where max_phase = 4. Return DISTINCT rows over the requested output columns. Sort by first_approval descending.

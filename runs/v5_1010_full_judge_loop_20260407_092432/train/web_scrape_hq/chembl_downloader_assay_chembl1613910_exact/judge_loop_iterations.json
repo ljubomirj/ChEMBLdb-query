@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "Return the exact activity values for compounds tested in assay CHEMBL1613910. For each matching activity, include the ChEMBL ID of the compound, the canonical SMILES of the compound, the standard type, the standard relation, the standard value, and the standard units.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.assay_id = (SELECT assay_id FROM assays WHERE chembl_id = 'CHEMBL1613910')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n7 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n10 | 0 | 0 | SCALAR SUBQUERY 1\n15 | 10 | 39 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 11770,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

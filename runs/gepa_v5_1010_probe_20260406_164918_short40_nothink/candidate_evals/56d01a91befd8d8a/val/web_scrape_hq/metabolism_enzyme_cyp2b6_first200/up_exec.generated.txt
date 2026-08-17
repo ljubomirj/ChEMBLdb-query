@@ -1,0 +1,8 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Join compound_structures INNER JOIN on compound_structures.molregno = metabolism.substrate_record_id
+Join molecule_dictionary substrate_dict INNER JOIN on substrate_dict.molregno = metabolism.substrate_record_id
+Join molecule_dictionary parent_dict LEFT JOIN on parent_dict.molregno = metabolism.met_id
+Join target_dictionary enzyme_dict INNER JOIN on enzyme_dict.tid = metabolism.enzyme_tid
+Filter enzyme_dict.pref_name = 'CYP2B6'
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Limit 200

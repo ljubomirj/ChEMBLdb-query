@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/data1/data/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_tiny24_from_v50_20260426_232232/candidate_cache/candidate_9c2f91474af5af79.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/data1/data/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "9c2f91474af5af79",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select activity_id, molecule_dictionary.chembl_id as molecule_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, standard_type, standard_value, standard_units. Join activities with molecule_dictionary on molregno and with assays on assay_id and with target_dictionary on tid. Filter target_dictionary.organism to 'Homo sapiens', target_type to 'SINGLE PROTEIN', standard_units to 'nM', standard_type to EC50/IC50/AC50, and standard_value below 50. Return distinct rows. Sort by activity_id ascending. Limit to 200.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select activity_id, molecule_dictionary.chembl_id as molecule_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, standard_type, standard_value, standard_units. Join activities with molecule_dictionary on molregno and with assays on assay_id and with target_dictionary on tid. Filter target_dictionary.organism to 'Homo sapiens', target_type to 'SINGLE PROTEIN', standard_units to 'nM', standard_type to EC50/IC50/AC50, and standard_value below 50. Return distinct rows. Sort by activity_id ascending. Limit to 200."
+    }
+  }
+}

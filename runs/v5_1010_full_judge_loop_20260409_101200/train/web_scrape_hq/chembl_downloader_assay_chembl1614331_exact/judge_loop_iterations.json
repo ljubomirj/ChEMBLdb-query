@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Show the exact activity values and canonical SMILES for compounds tested in assay CHEMBL1614331. Return the activity type, exact standard value, standard units, standard relation, and canonical SMILES.",
+    "sql": "SELECT\n  a.standard_type AS activity_type,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation,\n  cs.canonical_smiles\nFROM activities a\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nWHERE\n  ass.chembl_id = 'CHEMBL1614331'\n  AND a.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 6321,
+    "res_columns": [
+      "activity_type",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

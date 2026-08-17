@@ -1,0 +1,13 @@
+Objective: Retrieve approved drugs with a BLOCKER mechanism of action and their associated target details.
+
+Output: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (aliased from target_dictionary.chembl_id), target_name (aliased from target_dictionary.pref_name).
+
+Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures.
+
+Logic:
+1. Join molecule_dictionary to drug_mechanism via molregno.
+2. Join drug_mechanism to target_dictionary via tid.
+3. Join molecule_dictionary to compound_structures via molregno.
+4. Filter molecule_dictionary.max_phase = 4.
+5. Filter drug_mechanism.action_type = 'BLOCKER'.
+6. Sort by chembl_id ASC.

@@ -1,0 +1,25 @@
+[
+  {
+    "n": 2,
+    "up": "Return the IC50 activities for the compound CHEMBL4857685 and any of its related salt forms when tested against the target CHEMBL240 (KCNH2, voltage-gated inwardly rectifying potassium channel). Include the activity details and the compound identifiers.",
+    "sql": "WITH compound_list AS (SELECT parent.molregno, parent.chembl_id, parent.pref_name FROM molecule_dictionary parent WHERE parent.chembl_id = 'CHEMBL4857685' UNION ALL SELECT child.molregno, child.chembl_id, child.pref_name FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL4857685') SELECT cl.chembl_id, cl.pref_name, a.activity_id, a.standard_relation, a.standard_value, a.standard_units, a.standard_type, ass.chembl_id AS assay_chembl_id, ass.description AS assay_description FROM compound_list cl JOIN activities a ON cl.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL240' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' ORDER BY a.standard_value",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n1 | 0 | 0 | MERGE (UNION ALL)\n3 | 1 | 0 | LEFT\n13 | 3 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n18 | 3 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n23 | 3 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n33 | 3 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 3 | 0 | USE TEMP B-TREE FOR ORDER BY\n72 | 1 | 0 | RIGHT\n86 | 72 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n91 | 72 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n96 | 72 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n102 | 72 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n108 | 72 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n121 | 72 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n144 | 72 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 22,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "activity_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "assay_chembl_id",
+      "assay_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

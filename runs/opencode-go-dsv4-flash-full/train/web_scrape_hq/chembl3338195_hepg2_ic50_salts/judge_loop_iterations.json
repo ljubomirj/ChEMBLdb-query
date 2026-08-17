@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 activity data (including standard_value, standard_units, and standard_relation) for the molecule with ChEMBL ID CHEMBL3338195 (parent) and all its salt forms (child molecules in the molecule_hierarchy table) against the target HepG2, which has the ChEMBL ID CHEMBL395. For each qualifying activity, return the molecule's ChEMBL ID (molecule_chembl_id), its preferred name (pref_name) if available, a label indicating whether it is the parent molecule or a salt form (e.g., 'parent' or 'salt'), and the IC50 measurement columns: standard_value, standard_units, and standard_relation. The target must be identified by target_dictionary.chembl_id = 'CHEMBL395' (the HepG2 cell line). The activity must have standard_type = 'IC50'. Do not impose any additional filters on units, relation, confidence score, assay type, or data validity. Include all matching activity rows, one row per activity, without aggregation or ranking. Ensure that both the parent molecule and its salt forms are considered, but only include those that actually have at least one IC50 activity against the specified target.",
+    "sql": "WITH parent AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL3338195'), target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL395'), relevant_molecules AS (SELECT mh.molregno, md.chembl_id AS molecule_chembl_id, md.pref_name, CASE WHEN mh.molregno = mh.parent_molregno THEN 'parent' ELSE 'salt' END AS form_type FROM molecule_hierarchy mh JOIN molecule_dictionary md ON mh.molregno = md.molregno WHERE mh.parent_molregno = (SELECT molregno FROM parent)) SELECT a.standard_value, a.standard_units, a.standard_relation, rm.molecule_chembl_id, rm.pref_name, rm.form_type FROM activities a JOIN assays ON a.assay_id = assays.assay_id JOIN target ON assays.tid = target.tid JOIN relevant_molecules rm ON a.molregno = rm.molregno WHERE a.standard_type = 'IC50';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n19 | 0 | 0 | SCALAR SUBQUERY 3\n24 | 19 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n57 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 6,
+    "res_columns": [
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "molecule_chembl_id",
+      "pref_name",
+      "form_type"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

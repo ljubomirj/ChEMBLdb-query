@@ -1,0 +1,102 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct molecule names (pref_name) from molecule_dictionary (md) that have at least one activity record in the activity table (a) associated with document CHEMBL5727368. Join activities to documents via activities.doc_id = docs.doc_id and filter docs.chembl_id = 'CHEMBL5727368'. Return molecule identifier (pref_name) and the associated document identifier (chembl_id). No other filters or additional constraints are requested.",
+    "sql": "SELECT DISTINCT md.pref_name, docs.chembl_id\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727368'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct molecule names (pref_name) and associated document identifier (chembl_id) for molecules that have at least one activity record in the activities table associated with document CHEMBL5727368. Join activities to documents via activities.doc_id = docs.doc_id and filter docs.chembl_id = 'CHEMBL5727368'. Return molecule identifier (pref_name) and associated document identifier (chembl_id). No other filters or additional constraints are requested.",
+    "sql": "SELECT DISTINCT md.pref_name, docs.chembl_id\nFROM activities a\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5727368';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all distinct molecule identifiers (pref_name) from the molecule_dictionary table that have at least one activity record in the activities table where the associated document (docs) has chembl_id = 'CHEMBL5727368'. The query must join activities to docs on activities.doc_id = docs.doc_id and join molecule_dictionary via activities.molecule_chembl_id = molecule_dictionary.molregno. Return the columns pref_name and chembl_id (document identifier). No additional filters, date ranges, target types, or ranking are required.",
+    "sql": "WITH doc AS (SELECT chembl_id FROM docs WHERE chembl_id = 'CHEMBL5727368') SELECT DISTINCT md.pref_name, doc.chembl_id FROM activities a JOIN doc ON a.doc_id = doc.chembl_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all distinct molecule names (pref_name) from molecule_dictionary that have at least one activity record linked to document CHEMBL5727368. Join activities to documents via activities.doc_id = docs.doc_id and activities.molregno = molecule_dictionary.molregno, filter docs.chembl_id = 'CHEMBL5727368'. Return pref_name and the document identifier (chembl_id). No other filters, ranking, or target type constraints are requested.",
+    "sql": "SELECT DISTINCT md.pref_name, d.chembl_id FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727368';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct molecule names (pref_name) from the molecule_dictionary (md) that have at least one activity record in the activities (a) table associated with document CHEMBL5727368. Join activities to documents via activities.doc_id = docs.doc_id and join molecule_dictionary via activities.molregno = md.molregno, filtering docs.chembl_id = 'CHEMBL5727368'. Return columns pref_name and chembl_id (document identifier). No additional filters, ranking, target type constraints, or other restrictions are requested.",
+    "sql": "WITH docs AS (SELECT chembl_id FROM docs WHERE chembl_id = 'CHEMBL5727368') SELECT DISTINCT md.pref_name, d.chembl_id FROM activities a JOIN docs d ON a.doc_id = d.chembl_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727368';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: circular reference: docs",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "circular reference: docs",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the distinct molecule names (pref_name) and associated document identifier (chembl_id) for molecules that have at least one activity record in the activities table associated with document CHEMBL5727368. Join activities to docs via activities.doc_id = docs.doc_id and join molecule_dictionary via activities.molregno = molecule_dictionary.molregno. Filter docs.chembl_id = 'CHEMBL5727368'. Return columns pref_name and chembl_id. No other filters, ranking, target type constraints, or date ranges are requested.",
+    "sql": "SELECT DISTINCT md.pref_name, d.chembl_id FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5727368';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct molecule names (pref_name) and the associated document identifier (chembl_id) for molecules that have at least one activity record linked to the document with chembl_id = 'CHEMBL5727368'. Join activities to documents using activities.doc_id = docs.doc_id and join molecule_dictionary using activities.molregno = molecule_dictionary.molregno. Filter on docs.chembl_id = 'CHEMBL5727368' and ensure pref_name is NOT NULL or empty. Return the columns pref_name and chembl_id. No further filters, ranking, or target type constraints are requested.",
+    "sql": "SELECT DISTINCT md.pref_name, d.chembl_id\nFROM activities a\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5727368'\n  AND (md.pref_name IS NOT NULL AND TRIM(md.pref_name) <> '');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

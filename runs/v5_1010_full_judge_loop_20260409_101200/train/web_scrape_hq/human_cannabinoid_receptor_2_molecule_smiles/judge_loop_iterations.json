@@ -1,0 +1,34 @@
+[
+  {
+    "n": 1,
+    "up": "Find all distinct compounds tested against the human CB2 receptor in human assays. Return the ChEMBL ID and canonical SMILES for each compound. Order the results by ChEMBL ID.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.tid = (SELECT tid FROM target_dictionary WHERE pref_name = 'Cannabinoid CB2 receptor' AND organism = 'Homo sapiens') AND a.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n14 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n23 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 0 | BLOOM FILTER ON a (assay_id=?)\n41 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n51 | 0 | 0 | SCALAR SUBQUERY 1\n56 | 51 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all distinct compounds that have been tested against the human Cannabinoid receptor 2 (CB2). For each compound, return its ChEMBL ID and canonical SMILES. Order the results by ChEMBL ID.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'Cannabinoid receptor 2' AND td.organism = 'Homo sapiens' ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n16 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n25 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n34 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n51 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11244,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl5498743_a549_ic50_salts.json",
+  "case_id": "chembl5498743_a549_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\\nJoin molecule_dictionary m_parent on m_parent.chembl_id = 'CHEMBL5498743'\\nJoin molecule_hierarchy mh on mh.parent_molregno = m_parent.molregno\\nJoin molecule_dictionary m_child on m_child.molregno = mh.molregno\\nLeft Join compound_records r on r.molregno = m_child.molregno\\nLeft Join docs d on d.doc_id = r.doc_id\\nLeft Join activities a on a.record_id = r.record_id and a.standard_type = 'IC50' and a.standard_relation = '='\\nLeft Join assays ass on ass.assay_id = a.assay_id\\nLeft Join target_dictionary t on t.tid = ass.tid\\nLeft Join compound_structures cs on cs.molregno = m_child.molregno\\nFilter ass.assay_organism = 'A549' and t.chembl_id = 'CHEMBL392'\\nReturn compound_chembl_id as compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\"\n}",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\nJoin molecule_dictionary m_parent on m_parent.chembl_id = 'CHEMBL5498743'\nJoin molecule_hierarchy mh on mh.parent_molregno = m_parent.molregno\nJoin molecule_dictionary m_child on m_child.molregno = mh.molregno\nLeft Join compound_records r on r.molregno = m_child.molregno\nLeft Join docs d on d.doc_id = r.doc_id\nLeft Join activities a on a.record_id = r.record_id and a.standard_type = 'IC50' and a.standard_relation = '='\nLeft Join assays ass on ass.assay_id = a.assay_id\nLeft Join target_dictionary t on t.tid = ass.tid\nLeft Join compound_structures cs on cs.molregno = m_child.molregno\nFilter ass.assay_organism = 'A549' and t.chembl_id = 'CHEMBL392'\nReturn compound_chembl_id as compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism"
+    }
+  }
+}

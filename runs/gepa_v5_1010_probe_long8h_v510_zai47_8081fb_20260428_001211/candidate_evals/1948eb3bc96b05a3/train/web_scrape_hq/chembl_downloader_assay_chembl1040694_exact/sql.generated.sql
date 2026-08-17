@@ -1,0 +1,21 @@
+SELECT
+  cs.canonical_smiles,
+  md.chembl_id,
+  a.standard_type,
+  a.standard_relation,
+  a.standard_value,
+  a.standard_units
+FROM activities a
+JOIN assays ass ON a.assay_id = ass.assay_id
+JOIN compound_structures cs ON a.molregno = cs.molregno
+JOIN molecule_dictionary md ON a.molregno = md.molregno
+WHERE ass.chembl_id = 'CHEMBL1040694'
+  AND a.standard_value IS NOT NULL
+  AND a.standard_relation = '='
+ORDER BY
+  cs.canonical_smiles ASC,
+  md.chembl_id ASC,
+  a.standard_type ASC,
+  a.standard_relation ASC,
+  a.standard_value ASC,
+  a.standard_units ASC

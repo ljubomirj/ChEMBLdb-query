@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return all exact activity values for compounds tested in assay CHEMBL4513219. For each result, include the assay ChEMBL ID, molecule ChEMBL ID, standard activity value, standard units, and standard relation.",
+    "sql": "SELECT a.assay_id, md.chembl_id AS molecule_chembl_id, act.standard_value, act.standard_units, act.standard_relation FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE a.chembl_id = 'CHEMBL4513219' AND act.standard_value IS NOT NULL AND act.standard_units IS NOT NULL AND act.standard_relation IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH act USING INDEX fk_act_assay_id (assay_id=?)\n24 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 68614,
+    "res_columns": [
+      "assay_id",
+      "molecule_chembl_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

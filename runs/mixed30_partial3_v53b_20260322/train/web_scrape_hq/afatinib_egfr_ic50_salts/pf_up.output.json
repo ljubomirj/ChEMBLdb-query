@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.3.yaml",
+  "prompt_pack_version": "v5.3",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/afatinib_egfr_ic50_salts.json",
+  "case_id": "afatinib_egfr_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Define the compound set as CHEMBL1173655 (AFATINIB) plus all related salts by joining molecule_hierarchy on parent_molregno from the parent molecule_dictionary row. Include the parent itself in the set.\\nJoin the compound set through the FAQ provenance path: molecule_dictionary -> compound_records (on molregno) -> docs (on doc_id) -> activities (on record_id) -> assays (on assay_id) -> target_dictionary (on tid).\\nLEFT JOIN compound_structures on molregno for canonical_smiles.\\nFilter activities to standard_type = 'IC50', standard_units = 'nM', and target_dictionary.chembl_id = 'CHEMBL203'.\\nReturn compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\\nSort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.\\nDo not limit rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Define the compound set as CHEMBL1173655 (AFATINIB) plus all related salts by joining molecule_hierarchy on parent_molregno from the parent molecule_dictionary row. Include the parent itself in the set.\nJoin the compound set through the FAQ provenance path: molecule_dictionary -> compound_records (on molregno) -> docs (on doc_id) -> activities (on record_id) -> assays (on assay_id) -> target_dictionary (on tid).\nLEFT JOIN compound_structures on molregno for canonical_smiles.\nFilter activities to standard_type = 'IC50', standard_units = 'nM', and target_dictionary.chembl_id = 'CHEMBL203'.\nReturn compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\nSort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.\nDo not limit rows."
+    }
+  }
+}

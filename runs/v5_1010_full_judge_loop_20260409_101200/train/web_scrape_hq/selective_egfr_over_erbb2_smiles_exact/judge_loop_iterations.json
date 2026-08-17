@@ -1,0 +1,125 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds where the activity against the Epidermal growth factor receptor (target with ChEMBL ID CHEMBL203) has an IC50 less than 50\u202fnM (standard_relation '=', standard_units 'nM') and the activity against the receptor tyrosine\u2011protein kinase erbB\u20112 (CHEMBL1824) has an IC50 greater than 200\u202fnM (standard_relation '=', standard_units 'nM'), and no other filters. Return exactly the compound CHEMBL identifier and the canonical SMILES for each qualifying compound.",
+    "sql": "WITH c3 AS (SELECT a.molecule_chembl_id, a.standard_value, a.standard_units, a.standard_relation, a.activity_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Epidermal Growth Factor Receptor' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), c2 AS (SELECT a.molecule_chembl_id, a.standard_value, a.standard_units, a.standard_relation, a.activity_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Receptor tyrosine\u2011protein kinase erbB\u20112' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200), c3_ids AS (SELECT DISTINCT molecule_chembl_id FROM c3), c2_ids AS (SELECT DISTINCT molecule_chembl_id FROM c2), both AS (SELECT c3_ids.molecule_chembl_id FROM c3_ids JOIN c2_ids ON c3_ids.molecule_chembl_id = c2_ids.molecule_chembl_id) SELECT b.molecule_chembl_id AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM both b JOIN compound_structures cs ON b.molecule_chembl_id = cs.molecule_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\"targets\":[{\"pref_name\":\"Epidermal Growth Factor Receptor\",\"chembl_id\":\"CHEMBL203\",\"tid\":null},{\"pref_name\":\"Receptor tyrosine-protein kinase erbB-2\",\"chembl_id\":\"CHEMBL1824\",\"tid\":null}],\"output_columns\":[\"compound_chembl_id\",\"canonical_smiles\"],\"filters\":[{\"activity_type\":\"IC50\",\"relation\":\"<\",\"value\":50,\"units\":\"nM\"},{\"activity_type\":\"IC50\",\"relation\":\">\",\"value\":200,\"units\":\"nM\"},{\"standard_relation\":\"=\",\"standard_units\":\"nM\"}],\"ranking\":null,\"notes\":\"Only rows where standard_relation = '=' and standard_units = 'nM' for the corresponding activities. Return a single row per compound; no ranking or limits are required. Compound must be selective for target 203 (EGFR) with IC50 < 50 nM and target 1824 (ERBB2) with IC50 > 200 nM.",
+    "sql": "WITH egfr AS (SELECT a.molecule_chembl_id, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Epidermal Growth Factor Receptor' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molecule_chembl_id, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Receptor tyrosine-protein kinase erbB-2' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT e.molecule_chembl_id AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr e JOIN erbB2 b ON e.molecule_chembl_id = b.molecule_chembl_id JOIN compound_structures cs ON e.molecule_chembl_id = cs.molecule_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\"targets\":[{\"pref_name\":\"Epidermal Growth Factor Receptor\",\"chembl_id\":\"CHEMBL203\"},{\"pref_name\":\"Receptor tyrosine-protein kinase erbB-2\",\"chembl_id\":\"CHEMBL1824\"}],\"output_columns\":[\"compound_chembl_id\",\"canonical_smiles\"],\"filters\":[{\"activity_type\":\"IC50\",\"relation\":\"<\",\"value\":50,\"units\":\"nM\"},{\"activity_type\":\"IC50\",\"relation\":\">\",\"value\":200,\"units\":\"nM\"},{\"standard_relation\":\"=\",\"standard_units\":\"nM\"}],\"ranking\":null,\"notes\":\"Only return compounds with IC50 < 50 nM at CHEMBL203 (EGFR) and IC50 > 200 nM at CHEMBL1824 (ERBB2). No other filters. Return exactly the public compound identifier (CHEMBL ID) and the canonical SMILES. Each compound must appear once only.",
+    "sql": "WITH egfr AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value AS val FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Epidermal Growth Factor Receptor' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value AS val FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Receptor tyrosine-protein kinase erbB-2' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT e.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr e JOIN erbB2 b ON e.molregno = b.molregno JOIN compound_structures cs ON e.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compounds that are selective for CHEMBL203 (Epidermal growth factor receptor) over CHEMBL1824 (Receptor tyrosine\u2011protein kinase erbB\u20112). Selectivity must be defined as: activity against CHEMBL203 has an IC50 < 50\u202fnM and activity against CHEMBL1824 has an IC50 > 200\u202fnM, using only activity rows where standard_relation = '=' and standard_units = 'nM'. Return exactly two columns: the public compound identifier (compound_chembl_id) and the canonical SMILES for each qualifying compound. Ensure each compound appears only once in the result. Targets are specified by their ChEMBL IDs (CHEMBL203 and CHEMBL1824) with no additional constraints on assay type or organism.",
+    "sql": "WITH egfr AS (SELECT a.chembl_id AS molecule_chembl_id, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Epidermal Growth Factor Receptor' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.chembl_id AS molecule_chembl_id, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = 'Receptor tyrosine-protein kinase erbB-2' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT e.molecule_chembl_id AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr e JOIN erbB2 b ON e.molecule_chembl_id = b.molecule_chembl_id JOIN compound_structures cs ON b.molecule_chembl_id = cs.molecule_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve compounds that are selective for CHEMBL203 (Epidermal growth factor receptor) over CHEMBL1824 (Receptor tyrosine\u2011protein kinase erbB\u20112). Selectivity is defined as: the compound must have an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL203 where the standard_relation operator is '<' and the standard_value is less than 50; and have an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL1824 where the standard_value is greater than 200. Return exactly two columns: the public compound identifier compound_chembl_id and the canonical_smiles. Ensure each compound appears only once.",
+    "sql": "WITH egfr AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL203' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1824' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT e.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr e JOIN erbB2 b ON e.molregno = b.molregno JOIN compound_structures cs ON e.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve compounds selective for CHEMBL203 (Epidermal growth factor receptor) over CHEMBL1824 (Receptor tyrosine\u2011protein kinase erbB\u20112). Selectivity is defined as: the compound must have an activity against CHEMBL203 with standard_relation = '=' and standard_units = 'nM' and standard_value < 50 (i.e., IC50 < 50\u202fnM), and an activity against CHEMBL1824 with standard_relation = '=' and standard_units = 'nM' and standard_value > 200 (i.e., IC50 > 200\u202fnM). Return exactly two columns: the public ChEMBL compound identifier (compound_chembl_id) and the canonical SMILES for each qualifying compound. Ensure each compound appears only once in the result. Targets are specified by their ChEMBL IDs (CHEMBL203 and CHEMBL1824).",
+    "sql": "WITH egfr AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL203' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1824' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT egfr.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr JOIN erbB2 ON egfr.molregno = erbB2.molregno JOIN compound_structures cs ON egfr.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve compounds selective for CHEMBL203 (Epidermal Growth Factor Receptor) over CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Selectivity is defined as: the compound must have an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL203 where the standard_value is less than 50 (IC50 < 50\u202fnM) and an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL1824 where the standard_value is greater than 200 (IC50 > 200\u202fnM). Return exactly two columns only: compound_chembl_id (the public ChEMBL identifier) and the canonical_smiles. Ensure each qualifying compound appears only once in the result. Targets are specified by their ChEMBL IDs (CHEMBL203 and CHEMBL1824) with no other constraints on assay type or organism.",
+    "sql": "WITH egfr AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL203' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molecule_chembl_id AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1824' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT egfr.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr JOIN erbB2 ON egfr.molregno = erbB2.molregno JOIN compound_structures cs ON egfr.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve compounds selective for CHEMBL203 (Epidermal Growth Factor Receptor) over CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Selectivity is defined as: the compound must have an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL203 where the standard_value is less than 50 (IC50 < 50\u202fnM), and an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL1824 where the standard_value is greater than 200 (IC50 > 200\u202fnM). Return exactly two columns only: compound_chembl_id (the public ChEMBL identifier) and the canonical_smiles. Ensure each qualifying compound appears only once in the result. Targets are specified by their ChEMBL IDs (CHEMBL203 and CHEMBL1824) with no other constraints on assay type or organism.",
+    "sql": "WITH egfr AS (SELECT a.molregno AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL203' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molregno AS molregno, a.standard_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1824' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT egfr.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr JOIN erbB2 ON egfr.molregno = erbB2.molregno JOIN compound_structures cs ON egfr.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 0 | 153 | SEARCH a USING INDEX idx_act_std_unit (standard_units=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n46 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n55 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n73 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 11389,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve compounds that are selective for CHEMBL203 (Epidermal Growth Factor Receptor) over CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Selectivity is defined as: the compound must have an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL203 where the standard_value is less than 50 (IC50 < 50\u202fnM), and an activity with standard_relation = '=' and standard_units = 'nM' against CHEMBL1824 where the standard_value is greater than 200 (IC50 > 200\u202fnM). Return exactly two columns only: compound_chembl_id (the public ChEMBL identifier) and the canonical_smiles. Ensure each qualifying compound appears only once in the result. Targets are specified by their ChEMBL IDs (CHEMBL203 and CHEMBL1824) with no other constraints on assay type or organism.",
+    "sql": "WITH egfr AS (SELECT a.molregno AS molregno, a.standard_value AS val FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL203' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value < 50), erbB2 AS (SELECT a.molregno AS molregno, a.standard_value AS val FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1824' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND a.standard_value > 200) SELECT DISTINCT egfr.molregno AS compound_chembl_id, cs.canonical_smiles AS canonical_smiles FROM egfr JOIN erbB2 ON egfr.molregno = erbB2.molregno JOIN compound_structures cs ON egfr.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n26 | 0 | 153 | SEARCH a USING INDEX idx_act_std_unit (standard_units=?)\n37 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n56 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n74 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n93 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 184,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

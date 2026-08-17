@@ -1,0 +1,37 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2a6_first200.json",
+  "case_id": "metabolism_enzyme_cyp2a6_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result shows 6 rows of metabolism data for CYP2A6, but the query has several issues. First, the molecule_dictionary join uses the alias 'm' for both the metabolism table and the molecule_dictionary table, causing ambiguity and incorrect results. The query should use distinct aliases for each table. Second, the compound_structures join uses 'm.molregno' which refers to the metabolism table's molregno, but it should reference the substrate compound's molregno from the molecule_dictionary join. Third, the molecule_hierarchy join is incorrectly using 'm.molregno' instead of the substrate compound's molregno. The result also shows duplicate entries for NORKETAMINE with different met_conversion descriptions, but these should be distinct based on the actual metabolic conversion. The query also lacks proper filtering for the enzyme name and has redundant NULL checks for met_conversion.\",\n  \"score\": 0.45,\n  \"decision\": \"continue\",\n  \"reason\": \"The query needs significant correction to properly join the tables with distinct aliases, fix the compound_structures join to use the correct molregno, and properly handle the molecule_hierarchy relationship. The current result shows only 6 rows when it should show up to 200, and the data appears to have duplicates that should be filtered. The enzyme name filtering is also not properly applied due to the table alias confusion.\"\n}",
+    "parsed_json": {
+      "analysis": "The current result shows 6 rows of metabolism data for CYP2A6, but the query has several issues. First, the molecule_dictionary join uses the alias 'm' for both the metabolism table and the molecule_dictionary table, causing ambiguity and incorrect results. The query should use distinct aliases for each table. Second, the compound_structures join uses 'm.molregno' which refers to the metabolism table's molregno, but it should reference the substrate compound's molregno from the molecule_dictionary join. Third, the molecule_hierarchy join is incorrectly using 'm.molregno' instead of the substrate compound's molregno. The result also shows duplicate entries for NORKETAMINE with different met_conversion descriptions, but these should be distinct based on the actual metabolic conversion. The query also lacks proper filtering for the enzyme name and has redundant NULL checks for met_conversion.",
+      "score": 0.45,
+      "decision": "continue",
+      "reason": "The query needs significant correction to properly join the tables with distinct aliases, fix the compound_structures join to use the correct molregno, and properly handle the molecule_hierarchy relationship. The current result shows only 6 rows when it should show up to 200, and the data appears to have duplicates that should be filtered. The enzyme name filtering is also not properly applied due to the table alias confusion."
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp2a6_first200/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp2a6_first200/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp2a6_first200/pf_judge.generated_artifact_record.json"
+  }
+}

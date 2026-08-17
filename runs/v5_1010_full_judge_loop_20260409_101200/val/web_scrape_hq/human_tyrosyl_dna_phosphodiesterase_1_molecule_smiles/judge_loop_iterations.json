@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "List all distinct compounds (by ChEMBL ID) that have been tested against the target with ChEMBL ID CHEMBL1075138.",
+    "sql": "SELECT DISTINCT md.chembl_id FROM molecule_dictionary md JOIN activities a ON md.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1075138')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n7 | 0 | 224 | SCAN ass\n12 | 0 | 0 | SCALAR SUBQUERY 1\n17 | 12 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n26 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 196756,
+    "res_columns": [
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

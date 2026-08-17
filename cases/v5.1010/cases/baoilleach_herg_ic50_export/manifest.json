@@ -1,0 +1,63 @@
+{
+  "case_id": "baoilleach_herg_ic50_export",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/uq.txt",
+    "up_exec": null,
+    "sql_gold": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/sqlite.sql",
+    "res_gold": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/source.sql",
+    "sqlite_sql": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/sqlite.sql",
+    "documentation": "cases/v5.1010/cases/baoilleach_herg_ic50_export/provenance/original/web_scrape4--baoilleach_herg_ic50_export/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "inferred_from_public_sql",
+    "source_title": "chembl_mysql gist: hERG IC50 export",
+    "source_url": "https://gist.github.com/baoilleach/4953366",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "activity_id",
+      "assay_chembl_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "molecule_chembl_id"
+    ],
+    "sort_keys": [
+      "activity_id",
+      "assay_chembl_id",
+      "molecule_chembl_id"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "molecule_chembl_id"
+    },
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "activity_id"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

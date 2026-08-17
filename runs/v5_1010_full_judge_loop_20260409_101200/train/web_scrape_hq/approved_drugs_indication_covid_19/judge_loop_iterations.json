@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of approved drugs that have an indication for COVID-19. Include the drug name, the ChEMBL ID, the indication (mesh_heading), and the associated EFO term. An approved drug is defined as one with max_phase = 4 in the molecule_dictionary table. Indication data should be retrieved from the drug_indication table, filtering for mesh_id 'D018498' (COVID-19).",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_id = 'D018498';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return a list of approved drugs that have a COVID-19 indication. Include the drug name (pref_name), the ChEMBL ID (chembl_id), the MeSH heading (mesh_heading), and the EFO term (efo_term). An approved drug is defined as a molecule with max_phase = 4. The indication is identified by the MeSH heading containing the text 'COVID-19' (case-insensitive match).",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%COVID-19%' OR UPPER(di.mesh_heading) LIKE '%COVID-19%');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n14 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 28,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -4,14 +4,14 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 STAMP="${1:-$(date +%Y%m%d_%H%M%S)}"
-SEED_PROMPT_PACK="experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml"
-MANIFEST_ROOT="tests/v5_manifests_1010"
-PROBE_SPLIT="experiments/case_splits_v5.1010_gepa_probe.json"
-FULL_SPLIT="experiments/case_splits_v5.1010.json"
+SEED_PROMPT_PACK="runs/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml"
+MANIFEST_ROOT="cases/v5.1010/cases"
+PROBE_SPLIT="cases/v5.1010/splits/case_splits_v5.1010_gepa_probe.json"
+FULL_SPLIT="cases/v5.1010/splits/case_splits_v5.1010.json"
 PROFILE="zai-glm47-local-fallbacks"
 REFLECTION_FALLBACK="http://127.0.0.1:18081/v1"
 
-mkdir -p logs experiments/evals/v5_forward_eval
+mkdir -p logs runs
 
 echo "[v5.1010] stamp=${STAMP}"
 echo "[v5.1010] step=repair_surfaces"
@@ -36,7 +36,7 @@ uv run python scripts/evaluate_v5_forward.py \
   --print-summary \
   |& tee "logs/v5_1010_probe_baseline_${STAMP}.log"
 
-PROBE_RUN_DIR="experiments/evals/v5_forward_eval/gepa_v5_1010_probe_${STAMP}"
+PROBE_RUN_DIR="runs/gepa_v5_1010_probe_${STAMP}"
 echo "[v5.1010] step=stratified_gepa run_dir=${PROBE_RUN_DIR}"
 uv run python experiments/gepa_optimize_prompt_pack_v5.py \
   --seed-prompt-pack "${SEED_PROMPT_PACK}" \
@@ -55,12 +55,12 @@ uv run python experiments/gepa_optimize_prompt_pack_v5.py \
 GATE_OUT="experiments/v5.1010_gepa_probe_gate_${STAMP}.json"
 echo "[v5.1010] step=gate_full_gepa gate=${GATE_OUT}"
 uv run python scripts/gate_v5_1010_gepa_probe.py \
-  --baseline-report "experiments/evals/v5_forward_eval/${BASELINE_LABEL}/report.json" \
+  --baseline-report "runs/${BASELINE_LABEL}/report.json" \
   --gepa-summary "${PROBE_RUN_DIR}/summary.json" \
   --out "${GATE_OUT}" \
   |& tee "logs/v5_1010_probe_gate_${STAMP}.log"
 
-FULL_RUN_DIR="experiments/evals/v5_forward_eval/gepa_v5_1010_full_${STAMP}"
+FULL_RUN_DIR="runs/gepa_v5_1010_full_${STAMP}"
 echo "[v5.1010] step=full_gepa run_dir=${FULL_RUN_DIR}"
 uv run python experiments/gepa_optimize_prompt_pack_v5.py \
   --seed-prompt-pack "${PROBE_RUN_DIR}/best_prompt_pack.yaml" \

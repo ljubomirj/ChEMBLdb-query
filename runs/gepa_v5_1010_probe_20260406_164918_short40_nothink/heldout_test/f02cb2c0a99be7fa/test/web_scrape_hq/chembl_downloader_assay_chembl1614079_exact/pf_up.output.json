@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1614079_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1614079_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select distinct canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units from molecule_dictionary m join activities a on m.molregno = a.molregno join assays ass on a.assay_id = ass.assay_id join compound_structures cs on m.molregno = cs.molregno where ass.chembl_id = 'CHEMBL1614079' and a.standard_value is not null and a.standard_relation = '=' order by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units\"\n}",
+    "parsed_json": {
+      "up": "Select distinct canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units from molecule_dictionary m join activities a on m.molregno = a.molregno join assays ass on a.assay_id = ass.assay_id join compound_structures cs on m.molregno = cs.molregno where ass.chembl_id = 'CHEMBL1614079' and a.standard_value is not null and a.standard_relation = '=' order by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units"
+    }
+  }
+}

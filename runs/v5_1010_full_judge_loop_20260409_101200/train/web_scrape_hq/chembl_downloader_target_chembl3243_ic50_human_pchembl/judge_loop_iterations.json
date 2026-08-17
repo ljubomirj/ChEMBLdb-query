@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows for the human single-protein target CHEMBL3243 (Receptor-type tyrosine-protein phosphatase C) that are of the standard type IC50 and have a pChEMBL value. Only include rows where the standard relation is '=' and the pChEMBL value is not null. The results should be ordered by molecule ChEMBL ID and then by assay ChEMBL ID. Return the assay ChEMBL ID, target type, taxonomy ID (tax_id), canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+    "sql": "WITH target_activities AS (\n  SELECT\n    a.activity_id,\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    a.molregno,\n    a.standard_type,\n    a.pchembl_value,\n    ROW_NUMBER() OVER (\n      ORDER BY md.chembl_id, ass.chembl_id\n    ) AS _rn\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  WHERE td.chembl_id = 'CHEMBL3243'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n)\nSELECT\n  ta.assay_chembl_id,\n  ta.target_type,\n  ta.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  ta.standard_type,\n  ta.pchembl_value\nFROM target_activities ta\nJOIN molecule_dictionary md ON ta.molregno = md.molregno\nLEFT JOIN compound_structures cs ON ta.molregno = cs.molregno\nWHERE ta._rn <= 1000\nORDER BY md.chembl_id, ta.assay_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n2 | 0 | 0 | CO-ROUTINE target_activities\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n15 | 5 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 5 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 5 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 5 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n58 | 5 | 0 | USE TEMP B-TREE FOR ORDER BY\n79 | 2 | 132 | SCAN (subquery-3)\n133 | 0 | 132 | SCAN ta\n138 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n145 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n168 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 253,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

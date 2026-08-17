@@ -1,0 +1,43 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all approved drugs indicated for cardiovascular disease. For each drug, provide the following details: 1) ChEMBL ID, 2) Preferred Name, 3) Canonical SMILES (structure), 4) Indication ID, 5) Mesh Heading, 6) EFO Term, and 7) Max Phase for Indication.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.drugind_id, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN drug_indication di ON cr.record_id = di.record_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.mesh_heading LIKE '%cardiovascular%' OR di.efo_term LIKE '%cardiovascular%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 180 | SCAN di USING INDEX drug_indication_pk\n13 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 375,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all approved drugs (max_phase = 4) indicated for cardiovascular disease. Return one row per drug-indication pair with the following columns: drug ChEMBL ID, drug preferred name, canonical SMILES, and the indication details (Mesh Heading, EFO Term, Max Phase for Indication). Join molecule_dictionary to drug_indication using molregno. Filter rows where mesh_heading or efo_term contains 'cardiovascular'.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%cardiovascular%' OR di.efo_term LIKE '%cardiovascular%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n15 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 205,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

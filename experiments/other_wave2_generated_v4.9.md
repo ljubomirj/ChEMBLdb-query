@@ -1,0 +1,93 @@
+# Other Wave 2 Generated v4.9
+
+- Prompt pack: `prompt_pack_v5.9.yaml`
+- Provider profile: `zai-glm51-then-local`
+- Requested: 83
+- Generated: 83
+- Failures: 0
+
+## Generated cases
+
+- `target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4` template=`target_activity_with_pubmed_or_doi` rows=10381 round=75
+- `target_ic50_with_pubmed_or_doi_vascular_endothelial_growth_factor_recep` template=`target_activity_with_pubmed_or_doi` rows=10071 round=75
+- `target_ic50_with_pubmed_or_doi_histone_deacetylase_1` template=`target_activity_with_pubmed_or_doi` rows=8404 round=75
+- `target_ic50_with_pubmed_or_doi_acetylcholinesterase` template=`target_activity_with_pubmed_or_doi` rows=8252 round=75
+- `target_ic50_with_pubmed_or_doi_prostaglandin_g/h_synthase_2` template=`target_activity_with_pubmed_or_doi` rows=6993 round=75
+- `target_ic50_with_pubmed_or_doi_beta_secretase_1` template=`target_activity_with_pubmed_or_doi` rows=6587 round=75
+- `target_ic50_with_pubmed_or_doi_cytochrome_p450_2d6` template=`target_activity_with_pubmed_or_doi` rows=6379 round=75
+- `target_ic50_with_pubmed_or_doi_bromodomain_containing_protein_4` template=`target_activity_with_pubmed_or_doi` rows=6343 round=75
+- `target_ic50_with_pubmed_or_doi_histone_deacetylase_6` template=`target_activity_with_pubmed_or_doi` rows=6285 round=75
+- `target_ic50_with_pubmed_or_doi_mitogen_activated_protein_kinase_14` template=`target_activity_with_pubmed_or_doi` rows=6006 round=75
+- `target_ic50_with_pubmed_or_doi_amine_oxidase_[flavin_containing]_b` template=`target_activity_with_pubmed_or_doi` rows=5852 round=75
+- `target_ic50_with_pubmed_or_doi_phosphatidylinositol_4,5_bisphosphate_3_` template=`target_activity_with_pubmed_or_doi` rows=5701 round=75
+- `target_ic50_with_pubmed_or_doi_cytochrome_p450_2c9` template=`target_activity_with_pubmed_or_doi` rows=5518 round=75
+- `target_ic50_with_pubmed_or_doi_hepatocyte_growth_factor_receptor` template=`target_activity_with_pubmed_or_doi` rows=5101 round=75
+- `target_ic50_with_pubmed_or_doi_cholinesterase` template=`target_activity_with_pubmed_or_doi` rows=5028 round=75
+- `target_ic50_with_pubmed_or_doi_glycogen_synthase_kinase_3_beta` template=`target_activity_with_pubmed_or_doi` rows=4484 round=75
+- `target_ic50_with_pubmed_or_doi_tyrosine_protein_phosphatase_non_recepto` template=`target_activity_with_pubmed_or_doi` rows=4397 round=75
+- `target_ic50_with_pubmed_or_doi_serine/threonine_protein_kinase_b_raf` template=`target_activity_with_pubmed_or_doi` rows=4398 round=75
+- `target_ic50_with_pubmed_or_doi_renin` template=`target_activity_with_pubmed_or_doi` rows=4341 round=75
+- `target_ic50_with_pubmed_or_doi_proto_oncogene_tyrosine_protein_kinase_s` template=`target_activity_with_pubmed_or_doi` rows=4316 round=75
+- `target_ic50_with_pubmed_or_doi_aromatase` template=`target_activity_with_pubmed_or_doi` rows=4279 round=76
+- `target_ic50_with_pubmed_or_doi_cytochrome_p450_1a2` template=`target_activity_with_pubmed_or_doi` rows=4170 round=76
+- `target_ic50_with_pubmed_or_doi_phosphatidylinositol_4,5_bisphosphate_3_` template=`target_activity_with_pubmed_or_doi` rows=4166 round=76
+- `target_ic50_with_pubmed_or_doi_amine_oxidase_[flavin_containing]_a` template=`target_activity_with_pubmed_or_doi` rows=4109 round=76
+- `approved_drugs_indication_neoplasm` template=`approved_drugs_with_indications_export` rows=384 round=76
+- `approved_drugs_indication_breast_cancer` template=`approved_drugs_with_indications_export` rows=304 round=76
+- `approved_drugs_indication_cancer` template=`approved_drugs_with_indications_export` rows=299 round=76
+- `approved_drugs_indication_prostate_cancer` template=`approved_drugs_with_indications_export` rows=240 round=76
+- `approved_drugs_indication_non_small_cell_lung_carcinoma` template=`approved_drugs_with_indications_export` rows=221 round=76
+- `approved_drugs_indication_covid_19` template=`approved_drugs_with_indications_export` rows=220 round=76
+- `approved_drugs_indication_pain` template=`approved_drugs_with_indications_export` rows=260 round=76
+- `approved_drugs_indication_lymphoma` template=`approved_drugs_with_indications_export` rows=200 round=76
+- `approved_drugs_indication_infection` template=`approved_drugs_with_indications_export` rows=224 round=76
+- `approved_drugs_indication_hiv_infection` template=`approved_drugs_with_indications_export` rows=218 round=76
+- `approved_drugs_indication_multiple_myeloma` template=`approved_drugs_with_indications_export` rows=166 round=76
+- `approved_drugs_indication_cardiovascular_disease` template=`approved_drugs_with_indications_export` rows=199 round=76
+- `approved_drugs_indication_leukemia` template=`approved_drugs_with_indications_export` rows=161 round=76
+- `approved_drugs_indication_hypertension` template=`approved_drugs_with_indications_export` rows=191 round=76
+- `approved_drugs_indication_acute_myeloid_leukemia` template=`approved_drugs_with_indications_export` rows=170 round=76
+- `approved_drugs_indication_type_2_diabetes_mellitus` template=`approved_drugs_with_indications_export` rows=162 round=76
+- `approved_drugs_indication_schizophrenia` template=`approved_drugs_with_indications_export` rows=182 round=77
+- `approved_drugs_indication_pancreatic_carcinoma` template=`approved_drugs_with_indications_export` rows=146 round=77
+- `approved_drugs_indication_depressive_disorder` template=`approved_drugs_with_indications_export` rows=174 round=77
+- `approved_drugs_indication_chronic_kidney_disease` template=`approved_drugs_with_indications_export` rows=142 round=77
+- `target_descriptions_mus_musculus` template=`target_description_list` rows=1825 round=77
+- `target_descriptions_rattus_norvegicus` template=`target_description_list` rows=1339 round=77
+- `target_descriptions_bos_taurus` template=`target_description_list` rows=285 round=77
+- `target_descriptions_escherichia_coli` template=`target_description_list` rows=240 round=77
+- `target_descriptions_oryctolagus_cuniculus` template=`target_description_list` rows=230 round=77
+- `target_descriptions_sus_scrofa` template=`target_description_list` rows=209 round=77
+- `target_descriptions_cavia_porcellus` template=`target_description_list` rows=174 round=77
+- `target_descriptions_canis_lupus_familiaris` template=`target_description_list` rows=160 round=77
+- `target_descriptions_mycobacterium_tuberculosis` template=`target_description_list` rows=118 round=77
+- `target_descriptions_saccharomyces_cerevisiae` template=`target_description_list` rows=117 round=77
+- `target_descriptions_staphylococcus_aureus` template=`target_description_list` rows=100 round=77
+- `target_descriptions_cricetulus_griseus` template=`target_description_list` rows=100 round=77
+- `target_descriptions_plasmodium_falciparum` template=`target_description_list` rows=90 round=77
+- `target_descriptions_not_specified` template=`target_description_list` rows=79 round=77
+- `approved_drugs_mechanism_inhibitor` template=`approved_drugs_with_mechanisms_export` rows=1406 round=77
+- `approved_drugs_mechanism_agonist` template=`approved_drugs_with_mechanisms_export` rows=441 round=77
+- `approved_drugs_mechanism_antagonist` template=`approved_drugs_with_mechanisms_export` rows=476 round=78
+- `approved_drugs_mechanism_blocker` template=`approved_drugs_with_mechanisms_export` rows=117 round=78
+- `approved_drugs_mechanism_positive_allosteric_modulator` template=`approved_drugs_with_mechanisms_export` rows=51 round=78
+- `approved_drugs_mechanism_modulator` template=`approved_drugs_with_mechanisms_export` rows=33 round=78
+- `approved_drugs_mechanism_sequestering_agent` template=`approved_drugs_with_mechanisms_export` rows=12 round=78
+- `approved_drugs_mechanism_positive_modulator` template=`approved_drugs_with_mechanisms_export` rows=21 round=78
+- `approved_drugs_mechanism_activator` template=`approved_drugs_with_mechanisms_export` rows=14 round=78
+- `approved_drugs_mechanism_chelating_agent` template=`approved_drugs_with_mechanisms_export` rows=17 round=78
+- `approved_drugs_mechanism_partial_agonist` template=`approved_drugs_with_mechanisms_export` rows=24 round=78
+- `drug_indications_max_phase_4` template=`drug_indications_export` rows=8312 round=78
+- `drug_indications_max_phase_3` template=`drug_indications_export` rows=11433 round=78
+- `drug_indications_max_phase_2` template=`drug_indications_export` rows=13185 round=78
+- `drug_indications_max_phase_1` template=`drug_indications_export` rows=5989 round=78
+- `count_ic50_activities_by_target_type` template=`other_grounded_sql_family` rows=21 round=78
+- `selective_cdk2_over_cdk1_ic50_smiles` template=`other_grounded_sql_family` rows=5 round=78
+- `ic50_activity_counts_by_organism` template=`other_grounded_sql_family` rows=793 round=78
+- `human_sub100nm_ki_first500` template=`other_grounded_sql_family` rows=500 round=78
+- `human_sub100nm_kd_first500` template=`other_grounded_sql_family` rows=500 round=78
+- `human_sub100nm_ec50_first500` template=`other_grounded_sql_family` rows=500 round=78
+- `target_thr_multi_type_activities_first500` template=`other_grounded_sql_family` rows=500 round=78
+- `target_ces2_multi_type_activities_first500` template=`other_grounded_sql_family` rows=500 round=79
+- `target_maob_multi_type_activities_first500` template=`other_grounded_sql_family` rows=500 round=79
+- `molecule_counts_by_max_phase` template=`other_grounded_sql_family` rows=7 round=79

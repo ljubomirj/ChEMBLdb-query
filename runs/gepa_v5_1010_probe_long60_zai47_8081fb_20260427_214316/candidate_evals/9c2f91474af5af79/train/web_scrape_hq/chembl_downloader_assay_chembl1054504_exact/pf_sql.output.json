@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_9c2f91474af5af79.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1054504_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1054504_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "9c2f91474af5af79",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT cs.canonical_smiles, md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1054504' AND a.standard_value IS NOT NULL AND a.standard_relation = '=' ORDER BY cs.canonical_smiles, md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT cs.canonical_smiles, md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1054504' AND a.standard_value IS NOT NULL AND a.standard_relation = '=' ORDER BY cs.canonical_smiles, md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units"
+    }
+  }
+}

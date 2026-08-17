@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_hierarchy from parent CHEMBL1336 to include parent and all salts. Join compound_structures on molregno for canonical_smiles. Join compound_records on molregno, then docs on doc_id for pubmed_id_or_doi. Join activities on record_id, then assays on assay_id for assay_description. Join target_dictionary on assays.tid for target CHEMBL279. Filter activities for standard_type IC50 and standard_units nM. Keep all activity rows without deduplication. Do not limit rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_hierarchy from parent CHEMBL1336 to include parent and all salts. Join compound_structures on molregno for canonical_smiles. Join compound_records on molregno, then docs on doc_id for pubmed_id_or_doi. Join activities on record_id, then assays on assay_id for assay_description. Join target_dictionary on assays.tid for target CHEMBL279. Filter activities for standard_type IC50 and standard_units nM. Keep all activity rows without deduplication. Do not limit rows."
+    }
+  }
+}

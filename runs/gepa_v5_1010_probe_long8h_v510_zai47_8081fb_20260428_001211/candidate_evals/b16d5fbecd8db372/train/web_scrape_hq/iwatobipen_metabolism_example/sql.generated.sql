@@ -1,0 +1,1 @@
+SELECT cs.canonical_smiles, cr.compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno ORDER BY cs.canonical_smiles ASC, cr.compound_name ASC, m.met_conversion ASC, m.pathway_key ASC LIMIT 200

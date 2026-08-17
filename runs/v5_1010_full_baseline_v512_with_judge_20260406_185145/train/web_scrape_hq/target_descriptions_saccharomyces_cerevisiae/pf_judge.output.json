@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_saccharomyces_cerevisiae.json",
+  "case_id": "target_descriptions_saccharomyces_cerevisiae",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query correctly retrieves distinct target descriptions for assays using Saccharomyces cerevisiae with SINGLE PROTEIN targets. The SQL uses the appropriate joins (activities -> assays -> target_dictionary) and filters on assay_organism and target_type. The result shows 105 distinct target names, which aligns with expectations for a well-curated dataset. The sample rows include relevant yeast targets like ATP synthase subunits and chaperones. The query preserves DISTINCT as requested and orders results alphabetically. All columns and joins are correctly specified per the schema.\",\n  \"score\": 95,\n  \"decision\": \"good\"\n}",
+    "parsed_json": {
+      "analysis": "The query correctly retrieves distinct target descriptions for assays using Saccharomyces cerevisiae with SINGLE PROTEIN targets. The SQL uses the appropriate joins (activities -> assays -> target_dictionary) and filters on assay_organism and target_type. The result shows 105 distinct target names, which aligns with expectations for a well-curated dataset. The sample rows include relevant yeast targets like ATP synthase subunits and chaperones. The query preserves DISTINCT as requested and orders results alphabetically. All columns and joins are correctly specified per the schema.",
+      "score": 95,
+      "decision": "good"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_saccharomyces_cerevisiae/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_saccharomyces_cerevisiae/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_saccharomyces_cerevisiae/pf_judge.generated_artifact_record.json"
+  }
+}

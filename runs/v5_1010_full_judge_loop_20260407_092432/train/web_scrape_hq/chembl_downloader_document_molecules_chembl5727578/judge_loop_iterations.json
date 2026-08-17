@@ -1,0 +1,87 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the compound (molecule) records that are described in the document CHEMBL5727578, showing each compound's ChEMBL identifier (chembl_id), any associated SMILES (canonical_smiles), and the primary compound name (pref_name) as reported in the document. No filtering beyond matching the specified document CHEMBL5727578 in the docs table; no target, activity, assay, or other entity constraints are required. Output all matching compounds, even if the document lists multiple compound keys or records. The result set should include the unique compound identifiers (chembl_id) and their corresponding canonical SMILES and preferred names as stored in the molecule_dictionary and compound_structures tables. The user did not request any specific ranking, limits, or additional columns beyond the basic compound identifiers and structural information.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, md.pref_name\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL5727578'\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n52 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1143,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compound dictionary entries (chembl_id, canonical_smiles, pref_name) for which there exists a compound_records entry linked to the document with chembl_id CHEMBL5727578. Return a row per distinct molecule, including its ChEMBL identifier, its canonical SMILES representation, and the preferred compound name as stored in the molecule dictionary. Do not filter further on activity, assay, target, or document type; simply ensure the molecule appears in the given document.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, md.pref_name\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL5727578'\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n49 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1142,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compound dictionary entries (chembl_id, canonical_smiles, pref_name) for which there exists a compound_records entry linked to the document with chembl_id CHEMBL5727578. Return a row per distinct molecule, including its ChEMBL identifier, its canonical SMILES representation, and the preferred compound name as stored in the molecule dictionary. Do not filter further on activity, assay, target, or document type; simply ensure the molecule appears in the given document.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, md.pref_name FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL5727578' JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n49 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1142,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compound dictionary entries (chembl_id, canonical_smiles, pref_name) that are associated with the document CHEMBL5727578. Return one row per distinct molecule, including its ChEMBL identifier (chembl_id), the canonical SMILES representation (canonical_smiles) as stored in the compound_structures table, and the preferred compound name (pref_name) as stored in the molecule_dictionary table. Ensure the molecule appears in the document by joining the compound_records table to the docs table on the document identifier and filtering for the specified document CHEMBL5727578. Do not apply any additional filters on assay, target, activity, or document type. Output all matching compounds, preserving any missing structural information (i.e., allow NULL values for canonical_smiles if the structure record is absent). Do not impose any row limit or top\u2011N ordering unless explicitly requested in the user question.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, md.pref_name FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL5727578' LEFT JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n52 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1143,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all compound dictionary entries (chembl_id, canonical_smiles, pref_name) that are associated with the document CHEMBL5727578. Return one row per distinct molecule, including its ChEMBL identifier (chembl_id), the canonical SMILES representation (canonical_smiles) as stored in the compound_structures table, and the preferred compound name (pref_name) as stored in the molecule_dictionary table. Ensure the molecule appears in the document by joining the compound_records table to the docs table on the document identifier and filtering for the specified document CHEMBL5727578. Do not apply any additional filters on assay, target, activity, or document type. Output all matching compounds, preserving any missing structural information (i.e., allow NULL values for canonical_smiles if the structure record is absent). Do not impose any row limit or top\u2011N ordering unless explicitly requested in the user question.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles, md.pref_name FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id AND d.chembl_id = 'CHEMBL5727578' LEFT JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n52 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1143,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

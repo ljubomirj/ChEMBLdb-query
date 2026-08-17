@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_orexin_receptor_type_2_molecule_smiles.json",
+  "case_id": "human_orexin_receptor_type_2_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select molecule_chembl_id, canonical_smiles\\nJoin activities on activities.record_id = compound_records.record_id\\nJoin assays on assays.assay_id = activities.assay_id\\nJoin target_dictionary on target_dictionary.tid = assays.tid\\nJoin compound_structures on compound_structures.molregno = activities.molregno\\nFilter target_dictionary.chembl_id = 'CHEMBL4792'\\nFilter assays.assay_organism = 'Homo sapiens'\\nFilter activities.type = 'IC50'\\nFilter activities.standard_relation = '='\\nFilter activities.standard_value IS NOT NULL\\nFilter activities.standard_units = 'nM'\\nJoin molecule_dictionary on molecule_dictionary.molregno = activities.molregno\\nFilter molecule_dictionary.molecule_type = 'Small molecule'\\nReturn molecule_chembl_id, canonical_smiles\\nSort by molecule_chembl_id\\n\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id, canonical_smiles\nJoin activities on activities.record_id = compound_records.record_id\nJoin assays on assays.assay_id = activities.assay_id\nJoin target_dictionary on target_dictionary.tid = assays.tid\nJoin compound_structures on compound_structures.molregno = activities.molregno\nFilter target_dictionary.chembl_id = 'CHEMBL4792'\nFilter assays.assay_organism = 'Homo sapiens'\nFilter activities.type = 'IC50'\nFilter activities.standard_relation = '='\nFilter activities.standard_value IS NOT NULL\nFilter activities.standard_units = 'nM'\nJoin molecule_dictionary on molecule_dictionary.molregno = activities.molregno\nFilter molecule_dictionary.molecule_type = 'Small molecule'\nReturn molecule_chembl_id, canonical_smiles\nSort by molecule_chembl_id\n"
+    }
+  }
+}

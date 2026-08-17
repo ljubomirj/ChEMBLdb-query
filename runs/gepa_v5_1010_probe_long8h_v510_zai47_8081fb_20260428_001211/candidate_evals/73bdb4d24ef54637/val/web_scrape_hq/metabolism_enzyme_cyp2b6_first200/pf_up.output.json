@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2b6_first200.json",
+  "case_id": "metabolism_enzyme_cyp2b6_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve the first 200 metabolism records for the enzyme CYP2B6, including substrate structure, compound names, metabolic conversion details, pathway, and organism.\n\n2. Output: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\n\n3. Source: metabolism, compound_records (as substrate), compound_structures (as substrate), molecule_dictionary (as parent), docs\n\n4. Logic: Filter metabolism records where enzyme_name is 'CYP2B6'. Join metabolism to compound_records on substrate_record_id to obtain the substrate compound name. Join compound_records to compound_structures on molregno to retrieve the canonical SMILES. Join metabolism to molecule_dictionary on drug_record_id to obtain the parent compound name. Sort the results by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Limit the output to the first 200 rows.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve the first 200 metabolism records for the enzyme CYP2B6, including substrate structure, compound names, metabolic conversion details, pathway, and organism.\n\n2. Output: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\n\n3. Source: metabolism, compound_records (as substrate), compound_structures (as substrate), molecule_dictionary (as parent), docs\n\n4. Logic: Filter metabolism records where enzyme_name is 'CYP2B6'. Join metabolism to compound_records on substrate_record_id to obtain the substrate compound name. Join compound_records to compound_structures on molregno to retrieve the canonical SMILES. Join metabolism to molecule_dictionary on drug_record_id to obtain the parent compound name. Sort the results by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Limit the output to the first 200 rows."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "I require a list of distinct molecule ChEMBL identifiers (molecule_chembl_id) and their associated canonical SMILES (canonical_smiles). The compounds must have been tested in any assay that targets Dipeptidyl peptidase 4 (target ChEMBL ID: CHEMBL284) and where the assay organism is Homo sapiens (assays.assay_organism = 'Homo sapiens'). The output should consist of exactly two columns: molecule_chembl_id and canonical_smiles, with each unique compound appearing only once. No additional columns or filters are needed.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles AS canonical_smiles FROM molecule_dictionary md JOIN activities a ON md.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL284' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 4293,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

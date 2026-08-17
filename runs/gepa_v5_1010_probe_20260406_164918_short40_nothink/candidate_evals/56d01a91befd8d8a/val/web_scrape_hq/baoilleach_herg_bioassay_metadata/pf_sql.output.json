@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/baoilleach_herg_bioassay_metadata.json",
+  "case_id": "baoilleach_herg_bioassay_metadata",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT a.chembl_id AS assay_chembl_id,\\n       a.tid,\\n       a.description AS assay_description,\\n       td.pref_name AS target_name,\\n       td.organism AS target_organism,\\n       d.journal,\\n       d.year,\\n       d.volume,\\n       d.first_page,\\n       d.doi\\nFROM assays a\\nJOIN target_dictionary td ON td.tid = a.tid\\nJOIN docs d ON d.doc_id = a.doc_id\\nWHERE a.assay_type = 'B'\\n  AND a.tid = 165\\nORDER BY a.chembl_id,\\n         a.tid,\\n         d.journal,\\n         d.year,\\n         d.doi;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT a.chembl_id AS assay_chembl_id,\n       a.tid,\n       a.description AS assay_description,\n       td.pref_name AS target_name,\n       td.organism AS target_organism,\n       d.journal,\n       d.year,\n       d.volume,\n       d.first_page,\n       d.doi\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN docs d ON d.doc_id = a.doc_id\nWHERE a.assay_type = 'B'\n  AND a.tid = 165\nORDER BY a.chembl_id,\n         a.tid,\n         d.journal,\n         d.year,\n         d.doi;"
+    }
+  }
+}

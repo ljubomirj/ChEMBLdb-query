@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs where the mechanism of action is an antagonist. For each drug, include the compound name, ChEMBL ID, and the details of the target(s) involved in the mechanism of action.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM drug_mechanism dm JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND dm.action_type = 'ANTAGONIST'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 144 | SCAN dm\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 498,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

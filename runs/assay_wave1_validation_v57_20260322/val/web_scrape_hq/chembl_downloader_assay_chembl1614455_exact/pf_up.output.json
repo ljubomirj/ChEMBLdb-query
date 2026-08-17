@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.7.yaml",
+  "prompt_pack_version": "v5.7",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1614455_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1614455_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units. Join molecule_dictionary to activities on molregno, then to assays on assay_id. Join compound_structures as an inner join on molregno. Filter by assay chembl_id CHEMBL1614455, standard_relation equals '=', and standard_value is not null. Do not deduplicate. Sort by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units. Join molecule_dictionary to activities on molregno, then to assays on assay_id. Join compound_structures as an inner join on molregno. Filter by assay chembl_id CHEMBL1614455, standard_relation equals '=', and standard_value is not null. Do not deduplicate. Sort by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units."
+    }
+  }
+}

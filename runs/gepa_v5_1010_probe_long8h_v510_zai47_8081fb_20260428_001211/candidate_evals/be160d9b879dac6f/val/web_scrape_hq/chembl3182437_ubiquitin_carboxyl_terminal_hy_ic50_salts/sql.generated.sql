@@ -1,0 +1,40 @@
+SELECT 
+  child.chembl_id AS compound_chembl_id, 
+  compound_structures.canonical_smiles, 
+  compound_records.compound_key, 
+  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, 
+  assays.description AS assay_description, 
+  activities.standard_type, 
+  activities.standard_relation, 
+  activities.standard_value, 
+  activities.standard_units, 
+  activities.activity_comment, 
+  target_dictionary.chembl_id AS target_chembl_id, 
+  target_dictionary.pref_name AS target_name, 
+  target_dictionary.organism AS target_organism
+FROM molecule_dictionary parent
+JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno
+JOIN molecule_dictionary child ON child.molregno = mh.molregno
+JOIN compound_structures ON child.molregno = compound_structures.molregno
+JOIN compound_records ON child.molregno = compound_records.molregno
+JOIN activities ON compound_records.record_id = activities.record_id
+JOIN assays ON activities.assay_id = assays.assay_id
+JOIN docs ON compound_records.doc_id = docs.doc_id
+JOIN target_dictionary ON activities.tid = target_dictionary.tid
+WHERE parent.chembl_id = 'CHEMBL3182437'
+  AND target_dictionary.chembl_id = 'CHEMBL3430885'
+  AND activities.standard_type = 'IC50'
+ORDER BY 
+  child.chembl_id ASC, 
+  compound_structures.canonical_smiles ASC, 
+  compound_records.compound_key ASC, 
+  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) ASC, 
+  assays.description ASC, 
+  activities.standard_type ASC, 
+  activities.standard_relation ASC, 
+  activities.standard_value ASC, 
+  activities.standard_units ASC, 
+  activities.activity_comment ASC, 
+  target_dictionary.chembl_id ASC, 
+  target_dictionary.pref_name ASC, 
+  target_dictionary.organism ASC

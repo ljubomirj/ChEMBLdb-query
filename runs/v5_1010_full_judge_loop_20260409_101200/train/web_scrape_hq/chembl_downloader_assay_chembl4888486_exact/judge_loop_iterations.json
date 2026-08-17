@@ -1,0 +1,26 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all exact activity values and chemical structures for compounds tested in the assay with ChEMBL identifier CHEMBL4888486. Return the activity metadata (including standard relation, value, units, and type) alongside the canonical SMILES and InChI key for each associated compound.",
+    "sql": "SELECT a.activity_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.pchembl_value, md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles, cs.standard_inchi_key FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4888486' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 4815,
+    "res_columns": [
+      "activity_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "standard_inchi_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

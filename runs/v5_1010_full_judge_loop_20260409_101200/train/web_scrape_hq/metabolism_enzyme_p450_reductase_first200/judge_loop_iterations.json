@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "Show the first 200 metabolism records where the enzyme is P450 reductase. For each record, return the substrate compound structure (canonical SMILES), the substrate compound name, the parent compound name, the metabolic conversion description, the pathway key, and the organism.",
+    "sql": "SELECT\n  cs_sub.canonical_smiles AS substrate_structure,\n  cr_sub.compound_name AS substrate_name,\n  cr_par.compound_name AS parent_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nJOIN compound_structures cs_sub ON md_sub.molregno = cs_sub.molregno\nJOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id\nWHERE m.enzyme_name LIKE '%P450 reductase%'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 126 | SCAN m\n15 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n22 | 0 | 45 | SEARCH md_sub USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 11,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.max_phase_for_ind. Source: molecule_dictionary. Join: compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Join: drug_indication on molecule_dictionary.molregno = drug_indication.molregno. Filter: drug_indication.mesh_heading LIKE '%lymphoma%' AND molecule_dictionary.max_phase = 4. Sort: None. Limit: None.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.max_phase_for_ind FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE drug_indication.mesh_heading LIKE '%lymphoma%' AND molecule_dictionary.max_phase = 4",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n11 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1050,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs indicated for lymphoma with their ChEMBL ID, name, structure (canonical SMILES), and indication details. The filter `molecule_dictionary.max_phase = 4` correctly identifies approved drugs, and `drug_indication.mesh_heading LIKE '%lymphoma%'` captures all lymphoma-related indications. The result set includes 1050 rows, showing various drugs and their specific lymphoma indications (e.g., 'Lymphoma, Non-Hodgkin', 'Lymphoma, Large B-Cell, Diffuse'). The sample confirms the presence of key columns: chembl_id, pref_name, canonical_smiles, mesh_heading, and max_phase_for_ind. The query meets all requirements of the user question.\",\n  \"score\": 5,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

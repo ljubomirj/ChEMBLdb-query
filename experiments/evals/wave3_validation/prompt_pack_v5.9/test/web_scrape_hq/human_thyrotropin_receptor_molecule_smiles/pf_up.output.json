@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_thyrotropin_receptor_molecule_smiles.json",
+  "case_id": "human_thyrotropin_receptor_molecule_smiles",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL IDs aliased as compound_chembl_id and canonical SMILES from compound_structures. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Inner join compound_structures on molecule_dictionary.molregno. Filter where target_dictionary.chembl_id = 'CHEMBL1963'. Return distinct rows sorted by compound_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL IDs aliased as compound_chembl_id and canonical SMILES from compound_structures. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Inner join compound_structures on molecule_dictionary.molregno. Filter where target_dictionary.chembl_id = 'CHEMBL1963'. Return distinct rows sorted by compound_chembl_id."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows for IC50 assays that have a pChEMBL value. The target must be CHEMBL1944495 (Proteasome subunit beta type-9). Include only rows where the standard relation is '=' and the pChEMBL value is not null. Order the results by molecule ChEMBL ID and assay ChEMBL ID. For each row, return the assay ChEMBL ID, target type, taxonomy ID (tax_id), canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+    "sql": "WITH target_info AS (SELECT td.tid, td.target_type, td.tax_id, td.chembl_id AS target_chembl_id FROM target_dictionary td WHERE td.chembl_id = 'CHEMBL1944495' LIMIT 1) SELECT ass.chembl_id AS assay_chembl_id, ti.target_type, ti.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_info ti ON ass.tid = ti.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE target_info\n6 | 2 | 39 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n28 | 0 | 16 | SCAN ti\n31 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n40 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n49 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n81 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 181,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

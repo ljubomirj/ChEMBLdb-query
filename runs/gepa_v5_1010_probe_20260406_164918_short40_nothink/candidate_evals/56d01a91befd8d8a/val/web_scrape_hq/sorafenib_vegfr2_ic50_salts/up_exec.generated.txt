@@ -1,0 +1,13 @@
+Select distinct compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary parent on parent.chembl_id = 'CHEMBL1336'
+Join molecule_hierarchy mh on mh.parent_molregno = parent.molregno
+Join molecule_dictionary child on child.molregno = mh.molregno
+Left Join compound_records r on child.molregno = r.molregno
+Left Join docs d on r.doc_id = d.doc_id
+Left Join activities a on r.record_id = a.record_id
+Left Join assays ass on a.assay_id = ass.assay_id
+Left Join target_dictionary t on ass.tid = t.tid
+Left Join compound_structures cs on child.molregno = cs.molregno
+Filter ass.assay_organism = 'Homo sapiens' and t.pref_name = 'Vascular endothelial growth factor receptor 2' and a.standard_type = 'IC50' and a.standard_units = 'nM'
+Return compound_chembl_id as compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism

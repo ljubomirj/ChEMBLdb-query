@@ -1,0 +1,1 @@
+SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles FROM molecule_dictionary m JOIN compound_structures cs ON m.molregno = cs.molregno JOIN activities act ON m.molregno = act.molregno JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid WHERE t.pref_name = 'adenosine A2a receptor' AND t.organism = 'Homo sapiens' ORDER BY m.chembl_id

@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for Mus musculus (tax_id = 10090). Return the substrate canonical SMILES structure, substrate compound name, parent compound name, metabolic conversion, pathway key, and enzyme name. Use substrate_record_id for the substrate identification and structure, and drug_record_id for the parent compound name.",
+    "sql": "WITH metabolism_data AS (\n  SELECT\n    m.met_id,\n    m.pathway_key,\n    m.met_conversion,\n    m.enzyme_name,\n    m.substrate_record_id,\n    m.drug_record_id\n  FROM metabolism m\n  WHERE m.tax_id = 10090\n  LIMIT 200\n)\nSELECT\n  cs.canonical_smiles,\n  cr_sub.compound_name AS substrate_compound_name,\n  cr_drug.compound_name AS parent_compound_name,\n  md.met_conversion,\n  md.pathway_key,\n  md.enzyme_name\nFROM metabolism_data md\nJOIN compound_records cr_sub ON md.substrate_record_id = cr_sub.record_id\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_drug ON md.drug_record_id = cr_drug.record_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n2 | 0 | 0 | CO-ROUTINE metabolism_data\n5 | 2 | 126 | SCAN m\n25 | 0 | 92 | SCAN md\n28 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 47 | SEARCH cr_drug USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 54,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

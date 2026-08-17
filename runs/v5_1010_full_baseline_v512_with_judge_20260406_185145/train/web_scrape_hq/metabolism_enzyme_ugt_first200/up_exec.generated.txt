@@ -1,0 +1,11 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Join metabolism m on m.met_id = m.met_id
+Join compound_records cr on m.substrate_record_id = cr.record_id
+Join molecule_dictionary sub on cr.molregno = sub.molregno
+Join compound_structures cs on sub.molregno = cs.molregno
+Join molecule_dictionary parent on m.metabolite_record_id = parent.molregno
+Join molecule_dictionary sub_parent on m.metabolite_record_id = sub_parent.molregno
+Join target_dictionary t on m.enzyme_tid = t.tid
+Filter t.target_type = 'ENZYME' and t.pref_name = 'UGT enzymes'
+Limit 200
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name

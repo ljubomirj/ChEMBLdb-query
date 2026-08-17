@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the exact activity values and canonical SMILES for all compounds tested in the assay with ChEMBL ID \"CHEMBL4649941\". Use the 'assays' table to find the assay record by its chembl_id. For each activity record in the 'activities' table that belongs to that assay (through assay_id), provide: the canonical SMILES of the tested compound (from the 'compound_structures' table via molregno), the standard_type, standard_relation, standard_value, and standard_units. Do not add any additional filters (e.g., no restriction on relation type, units, or confidence score). Return one row per activity entry, including all such rows. Do not limit the number of rows.",
+    "sql": "SELECT cs.canonical_smiles, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649941';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 68296,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the exact activity values and canonical SMILES for all compounds that have been tested in the assay identified by the ChEMBL identifier 'CHEMBL4649941'. For each activity record, return the canonical SMILES of the tested compound (from the compound_structures table), along with the standard_type, standard_relation, standard_value, and standard_units. Only include rows where the standard_relation is '=' and the standard_value is not null, to ensure these are exact measurements. Do not add any other filters (e.g., no restriction on units or confidence score). Return one row per activity entry, without limiting the number of rows.",
+    "sql": "SELECT cs.canonical_smiles, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649941' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 67391,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

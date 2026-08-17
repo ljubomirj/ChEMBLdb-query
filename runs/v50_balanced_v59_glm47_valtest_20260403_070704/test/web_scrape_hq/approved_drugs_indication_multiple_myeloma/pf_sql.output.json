@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_multiple_myeloma.json",
+  "case_id": "approved_drugs_indication_multiple_myeloma",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND di.efo_term = 'multiple myeloma' ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND di.efo_term = 'multiple myeloma' ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind"
+    }
+  }
+}

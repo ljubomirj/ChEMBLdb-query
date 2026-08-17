@@ -1,0 +1,105 @@
+[
+  {
+    "n": 1,
+    "up": "Identify compounds in ChEMBL that have been tested against the human protein target CHEMBL1293317 (Muscleblind-like protein 1). Retrieve each compound's preferred name and its canonical SMILES, ensuring the target is specified as the human version of the protein. Include any compounds regardless of assay type, activity type, or activity measurement details, and do not exclude rows based on missing activity values or units. Return one row per compound, but do not limit the number of results; the top-N count is not requested in the question.",
+    "sql": "WITH target_info AS (SELECT pref_name, chembl_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1293317') SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molecule_chembl_id = m.molecule_chembl_id JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN target_info t ON td.chembl_id = t.chembl_id WHERE td.chembl_id = 'CHEMBL1293317' AND m.molecule_chembl_id = t.chembl_id AND a.pchembl_value IS NOT NULL AND (td.pref_name = 'Muscleblind-like protein 1' OR td.chembl_id = 'CHEMBL1293317') AND m.chembl_id = t.chembl_id ORDER BY m.pref_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: m.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: m.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds that have been tested against the human protein target CHEMBL1293317 (Muscleblind-like protein 1) from the ChEMBL database, and for each compound return its preferred name and its canonical SMILES. Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and matches the human version of the protein (pref_name = 'Muscleblind-like protein 1'). Include compounds regardless of assay type, activity type, or activity measurement details, and do not require activity values or units. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or any other criteria. Do not limit the number of results.",
+    "sql": "WITH target_info AS (SELECT pref_name, chembl_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1293317' AND pref_name = 'Muscleblind-like protein 1') SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molecule_chembl_id = m.chembl_id JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id JOIN target_info t ON td.chembl_id = t.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compounds that have been tested against the human protein target CHEMBL1293317 (Muscleblind-like protein 1) from the ChEMBL database, and for each compound return its preferred name (compound_name) and its canonical SMILES (smiles). Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and matches the human version of the protein (pref_name = 'Muscleblind-like protein 1'). Include compounds regardless of assay type, activity type, or activity measurement details, and do not require activity values or units. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or any other criteria. Do not limit the number of results.",
+    "sql": "SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1293317' AND td.pref_name = 'Muscleblind-like protein 1' JOIN compound_structures cs ON a.molregno = cs.molregno JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1293317' AND td.pref_name = 'Muscleblind-like protein 1'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: near \"JOIN\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \"JOIN\": syntax error",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compounds that have been tested against the human protein target CHEMBL1293317 (Muscleblind-like protein 1) from the ChEMBL database, and for each compound return its preferred name (compound_name) and its canonical SMILES (smiles). Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and matches the human version of the protein (pref_name = 'Muscleblind-like protein 1'). Include compounds regardless of assay type, activity type, or activity measurement details, and do not require activity values or units. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or any other criteria. Do not limit the number of results.",
+    "sql": "SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1293317' AND td.pref_name = 'Muscleblind-like protein 1' ORDER BY compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 225 | SCAN m USING INDEX idx_moldict_pref_name\n17 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n27 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n41 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n50 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 34230,
+    "res_columns": [
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.55,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all compounds tested against the human target CHEMBL1293317 (Muscleblind-like protein 1) from ChEMBL, and for each compound return its preferred name as compound_name and its canonical SMILES as smiles. Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and the human version (pref_name = 'Muscleblind-like protein 1'). Include all assay types, activity types, and activity measurements; no activity values or units required. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or other criteria, and do not limit the number of results.",
+    "sql": "SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1293317' AND td.pref_name = 'Muscleblind-like protein 1' ORDER BY compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 225 | SCAN m USING INDEX idx_moldict_pref_name\n17 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n27 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n41 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n50 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 34230,
+    "res_columns": [
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all compounds that have been tested against the human target CHEMBL1293317 (Muscleblind-like protein 1) from ChEMBL, and for each compound return its preferred name as compound_name and its canonical SMILES as smiles. Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and the human version (pref_name = 'Muscleblind-like protein 1'). Include all assay types, activity types, and activity measurements; no activity values or units required. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or other criteria, and do not limit the number of results.",
+    "sql": "WITH target_info AS (SELECT chembl_id, pref_name FROM target_dictionary WHERE chembl_id = 'CHEMBL1293317' AND pref_name = 'Muscleblind-like protein 1') SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN target_info t ON td.chembl_id = t.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n14 | 0 | 225 | SCAN m USING INDEX idx_moldict_pref_name\n18 | 0 | 0 | BLOOM FILTER ON target_dictionary (chembl_id=?)\n28 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n36 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n57 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 34230,
+    "res_columns": [
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve all compounds that have been tested against the human target CHEMBL1293317 (Muscleblind-like protein 1) from ChEMBL, and for each compound return its preferred name as compound_name and its canonical SMILES as smiles. Ensure the target is identified by its ChEMBL ID CHEMBL1293317 and the human version (pref_name = 'Muscleblind-like protein 1'). Include all assay types, activity types, and activity measurements; no activity values or units required. Return one row per compound with columns: compound_name (preferred name) and smiles (canonical SMILES). Do not filter by year, confidence score, or other criteria, and do not limit the number of results.",
+    "sql": "WITH target_info AS (SELECT chembl_id, pref_name FROM target_dictionary WHERE chembl_id = 'CHEMBL1293317' AND pref_name = 'Muscleblind-like protein 1') SELECT DISTINCT m.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON a.molregno = cs.molregno JOIN target_info t ON td.chembl_id = t.chembl_id AND td.pref_name = 'Muscleblind-like protein 1' AND m.molregno IS NOT NULL AND m.pref_name IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n15 | 0 | 225 | SEARCH m USING INDEX idx_moldict_pref_name (pref_name>?)\n21 | 0 | 0 | BLOOM FILTER ON target_dictionary (chembl_id=?)\n32 | 0 | 0 | BLOOM FILTER ON td (chembl_id=?)\n45 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n56 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n64 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n79 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n98 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 251,
+    "res_columns": [
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

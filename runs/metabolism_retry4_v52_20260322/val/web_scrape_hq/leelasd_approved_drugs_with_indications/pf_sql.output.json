@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.2.yaml",
+  "prompt_pack_version": "v5.2",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, di.mesh_heading, md.first_approval FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 ORDER BY md.first_approval DESC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, di.mesh_heading, md.first_approval FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 ORDER BY md.first_approval DESC"
+    }
+  }
+}

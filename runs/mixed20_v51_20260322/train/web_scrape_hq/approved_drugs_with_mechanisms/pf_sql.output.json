@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_mechanisms.json",
+  "case_id": "approved_drugs_with_mechanisms",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"sql\": \"SELECT DISTINCT m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary m INNER JOIN drug_mechanism dm ON dm.molregno = m.molregno INNER JOIN compound_structures cs ON cs.molregno = m.molregno LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE m.max_phase = 4 AND cs.canonical_smiles IS NOT NULL ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id, td.pref_name\"}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary m INNER JOIN drug_mechanism dm ON dm.molregno = m.molregno INNER JOIN compound_structures cs ON cs.molregno = m.molregno LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE m.max_phase = 4 AND cs.canonical_smiles IS NOT NULL ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id, td.pref_name"
+    }
+  }
+}

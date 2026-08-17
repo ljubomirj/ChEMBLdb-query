@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_0aad91c062f256cc.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "0aad91c062f256cc",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name FROM molecule_dictionary JOIN drug_mechanism ON molecule_dictionary.molregno = drug_mechanism.molregno JOIN target_dictionary ON drug_mechanism.tid = target_dictionary.tid JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type = 'BLOCKER' ORDER BY molecule_dictionary.chembl_id ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name FROM molecule_dictionary JOIN drug_mechanism ON molecule_dictionary.molregno = drug_mechanism.molregno JOIN target_dictionary ON drug_mechanism.tid = target_dictionary.tid JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_mechanism.action_type = 'BLOCKER' ORDER BY molecule_dictionary.chembl_id ASC"
+    }
+  }
+}

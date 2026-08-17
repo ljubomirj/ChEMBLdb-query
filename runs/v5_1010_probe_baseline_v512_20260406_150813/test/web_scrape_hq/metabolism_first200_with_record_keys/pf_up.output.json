@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 rows from the metabolism table. Join substrate compound_records via metabolism.substrate_record_id and join compound_structures on the substrate molregno to retrieve canonical_smiles and substrate_compound_key; this substrate-side structures join must be INNER so canonical_smiles is not null. Join metabolite compound_records via metabolism.metabolite_record_id to retrieve metabolite_compound_key; this metabolite-side join may be LEFT to allow missing metabolite records. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key. Do not add sorting; preserve source row order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 rows from the metabolism table. Join substrate compound_records via metabolism.substrate_record_id and join compound_structures on the substrate molregno to retrieve canonical_smiles and substrate_compound_key; this substrate-side structures join must be INNER so canonical_smiles is not null. Join metabolite compound_records via metabolism.metabolite_record_id to retrieve metabolite_compound_key; this metabolite-side join may be LEFT to allow missing metabolite records. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key. Do not add sorting; preserve source row order."
+    }
+  }
+}

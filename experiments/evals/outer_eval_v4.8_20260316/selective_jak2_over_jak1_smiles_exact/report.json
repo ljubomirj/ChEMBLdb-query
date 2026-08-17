@@ -1,0 +1,61 @@
+{
+  "ts_utc": "2026-03-16T19:57:31Z",
+  "eval_label": "selective_jak2_over_jak1_smiles_exact",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.8.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 1,
+      "n_pass": 1,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "selective_jak2_over_jak1_smiles_exact",
+          "uq": "Retrieve compounds selective for target CHEMBL2971 (Tyrosine-protein kinase JAK2) over target CHEMBL2835 (Tyrosine-protein kinase JAK1). Define selectivity exactly as: IC50 < 50 nM against CHEMBL2971 and IC50 > 200 nM against CHEMBL2835, using only rows with standard_relation = '=' and standard_units = 'nM'. Return each qualifying compound once only, using set semantics over compound identity rather than multiplicative joins between raw activity rows; intersect the JAK2 hit set and the JAK1 hit set, or deduplicate each target-specific hit set before joining. Return exactly two columns only: compound_chembl_id and canonical_smiles. The compound_chembl_id column must be the public ChEMBL compound identifier from molecule_dictionary.chembl_id, not the internal molregno numeric key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/selective_jak2_over_jak1_smiles_exact/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/selective_jak2_over_jak1_smiles_exact/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/run.log",
+          "generated_sql": "WITH jak2_hits AS (",
+          "judge_text": null,
+          "expected_rows": 192,
+          "actual_rows": 192,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 1,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

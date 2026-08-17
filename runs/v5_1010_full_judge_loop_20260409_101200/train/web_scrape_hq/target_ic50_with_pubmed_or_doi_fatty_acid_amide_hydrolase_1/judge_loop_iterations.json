@@ -1,0 +1,117 @@
+[
+  {
+    "n": 1,
+    "up": "Return IC50 activity values (standard_value in nM) for compounds tested against human fatty acid amide hydrolase 1. Include the compound's ChEMBL ID, canonical SMILES, compound key, and the assay's PubMed ID or DOI, assay description, target ChEMBL ID, target name, and target organism.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  target_dictionary.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON activities.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND target_dictionary.pref_name = 'Fatty acid amide hydrolase 1'\n  AND target_dictionary.organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n59 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n67 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return IC50 activity values (standard_value in nM) for compounds tested against the target 'Fatty acid amide hydrolase 1' (organism: Homo sapiens). Include the compound's ChEMBL ID (chembl_id), canonical SMILES, compound key, and the assay's PubMed ID or DOI, assay description, target ChEMBL ID, target name, and target organism.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  target_dictionary.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nLEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND target_dictionary.pref_name = 'Fatty acid amide hydrolase 1'\n  AND target_dictionary.organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Return IC50 activity values (standard_value in nM) for compounds tested against the human target 'Fatty acid amide hydrolase 1'. Include the compound's ChEMBL ID (molecule_dictionary.chembl_id), canonical SMILES (compound_structures.canonical_smiles), compound key (compound_records.compound_key), and the assay's PubMed ID or DOI (docs.pubmed_id or docs.doi), assay description (assays.description), target ChEMBL ID (target_dictionary.chembl_id), target name (target_dictionary.pref_name), and target organism (target_dictionary.organism). Use LEFT JOIN for compound_structures, compound_records, and docs to ensure all activity rows are returned even when optional data is missing.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  target_dictionary.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nLEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND target_dictionary.pref_name LIKE '%Fatty acid amide hydrolase 1%'\n  AND target_dictionary.organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n56 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n64 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Return IC50 activity values (standard_value in nM) for compounds tested against the human target Fatty acid amide hydrolase 1 (tax_id 9606). Include the compound's ChEMBL ID, canonical SMILES, compound key, and the assay's PubMed ID or DOI, assay description, target ChEMBL ID, target name, and target organism. Use LEFT JOIN for compound_structures, compound_records, and docs.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  target_dictionary.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nLEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND target_dictionary.tax_id = 9606\n  AND target_dictionary.pref_name = 'Fatty acid amide hydrolase 1'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n55 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Return IC50 activity values (standard_value in nM) for compounds tested against the human target fatty acid amide hydrolase 1 (tax_id 9606). Use LEFT JOIN for compound_structures, compound_records, and docs to preserve all activity rows. Include the compound's ChEMBL ID, canonical SMILES, compound key, and the assay's PubMed ID or DOI, assay description, target ChEMBL ID, target name, and target organism.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  target_dictionary.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nLEFT JOIN compound_structures ON activities.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND target_dictionary.tax_id = 9606\n  AND target_dictionary.chembl_id = 'CHEMBL220'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n54 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n62 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 8395,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

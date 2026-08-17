@@ -1,0 +1,12 @@
+Objective: Retrieve approved drugs indicated for chronic kidney disease with their chemical structures and indication details.
+
+Output: chembl_id, pref_name, canonical_smiles, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind
+
+Source: molecule_dictionary, drug_indication, compound_structures
+
+Logic:
+1. Join molecule_dictionary to drug_indication via molregno.
+2. Join drug_indication to compound_structures via molregno.
+3. Filter drug_indication.efo_term for 'chronic kidney disease'.
+4. Filter molecule_dictionary.max_phase = 4 (approved drugs).
+5. Sort by chembl_id ASC.

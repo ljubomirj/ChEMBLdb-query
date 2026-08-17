@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_11_beta_hydroxysteroid_dehydrogenase_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_11_beta_hydroxysteroid_dehydrogenase_1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\\nJoin molecule_dictionary as m on m.molregno = a.molregno\\nJoin activities as a on a.molregno = m.molregno and a.standard_type = 'IC50' and a.standard_relation = '=' and a.standard_units = 'nM'\\nJoin assays as ass on ass.assay_id = a.assay_id\\nJoin target_dictionary as t on t.tid = ass.tid\\nJoin compound_structures as cs on cs.molregno = m.molregno\\nJoin docs as d on d.doc_id = a.doc_id\\nFilter m.chembl_id = 'CHEMBL4235' and t.target_type = 'SINGLE PROTEIN' and t.pref_name = '11-beta-hydroxysteroid dehydrogenase 1' and (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\\nReturn compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\"\n}",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\nJoin molecule_dictionary as m on m.molregno = a.molregno\nJoin activities as a on a.molregno = m.molregno and a.standard_type = 'IC50' and a.standard_relation = '=' and a.standard_units = 'nM'\nJoin assays as ass on ass.assay_id = a.assay_id\nJoin target_dictionary as t on t.tid = ass.tid\nJoin compound_structures as cs on cs.molregno = m.molregno\nJoin docs as d on d.doc_id = a.doc_id\nFilter m.chembl_id = 'CHEMBL4235' and t.target_type = 'SINGLE PROTEIN' and t.pref_name = '11-beta-hydroxysteroid dehydrogenase 1' and (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\nReturn compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\nSort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism"
+    }
+  }
+}

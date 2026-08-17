@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e6c781685e6a2a0.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "4e6c781685e6a2a0",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary. Join: molecule_dictionary parent on chembl_id = 'CHEMBL1336'. Join molecule_hierarchy on parent_molregno = parent.molregno. Join molecule_dictionary child on molregno = hierarchy.molregno. Join compound_structures on molregno = child.molregno. Join compound_records on molregno = child.molregno. Join docs on doc_id = records.doc_id. Join activities on record_id = records.record_id. Join assays on assay_id = activities.assay_id. Join target_dictionary on tid = assays.tid. Filter: target_dictionary.chembl_id = 'CHEMBL279'. Filter: activities.standard_type = 'IC50'. Filter: activities.standard_units = 'nM'. Sort: compound_chembl_id ASC, compound_key ASC, pubmed_id_or_doi ASC, assay_description ASC, standard_type ASC, standard_relation ASC, standard_value ASC, standard_units ASC, target_chembl_id ASC, target_name ASC, target_organism ASC. Limit: None.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary. Join: molecule_dictionary parent on chembl_id = 'CHEMBL1336'. Join molecule_hierarchy on parent_molregno = parent.molregno. Join molecule_dictionary child on molregno = hierarchy.molregno. Join compound_structures on molregno = child.molregno. Join compound_records on molregno = child.molregno. Join docs on doc_id = records.doc_id. Join activities on record_id = records.record_id. Join assays on assay_id = activities.assay_id. Join target_dictionary on tid = assays.tid. Filter: target_dictionary.chembl_id = 'CHEMBL279'. Filter: activities.standard_type = 'IC50'. Filter: activities.standard_units = 'nM'. Sort: compound_chembl_id ASC, compound_key ASC, pubmed_id_or_doi ASC, assay_description ASC, standard_type ASC, standard_relation ASC, standard_value ASC, standard_units ASC, target_chembl_id ASC, target_name ASC, target_organism ASC. Limit: None."
+    }
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target Sphingosine 1-phosphate receptor 2 (ChEMBL ID CHEMBL2955). The target must have target_type 'SINGLE PROTEIN' and organism 'Homo sapiens' (tax_id 9606). Include only activities where standard_type is 'IC50', standard_relation is '=' (exact value), and pchembl_value is not null. Return the following columns: assay ChEMBL ID (from assays.chembl_id), target type (from target_dictionary.target_type), tax_id (from target_dictionary.tax_id), canonical SMILES (from compound_structures.canonical_smiles), molecule ChEMBL ID (from molecule_dictionary.chembl_id), standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Order the results by molecule ChEMBL ID ascending and then by assay ChEMBL ID ascending. Limit the output to 1000 rows. Use the necessary joins: activities linked to assays via assay_id, assays linked to target_dictionary via tid, activities linked to molecule_dictionary via molregno, and molecule_dictionary linked to compound_structures via molregno for SMILES. Ensure each row corresponds to an activity entry; do not use DISTINCT unless necessary to avoid duplicates.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL2955' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id ASC, assay_chembl_id ASC LIMIT 1000;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 674,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows where the standard type is 'IC50', standard relation is '=', and pChEMBL value is not null, for the human single-protein target with ChEMBL ID CHEMBL2955 (Sphingosine 1-phosphate receptor 2). The target must have target_type 'SINGLE PROTEIN' and tax_id 9606 (Homo sapiens). For each qualifying activity, return the following columns: assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Order the results first by molecule ChEMBL ID in ascending order, then by assay ChEMBL ID in ascending order. Limit the output to 1000 rows. Use the following joins: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, and molecule_dictionary.molregno = compound_structures.molregno. Do not use DISTINCT, as each row corresponds to a unique activity record.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL2955' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY molecule_chembl_id ASC, assay_chembl_id ASC LIMIT 1000;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 674,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

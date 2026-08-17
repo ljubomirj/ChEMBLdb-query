@@ -1,0 +1,423 @@
+{
+  "ts_utc": "2026-03-15T22:23:01Z",
+  "eval_label": "eval_prompt_pack_v4.1_20260315_222301",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.1.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.0.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-pony-alpha-2"
+  ],
+  "splits": {
+    "train": {
+      "n_cases": 7,
+      "n_pass": 5,
+      "pass_rate": 0.714286,
+      "mean_score": 0.887755,
+      "cases": [
+        {
+          "corpus": "faq_hq",
+          "id": "faq_cdk2_selective_over_cdk5",
+          "uq": "Retrieve compounds which are selective to one target over a second target:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/faq_hq/faq_cdk2_selective_over_cdk5/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/faq_hq/faq_cdk2_selective_over_cdk5/run.log",
+          "generated_sql": "WITH best_per_target AS (",
+          "judge_text": "{\"analysis\": \"The SQL correctly implements the open-ended selectivity query: it finds each compound's best pchembl_value per target, generates all target pairs, filters for >= 1.0 pchembl difference, and returns chembl_id, both target names, and both potency values. The columns match exactly what was specified in UP_1. No LIMIT is used, which is correct since no row cap was requested. The sample rows show valid selectivity data (e.g., CHEMBL2 selective for Alpha-1B over Alpha-2C adrenergic receptor, CHEMBL3808884 selective for Bcr/Abl over Lyn). Minor data quality notes: some rows include 'Unchecked' targets (uncurated) and many cell-line targets, but these are inherent to the database, not SQL errors. The main practical concern is the enormous result size (10.3M rows), which is an expected consequence of the extremely broad question with no specific targets named. Overall, the query faithfully and correctly answers the question as specified.\", \"score\": 0.92, \"decision\": \"YES\"}",
+          "expected_rows": 10,
+          "actual_rows": 10334319,
+          "expected_cols": [
+            "chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "selective_target",
+            "other_target",
+            "selective_potency",
+            "other_potency"
+          ],
+          "missing_cols": [
+            "canonical_smiles"
+          ],
+          "extra_cols": [
+            "selective_target",
+            "other_target",
+            "selective_potency",
+            "other_potency"
+          ],
+          "status": "partial",
+          "score": 0.3,
+          "column_recall": 0.5,
+          "row_ratio": 1e-06
+        },
+        {
+          "corpus": "faq_hq",
+          "id": "faq_all_protein_targets",
+          "uq": "Retrieve target ChEMBL_ID, target_name, target_type, protein accessions and sequences for all protein targets:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/faq_hq/faq_all_protein_targets/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/faq_hq/faq_all_protein_targets/run.log",
+          "generated_sql": "SELECT td.chembl_id, td.pref_name, td.target_type, cs.accession, cs.sequence FROM target_dictionary td JOIN target_components tc ON td.tid = tc.tid JOIN component_sequences cs ON tc.component_id = cs.component_id WHERE td.target_type IN ('SINGLE PROTEIN', 'PROTEIN COMPLEX', 'PROTEIN COMPLEX GROUP', 'PROTEIN FAMILY', 'PROTEIN-PROTEIN INTERACTION', 'CHIMERIC PROTEIN', 'SELECTIVITY GROUP')",
+          "judge_text": "{\"analysis\": \"The query correctly retrieves all five requested columns (target ChEMBL_ID as chembl_id, target_name as pref_name, target_type, protein accessions as accession, and sequences as sequence) for all protein targets by filtering on the seven target types whose parent_type is 'PROTEIN'. The joins through target_components to component_sequences correctly handle multi-component targets by producing one row per target-component pairing. The sample shows diverse target types (SINGLE PROTEIN, PROTEIN COMPLEX, PROTEIN COMPLEX GROUP, PROTEIN FAMILY, PROTEIN-PROTEIN INTERACTION, CHIMERIC PROTEIN) with populated accessions and sequences. No extra columns are included, no LIMIT is present, and all requested data is present.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 16220,
+          "actual_rows": 16220,
+          "expected_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "actual_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_celegans_target_descriptions",
+          "uq": "List distinct target descriptions for Caenorhabditis elegans assays with activities.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/baoilleach_celegans_target_descriptions/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/baoilleach_celegans_target_descriptions/run.log",
+          "generated_sql": "SELECT DISTINCT td.pref_name FROM assays ass JOIN target_dictionary td ON ass.tid = td.tid JOIN activities a ON ass.assay_id = a.assay_id WHERE ass.assay_organism = 'Caenorhabditis elegans';",
+          "judge_text": "{\"analysis\": \"The query correctly returns distinct target preferred names for assays with organism 'Caenorhabditis elegans' that have at least one activity record. The target_dictionary table has no explicit 'description' column, so pref_name is the most reasonable interpretation of 'target descriptions.' The joins are correct (assays \u2192 target_dictionary via tid, assays \u2192 activities via assay_id), the DISTINCT is applied, and the WHERE filter is on the correct column (assay_organism). The result includes 17 rows covering protein targets, non-protein targets, and unassigned targets, which faithfully reflects the underlying data. No extra columns are selected, and no arbitrary LIMIT is imposed.\", \"score\": 0.95, \"decision\": \"YES\"}",
+          "expected_rows": 17,
+          "actual_rows": 17,
+          "expected_cols": [
+            "target_description"
+          ],
+          "actual_cols": [
+            "target_description"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_human_cgmp_target_descriptions",
+          "uq": "List distinct human target descriptions whose description starts with cGMP.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/run.log",
+          "generated_sql": "SELECT DISTINCT pref_name FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name LIKE 'cGMP%'",
+          "judge_text": "{\"analysis\": \"The query correctly filters target_dictionary for Homo sapiens organisms and pref_name starting with 'cGMP', returns only the requested column (pref_name), uses DISTINCT, and the 6 results all match the criteria. The result is complete and accurate.\",\"score\": 1.0,\"decision\": \"YES\"}",
+          "expected_rows": 6,
+          "actual_rows": 6,
+          "expected_cols": [
+            "target_description"
+          ],
+          "actual_cols": [
+            "target_description"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "iwatobipen_ki_target_tid_pref_name",
+          "uq": "Retrieve distinct target TID and preferred name pairs for activities with exact Ki values.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/iwatobipen_ki_target_tid_pref_name/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/iwatobipen_ki_target_tid_pref_name/run.log",
+          "generated_sql": "SELECT DISTINCT td.tid, td.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'Ki' AND a.standard_relation = '='",
+          "judge_text": "{\"analysis\": \"The query correctly retrieves distinct target TID and preferred name pairs by joining activities to assays and target_dictionary, filtering on standard_type='Ki' and standard_relation='=' for exact values. The output contains exactly the two requested columns (tid, pref_name) with no extras, and returns 3255 distinct rows. The query is well-formed and fully answers the user's question.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 3255,
+          "actual_rows": 3255,
+          "expected_cols": [
+            "target_tid",
+            "target_name"
+          ],
+          "actual_cols": [
+            "target_tid",
+            "target_name"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_id_name_pairs",
+          "uq": "Retrieve ChEMBL identifiers and preferred names for molecules that have structures and non-null names.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/chembl_downloader_id_name_pairs/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/chembl_downloader_id_name_pairs/run.log",
+          "generated_sql": "SELECT md.chembl_id, md.pref_name FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.pref_name IS NOT NULL",
+          "judge_text": "{\"analysis\": \"The query correctly retrieves exactly the two requested columns (chembl_id and pref_name) from molecule_dictionary joined with compound_structures, filtering for non-null preferred names. The result contains 42,299 rows with the correct schema. All sample rows show valid ChEMBL identifiers and non-null preferred names. No extra columns, no missing columns, no arbitrary LIMIT. The query fully and truthfully answers the user's question.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 42299,
+          "actual_rows": 42299,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_drug_indications",
+          "uq": "Retrieve all drug-indication relationships with molecule identifiers, names, MeSH identifiers, EFO identifiers, indication labels, and max phase for indication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/chembl_downloader_drug_indications/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/train/web_scrape_hq/chembl_downloader_drug_indications/run.log",
+          "generated_sql": "SELECT md.chembl_id, md.pref_name, di.mesh_id, di.efo_id, di.mesh_heading, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno",
+          "judge_text": "{\"analysis\": \"The query correctly joins drug_indication with molecule_dictionary and returns all six columns requested: molecule ChEMBL ID (chembl_id), molecule preferred name (pref_name), MeSH identifier (mesh_id), EFO identifier (efo_id), indication label (mesh_heading), and max phase for indication (max_phase_for_ind). There is no LIMIT clause, so all 59,954 rows are returned. The sample rows are well-distributed and contain valid data across all columns. This fully and truthfully answers the user's question.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 59954,
+          "actual_rows": 59954,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name",
+            "mesh_id",
+            "mesh_heading",
+            "indication_curie",
+            "indication_label",
+            "max_phase_for_ind"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name",
+            "mesh_id",
+            "indication_curie",
+            "mesh_heading",
+            "max_phase_for_ind"
+          ],
+          "missing_cols": [
+            "indication_label"
+          ],
+          "extra_cols": [],
+          "status": "partial",
+          "score": 0.914286,
+          "column_recall": 0.857143,
+          "row_ratio": 1.0
+        }
+      ]
+    },
+    "val": {
+      "n_cases": 2,
+      "n_pass": 1,
+      "pass_rate": 0.5,
+      "mean_score": 0.661299,
+      "cases": [
+        {
+          "corpus": "faq_hq",
+          "id": "faq_sildenafil_pde5_ic50_salts",
+          "uq": "Retrieve activity details for compound and all its salts which have an IC50 bioactivity value in nM against a target of interest:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/val/faq_hq/faq_sildenafil_pde5_ic50_salts/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/val/faq_hq/faq_sildenafil_pde5_ic50_salts/run.log",
+          "generated_sql": "WITH salt_groups AS (SELECT parent_molregno, COUNT(*) AS n_forms FROM molecule_hierarchy WHERE parent_molregno IS NOT NULL GROUP BY parent_molregno HAVING COUNT(*) > 1), compound_target_pairs AS (SELECT mh.parent_molregno, td.chembl_id AS target_chembl_id, COUNT(DISTINCT a.activity_id) AS n_activities, COUNT(DISTINCT a.molregno) AS n_molregnos FROM molecule_hierarchy mh JOIN salt_groups sg ON mh.parent_molregno = sg.parent_molregno JOIN activities a ON a.molregno = mh.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND td.target_type = 'SINGLE PROTEIN' GROUP BY mh.parent_molregno, td.chembl_id HAVING COUNT(DISTINCT a.molregno) >= 2), chosen_pair AS (SELECT parent_molregno, target_chembl_id FROM compound_target_pairs ORDER BY n_activities DESC LIMIT 1), all_forms AS (SELECT mh.molregno FROM molecule_hierarchy mh JOIN chosen_pair cp ON mh.parent_molregno = cp.parent_molregno) SELECT DISTINCT md.chembl_id, cp.target_chembl_id, a.standard_value, a.standard_units, a.standard_relation, a.pchembl_value, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN all_forms af ON a.molregno = af.molregno JOIN chosen_pair cp ON td.chembl_id = cp.target_chembl_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL AND td.target_type = 'SINGLE PROTEIN'",
+          "judge_text": "{\"analysis\": \"The result correctly retrieves IC50 bioactivity data in nM for a compound (CHEMBL3353410) and one of its salt forms (CHEMBL4741340) against a single protein target (CHEMBL203). All 257 rows have valid IC50 values in nM with standard_relation, pchembl_value, and assay ChEMBL IDs. The query properly identified a compound with multiple forms in the hierarchy where at least 2 distinct molregnos have recorded IC50 data against the same single protein target, and picked the pair with the most activity records. The columns returned (compound ChEMBL ID, target ChEMBL ID, standard_value, standard_units, standard_relation, pchembl_value, assay_chembl_id) are appropriate activity details. The result is complete and truthful for the user's request.\", \"score\": 0.95, \"decision\": \"YES\"}",
+          "expected_rows": 59,
+          "actual_rows": 257,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "target_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "pchembl_value",
+            "assay_chembl_id"
+          ],
+          "missing_cols": [
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "activity_comment",
+            "target_name",
+            "target_organism"
+          ],
+          "extra_cols": [
+            "pchembl_value",
+            "assay_chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.322598,
+          "column_recall": 0.384615,
+          "row_ratio": 0.229572
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_human_hsp90_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL3880 (HSP90). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/val/web_scrape_hq/baoilleach_human_hsp90_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/val/web_scrape_hq/baoilleach_human_hsp90_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL3880'",
+          "judge_text": "{\"analysis\": \"The SQL correctly joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures tables. It filters on assays.assay_organism = 'Homo sapiens' and td.chembl_id = 'CHEMBL3880', returning DISTINCT chembl_id and canonical_smiles as requested. No extra columns are included, no LIMIT is imposed, and the result contains 2510 rows with the exact two columns specified. The query fully and truthfully answers the user's question.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 2510,
+          "actual_rows": 2510,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 2,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.506028,
+      "cases": [
+        {
+          "corpus": "faq_hq",
+          "id": "faq_levofloxacin_pk",
+          "uq": "Retrieve PK data from 'Curated Drug Pharmacokinetic Data' source in ChEMBL for drug:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/test/faq_hq/faq_levofloxacin_pk/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/test/faq_hq/faq_levofloxacin_pk/run.log",
+          "generated_sql": "SELECT md.pref_name, md.chembl_id, a.standard_type, a.standard_value, a.standard_units, a.standard_relation FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.src_id = 39",
+          "judge_text": "{\"analysis\": \"The user's question ends with 'for drug:' but no specific drug name is provided. The UP reasonably interprets this as returning all PK records from the 'Curated Drug Pharmacokinetic Data' source (src_id = 39). The SQL correctly filters on src_id = 39, joins activities to molecule_dictionary, and returns the appropriate columns (pref_name, chembl_id, standard_type, standard_value, standard_units, standard_relation). The result contains 1163 rows with genuine PK parameters (Cmax, AUC, T1/2, Tmax, CL, Vd, PPB, F, etc.) from multiple drugs. No LIMIT clause truncates the results, no extra columns are included, and no requested columns are missing. The query is correct and complete for the interpreted question.\", \"score\": 0.95, \"decision\": \"YES\"}",
+          "expected_rows": 154,
+          "actual_rows": 1163,
+          "expected_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "actual_cols": [
+            "pref_name",
+            "chembl_id",
+            "standard_type",
+            "standard_value",
+            "standard_units",
+            "standard_relation"
+          ],
+          "missing_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "activity_comment"
+          ],
+          "extra_cols": [
+            "pref_name",
+            "chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.162057,
+          "column_recall": 0.181818,
+          "row_ratio": 0.132416
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "iwatobipen_metabolism_example",
+          "uq": "Retrieve the first 200 rows of canonical SMILES, substrate compound name, metabolic conversion, and pathway key from the metabolism table.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/test/web_scrape_hq/iwatobipen_metabolism_example/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.1_20260315_222301/test/web_scrape_hq/iwatobipen_metabolism_example/run.log",
+          "generated_sql": "SELECT cs.canonical_smiles, cr.compound_name AS substrate, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr ON m.substrate_record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno LIMIT 200;",
+          "judge_text": "{\"analysis\": \"The query correctly retrieves the first 200 rows with exactly the four columns requested: canonical SMILES, substrate compound name (aliased as 'substrate'), metabolic conversion, and pathway key. The joins use substrate_record_id to link to compound_records for the substrate name, then to compound_structures for the SMILES, which is the correct approach per schema hints. The LIMIT 200 is explicitly requested by the user. The sample rows show valid data with appropriate NULLs where conversion info is unavailable. No extra columns are selected, and no requested columns are missing.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "compound_name",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [
+            "compound_name"
+          ],
+          "extra_cols": [
+            "substrate"
+          ],
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 0.75,
+          "row_ratio": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 11,
+    "n_pass": 6,
+    "pass_rate": 0.545455,
+    "mean_score": 0.777176
+  }
+}

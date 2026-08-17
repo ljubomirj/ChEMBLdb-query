@@ -1,0 +1,1 @@
+SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, md.canonical_smiles AS canonical_smiles FROM molecule_dictionary md INNER JOIN compound_records cr ON md.molregno = cr.molregno INNER JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL1123892' AND md.canonical_smiles IS NOT NULL ORDER BY chembl_id ASC, compound_name ASC, canonical_smiles ASC;

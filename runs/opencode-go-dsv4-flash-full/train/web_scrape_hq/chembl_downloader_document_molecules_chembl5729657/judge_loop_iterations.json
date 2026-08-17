@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "For the document with ChEMBL ID 'CHEMBL5729657', list all distinct molecules that are reported in that document. Include the molecule's ChEMBL ID and preferred name. Base the query on the docs table (filtered by chembl_id), joined through activities to molecule_dictionary. Ensure each molecule is listed only once, regardless of how many times it appears in the document.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS molecule_chembl_id,\n    md.pref_name\nFROM docs d\nINNER JOIN activities a ON d.doc_id = a.doc_id\nINNER JOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1530,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

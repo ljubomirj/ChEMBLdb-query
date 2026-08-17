@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_thr_multi_type_activities_first500.json",
+  "case_id": "target_thr_multi_type_activities_first500",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 500 exact activity measurements for compounds tested against thyroid hormone receptor CHEMBL1862. Join molecule_dictionary to activities on molregno, join assays on assay_id, and join target_dictionary on tid. Filter by target chembl_id CHEMBL1862 and require exact measurements (standard_relation = '='). Require compound structures by joining compound_structures on molregno as an INNER JOIN. Return chembl_id, canonical_smiles, standard_type, standard_value, and standard_units. Sort rows by potency (standard_value ascending) and limit to 500 rows. Do not deduplicate; keep all qualifying activity rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 500 exact activity measurements for compounds tested against thyroid hormone receptor CHEMBL1862. Join molecule_dictionary to activities on molregno, join assays on assay_id, and join target_dictionary on tid. Filter by target chembl_id CHEMBL1862 and require exact measurements (standard_relation = '='). Require compound structures by joining compound_structures on molregno as an INNER JOIN. Return chembl_id, canonical_smiles, standard_type, standard_value, and standard_units. Sort rows by potency (standard_value ascending) and limit to 500 rows. Do not deduplicate; keep all qualifying activity rows."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+Select molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+Join molecule_dictionary to compound_records on molecule_dictionary.molregno = compound_records.molregno
+Join compound_records to docs on compound_records.doc_id = docs.doc_id
+Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno
+Filter docs.chembl_id = 'CHEMBL3039007'
+Return molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+Sort by molecule_chembl_id
+Preserve row multiplicity (do not apply DISTINCT unless explicitly requested)

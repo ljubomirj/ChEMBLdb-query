@@ -1,0 +1,75 @@
+{
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/v5_1010_probe_baseline_v512_local_20260406_164421/test/web_scrape_hq/approved_drugs_with_indications_and_efo/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/v5_1010_probe_baseline_v512_local_20260406_164421/test/web_scrape_hq/approved_drugs_with_indications_and_efo/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/v5_1010_probe_baseline_v512_local_20260406_164421/test/web_scrape_hq/approved_drugs_with_indications_and_efo/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "templated_from_promoted_case",
+    "source_title": "Templated from approved-drug ChEMBL examples",
+    "source_url": "https://chembl-downloader.readthedocs.io/en/stable/api/chembl_downloader.queries.DRUG_INDICATIONS_SQL.html",
+    "realism_level": "templated_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "['indication_curie']"
+    },
+    "column_rename_map": {
+      "chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "molecule_chembl_id": "chembl_id",
+      "pref_name": "pref_name",
+      "drug_name": "pref_name",
+      "compound_name": "pref_name",
+      "canonical_smiles": "canonical_smiles",
+      "smiles": "canonical_smiles",
+      "efo_id": "indication_curie",
+      "indication_curie": "indication_curie",
+      "efo_term": "indication_label",
+      "indication_label": "indication_label",
+      "max_phase_for_ind": "max_phase_for_ind"
+    },
+    "float_cols": [
+      "max_phase_for_ind"
+    ],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

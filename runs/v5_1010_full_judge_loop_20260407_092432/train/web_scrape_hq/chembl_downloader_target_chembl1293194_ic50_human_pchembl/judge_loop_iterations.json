@@ -1,0 +1,88 @@
+[
+  {
+    "n": 1,
+    "up": "For the human single-protein target with ChEMBL ID CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform), retrieve up to 1000 activity records that have an exact IC50 measurement (standard_type='IC50' and standard_relation='=') with non-null pChEMBL values. For each qualifying activity, return the assay ChEMBL ID (from the assays table), the target type (from target_dictionary), the target's tax_id, the compound's canonical SMILES (from compound_structures), the molecule ChEMBL ID (from molecule_dictionary), the standard type (from activities), and the pChEMBL value (from activities). Include only records where the target is a human protein (tax_id = 9606) and the activity has a defined pChEMBL value. Order the results first by molecule ChEMBL ID (ascending) and then by assay ChEMBL ID (ascending). Do not filter on confidence score, data validity, assay organism, or other auxiliary fields. Exclude any activity rows that lack a canonical SMILES or where the pChEMBL value is missing. The query should limit the output to the first 1000 rows after sorting as described. Ensure that the output columns are exactly: assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value.",
+    "sql": "WITH base AS (\n  SELECT a.assay_id, a.pchembl_value, a.molecule_chembl_id, s.canonical_smiles, t.pref_name, t.tax_id, a.standard_type, a.standard_relation\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'pChEMBL'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND cs.canonical_smiles IS NOT NULL\n),\nranked AS (\n  SELECT ROW_NUMBER() OVER (ORDER BY molecule_chembl_id ASC, assay_chembl_id ASC) AS rn,\n         ass.chembl_id AS assay_chembl_id,\n         td.pref_name AS target_type,\n         td.tax_id AS target_tax_id,\n         cs.canonical_smiles,\n         a.molecule_chembl_id AS molecule_chembl_id,\n         a.standard_type,\n         a.pchembl_value AS pchembl_value\n  FROM base b\n  JOIN assays ass ON b.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON b.molecule_chembl_id = cs.molecule_chembl_id\n  WHERE b.rn <= 1000\n)\nSELECT rn, assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ranked\nORDER BY assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "For the human single-protein target with ChEMBL ID CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform), retrieve up to 1000 activity records that have an exact IC50 measurement (standard_type='IC50' and standard_relation='=') with non-null pChEMBL values. For each qualifying activity, return the assay ChEMBL ID (from the assays table), the target type (from target_dictionary), the target's tax_id, the compound's canonical SMILES (from compound_structures), the molecule ChEMBL ID (from molecule_dictionary), the standard type (from activities), and the pChEMBL value (from activities). Include only records where the target is a human protein (tax_id = 9606) and the activity has a defined pChEMBL value. Exclude any activity rows that lack a canonical SMILES or where the pChEMBL value is missing. Order the results first by molecule ChEMBL ID (ascending) and then by assay ChEMBL ID (ascending). Ensure the output columns are exactly: assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Do not add any extra filters beyond those specified.",
+    "sql": "WITH activities_filtered AS (\n  SELECT a.assay_id, a.pchembl_value, a.molecule_chembl_id, s.canonical_smiles, t.pref_name, t.tax_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND s.canonical_smiles IS NOT NULL\n), ordered AS (\n  SELECT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id AS target_tax_id, cs.canonical_smiles, a.molecule_chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value\n  FROM activities_filtered a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n  ORDER BY a.molecule_chembl_id ASC, ass.chembl_id ASC\n  LIMIT 1000\n)\nSELECT assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ordered;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Human single-protein target CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform). Retrieve up to 1000 activity rows where standard_type = 'IC50' and standard_relation = '=' and pChEMBL value is not null. Include only activities with non-null canonical SMILES and where the target tax_id = 9606. Return assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Order by molecule_chembl_id ascending then assay_chembl_id ascending.",
+    "sql": "WITH activities_filtered AS (\n  SELECT a.assay_id, a.pchembl_value, a.molregno, s.canonical_smiles, t.pref_name, t.tax_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND cs.canonical_smiles IS NOT NULL\n), ranked AS (\n  SELECT ROW_NUMBER() OVER (ORDER BY a.molregno ASC, ass.chembl_id ASC) AS rn,\n         ass.chembl_id AS assay_chembl_id,\n         td.pref_name AS target_type,\n         td.tax_id AS target_tax_id,\n         cs.canonical_smiles,\n         a.molregno AS molecule_chembl_id,\n         a.standard_type,\n         a.pchembl_value AS pchembl_value\n  FROM activities_filtered a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE rn <= 1000\n)\nSELECT assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ranked\nORDER BY assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: s.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: s.canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Human single-protein target CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform). Retrieve up to 1000 activity records with exact IC50 measurement (standard_type='IC50' and standard_relation='=') and non-null pChEMBL values. Return assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Include only human target (tax_id=9606), activities with canonical SMILES and pChEMBL defined. Order by molecule_chembl_id ASC then assay_chembl_id ASC. No additional filters or limits.",
+    "sql": "WITH activities_filtered AS (\n  SELECT a.assay_id, a.pchembl_value, a.molregno, cs.canonical_smiles, td.pref_name, td.tax_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND cs.canonical_smiles IS NOT NULL\n), ranked AS (\n  SELECT ROW_NUMBER() OVER (ORDER BY a.molregno ASC, ass.chembl_id ASC) AS rn,\n         ass.chembl_id AS assay_chembl_id,\n         td.pref_name AS target_type,\n         td.tax_id AS target_tax_id,\n         cs.canonical_smiles,\n         a.molregno AS molecule_chembl_id,\n         a.standard_type,\n         a.pchembl_value AS pchembl_value\n  FROM activities_filtered a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE rn <= 1000\n)\nSELECT assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ranked\nORDER BY assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: misuse of aliased window function rn",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "misuse of aliased window function rn",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Human single-protein target CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform). Retrieve up to 1000 activity records with exact IC50 measurement (standard_type='IC50' and standard_relation='=') and non-null pChEMBL values. Return assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Include only human target (tax_id=9606), activities with canonical SMILES and pChEMBL defined. Order by molecule_chembl_id ASC then assay_chembl_id ASC. No additional filters or limits.",
+    "sql": "WITH activities_filtered AS (\n  SELECT a.assay_id, a.pchembl_value, a.molregno, cs.canonical_smiles, td.pref_name AS target_type, td.tax_id AS target_tax_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND cs.canonical_smiles IS NOT NULL\n), ranked AS (\n  SELECT ROW_NUMBER() OVER (ORDER BY a.molregno ASC, ass.chembl_id ASC) AS rn,\n         ass.chembl_id AS assay_chembl_id,\n         td.pref_name AS target_type,\n         td.tax_id AS target_tax_id,\n         cs.canonical_smiles,\n         a.molregno AS molecule_chembl_id,\n         a.standard_type,\n         a.pchembl_value AS pchembl_value\n  FROM activities_filtered a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE rn <= 1000\n)\nSELECT assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ranked\nORDER BY assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: misuse of aliased window function rn",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "misuse of aliased window function rn",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Human single-protein target CHEMBL1293194 (Carnitine O-palmitoyltransferase 1, liver isoform). Retrieve up to 1000 activity records with exact IC50 measurement (standard_type='IC50' and standard_relation='=') and non-null pChEMBL values. Include only human target (tax_id=9606), activities with canonical SMILES and pChEMBL defined. Return assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Order by molecule_chembl_id ASC then assay_chembl_id ASC. No additional filters or limits.",
+    "sql": "WITH activities_filtered AS (\n  SELECT a.assay_id, a.pchembl_value, a.molregno, cs.canonical_smiles, td.pref_name AS target_type, td.tax_id AS target_tax_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL1293194'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND td.tax_id = 9606\n    AND a.pchembl_value IS NOT NULL\n    AND cs.canonical_smiles IS NOT NULL\n), ordered AS (\n  SELECT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id AS target_tax_id, cs.canonical_smiles, a.molregno AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pchembl_value, a.assay_id\n  FROM activities_filtered a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  ORDER BY a.molregno ASC, ass.chembl_id ASC\n  LIMIT 1000\n)\nSELECT assay_chembl_id, target_type, target_tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nFROM ordered;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n17 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n24 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n33 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n66 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n73 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n101 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 489,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "target_tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

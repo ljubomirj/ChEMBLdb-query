@@ -1,0 +1,10 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+From metabolism
+Join compound_records on metabolism.substrate_record_id = compound_records.record_id
+Join molecule_dictionary as substrate on compound_records.molregno = substrate.molregno
+Left Join compound_structures on substrate.molregno = compound_structures.molregno
+Join molecule_dictionary as parent on metabolism.met_id = parent.molregno
+Join target_dictionary on metabolism.enzyme_tid = target_dictionary.tid
+Filter target_dictionary.target_type = 'PROTEIN' and target_dictionary.pref_name = 'CYP3A5'
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Limit 200

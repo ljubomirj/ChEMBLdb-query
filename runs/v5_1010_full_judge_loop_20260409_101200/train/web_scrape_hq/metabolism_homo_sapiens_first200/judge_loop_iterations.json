@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 200 metabolism records for Homo sapiens. For each record, include the substrate structure (canonical SMILES), substrate compound name, parent compound name, metabolic conversion description, pathway key, and enzyme name. Retrieve records where the organism is 'Homo sapiens'. Join metabolism records with compound structures and records to get substrate structures and names.",
+    "sql": "SELECT DISTINCT\n  cs.canonical_smiles AS substrate_structure,\n  cr_sub.compound_name AS substrate_name,\n  cr_par.compound_name AS parent_name,\n  m.met_conversion AS metabolic_conversion,\n  m.pathway_key AS pathway,\n  m.enzyme_name AS enzyme\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nLEFT JOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id\nWHERE m.organism = 'Homo sapiens'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n30 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n59 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 200,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_name",
+      "metabolic_conversion",
+      "pathway",
+      "enzyme"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

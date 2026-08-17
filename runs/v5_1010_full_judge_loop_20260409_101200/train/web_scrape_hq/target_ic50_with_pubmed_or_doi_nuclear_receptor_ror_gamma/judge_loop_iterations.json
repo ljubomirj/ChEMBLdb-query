@@ -1,0 +1,51 @@
+[
+  {
+    "n": 5,
+    "up": "Extract all rows for exact IC50 activities (standard_type = 'IC50', standard_units = 'nM') linked to the human ROR-\u03b3 target with ChEMBL ID CHEMBL1741186. For each activity, return the compound's ChEMBL ID, canonical SMILES, and the PubMed ID or DOI (prefer PubMed if available). Also return the assay description and target details including target ChEMBL ID, preferred name, organism, and target type.",
+    "sql": "WITH TargetInfo AS ( SELECT td.tid, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism, td.target_type FROM target_dictionary td WHERE td.chembl_id = 'CHEMBL1741186' ), DocInfo AS ( SELECT d.doc_id, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM docs d ) SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles, doc.pubmed_id_or_doi, a.standard_value AS ic50_nM, ass.description AS assay_description, ti.target_chembl_id, ti.target_name, ti.organism, ti.target_type FROM TargetInfo ti JOIN activities a ON ti.tid = a.tid JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN DocInfo doc ON a.doc_id = doc.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "For the human ROR-\u03b3 target (ChEMBL ID: CHEMBL1741186), return all IC50 activity values where the standard units are nM. For each matching record, include the compound's ChEMBL ID, canonical SMILES, and the PubMed ID or DOI reference (prefer PubMed), plus the assay description and target details (target ChEMBL ID, preferred name, organism, and target type).",
+    "sql": "WITH DocInfo AS (\n  SELECT\n    d.doc_id,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi\n  FROM docs d\n)\nSELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  doc.pubmed_id_or_doi,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism,\n  td.target_type\nFROM target_dictionary td\nJOIN activities a\n  ON td.tid = a.tid\nJOIN assays ass\n  ON a.assay_id = ass.assay_id\nJOIN molecule_dictionary md\n  ON a.molregno = md.molregno\nJOIN compound_structures cs\n  ON md.molregno = cs.molregno\nJOIN DocInfo doc\n  ON a.doc_id = doc.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL1741186'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "For the human ROR-\u03b3 target with ChEMBL ID CHEMBL1741186, return all exact IC50 activity values where the standard units are nM. For each matching record, include the compound's ChEMBL ID, canonical SMILES, and the PubMed ID or DOI reference (prefer PubMed when available), plus the assay description and target details (target ChEMBL ID, preferred name, organism, and target type). The target linkage must be made through the assays table.",
+    "sql": "WITH DocInfo AS (\n  SELECT\n    d.doc_id,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi\n  FROM docs d\n)\nSELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  doc.pubmed_id_or_doi,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism,\n  td.target_type\nFROM target_dictionary td\nJOIN assays ass\n  ON td.tid = ass.tid\nJOIN activities a\n  ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md\n  ON a.molregno = md.molregno\nJOIN compound_structures cs\n  ON md.molregno = cs.molregno\nJOIN DocInfo doc\n  ON a.doc_id = doc.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL1741186'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n79 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 12594,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "ic50_nM",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "organism",
+      "target_type"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

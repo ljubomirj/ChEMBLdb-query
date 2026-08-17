@@ -9,7 +9,7 @@ from pathlib import Path
 BASE_DIR = Path("/Users/ljubomir/ChEMBLdb-query")
 
 # Load v4.5 cases (150 cases)
-v45_cases_file = BASE_DIR / "tests/cases/web_scrape_hq_cases_v4.5.json"
+v45_cases_file = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases_v4.5.json"
 with open(v45_cases_file) as f:
     v45_cases = json.load(f)
 
@@ -69,7 +69,7 @@ for case_info in round28_cases:
 print(f"\nTotal cases: {len(v45_cases)}")
 
 # Save final cases file
-final_cases_file = BASE_DIR / "tests/cases/web_scrape_hq_cases.json"
+final_cases_file = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases.json"
 with open(final_cases_file, 'w') as f:
     json.dump(v45_cases, f, indent=2)
 

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ces2_multi_type_activities_first500.json",
+  "case_id": "target_ces2_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound ChEMBL identifier, canonical SMILES, standard type, standard value, and standard units for the first 500 activity measurements against target CHEMBL206. Join molecule_dictionary to activities, assays, and target_dictionary, filtering by target ChEMBL ID. Require compound structures via INNER JOIN on compound_structures. Rank rows by potency (ascending standard_value) and limit to 500. Do not deduplicate; return all qualifying activity rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound ChEMBL identifier, canonical SMILES, standard type, standard value, and standard units for the first 500 activity measurements against target CHEMBL206. Join molecule_dictionary to activities, assays, and target_dictionary, filtering by target ChEMBL ID. Require compound structures via INNER JOIN on compound_structures. Rank rows by potency (ascending standard_value) and limit to 500. Do not deduplicate; return all qualifying activity rows."
+    }
+  }
+}

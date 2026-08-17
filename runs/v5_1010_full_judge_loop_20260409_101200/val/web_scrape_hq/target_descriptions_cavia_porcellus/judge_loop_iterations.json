@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Return the distinct target names for assays where the organism is Cavia porcellus. Ensure that each returned target name appears only once. No additional filters, columns, or ranking are required beyond the target name and organism.",
+    "sql": "SELECT DISTINCT td.pref_name AS target_name\nFROM assays ass\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE ass.assay_organism = 'Cavia porcellus';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN ass\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 174,
+    "res_columns": [
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

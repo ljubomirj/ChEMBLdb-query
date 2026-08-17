@@ -1,0 +1,56 @@
+[
+    0.9,
+    {
+        "current_candidate": "<TASK>\nYou are an expert data analyst tasked with refining a natural language request into a precise specification for a SQL query generator.\n\nYour objective is to transform the User Question (UQ) into a User Prompt (UP) that is an abstract, structural description of the desired data. The UP must enable the SQL writer to construct the correct query without relying on the superficial phrasing of the original question.\n\nCore Principles:\n1.  **Abstraction over Restatement**: Do NOT repeat the UQ. Instead, deconstruct it into technical requirements.\n2.  **Structural Specification**: Explicitly define the targets, filters, columns, and ordering required from the database schema.\n3.  **Schema Awareness**: Use information from the System Prompt (SP) to reference correct table names, valid relationships, and column constraints.\n\nConstruction Rules:\n-   **Output Format**: Return ONLY a valid JSON object. No markdown, no explanations.\n-   **Key \"up\" (string)**: This is the prompt string for the SQL writer. It must be a concise technical specification.\n    *   **Targets**: Define the primary entity (e.g., molecule, target) and specific constraints (e.g., organism, chembl_id, protein family).\n    *   **Output Columns**: Explicitly list columns to be selected. If the UQ asks for \"col_a\", the UP must state \"Return col_a\". Use exact names.\n    *   **Filters**: Clearly state WHERE clause logic (e.g., \"standard_relation is '='\", \"pchembl_value is not null\").\n    *   **Sorting**: Specify ORDER BY requirements (e.g., \"sort by molecule_chembl_id\").\n    *   **Limiting**: Only specify a limit if the UQ explicitly asks for a \"Top N\" or \"First N\" rows.\n-   **Avoid Echoing**: The UP must be significantly different from the UQ. Use structural phrasing (e.g., \"Filter for...\" or \"Output set includes...\") rather than narrative phrasing (e.g., \"Show me the...\").\n-   **Context**: Incorporate relevant schema details provided in the SP to ensure specificity.\n\nOptional JSON Keys (use to structure your thought process, they do not need to be in the \"up\" string):\n-   \"targets\": The primary database entities involved.\n-   \"output_columns\": List of specific columns required.\n-   \"filters\": Specific conditions applied to the data.\n-   \"ranking\": Order and limit requirements.\n</TASK>"
+    },
+    {
+        "case_id": "chembl_downloader_assay_chembl1217644_exact",
+        "corpus": "web_scrape_hq",
+        "uq": "For assay CHEMBL1217644, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_dea9ac14fa3225d5.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_dea9ac14fa3225d5.txt",
+        "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1217644' AND act.standard_relation = '='",
+        "judge_text": null,
+        "expected_rows": 1,
+        "actual_rows": 1,
+        "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+        ],
+        "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+        ],
+        "missing_cols": [
+            "molecule_chembl_id"
+        ],
+        "extra_cols": [
+            "chembl_id"
+        ],
+        "status": "partial",
+        "score": 0.9,
+        "column_recall": 0.833333,
+        "row_ratio": 1.0,
+        "generated_up": "Retrieve bioactivity data for assay CHEMBL1217644. Filter for exact measurements where standard_relation is '='. Return canonical_smiles, molecule chembl_id, standard_type, standard_relation, standard_value, and standard_units.",
+        "base_score": 0.9,
+        "up_echo_ratio": 0.404819,
+        "up_echo_penalty": 0.0,
+        "adjusted_score": 0.9,
+        "scores": {
+            "result_score": 0.9,
+            "up_non_echo_score": 1.0
+        },
+        "log": "{\"case_id\": \"chembl_downloader_assay_chembl1217644_exact\", \"corpus\": \"web_scrape_hq\", \"uq\": \"For assay CHEMBL1217644, list compounds with exact activity measurements. Return canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_dea9ac14fa3225d5.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_dea9ac14fa3225d5.txt\", \"generated_sql\": \"SELECT DISTINCT cs.canonical_smiles, md.chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1217644' AND act.standard_relation = '='\", \"judge_text\": null, \"expected_rows\": 1, \"actual_rows\": 1, \"expected_cols\": [\"canonical_smiles\", \"molecule_chembl_id\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\"], \"actual_cols\": [\"canonical_smiles\", \"chembl_id\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\"], \"missing_cols\": [\"molecule_chembl_id\"], \"extra_cols\": [\"chembl_id\"], \"status\": \"partial\", \"score\": 0.9, \"column_recall\": 0.833333, \"row_ratio\": 1.0, \"generated_up\": \"Retrieve bioactivity data for assay CHEMBL1217644. Filter for exact measurements where standard_relation is '='. Return canonical_smiles, molecule chembl_id, standard_type, standard_relation, standard_value, and standard_units.\", \"base_score\": 0.9, \"up_echo_ratio\": 0.404819, \"up_echo_penalty\": 0.0, \"adjusted_score\": 0.9, \"scores\": {\"result_score\": 0.9, \"up_non_echo_score\": 1.0}}\n"
+    }
+]

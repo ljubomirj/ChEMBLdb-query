@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_976e94f42ad85cd3.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1122023.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1122023",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "976e94f42ad85cd3",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name AS molecule_name,\n  md.max_phase,\n  md.molecule_type,\n  cs.canonical_smiles\nFROM docs d\nINNER JOIN compound_records cr ON d.doc_id = cr.doc_id\nINNER JOIN molecule_dictionary md ON cr.molregno = md.molregno\nINNER JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL1122023'\nORDER BY md.chembl_id\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name AS molecule_name,\n  md.max_phase,\n  md.molecule_type,\n  cs.canonical_smiles\nFROM docs d\nINNER JOIN compound_records cr ON d.doc_id = cr.doc_id\nINNER JOIN molecule_dictionary md ON cr.molregno = md.molregno\nINNER JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL1122023'\nORDER BY md.chembl_id"
+    }
+  }
+}

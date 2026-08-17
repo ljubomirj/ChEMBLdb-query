@@ -1,0 +1,13 @@
+1. Objective: Extract distinct molecules associated with a specific document, ensuring structures are present and ordering by the requested fields.
+
+2. Output: chembl_id, compound_name, canonical_smiles
+
+3. Source: docs, compound_records, molecule_dictionary, compound_structures
+
+4. Logic: 
+   - Filter docs where chembl_id = 'CHEMBL1123873'.
+   - Join compound_records on docs.doc_id = compound_records.doc_id.
+   - Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno.
+   - Inner join compound_structures on molecule_dictionary.molregno = compound_structures.molregno to enforce canonical_smiles availability.
+   - Select distinct rows for chembl_id, compound_name, canonical_smiles.
+   - Order by chembl_id, compound_name, canonical_smiles.

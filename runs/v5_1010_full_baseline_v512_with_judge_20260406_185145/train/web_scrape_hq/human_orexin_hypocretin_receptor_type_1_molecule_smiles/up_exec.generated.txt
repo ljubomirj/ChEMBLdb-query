@@ -1,0 +1,10 @@
+Select molecule_chembl_id as compound_chembl_id, canonical_smiles
+Join molecule_dictionary m ON m.molregno = a.molregno
+Join activities a ON a.molregno = m.molregno AND a.assay_id = a.assay_id
+Join assays ass ON a.assay_id = ass.assay_id
+Join target_dictionary t ON ass.tid = t.tid
+Join compound_structures cs ON cs.molregno = m.molregno
+Filter t.chembl_id = 'CHEMBL5113'
+Filter ass.assay_organism = 'Homo sapiens'
+Return compound_chembl_id, canonical_smiles
+Sort by compound_chembl_id

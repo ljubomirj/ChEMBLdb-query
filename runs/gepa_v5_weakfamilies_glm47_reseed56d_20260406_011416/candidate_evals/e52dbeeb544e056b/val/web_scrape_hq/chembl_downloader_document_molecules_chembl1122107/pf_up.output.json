@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_e52dbeeb544e056b.yaml",
+  "prompt_pack_version": "v5.16",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1122107.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1122107",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "e52dbeeb544e056b",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the ChEMBL ID, preferred name, maximum phase, molecule type, and canonical SMILES for all compounds reported in the specified document. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, filtering by the document ChEMBL ID. Use LEFT JOIN compound_structures to retrieve canonical SMILES, allowing nulls for missing structures. Return the columns molecule_chembl_id, molecule_name, max_phase, molecule_type, and canonical_smiles. Sort the results by molecule_chembl_id in ascending order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the ChEMBL ID, preferred name, maximum phase, molecule type, and canonical SMILES for all compounds reported in the specified document. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, filtering by the document ChEMBL ID. Use LEFT JOIN compound_structures to retrieve canonical SMILES, allowing nulls for missing structures. Return the columns molecule_chembl_id, molecule_name, max_phase, molecule_type, and canonical_smiles. Sort the results by molecule_chembl_id in ascending order."
+    }
+  }
+}

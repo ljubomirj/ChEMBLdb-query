@@ -1,0 +1,21 @@
+[
+  {
+    "n": 3,
+    "up": "Identify compounds selective for CDK2 over CDK1. Selection criteria: IC50 < 1000 nM for CDK2 AND IC50 > 10000 nM for CDK1. Include the canonical SMILES structure for each compound. Return the compound ChEMBL ID, preferred name, CDK2 IC50 value, and CDK1 IC50 value.",
+    "sql": "WITH cdk2_activities AS (\n  SELECT\n    a.molregno,\n    MIN(a.standard_value) AS cdk2_ic50\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE\n    td.pref_name LIKE 'Cyclin-dependent kinase 2%'\n    AND a.standard_type = 'IC50'\n    AND a.standard_units = 'nM'\n    AND a.standard_value IS NOT NULL\n  GROUP BY a.molregno\n), cdk1_activities AS (\n  SELECT\n    a.molregno,\n    MIN(a.standard_value) AS cdk1_ic50\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE\n    td.pref_name LIKE 'Cyclin-dependent kinase 1%'\n    AND a.standard_type = 'IC50'\n    AND a.standard_units = 'nM'\n    AND a.standard_value IS NOT NULL\n  GROUP BY a.molregno\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name,\n  c2.cdk2_ic50,\n  c1.cdk1_ic50,\n  cs.canonical_smiles\nFROM cdk2_activities c2\nJOIN cdk1_activities c1 ON c2.molregno = c1.molregno\nJOIN molecule_dictionary md ON c2.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  c2.cdk2_ic50 < 1000\n  AND c1.cdk1_ic50 > 10000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 16\n2 | 0 | 0 | CO-ROUTINE cdk2_activities\n13 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n38 | 2 | 0 | USE TEMP B-TREE FOR GROUP BY\n79 | 0 | 0 | MATERIALIZE cdk1_activities\n91 | 79 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n100 | 79 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n106 | 79 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n116 | 79 | 0 | USE TEMP B-TREE FOR GROUP BY\n162 | 0 | 82 | SCAN c2\n167 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n180 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n193 | 0 | 0 | BLOOM FILTER ON c1 (molregno=?)\n205 | 0 | 47 | SEARCH c1 USING AUTOMATIC PARTIAL COVERING INDEX (molregno=?)\n225 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 28,
+    "res_columns": [
+      "compound_chembl_id",
+      "pref_name",
+      "cdk2_ic50",
+      "cdk1_ic50",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,29 @@
+<TASK>
+You are an expert SQL architect. Your task is to translate a natural language User Question (UQ) into a strict, structural User Prompt (UP) for a query execution engine.
+
+The UP must be a technical specification, not a narrative. It must abstract the UQ into database operations.
+
+Output Format:
+Return ONLY a valid JSON object with a single key "up". No markdown, no conversational text.
+
+Construction Rules for the "up" string:
+1.  **Structure as Operations**: Use imperative, technical verbs (e.g., "Select", "Join", "Filter", "Aggregate", "Map"). Avoid conversational phrases like "Show me", "I want", or "Which".
+2.  **Explicit Joins**: Define table relationships using specific schema paths (e.g., "JOIN activities ON assays.assay_id = activities.assay_id").
+3.  **Exact Column References**: Use precise `table.column` formatting. Map UQ terms to exact schema names.
+4.  **Formal Constraints**:
+    *   Filters: "WHERE table.column IS NOT NULL" or "table.column = 'value'".
+    *   Logic: "GROUP BY", "ORDER BY", "HAVING".
+5.  **Targeted Abstraction**:
+    *   Instead of "rows with pChEMBL values", use "Filter WHERE activities.pchembl_value IS NOT NULL".
+    *   Instead of "molecule details", use "Select molecule_dictionary.chembl_id, molecule_dictionary.pref_name".
+    *   Instead of "for target CHEMBL220", use "Filter WHERE target_dictionary.chembl_id = 'CHEMBL220'".
+
+Anti-Patterns (Do NOT do this):
+*   Do not echo the UQ phrasing (e.g., if UQ says "Show me...", UP must not start with "Show me...").
+*   Do not use vague terms (e.g., "details", "information", "data") without specifying the exact columns.
+*   Do not combine multiple steps into a vague instruction (e.g., "get the activity data for the target"). Break it down into "Join... Filter... Select...".
+
+Example Transformation:
+*   UQ: "Show IC50 activity rows with pChEMBL values for target CHEMBL220."
+*   UP: "Select activities.standard_type, activities.pchembl_value, molecule_dictionary.chembl_id. Join activities to assays, target_dictionary, molecule_dictionary. Filter WHERE target_dictionary.chembl_id = 'CHEMBL220' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL."
+</TASK>

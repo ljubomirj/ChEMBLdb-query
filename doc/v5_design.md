@@ -8,7 +8,7 @@ Current live state:
 
 - the active corpus is the diversified **`v5.1010`** dataset, not the old undiversified `1000`
 - the full 1010-case judge-loop baseline has completed at:
-  - `experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/`
+  - `runs/v5_1010_full_judge_loop_20260409_101200/`
 - current full-run summary:
   - `1010` cases
   - `350` exact passes

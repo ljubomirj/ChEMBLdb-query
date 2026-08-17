@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows for the target CHEMBL1932912 (Histone acetyltransferase KAT8). Filter for activities where the standard_type is 'IC50', the standard_relation is exactly '=', and the pchembl_value is not NULL. Return the following columns: assay chembl_id, target_type, target tax_id, molecule canonical_smiles, molecule chembl_id, standard_type, and pchembl_value. Order the results by molecule chembl_id and assay chembl_id.",
+    "sql": "WITH target_info AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL1932912'), filtered_activities AS (SELECT a.assay_id, a.molregno, a.standard_type, a.pchembl_value, ti.target_type, ti.tax_id FROM activities a JOIN target_info ti ON a.tid = ti.tid WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL ORDER BY a.molregno ASC LIMIT 1000) SELECT ass.chembl_id AS assay_chembl_id, fa.target_type, fa.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, fa.standard_type, fa.pchembl_value FROM filtered_activities fa JOIN assays ass ON fa.assay_id = ass.assay_id JOIN molecule_dictionary md ON fa.molregno = md.molregno LEFT JOIN compound_structures cs ON fa.molregno = cs.molregno ORDER BY md.chembl_id ASC, ass.chembl_id ASC",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1932912 (Histone acetyltransferase KAT8). Use only rows where the standard relation is exactly '=' and pChEMBL values are non-null. Return the assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "WITH target_info AS (\n  SELECT tid, target_type, tax_id\n  FROM target_dictionary\n  WHERE chembl_id = 'CHEMBL1932912'\n),\nfiltered_activities AS (\n  SELECT\n    a.assay_id,\n    a.molregno,\n    a.standard_type,\n    a.pchembl_value,\n    ti.target_type,\n    ti.tax_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_info ti ON ass.tid = ti.tid\n  WHERE a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n  ORDER BY a.molregno ASC, ass.chembl_id ASC\n  LIMIT 1000\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  fa.target_type,\n  fa.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  fa.standard_type,\n  fa.pchembl_value\nFROM filtered_activities fa\nJOIN assays ass ON fa.assay_id = ass.assay_id\nJOIN molecule_dictionary md ON fa.molregno = md.molregno\nLEFT JOIN compound_structures cs ON fa.molregno = cs.molregno\nORDER BY md.chembl_id ASC, ass.chembl_id ASC",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE filtered_activities\n11 | 2 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 2 | 0 | USE TEMP B-TREE FOR ORDER BY\n68 | 0 | 115 | SCAN fa\n71 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n78 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n85 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n108 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 362,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

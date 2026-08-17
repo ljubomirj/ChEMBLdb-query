@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  activities.activity_id,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  activities.standard_type,\n  activities.standard_value,\n  activities.standard_units\nFROM activities\nJOIN assays ON assays.assay_id = activities.assay_id\nJOIN target_dictionary ON target_dictionary.tid = assays.tid\nJOIN molecule_dictionary ON molecule_dictionary.molregno = activities.molregno\nWHERE target_dictionary.organism = 'Homo sapiens'\n  AND target_dictionary.target_type = 'SINGLE PROTEIN'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_type IN ('EC50', 'IC50', 'AC50')\n  AND activities.standard_value < 50\nORDER BY activities.activity_id\nLIMIT 200\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  activities.activity_id,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  activities.standard_type,\n  activities.standard_value,\n  activities.standard_units\nFROM activities\nJOIN assays ON assays.assay_id = activities.assay_id\nJOIN target_dictionary ON target_dictionary.tid = assays.tid\nJOIN molecule_dictionary ON molecule_dictionary.molregno = activities.molregno\nWHERE target_dictionary.organism = 'Homo sapiens'\n  AND target_dictionary.target_type = 'SINGLE PROTEIN'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_type IN ('EC50', 'IC50', 'AC50')\n  AND activities.standard_value < 50\nORDER BY activities.activity_id\nLIMIT 200"
+    }
+  }
+}

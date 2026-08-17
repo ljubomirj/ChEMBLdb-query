@@ -1,0 +1,3 @@
+# web_scrape7
+
+Round seven focuses on concrete exact-ID assay/document cases instantiated from public chembl_downloader query families, with concrete assay IDs taken from public ChEMBL MCP examples.

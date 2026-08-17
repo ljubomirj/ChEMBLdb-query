@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl2176772_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl2176772_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result shows 96 rows of IC50 activities for the target CHEMBL2176772 (TRIM33) in human. The query correctly filters for exact IC50 relations, non-null pChEMBL values, human single-protein target, and includes required columns. The sample rows demonstrate correct data (canonical SMILES, molecule ChEMBL IDs, pChEMBL values). The row count (96) is less than the requested 1000, but the query already includes LIMIT 1000 and the result set is valid. No issues with joins, filters, or column aliases. The output matches the requested schema and semantics.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current result shows 96 rows of IC50 activities for the target CHEMBL2176772 (TRIM33) in human. The query correctly filters for exact IC50 relations, non-null pChEMBL values, human single-protein target, and includes required columns. The sample rows demonstrate correct data (canonical SMILES, molecule ChEMBL IDs, pChEMBL values). The row count (96) is less than the requested 1000, but the query already includes LIMIT 1000 and the result set is valid. No issues with joins, filters, or column aliases. The output matches the requested schema and semantics.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2176772_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2176772_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl2176772_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

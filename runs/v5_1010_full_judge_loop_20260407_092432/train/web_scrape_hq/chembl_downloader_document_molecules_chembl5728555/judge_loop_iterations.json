@@ -1,0 +1,43 @@
+[
+  {
+    "n": 1,
+    "up": "Find all molecule records (chembl_id, pref_name, max_phase, therapeutic_flag, dosed_ingredient, structure_type, molecule_type, first_approval, oral, parenteral, topical, black_box_warning, natural_product, first_in_class, chirality, prodrug, inorganic_flag, usan_year, availability_type, usan_stem, polymer_flag, usan_substem, usan_stem_definition, withdrawn_flag, chemical_probe, orphan, veterinary) that are linked to document CHEMBL5728555. Document CHEMBL5728555 has doc_id = 11788. The link between molecules and documents is via the compound_records table: compound_records.doc_id = CHEMBL5728555 (doc_id) and compound_records.molregno = molecule_dictionary.molregno. Return the molecule dictionary rows that have at least one associated record in compound_records with doc_id 11788. No additional filters or sorting are required.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id,\n    md.pref_name,\n    md.max_phase,\n    md.therapeutic_flag,\n    md.dosed_ingredient,\n    md.structure_type,\n    md.molecule_type,\n    md.first_approval,\n    md.oral,\n    md.parenteral,\n    md.topical,\n    md.black_box_warning,\n    md.natural_product,\n    md.first_in_class,\n    md.chirality,\n    md.prodrug,\n    md.inorganic_flag,\n    md.usan_year,\n    md.availability_type,\n    md.usan_stem,\n    md.polymer_flag,\n    md.usan_substem,\n    md.usan_stem_definition,\n    md.withdrawn_flag,\n    md.chemical_probe,\n    md.orphan,\n    md.veterinary\nFROM molecule_dictionary md\nJOIN compound_records cr ON cr.molregno = md.molregno\nWHERE cr.doc_id = 11788;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n50 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 20,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "therapeutic_flag",
+      "dosed_ingredient",
+      "structure_type",
+      "molecule_type",
+      "first_approval",
+      "oral",
+      "parenteral",
+      "topical",
+      "black_box_warning",
+      "natural_product",
+      "first_in_class",
+      "chirality",
+      "prodrug",
+      "inorganic_flag",
+      "usan_year",
+      "availability_type",
+      "usan_stem",
+      "polymer_flag",
+      "usan_substem",
+      "usan_stem_definition",
+      "withdrawn_flag",
+      "chemical_probe",
+      "orphan",
+      "veterinary"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

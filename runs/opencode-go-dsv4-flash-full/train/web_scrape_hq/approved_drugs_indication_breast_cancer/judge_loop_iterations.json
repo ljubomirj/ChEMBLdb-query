@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all drugs that are approved for breast cancer, meaning they have an approved indication (max_phase_for_ind = 4) in the drug_indication table where the indication corresponds to breast cancer (mesh_heading = 'Breast Neoplasms' OR efo_term = 'breast cancer'). For each such drug, provide the following columns: the ChEMBL ID (chembl_id) and preferred name (pref_name) from molecule_dictionary, the canonical SMILES structure (canonical_smiles) from compound_structures (if available, left join to include drugs without a structure), and indication details from drug_indication: the MeSH heading (mesh_heading), EFO term (efo_term), and the maximum phase for that indication (max_phase_for_ind). Join molecule_dictionary with drug_indication on molregno, and left join compound_structures on molregno. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE (di.mesh_heading = 'Breast Neoplasms' OR di.efo_term = 'breast cancer') AND di.max_phase_for_ind = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 137,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all approved drugs that are indicated for breast cancer. Approval means the indication has a maximum phase for that indication equal to 4 (approved). The indication should be identified by either MeSH heading 'Breast Neoplasms' or EFO term 'breast cancer' in the drug_indication table. For each such drug, return the following details: the drug's ChEMBL ID and preferred name from the molecule dictionary, the canonical SMILES structure (if available; include drugs even if structure is missing), and the indication details: the MeSH heading, EFO term, and the maximum phase for that indication. The molecule dictionary, drug indication, and compound structures are linked via the molregno identifier. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE (di.mesh_heading = 'Breast Neoplasms' OR di.efo_term = 'breast cancer') AND di.max_phase_for_ind = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 137,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

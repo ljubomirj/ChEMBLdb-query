@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Select canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units for compounds tested in assay CHEMBL1267250. Source activities and compound structures. Join activities to compound structures via molecule registry number. Filter by assay ChEMBL ID equal to CHEMBL1267250 and require exact activity measurements (standard relation is '=').",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL1267250' AND act.standard_relation = '='",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 0 | SEARCH a USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 0 | SEARCH act USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n50 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 518,
+    "res_columns": [
+      "canonical_smiles",
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly filters for assay CHEMBL1267250 and exact activity measurements (standard_relation = '='). It returns all requested columns: canonical SMILES, molecule ChEMBL ID, standard type, standard relation, standard value, and standard units. The result set contains 518 rows with diverse compounds and activity values, all showing '=' as the relation. The sample rows confirm the data matches the user's requirements exactly.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

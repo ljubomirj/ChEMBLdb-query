@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_chembl1961792_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1961792_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value from target_dictionary joined to assays on tid, assays joined to activities on assay_id, activities joined to molecule_dictionary on molregno, molecule_dictionary joined to compound_structures on molregno. Filter to target chembl_id CHEMBL1961792, standard_type IC50, standard_relation '=', and pchembl_value is not null. Sort by molecule_chembl_id then assay_chembl_id. Limit 1000 rows. Do not deduplicate.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value from target_dictionary joined to assays on tid, assays joined to activities on assay_id, activities joined to molecule_dictionary on molregno, molecule_dictionary joined to compound_structures on molregno. Filter to target chembl_id CHEMBL1961792, standard_type IC50, standard_relation '=', and pchembl_value is not null. Sort by molecule_chembl_id then assay_chembl_id. Limit 1000 rows. Do not deduplicate."
+    }
+  }
+}

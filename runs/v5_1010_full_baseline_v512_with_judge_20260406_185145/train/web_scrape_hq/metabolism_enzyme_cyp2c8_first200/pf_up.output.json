@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2c8_first200.json",
+  "case_id": "metabolism_enzyme_cyp2c8_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\\nFrom metabolism\\nLeft Join compound_records on metabolism.substrate_record_id = compound_records.record_id\\nLeft Join molecule_dictionary as substrate on compound_records.molregno = substrate.molregno\\nLeft Join molecule_dictionary as parent on metabolism.metabolism.substrate_record_id = parent.molregno\\nLeft Join compound_structures on substrate.molregno = compound_structures.molregno\\nLeft Join target_dictionary on metabolism.tid = target_dictionary.tid\\nFilter target_dictionary.target_type = 'PROTEIN' and target_dictionary.pref_name = 'CYP2C8'\\nLimit 200\"\n}",
+    "parsed_json": {
+      "up": "Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\nFrom metabolism\nLeft Join compound_records on metabolism.substrate_record_id = compound_records.record_id\nLeft Join molecule_dictionary as substrate on compound_records.molregno = substrate.molregno\nLeft Join molecule_dictionary as parent on metabolism.metabolism.substrate_record_id = parent.molregno\nLeft Join compound_structures on substrate.molregno = compound_structures.molregno\nLeft Join target_dictionary on metabolism.tid = target_dictionary.tid\nFilter target_dictionary.target_type = 'PROTEIN' and target_dictionary.pref_name = 'CYP2C8'\nLimit 200"
+    }
+  }
+}

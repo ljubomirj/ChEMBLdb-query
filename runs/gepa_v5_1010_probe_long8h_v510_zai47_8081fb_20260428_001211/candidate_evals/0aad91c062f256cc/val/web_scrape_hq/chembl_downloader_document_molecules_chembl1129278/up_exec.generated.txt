@@ -1,0 +1,6 @@
+Select: molecule_dictionary.chembl_id AS molecule_chembl_id, molecule_dictionary.pref_name AS molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles
+Source: docs, compound_records, molecule_dictionary, compound_structures
+Join: docs.doc_id = compound_records.doc_id, compound_records.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno
+Filter: docs.chembl_id IS 'CHEMBL1129278'
+Sort: molecule_chembl_id ASC
+Limit: NULL

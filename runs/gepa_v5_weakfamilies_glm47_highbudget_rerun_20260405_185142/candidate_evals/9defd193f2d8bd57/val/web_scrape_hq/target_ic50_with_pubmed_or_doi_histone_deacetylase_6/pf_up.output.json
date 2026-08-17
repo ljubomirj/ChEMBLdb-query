@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_9defd193f2d8bd57.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_histone_deacetylase_6.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_histone_deacetylase_6",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "9defd193f2d8bd57",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activity rows for the HDAC6 assay CHEMBL1865, requiring compounds with canonical SMILES and PubMed-indexed documents. Join molecule_dictionary to compound_records, then docs, then activities, then assays, then target_dictionary. Inner join compound_structures to enforce presence of canonical_smiles. Filter by assays.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', docs.pubmed_id IS NOT NULL, and activities.standard_relation = '='. Return columns compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not deduplicate; keep all qualifying activity rows. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activity rows for the HDAC6 assay CHEMBL1865, requiring compounds with canonical SMILES and PubMed-indexed documents. Join molecule_dictionary to compound_records, then docs, then activities, then assays, then target_dictionary. Inner join compound_structures to enforce presence of canonical_smiles. Filter by assays.chembl_id = 'CHEMBL1865', activities.standard_type = 'IC50', docs.pubmed_id IS NOT NULL, and activities.standard_relation = '='. Return columns compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Do not deduplicate; keep all qualifying activity rows. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

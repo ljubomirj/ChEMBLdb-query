@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds that have at least one activity entry associated with the document CHEMBL5725984. Return the compound's ChEMBL ID (CHEMBL_id) and the document ID (doc_id) for the source publication. Optionally include any activity identifier or record identifier if present in the data; otherwise, only the two identifiers are required. Ensure results reflect compounds that have been recorded in the specified document, regardless of assay type or activity type.",
+    "sql": "SELECT DISTINCT a.molregno AS molregno, a.doc_id AS doc_id FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725984')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n4 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n7 | 0 | 0 | SCALAR SUBQUERY 1\n12 | 7 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n32 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 790,
+    "res_columns": [
+      "molregno",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

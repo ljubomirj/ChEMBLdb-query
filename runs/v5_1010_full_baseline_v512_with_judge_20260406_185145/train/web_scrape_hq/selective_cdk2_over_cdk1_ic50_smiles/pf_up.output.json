@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles.json",
+  "case_id": "selective_cdk2_over_cdk1_ic50_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select molecule_chembl_id as compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM\\nJoin activities as a1 on a1.molregno = m.molregno and a1.standard_type = 'IC50' and a1.standard_relation = '>' and a1.standard_value is not null and a1.standard_units = 'nM' and a1.value is not null and a1.units = 'nM' and a1.activity_comment is not null\\nJoin assays as a1_assay on a1_assay.assay_id = a1.assay_id and a1_assay.assay_type = 'B' and a1_assay.assay_organism = 'Homo sapiens'\\nJoin target_dictionary as t1 on t1.tid = a1_assay.tid and t1.pref_name = 'CDK2'\\nJoin target_dictionary as t2 on t2.tid = a1_assay.tid and t2.pref_name = 'CDK1'\\nJoin compound_structures as cs on cs.molregno = m.molregno\\nFilter a1_standard_value1 > 1000 and a1_standard_value2 < 10000\\nReturn compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM\\nSort by compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id as compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM\nJoin activities as a1 on a1.molregno = m.molregno and a1.standard_type = 'IC50' and a1.standard_relation = '>' and a1.standard_value is not null and a1.standard_units = 'nM' and a1.value is not null and a1.units = 'nM' and a1.activity_comment is not null\nJoin assays as a1_assay on a1_assay.assay_id = a1.assay_id and a1_assay.assay_type = 'B' and a1_assay.assay_organism = 'Homo sapiens'\nJoin target_dictionary as t1 on t1.tid = a1_assay.tid and t1.pref_name = 'CDK2'\nJoin target_dictionary as t2 on t2.tid = a1_assay.tid and t2.pref_name = 'CDK1'\nJoin compound_structures as cs on cs.molregno = m.molregno\nFilter a1_standard_value1 > 1000 and a1_standard_value2 < 10000\nReturn compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM\nSort by compound_chembl_id, canonical_smiles, ic50_target1_nM, ic50_target2_nM"
+    }
+  }
+}

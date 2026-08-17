@@ -4,8 +4,8 @@ from pathlib import Path
 
 BASE_DIR = Path('/Users/ljubomir/ChEMBLdb-query')
 DB_PATH = BASE_DIR / 'database/latest/chembl_36/chembl_36_sqlite/chembl_36.db'
-MAIN_CASES = BASE_DIR / 'tests/cases/web_scrape_hq_cases.json'
-SNAPSHOT_CASES = BASE_DIR / 'tests/cases/web_scrape_hq_cases_v4.6.json'
+MAIN_CASES = BASE_DIR / 'cases/registries/archive/web_scrape_hq_cases.json'
+SNAPSHOT_CASES = BASE_DIR / 'cases/registries/archive/web_scrape_hq_cases_v4.6.json'
 FIXTURES_BASE = BASE_DIR / 'tests/fixtures'
 SUMMARY_PATH = BASE_DIR / 'experiments/v4.6_expansion_wave3_summary.json'
 REPORT_PATH = BASE_DIR / 'experiments/v4.6_expansion_wave3_report.md'

@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return all approved drugs (max_phase = 4) that have an indication for 'infection'. For each drug, provide the ChEMBL ID, preferred name, canonical SMILES, and the associated indication details (Mesh heading and EFO term). Join molecule_dictionary with compound_structures and drug_indication tables.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_records cr ON md.molregno = cr.molregno WHERE md.max_phase = 4 AND (LOWER(di.mesh_heading) LIKE '%infection%' OR LOWER(di.efo_term) LIKE '%infection%')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 174 | SCAN di\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 0 | 46 | SEARCH cr USING COVERING INDEX fk_comp_rec_molregno (molregno=?)\n55 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1314,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

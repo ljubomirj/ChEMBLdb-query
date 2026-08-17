@@ -1,0 +1,23 @@
+[
+  {
+    "n": 2,
+    "up": "Return the first 1000 rows from the activities table that meet all of the following conditions: (1) The target is CHEMBL1744522 (Endothelial PAS domain-containing protein 1), which is a human single-protein target; (2) The activity standard_type is 'IC50'; (3) The standard_relation is exactly '='; (4) The pchembl_value is not null. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID. Return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value.",
+    "sql": "WITH target_activities AS (\n  SELECT\n    a.assay_id,\n    a.molregno,\n    a.standard_type,\n    a.pchembl_value,\n    td.target_type,\n    td.tax_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1744522'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  ta.target_type,\n  ta.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  ta.standard_type,\n  ta.pchembl_value\nFROM target_activities ta\nJOIN assays ass ON ta.assay_id = ass.assay_id\nJOIN molecule_dictionary md ON ta.molregno = md.molregno\nJOIN compound_structures cs ON ta.molregno = cs.molregno\nORDER BY md.chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n60 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n86 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 406,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

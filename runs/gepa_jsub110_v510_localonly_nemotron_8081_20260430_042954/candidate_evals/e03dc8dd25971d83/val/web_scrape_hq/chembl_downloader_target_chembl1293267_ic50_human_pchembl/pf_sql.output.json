@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293267_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293267_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type AS standard_type, a.pchembl_value AS pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN target_dictionary td ON td.tid = ass.tid WHERE a.type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1293267' AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, ass.chembl_id ASC LIMIT 1000"
+}

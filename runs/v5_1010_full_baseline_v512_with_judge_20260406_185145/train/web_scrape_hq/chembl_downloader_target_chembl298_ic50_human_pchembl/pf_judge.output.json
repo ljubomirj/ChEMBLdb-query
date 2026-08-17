@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl298_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query successfully targets the human gastrin/cholecystokinin type B receptor (CHEMBL298) and filters for IC50 activities with exact standard relations and non-null pChEMBL values. However, the result set is empty, which suggests a potential issue with the query logic. The target type is correctly filtered by CHEMBL298, and the organism is restricted to Homo sapiens, but no matching activities were found. This could be due to the target being classified under a different taxonomy (e.g., non-human) or the activities not being explicitly tagged with the correct standard relation or endpoint. The join to target_dictionary uses assays.tid, which may not align with the target_dictionary.chembl_id for CHEMBL298, leading to a mismatch. Additionally, the assay_organism filter might be too restrictive if the assay is not directly annotated with 'Homo sapiens' but instead with a broader taxonomy. The LEFT JOIN to compound_structures is appropriate for canonical SMILES, but the absence of rows indicates no activities met all criteria.\",\n  \"score\": 0.45,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query successfully targets the human gastrin/cholecystokinin type B receptor (CHEMBL298) and filters for IC50 activities with exact standard relations and non-null pChEMBL values. However, the result set is empty, which suggests a potential issue with the query logic. The target type is correctly filtered by CHEMBL298, and the organism is restricted to Homo sapiens, but no matching activities were found. This could be due to the target being classified under a different taxonomy (e.g., non-human) or the activities not being explicitly tagged with the correct standard relation or endpoint. The join to target_dictionary uses assays.tid, which may not align with the target_dictionary.chembl_id for CHEMBL298, leading to a mismatch. Additionally, the assay_organism filter might be too restrictive if the assay is not directly annotated with 'Homo sapiens' but instead with a broader taxonomy. The LEFT JOIN to compound_structures is appropriate for canonical SMILES, but the absence of rows indicates no activities met all criteria.",
+      "score": 0.45,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_c343cda18ba2942c.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_pim_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_pim_1",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "c343cda18ba2942c",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN activities act ON cr.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE td.pref_name = 'Pim-1 kinase'\n  AND td.organism = 'Homo sapiens'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  pubmed_id_or_doi,\n  assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  target_chembl_id,\n  target_name,\n  target_organism\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN activities act ON cr.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE td.pref_name = 'Pim-1 kinase'\n  AND td.organism = 'Homo sapiens'\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  pubmed_id_or_doi,\n  assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  target_chembl_id,\n  target_name,\n  target_organism"
+    }
+  }
+}

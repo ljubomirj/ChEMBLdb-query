@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 500 compounds (by ChEMBL ID) that have a Kd measurement below 100 nM against a human single-protein target. For each compound, include its canonical SMILES and ChEMBL ID.",
+    "sql": "WITH target_hits AS ( SELECT DISTINCT a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'Kd' AND a.standard_units = 'nM' AND a.standard_value < 100 AND a.standard_relation = '=' AND td.target_type = 'SINGLE PROTEIN' AND td.organism = 'Homo sapiens' ORDER BY a.molregno ASC LIMIT 500 ) SELECT md.chembl_id, cs.canonical_smiles FROM target_hits th JOIN molecule_dictionary md ON th.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id ASC",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE target_hits\n15 | 2 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n43 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n81 | 0 | 82 | SCAN th\n84 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n91 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n105 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 500,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_callithrix_jacchus_first200.json",
+  "case_id": "metabolism_callithrix_jacchus_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT\n  m.met_id,\n  m.met_conversion,\n  m.pathway_key,\n  m.enzyme_name,\n  sub_rec.compound_name AS substrate_name,\n  par_rec.compound_name AS parent_name,\n  sub_str.canonical_smiles AS substrate_smiles,\n  par_str.canonical_smiles AS parent_smiles\nFROM metabolism m\nINNER JOIN compound_records sub_rec\n  ON m.substrate_record_id = sub_rec.record_id\nINNER JOIN molecule_dictionary sub\n  ON sub_rec.molregno = sub.molregno\nINNER JOIN compound_structures sub_str\n  ON sub.molregno = sub_str.molregno\nINNER JOIN compound_records par_rec\n  ON m.drug_record_id = par_rec.record_id\nINNER JOIN molecule_dictionary par\n  ON par_rec.molregno = par.molregno\nINNER JOIN compound_structures par_str\n  ON par.molregno = par_str.molregno\nWHERE m.tax_id = 9483\nORDER BY m.met_id ASC\nLIMIT 200;"
+}

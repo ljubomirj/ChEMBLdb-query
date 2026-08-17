@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact.json",
+  "case_id": "chembl_downloader_assay_chembl3705858_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Join molecule_dictionary to activities on molregno, then to assays on assay_id. INNER JOIN compound_structures on molregno for canonical_smiles. Filter to assays.chembl_id = 'CHEMBL3705858'. Keep only rows where standard_relation is not null, standard_value is not null, and standard_relation = '='. Return canonical_smiles, molecule chembl_id as chembl_id, standard_type, standard_relation, standard_value, standard_units. Sort ascending by all six output columns. Do not deduplicate; preserve every qualifying activity row.\"}\n```",
+    "parsed_json": {
+      "up": "Join molecule_dictionary to activities on molregno, then to assays on assay_id. INNER JOIN compound_structures on molregno for canonical_smiles. Filter to assays.chembl_id = 'CHEMBL3705858'. Keep only rows where standard_relation is not null, standard_value is not null, and standard_relation = '='. Return canonical_smiles, molecule chembl_id as chembl_id, standard_type, standard_relation, standard_value, standard_units. Sort ascending by all six output columns. Do not deduplicate; preserve every qualifying activity row."
+    }
+  }
+}

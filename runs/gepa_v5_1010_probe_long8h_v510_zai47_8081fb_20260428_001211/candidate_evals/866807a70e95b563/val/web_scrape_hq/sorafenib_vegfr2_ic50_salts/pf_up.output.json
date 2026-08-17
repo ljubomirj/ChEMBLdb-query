@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_866807a70e95b563.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "866807a70e95b563",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "Objective: Retrieve bioactivity records for a parent compound and its salt forms against a specific protein target, including provenance and structural details.\n\nOutput: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\n\nSource: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary.\n\nLogic:\n1. Identify the parent compound in molecule_dictionary where chembl_id = 'CHEMBL1336'.\n2. Join molecule_hierarchy on parent_molregno = parent.molregno to find all related salts.\n3. Join molecule_hierarchy back to molecule_dictionary (child) on molregno = mh.molregno to retrieve identifiers for all related forms.\n4. Join compound_structures on child.molregno = compound_structures.molregno to retrieve canonical SMILES.\n5. Join compound_records on child.molregno = compound_records.molregno to link to assay documents.\n6. Join docs on compound_records.doc_id = docs.doc_id to retrieve publication provenance.\n7. Join activities on compound_records.record_id = activities.record_id to retrieve bioactivity data.\n8. Join assays on activities.assay_id = assays.assay_id to retrieve assay descriptions.\n9. Join target_dictionary on assays.tid = target_dictionary.tid to retrieve target details.\n10. Filter target_dictionary.chembl_id = 'CHEMBL279'.\n11. Filter activities.standard_type = 'IC50'.\n12. Filter activities.standard_units = 'nM'.\n13. Sort results by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, and target_organism.",
+    "parsed_json": {
+      "up": "Objective: Retrieve bioactivity records for a parent compound and its salt forms against a specific protein target, including provenance and structural details.\n\nOutput: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\n\nSource: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary.\n\nLogic:\n1. Identify the parent compound in molecule_dictionary where chembl_id = 'CHEMBL1336'.\n2. Join molecule_hierarchy on parent_molregno = parent.molregno to find all related salts.\n3. Join molecule_hierarchy back to molecule_dictionary (child) on molregno = mh.molregno to retrieve identifiers for all related forms.\n4. Join compound_structures on child.molregno = compound_structures.molregno to retrieve canonical SMILES.\n5. Join compound_records on child.molregno = compound_records.molregno to link to assay documents.\n6. Join docs on compound_records.doc_id = docs.doc_id to retrieve publication provenance.\n7. Join activities on compound_records.record_id = activities.record_id to retrieve bioactivity data.\n8. Join assays on activities.assay_id = assays.assay_id to retrieve assay descriptions.\n9. Join target_dictionary on assays.tid = target_dictionary.tid to retrieve target details.\n10. Filter target_dictionary.chembl_id = 'CHEMBL279'.\n11. Filter activities.standard_type = 'IC50'.\n12. Filter activities.standard_units = 'nM'.\n13. Sort results by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

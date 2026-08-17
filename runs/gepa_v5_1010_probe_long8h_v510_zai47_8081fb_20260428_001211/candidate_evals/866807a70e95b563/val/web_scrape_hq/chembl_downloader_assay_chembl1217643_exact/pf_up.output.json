@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_866807a70e95b563.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1217643_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1217643_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "866807a70e95b563",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "Objective: Retrieve exact activity measurements for a specific assay, including compound structures and activity details.\n\nOutput: canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.\n\nSource: assays, activities, molecule_dictionary, compound_structures.\n\nLogic:\n1. Filter assays where chembl_id = 'CHEMBL1217643'.\n2. Join activities to assays via assay_id.\n3. Join molecule_dictionary to activities via molregno.\n4. Join compound_structures to molecule_dictionary via molregno.\n5. Filter activities where standard_relation = '='.\n6. Filter activities where standard_value IS NOT NULL.\n7. Filter activities where standard_relation IS NOT NULL.\n8. Sort by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.",
+    "parsed_json": {
+      "up": "Objective: Retrieve exact activity measurements for a specific assay, including compound structures and activity details.\n\nOutput: canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units.\n\nSource: assays, activities, molecule_dictionary, compound_structures.\n\nLogic:\n1. Filter assays where chembl_id = 'CHEMBL1217643'.\n2. Join activities to assays via assay_id.\n3. Join molecule_dictionary to activities via molregno.\n4. Join compound_structures to molecule_dictionary via molregno.\n5. Filter activities where standard_relation = '='.\n6. Filter activities where standard_value IS NOT NULL.\n7. Filter activities where standard_relation IS NOT NULL.\n8. Sort by canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units."
+    }
+  }
+}

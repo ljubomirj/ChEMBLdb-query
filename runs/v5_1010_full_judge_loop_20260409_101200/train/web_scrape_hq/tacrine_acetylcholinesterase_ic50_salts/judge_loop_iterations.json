@@ -1,0 +1,29 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity details for compound CHEMBL95 (TACRINE) and all its salts. Identify the set of relevant compounds by finding the parent molecule CHEMBL95 and including all child salts using the parent_molregno relationships in molecule_hierarchy. Return bioactivity rows for these compounds where the target is CHEMBL220 (Acetylcholinesterase) and the standard_type is 'IC50' with units 'nM'. Return the following columns for each activity: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+    "sql": "WITH compound_set AS (SELECT parent.molregno FROM molecule_dictionary parent WHERE parent.chembl_id = 'CHEMBL95' UNION SELECT child.molregno FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL95') SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM compound_set cs_join JOIN molecule_dictionary md ON cs_join.molregno = md.molregno JOIN compound_records cr ON md.molregno = cr.molregno JOIN activities act ON cr.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN docs d ON cr.doc_id = d.doc_id JOIN target_dictionary td ON a.tid = td.tid LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL220' AND act.standard_type = 'IC50' AND act.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 17\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n22 | 16 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n27 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n33 | 16 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n63 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)\n68 | 0 | 32 | SCAN cs_join\n71 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n78 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n87 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n93 | 0 | 58 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n103 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n112 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n147 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 191,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

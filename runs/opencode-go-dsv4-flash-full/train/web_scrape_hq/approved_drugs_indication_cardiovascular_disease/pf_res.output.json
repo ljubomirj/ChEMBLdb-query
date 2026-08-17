@@ -1,0 +1,73 @@
+{
+  "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_cardiovascular_disease/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_cardiovascular_disease/result.generated.csv",
+    "row_count": 587,
+    "column_names": [
+      "ChEMBL ID",
+      "drug name",
+      "structure",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 199,
+    "actual_rows": 587,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl id",
+      "drug name",
+      "structure",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "missing_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label"
+    ],
+    "extra_cols": [
+      "chembl id",
+      "drug name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "status": "partial",
+    "score": 0.235605,
+    "column_recall": 0.166667,
+    "row_ratio": 0.339012
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_cardiovascular_disease",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    },
+    "judge_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    }
+  }
+}

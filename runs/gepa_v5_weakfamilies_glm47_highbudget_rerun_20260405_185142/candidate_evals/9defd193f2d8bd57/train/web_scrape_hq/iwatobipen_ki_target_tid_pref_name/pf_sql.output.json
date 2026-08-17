@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_9defd193f2d8bd57.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_ki_target_tid_pref_name.json",
+  "case_id": "iwatobipen_ki_target_tid_pref_name",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "9defd193f2d8bd57",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  td.tid AS target_tid,\n  td.pref_name AS target_name\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE act.standard_type = 'Ki'\n  AND act.standard_relation = '='\nORDER BY td.tid, td.pref_name\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  td.tid AS target_tid,\n  td.pref_name AS target_name\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nWHERE act.standard_type = 'Ki'\n  AND act.standard_relation = '='\nORDER BY td.tid, td.pref_name"
+    }
+  }
+}

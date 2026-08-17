@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Return all activity records for dapagliflozin (CHEMBL429910) and its salt forms against the target sodium/glucose cotransporter 2 (CHEMBL3884). The activity records must be of type IC50. Include the following columns: compound ChEMBL ID, compound name, canonical SMILES, activity ID, standard relation, standard value, standard units, pChEMBL value, assay ChEMBL ID, assay description, target ChEMBL ID, target name, and the PubMed ID from the associated document. Ensure that dapagliflozin and all its salt forms (derived via the molecule_hierarchy table) are included in the results.",
+    "sql": "WITH compounds AS (SELECT child.molregno, child.chembl_id, child.pref_name FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL429910'), target AS (SELECT tid, chembl_id, pref_name FROM target_dictionary WHERE chembl_id = 'CHEMBL3884')SELECT DISTINCT c.chembl_id AS compound_chembl_id, c.pref_name AS compound_name, cs.canonical_smiles, a.activity_id, a.standard_relation, a.standard_value, a.standard_units, a.pchembl_value, ass.chembl_id AS assay_chembl_id, ass.description AS assay_description, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, d.pubmed_id FROM compounds c LEFT JOIN compound_structures cs ON cs.molregno = c.molregno JOIN activities a ON a.molregno = c.molregno JOIN assays ass ON ass.assay_id = a.assay_id CROSS JOIN target t WHERE ass.tid = t.tid AND a.standard_type = 'IC50' LEFT JOIN docs d ON d.doc_id = a.doc_id",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: near \"LEFT\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \"LEFT\": syntax error",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return all activity records for dapagliflozin (CHEMBL429910) and its salt forms against the target sodium/glucose cotransporter 2 (CHEMBL3884). The activity records must be of type IC50. Include the following columns: compound ChEMBL ID, compound name, canonical SMILES, activity ID, standard relation, standard value, standard units, pChEMBL value, assay ChEMBL ID, assay description, target ChEMBL ID, target name, and the PubMed ID from the associated document. Ensure that dapagliflozin and all its salt forms are included in the results.",
+    "sql": "WITH compounds AS (\n  SELECT child.molregno, child.chembl_id, child.pref_name\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL429910'\n), target AS (\n  SELECT tid, chembl_id, pref_name\n  FROM target_dictionary\n  WHERE chembl_id = 'CHEMBL3884'\n)\nSELECT DISTINCT\n  c.chembl_id AS compound_chembl_id,\n  c.pref_name AS compound_name,\n  cs.canonical_smiles,\n  a.activity_id,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units,\n  a.pchembl_value,\n  ass.chembl_id AS assay_chembl_id,\n  ass.description AS assay_description,\n  t.chembl_id AS target_chembl_id,\n  t.pref_name AS target_name,\n  d.pubmed_id\nFROM compounds c\nLEFT JOIN compound_structures cs ON cs.molregno = c.molregno\nJOIN activities a ON a.molregno = c.molregno\nJOIN assays ass ON ass.assay_id = a.assay_id\nCROSS JOIN target t\nLEFT JOIN docs d ON d.doc_id = a.doc_id\nWHERE ass.tid = t.tid\n  AND a.standard_type = 'IC50';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n18 | 0 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n23 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n29 | 0 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n43 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n54 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n60 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n69 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n105 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 43,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles",
+      "activity_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "assay_chembl_id",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "pubmed_id"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

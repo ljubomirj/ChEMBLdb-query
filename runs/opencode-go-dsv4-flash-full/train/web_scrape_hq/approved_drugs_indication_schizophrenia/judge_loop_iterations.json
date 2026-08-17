@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Find all approved drugs that have an indication for schizophrenia. Use the drug_indication table to get indications with max_phase_for_ind = 4 (indicating approval for that indication). The schizophrenia indication can be identified by mesh_heading = 'Schizophrenia' or efo_term = 'schizophrenia' (case-insensitive matching on efo_term). For each such drug, retrieve its ChEMBL ID (molecule_dictionary.chembl_id), its name (molecule_dictionary.pref_name), its SMILES (compound_structures.canonical_smiles, using a LEFT JOIN to retain drugs without SMILES), the EFO ID (drug_indication.efo_id), the indication label (drug_indication.efo_term), and the maximum phase for indication (drug_indication.max_phase_for_ind). Ensure each drug appears only once, even if multiple indication rows match. Do not impose any row limit; return all qualifying drugs.",
+    "sql": "WITH ranked AS (SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind, ROW_NUMBER() OVER (PARTITION BY md.molregno ORDER BY di.efo_id) AS rn FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.mesh_heading = 'Schizophrenia' OR LOWER(di.efo_term) = 'schizophrenia')) SELECT chembl_id, pref_name, canonical_smiles, efo_id, efo_term, max_phase_for_ind FROM ranked WHERE rn = 1 ORDER BY chembl_id",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE ranked\n5 | 2 | 0 | CO-ROUTINE SUBQUERY 3\n12 | 5 | 0 | SCAN di\n21 | 5 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 5 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 5 | 0 | USE TEMP B-TREE FOR ORDER BY\n72 | 2 | 0 | SCAN SUBQUERY 3\n126 | 0 | 0 | SCAN ranked\n140 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 29,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all approved drugs indicated for schizophrenia. Approved drugs are those that have been approved for the specific indication, identified by max_phase_for_ind = 4 in the drug_indication table. The schizophrenia indication can be identified by mesh_heading = 'Schizophrenia' or by a case\u2011insensitive match on efo_term = 'schizophrenia'. For each such drug, provide: the ChEMBL ID (from molecule_dictionary), drug name (pref_name), SMILES (canonical_smiles from compound_structures; include drugs even if SMILES are missing by using a left join), EFO ID (efo_id), indication label (efo_term), and max phase for indication (max_phase_for_ind). Ensure each drug appears only once (use distinct on the requested columns). Do not limit the number of rows; return all qualifying drugs. Optionally order by ChEMBL ID.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.mesh_heading = 'Schizophrenia' OR LOWER(di.efo_term) = 'schizophrenia') ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n50 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 29,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

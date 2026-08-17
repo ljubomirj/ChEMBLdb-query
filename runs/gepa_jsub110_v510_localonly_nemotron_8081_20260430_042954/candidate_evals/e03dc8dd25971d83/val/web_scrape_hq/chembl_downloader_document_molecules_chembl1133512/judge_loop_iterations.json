@@ -1,0 +1,110 @@
+[
+  {
+    "n": 1,
+    "up": "They are all distinct molecules mentioned in document CHEMBL1133512, returning chembl_id, compound_name, and canonical_smiles. Only include molecules with canonical_smiles available. Order rows by chembl_id, compound_name, canonical_smiles.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The provided SQL correctly retrieves distinct molecules from document CHEMBL1133512, joining docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures, filtering for non\u2011null canonical_smiles and ordering by the required columns. The result set contains 100 rows with chembl_id, compound_name (pref_name), and canonical_smiles, all of which have smiles available. The ordering appears correct (by chembl_id, then compound_name, then smiles). No extra columns are selected, and the DISTINCT projection matches the request. The query respects the many\u2011to\u2011many join semantics and does not inadvertently drop rows that should be retained. Overall the output satisfies the user's specification.\",\n  \"score\": 0.96,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\n  \"Select\": \"chembl_id, compound_name, canonical_smiles\",\n  \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\",\n  \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\",\n  \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\",\n  \"Limit\": null\n}",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The provided SQL correctly retrieves distinct molecules from document CHEMBL1133512 by joining docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures, filters out rows without canonical_smiles, selects the required columns (chembl_id, compound_name, canonical_smiles), and orders by chembl_id, compound_name, canonical_smiles. The result set contains only rows with a non\u2011null canonical_smiles, uses DISTINCT to avoid duplicates, and the ordering matches the specification. Although many compound_name values are empty (pref_name is NULL in the source), the request did not require non\u2011null names, and the column alias matches the requested output. Overall the result satisfies the user query fully.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\n  \"Select\": \"chembl_id, compound_name, canonical_smiles\",\n  \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\",\n  \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\",\n  \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\",\n  \"Limit\": null\n}",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The SQL query correctly retrieves distinct molecules mentioned in document CHEMBL1133512 by joining docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures, filtering for non\u2011null canonical_smiles, and selecting chembl_id, compound_name (pref_name), and canonical_smiles. The result set contains 100 rows with the expected columns, ordered by chembl_id, compound_name, canonical_smiles. The query matches the user request exactly; there are no apparent logical errors (e.g., wrong joins, missing filters, or incorrect column aliases). The only uncertainty is the UI default row limit of 100, but the result shows a full response of 100 rows and the ordering and distinctness are correct. No further iteration is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "{\n  \"Select\": \"chembl_id, compound_name, canonical_smiles\",\n  \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\",\n  \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\",\n  \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\",\n  \"Limit\": null\n}",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The provided SQL correctly implements the user request: it joins docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures, filters to the specific document CHEMBL1133512, excludes rows without a canonical_smiles, selects distinct chembl_id, compound_name (pref_name), and canonical_smiles, and orders by chembl_id, compound_name, canonical_smiles. The result set contains 100 rows with the expected columns, all canonical_smiles are present, and the ordering matches the specification. No additional joins or filters are required, and the output aligns with the request. Therefore, the current result is sufficient and no further iteration is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "{\"Select\": \"chembl_id, compound_name, canonical_smiles (DISTINCT)\", \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\", \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\", \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\", \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\", \"Limit\": null}",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly retrieves distinct molecules from document CHEMBL1133512, returning the required columns (chembl_id, compound_name, canonical_smiles) with canonical_smiles not null. The join path uses docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures as specified, filters on the document ID, and orders by chembl_id, compound_name, canonical_smiles. The result set shows 100 rows, each with a chembl_id and a canonical_smiles, and the ordering appears to follow the requested sequence (chembl_id ascending, then compound_name, then canonical_smiles). No extra columns are present, and the DISTINCT projection is preserved. The result therefore satisfies the user's exact specification; there is no indication of missing rows or incorrect joins. The data appears complete for the given document, and the output format matches the request.\",\n  \"score\": 0.96,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "{\n  \"Select\": \"chembl_id, compound_name, canonical_smiles (DISTINCT)\",\n  \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\",\n  \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\",\n  \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\",\n  \"Limit\": null\n}",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS canonical_smiles FROM docs d INNER JOIN compound_records cr ON cr.doc_id = d.doc_id INNER JOIN molecule_dictionary md ON md.molregno = cr.molregno INNER JOIN compound_structures cs ON cs.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL1133512' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The provided SQL correctly implements the user request:\\n- It selects distinct molecules from the specified document (CHEMBL1133512).\\n- It joins docs \u2192 compound_records \u2192 molecule_dictionary \u2192 compound_structures to retrieve the required identifiers.\\n- It filters for non\u2011null canonical_smiles and orders by chembl_id, compound_name, canonical_smiles.\\n- The output columns match the request (chembl_id, compound_name, canonical_smiles).\\n- The result set contains 100 rows, each with a unique combination of the three columns, and all smiles are present.\\n- Minor nuance: compound_name is taken from molecule_dictionary.pref_name, which is a reasonable choice for the preferred name; the request did not specify a particular source for the name, so this is acceptable.\\nOverall the result satisfies the specification and no further iteration is needed.\",\n  \"score\": 0.96,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.96,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts. Identify the set of related compounds by using the molecule_hierarchy table to find the parent molecule (where molregno = parent_molregno) and all child molecules (where parent_molregno = parent's molregno). For these compounds, return all rows where the standard_type is 'IC50' and standard_units is 'nM' against the target with chembl_id 'CHEMBL284' (Dipeptidyl peptidase 4). Return the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), pubmed_id_or_doi (preferring pubmed_id from docs, falling back to doi), assay_description (from assays), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id, target_name (from target_dictionary), and target_organism (from target_dictionary).",
+    "sql": "WITH compound_set AS (\n  SELECT md.molregno, md.chembl_id AS compound_chembl_id\n  FROM molecule_dictionary md\n  WHERE md.chembl_id = 'CHEMBL1422'\n  UNION\n  SELECT child.molregno, child.chembl_id AS compound_chembl_id\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL1422'\n)\nSELECT\n  cs.compound_chembl_id,\n  mols.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM compound_set cs\nJOIN activities act ON cs.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nLEFT JOIN compound_records cr ON act.record_id = cr.record_id\nLEFT JOIN docs d ON act.doc_id = d.doc_id\nLEFT JOIN compound_structures mols ON cs.molregno = mols.molregno\nWHERE td.chembl_id = 'CHEMBL284'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.assay_description",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_description",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts. Use the molecule_hierarchy table to find the parent molecule and all related child molecules (salts). For these compounds, return all rows where the standard_type is 'IC50' and standard_units is 'nM' against the target with chembl_id 'CHEMBL284'. Return the following columns: compound_chembl_id (from molecule_dictionary), canonical_smiles (from compound_structures), compound_key (from compound_records), pubmed_id_or_doi (preferring pubmed_id from docs, falling back to doi), assay description (from assays), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id, target_name (from target_dictionary), and target_organism (from target_dictionary).",
+    "sql": "WITH compound_set AS (\n  SELECT md.molregno, md.chembl_id AS compound_chembl_id\n  FROM molecule_dictionary md\n  WHERE md.chembl_id = 'CHEMBL1422'\n  UNION\n  SELECT child.molregno, child.chembl_id AS compound_chembl_id\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL1422'\n)\nSELECT\n  cs.compound_chembl_id,\n  mols.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM compound_set cs\nJOIN activities act ON cs.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nLEFT JOIN compound_records cr ON act.record_id = cr.record_id\nLEFT JOIN docs d ON act.doc_id = d.doc_id\nLEFT JOIN compound_structures mols ON cs.molregno = mols.molregno\nWHERE td.chembl_id = 'CHEMBL284'\n  AND act.standard_type = 'IC50'\n  AND act.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n17 | 3 | 0 | UNION USING TEMP B-TREE\n24 | 17 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n29 | 17 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n35 | 17 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n65 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n70 | 0 | 32 | SCAN cs\n73 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n84 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n93 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n101 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n110 | 0 | 47 | SEARCH mols USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 70,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_150813/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease.json",
+  "case_id": "approved_drugs_indication_chronic_kidney_disease",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT m.chembl_id AS chembl_id, m.pref_name AS pref_name, cs.canonical_smiles AS canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary m LEFT JOIN compound_structures cs ON cs.molregno = m.molregno JOIN drug_indication di ON di.molregno = m.molregno WHERE m.therapeutic_flag = 1 AND di.max_phase_for_ind = 4 AND di.efo_term = 'chronic kidney disease' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS chembl_id, m.pref_name AS pref_name, cs.canonical_smiles AS canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary m LEFT JOIN compound_structures cs ON cs.molregno = m.molregno JOIN drug_indication di ON di.molregno = m.molregno WHERE m.therapeutic_flag = 1 AND di.max_phase_for_ind = 4 AND di.efo_term = 'chronic kidney disease' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind;"
+    }
+  }
+}

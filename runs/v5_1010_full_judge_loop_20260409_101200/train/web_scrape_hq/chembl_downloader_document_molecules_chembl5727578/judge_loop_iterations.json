@@ -1,0 +1,75 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compound records that have a corresponding activity entry linked to document CHEMBL5727578. Include the following columns for each compound: compound_chembl_id, compound_name, activity_id, activity_standard_value, activity_standard_units, and the assay description. No filtering on assay type, target, organism, or confidence score should be applied beyond the document constraint. No ranking, limits, or unit restrictions are specified.",
+    "sql": "WITH doc_activities AS (\n  SELECT a.activity_id, a.molregno, a.standard_value, a.standard_units\n  FROM activities a\n  WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5727578')\n),\ncompound_info AS (\n  SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.doc_id, a.standard_value, a.standard_units\n  FROM activities a\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  WHERE a.doc_id IN (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5727578')\n  -- Reuse doc_activities to get activity_id if needed, but doc_activities already contains relevant rows\n  -- However we must ensure we include the doc_id from activities, not from docs directly\n  -- The subquery in WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5727578') might return NULL if no document found; safer to join docs\n  -- Alternative: join docs directly\n  -- Revised approach below avoids complex correlation\n  -- but since we have to include assay description, need to join assays as well\n  -- Below is the corrected version\n  -- (Will be replaced in final query)\n  -- This placeholder will be corrected in the final output\n  -- For now, the CTEs are a structure; the final SELECT will join all\n  SELECT 1\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS compound_name,\n  a.activity_id AS activity_id,\n  a.standard_value AS activity_standard_value,\n  a.standard_units AS activity_standard_units,\n  ass.description AS assay_description\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5727578';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: near \"SELECT\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \"SELECT\": syntax error",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compound records linked to document CHEMBL5727578. For each compound provide: the ChEMBL identifier (as compound_chembl_id), the compound name (as compound_name), the activity identifier (as activity_id), the numeric standard value of the activity (as activity_standard_value), the units of that value (as activity_standard_units), and the textual description of the assay (as assay_description). Restrict the data set to activities where the document identifier (activities.doc_id) matches the document CHEMBL5727578 (documents.chembl_id = 'CHEMBL5727578'). No further filters (e.g., on assay type, target, organism, confidence score, units, relations, or document year) are required. The result set should include every matching activity row, preserving multiple rows per compound when more than one activity exists for the same compound in that document. No ranking or top\u2011N limit is requested.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, a.activity_id AS activity_id, a.standard_value AS activity_standard_value, a.standard_units AS activity_standard_units, ass.description AS assay_description FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727578';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 4098,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "activity_id",
+      "activity_standard_value",
+      "activity_standard_units",
+      "assay_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compound records linked to document CHEMBL5727578. For each compound provide the ChEMBL identifier (compound_chembl_id), the compound name (compound_name), the activity identifier (activity_id), the numeric standard value of the activity (activity_standard_value), the units of that value (activity_standard_units), and the textual description of the assay (assay_description). Restrict the data set to activities where the document identifier (activities.doc_id) matches the document CHEMBL5727578 (documents.chembl_id = 'CHEMBL5727578'). No additional filters on assay type, target, organism, confidence score, units, relations, or document year are needed. Include all matching activity rows (multiple rows per compound are allowed). No ranking, limits, or result reduction are requested.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id,\n       md.pref_name AS compound_name,\n       a.activity_id AS activity_id,\n       a.standard_value AS activity_standard_value,\n       a.standard_units AS activity_standard_units,\n       ass.description AS assay_description\nFROM   activities a\nJOIN   molecule_dictionary md ON a.molregno = md.molregno\nJOIN   assays ass ON a.assay_id = ass.assay_id\nJOIN   docs d ON a.doc_id = d.doc_id\nWHERE  d.chembl_id = 'CHEMBL5727578';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 4098,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "activity_id",
+      "activity_standard_value",
+      "activity_standard_units",
+      "assay_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compound records linked to document CHEMBL5727578. For each record provide the compound's ChEMBL identifier (compound_chembl_id), the compound name (compound_name), the activity identifier (activity_id), the standard numeric value of the activity (activity_standard_value), the units of that value (activity_standard_units), and the description of the assay (assay_description). Limit the result set to activities whose document identifier (activities.doc_id) matches the document with chembl_id 'CHEMBL5727578' (joined via docs.chembl_id = 'CHEMBL5727578'). No further filters on assay type, target, organism, confidence score, units, relations, or document year are required. Include all matching activity rows (multiple rows per compound are allowed). No ranking or limit is requested.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, a.activity_id AS activity_id, a.standard_value AS activity_standard_value, a.standard_units AS activity_standard_units, ass.description AS assay_description FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727578';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 4098,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "activity_id",
+      "activity_standard_value",
+      "activity_standard_units",
+      "assay_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

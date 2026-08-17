@@ -1,0 +1,48 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compound records associated with the document identified by CHEMBL5728081. Specifically, return the compound's internal identifier (molregno), the public ChEMBL identifier (chembl_id), the compound's preferred name (pref_name), the document's identifier (doc_id), the document's title (title), the document's type (doc_type), the document's journal (journal), and the document's year. Optionally, retrieve the canonical SMILES for each compound. Ensure that only records linked to document CHEMBL5728081 are included. Present the results in a clear list without duplicates, sorted by molecule identifier.",
+    "sql": "WITH target_doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728081') SELECT DISTINCT md.molregno, md.chembl_id, md.pref_name, d.doc_id, d.title, d.doc_type, d.journal, d.year, cs.canonical_smiles FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN target_doc td ON d.doc_id = td.doc_id LEFT JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n13 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n18 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n24 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n33 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n68 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n69 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 785,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "pref_name",
+      "doc_id",
+      "title",
+      "doc_type",
+      "journal",
+      "year",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all molecule records linked to the document with chembl_id CHEMBL5728081. Return: md.molregno (molecule internal ID), md.chembl_id (public ChEMBL identifier), md.pref_name (preferred molecule name), d.doc_id (document identifier), d.title (document title), d.doc_type (document type), d.journal (journal name), and d.year (publication year). Optionally also return the compound's canonical SMILES. Ensure the molecule is associated with the specified document via its compound_records association (compound_records.doc_id = docs.doc_id). Do not filter further on doc_type, DOI, or activity data. Present results without duplicates, sorted by molecule identifier.",
+    "sql": "SELECT DISTINCT md.molregno, md.chembl_id, md.pref_name, d.doc_id, d.title, d.doc_type, d.journal, d.year, cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE cr.doc_id IN (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728081')\nORDER BY md.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n11 | 0 | 89 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n15 | 0 | 0 | LIST SUBQUERY 1\n19 | 15 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n28 | 15 | 0 | CREATE BLOOM FILTER\n37 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n44 | 0 | 0 | REUSE LIST SUBQUERY 1\n51 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n58 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n87 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n88 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 785,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "pref_name",
+      "doc_id",
+      "title",
+      "doc_type",
+      "journal",
+      "year",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

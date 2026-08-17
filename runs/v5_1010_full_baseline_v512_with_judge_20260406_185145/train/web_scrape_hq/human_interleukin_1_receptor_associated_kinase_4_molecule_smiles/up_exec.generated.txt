@@ -1,0 +1,8 @@
+Select molecule_chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles
+Join activities ON activities.molregno = molecule_dictionary.molregno
+Join assays ON assays.assay_id = activities.assay_id
+Join target_dictionary ON target_dictionary.tid = assays.tid
+Join compound_structures ON compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.pref_name = 'Human Interleukin-1 receptor-associated kinase 4'
+Sort by molecule_chembl_id
+Limit none

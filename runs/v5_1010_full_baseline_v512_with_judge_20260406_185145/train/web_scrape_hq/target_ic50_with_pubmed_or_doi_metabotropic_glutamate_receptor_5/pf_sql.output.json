@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_metabotropic_glutamate_receptor_5.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_metabotropic_glutamate_receptor_5",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  md.chembl_id AS molecule_chembl_id,\\n  cs.canonical_smiles AS canonical_smiles,\\n  cr.compound_key AS compound_key,\\n  d.pubmed_id AS pubmed_id_or_doi,\\n  a.description AS assay_description,\\n  act.standard_type AS standard_type,\\n  act.standard_relation AS standard_relation,\\n  act.standard_value AS standard_value,\\n  act.standard_units AS standard_units,\\n  act.activity_comment AS activity_comment,\\n  td.chembl_id AS target_chembl_id,\\n  td.pref_name AS target_name,\\n  td.organism AS target_organism\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN molecule_dictionary md ON act.molregno = md.molregno\\nJOIN compound_records cr ON md.molregno = cr.molregno\\nJOIN docs d ON cr.doc_id = d.doc_id\\nJOIN compound_structures cs ON md.molregno = cs.molregno\\nWHERE act.activity_type = 'IC50'\\n  AND act.standard_relation = '='\\n  AND act.standard_value IS NOT NULL\\n  AND act.standard_value > 0\\n  AND a.assay_organism = 'Homo sapiens'\\n  AND td.pref_name = 'Metabotropic glutamate receptor 5'\\n  AND td.chembl_id = 'CHEMBL3227'\\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\\n  AND cs.canonical_smiles IS NOT NULL\\nORDER BY molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles AS canonical_smiles,\n  cr.compound_key AS compound_key,\n  d.pubmed_id AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type AS standard_type,\n  act.standard_relation AS standard_relation,\n  act.standard_value AS standard_value,\n  act.standard_units AS standard_units,\n  act.activity_comment AS activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE act.activity_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.standard_value IS NOT NULL\n  AND act.standard_value > 0\n  AND a.assay_organism = 'Homo sapiens'\n  AND td.pref_name = 'Metabotropic glutamate receptor 5'\n  AND td.chembl_id = 'CHEMBL3227'\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)\n  AND cs.canonical_smiles IS NOT NULL\nORDER BY molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism;"
+    }
+  }
+}

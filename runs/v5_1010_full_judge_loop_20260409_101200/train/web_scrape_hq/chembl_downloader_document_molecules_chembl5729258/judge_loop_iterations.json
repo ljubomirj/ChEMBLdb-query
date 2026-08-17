@@ -1,0 +1,130 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compound entries (including their public identifiers, names, and related document details) that are explicitly associated with the document CHEMBL5729258.  For each qualifying compound, return:\n\n- The public ChEMBL identifier (from `compound_dictionary.chembl_id`).\n- The compound\u2019s preferred name (from `compound_dictionary.pref_name`).\n- The document\u2019s identifier (from `docs.chembl_id`).\n- The document\u2019s title (from `docs.title`).\n- The document\u2019s publication year (from `docs.year`).\n\nA compound is linked to the document when it appears as the target of any activity (i.e., there is a row in `activities` whose `doc_id` points to `docs.doc_id` equal to `CHEMBL5729258`).  The result set may contain multiple rows per compound (one per distinct activity or document link).  No filtering on activity type, units, dose, or any other activity column is required; simply return all compounds reported in the specified document.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS compound_name,\n  d.chembl_id AS document_chembl_id,\n  d.title AS document_title,\n  d.year AS document_year\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5729258'\nORDER BY md.pref_name, d.title",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the public ChEMBL identifier, preferred name, and document details for all compounds that have at least one activity linked to the document CHEMBL5729258. The output must include: compound_chembl_id (from `compound_dictionary.chembl_id`), compound_name (from `compound_dictionary.pref_name`), document_chembl_id (from `docs.chembl_id`), document_title (from `docs.title`), and document_year (from `docs.year`). A compound is considered linked to the document when any row in `activities` has `doc_id` equal to the `doc_id` of `CHEMBL5729258`. No additional filtering (e.g., on activity type, units, target, or date) is requested; return all such compound-document pairs, preserving duplicates if a compound appears multiple times in the document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the public ChEMBL identifier (from molecule_dictionary.chembl_id), preferred name (from molecule_dictionary.pref_name), and the document details (chembl_id, title, year from docs) for every compound that has at least one activity linked to the document CHEMBL5729258. A compound is linked when any row in the activities table has its doc_id matching the doc_id of the document CHEMBL5729258. Return all such compound\u2011document pairs, preserving duplicates if the same compound appears more than once in the document. No filters on activity type, units, assay, target, or date are requested; simply list the compounds reported in that document.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5729258') SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id JOIN docs d ON a.doc_id = d.doc_id JOIN doc ON a.doc_id = doc.doc_id ORDER BY md.pref_name, d.title;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the public ChEMBL identifier (from molecule_dictionary.chembl_id), preferred name (from molecule_dictionary.pref_name), and the document details (chembl_id, title, year from docs) for every compound that has at least one activity linked to the document CHEMBL5729258. A compound is linked when any row in the activities table has its doc_id matching the doc_id of the document CHEMBL5729258. Return all such compound\u2011document pairs, preserving duplicates if the same compound appears more than once in the document. No filters on activity type, units, assay, target, or date are requested; simply list the compounds reported in that document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all compounds that are reported in the document CHEMBL5729258 by joining the activities table to the molecule_dictionary and docs tables. For each compound\u2011document pair, return the public ChEMBL identifier (compound_chembl_id) from molecule_dictionary.chembl_id, the preferred name (compound_name) from molecule_dictionary.pref_name, the document identifier (document_chembl_id) from docs.chembl_id, the document title (document_title) from docs.title, and the publication year (document_year) from docs.year. A compound is considered reported in the document if any activity row has doc_id that matches the doc_id of the document CHEMBL5729258. No additional filters, activity\u2011type restrictions, or document\u2011type checks are required; simply list all such compounds, preserving any duplicate rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 45 | SEARCH ass USING COVERING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1021,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "document_chembl_id",
+      "document_title",
+      "document_year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the public ChEMBL identifier (from molecule_dictionary.chembl_id) and preferred name (from molecule_dictionary.pref_name) for every compound that is linked to the document CHEMBL5729258 via at least one activity record. A compound is linked when its activity row has a doc_id that matches the doc_id of the document CHEMBL5729258. Return the document details (document_chembl_id from docs.chembl_id, document_title from docs.title, document_year from docs.year) together with the compound identifiers. No additional filters (e.g., activity type, units, assay type, organism, date) are requested; simply list all such compound\u2011document pairs, preserving duplicates if a compound appears multiple times in the document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 45 | SEARCH ass USING COVERING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1021,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "document_chembl_id",
+      "document_title",
+      "document_year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the public ChEMBL identifier (compound_chembl_id) from molecule_dictionary.chembl_id, the preferred name (compound_name) from molecule_dictionary.pref_name, and the document details (document_chembl_id, document_title, document_year) for every compound that has at least one activity linked to document CHEMBL5729258. A compound is linked when any activity row has doc_id equal to the doc_id of CHEMBL5729258. Return all such compound\u2011document pairs, preserving duplicates if a compound appears more than once in the document. No filters on activity type, units, assay, target, organism, or date are requested; simply list all compound\u2011document pairs with the required columns.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258' ORDER BY md.pref_name, d.title",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n41 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1021,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "document_chembl_id",
+      "document_title",
+      "document_year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the public ChEMBL identifier (compound_chembl_id) from molecule_dictionary.chembl_id, the preferred name (compound_name) from molecule_dictionary.pref_name, and the document details (document_chembl_id from docs.chembl_id, document_title from docs.title, document_year from docs.year) for every compound that has at least one activity linked to the document CHEMBL5729258. A compound is linked when any activity row has doc_id equal to the doc_id of CHEMBL5729258. Return all such compound\u2011document pairs, preserving duplicates if a compound appears multiple times in the document. No filters on activity type, units, assay, target, organism, or date are requested; simply list all compound\u2011document pairs with the required columns.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, d.chembl_id AS document_chembl_id, d.title AS document_title, d.year AS document_year FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729258'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n12 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 3081,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "document_chembl_id",
+      "document_title",
+      "document_year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

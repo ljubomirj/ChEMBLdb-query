@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_metabolism_example.json",
+  "case_id": "iwatobipen_metabolism_example",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements the requested join path (metabolism -> compound_records on substrate_record_id -> compound_structures on molregno) and returns the first 200 rows without deduplication or sorting. The output columns match the user request (canonical_smiles, compound_name, met_conversion, pathway_key). The sample rows show valid data with SMILES and compound names from the substrate side of the metabolism relationship. The row count is exactly 200 as requested.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements the requested join path (metabolism -> compound_records on substrate_record_id -> compound_structures on molregno) and returns the first 200 rows without deduplication or sorting. The output columns match the user request (canonical_smiles, compound_name, met_conversion, pathway_key). The sample rows show valid data with SMILES and compound names from the substrate side of the metabolism relationship. The row count is exactly 200 as requested.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/iwatobipen_metabolism_example/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/iwatobipen_metabolism_example/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/val/web_scrape_hq/iwatobipen_metabolism_example/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,64 @@
+[
+    1.0,
+    {
+        "current_candidate": "<TASK>\nYou are an expert database engineer. Your task is to translate the User Question (UQ) into a structured User Prompt (UP) for a SQL code generator.\n\nOBJECTIVE:\nGenerate a database execution plan in JSON format. The UP must abstract the intent of the UQ into strict database operations, avoiding natural language redundancy.\n\nCORE PRINCIPLES:\n1.  **Abstraction**: Do NOT repeat the UQ. Translate \"Show me...\" to \"Select from...\".\n2.  **Schema Specificity**: Explicitly map business terms to schema elements (e.g., \"IC50\" -> `standard_type = 'IC50'`).\n3.  **Operational Logic**: Combine all filters into a single logical clause.\n\nCONSTRUCTION RULES:\n-   **Format**: Return ONLY a valid JSON object with key \"up\".\n-   **Structure**: The value must be a single string following this sequence:\n    1.  **Source**: `Select from [Table]`\n    2.  **Joins**: `Join [Table] on [Column]`\n    3.  **Constraints**: `Where [Condition]` (Mandatory for all filters)\n    4.  **Output**: `Return [Col1], [Col2]`\n    5.  **Sort/Limit**: `Sort by [Col] [Dir]. Limit [N].`\n\nMANDATORY TRANSFORMATIONS:\n-   \"Show the first [N]...\" \u2192 Start with `Select from...` and end with `Limit [N].`\n-   \"with pChEMBL values\" \u2192 `pchembl_value IS NOT NULL`\n-   \"exact standard relation '='\" \u2192 `standard_relation = '='`\n-   \"Order by...\" \u2192 `Sort by [Col] ASC/DESC.`\n-   \"Return [X]...\" \u2192 `Return [X]...`\n</TASK>"
+    },
+    {
+        "case_id": "ceritinib_alk_ic50_salts",
+        "corpus": "web_scrape_hq",
+        "uq": "Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Use molecule_hierarchy parent mapping from CHEMBL2403108 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/ceritinib_alk_ic50_salts/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/ceritinib_alk_ic50_salts/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_fad7feaadf26e5ba.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_fad7feaadf26e5ba.txt",
+        "generated_sql": "SELECT",
+        "judge_text": null,
+        "expected_rows": 120,
+        "actual_rows": 120,
+        "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+        ],
+        "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+        ],
+        "missing_cols": [],
+        "extra_cols": [],
+        "status": "pass",
+        "score": 1.0,
+        "generated_up": "Select from molecule_dictionary m Join compound_structures s on s.molregno = m.molregno Join compound_records r on r.molregno = m.molregno Join docs d on d.doc_id = r.doc_id Join activities act on act.record_id = r.record_id Join assays a on a.assay_id = act.assay_id Join target_dictionary t on t.tid = a.tid Where (m.chembl_id = 'CHEMBL2403108' Or m.molregno In (Select mh.molregno From molecule_hierarchy mh Join molecule_dictionary parent on parent.molregno = mh.parent_molregno Where parent.chembl_id = 'CHEMBL2403108')) And t.chembl_id = 'CHEMBL4247' And act.standard_type = 'IC50' And act.standard_units = 'nM' Return m.chembl_id as compound_chembl_id, s.canonical_smiles, r.compound_key, COALESCE(d.pubmed_id, d.doi) as pubmed_id_or_doi, a.description as assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, t.chembl_id as target_chembl_id, t.pref_name as target_name, t.organism as target_organism.",
+        "base_score": 1.0,
+        "up_echo_ratio": 0.151554,
+        "up_echo_penalty": 0.0,
+        "adjusted_score": 1.0,
+        "scores": {
+            "result_score": 1.0,
+            "up_non_echo_score": 1.0
+        },
+        "log": "{\"case_id\": \"ceritinib_alk_ic50_salts\", \"corpus\": \"web_scrape_hq\", \"uq\": \"Retrieve activity details for compound CHEMBL2403108 (CERITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL4247 (ALK tyrosine kinase receptor). Use molecule_hierarchy parent mapping from CHEMBL2403108 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/ceritinib_alk_ic50_salts/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/ceritinib_alk_ic50_salts/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_fad7feaadf26e5ba.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_fad7feaadf26e5ba.txt\", \"generated_sql\": \"SELECT\", \"judge_text\": null, \"expected_rows\": 120, \"actual_rows\": 120, \"expected_cols\": [\"compound_chembl_id\", \"canonical_smiles\", \"compound_key\", \"pubmed_id_or_doi\", \"assay_description\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\", \"activity_comment\", \"target_chembl_id\", \"target_name\", \"target_organism\"], \"actual_cols\": [\"compound_chembl_id\", \"canonical_smiles\", \"compound_key\", \"pubmed_id_or_doi\", \"assay_description\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\", \"activity_comment\", \"target_chembl_id\", \"target_name\", \"target_organism\"], \"missing_cols\": [], \"extra_cols\": [], \"status\": \"pass\", \"score\": 1.0, \"generated_up\": \"Select from molecule_dictionary m Join compound_structures s on s.molregno = m.molregno Join compound_records r on r.molregno = m.molregno Join docs d on d.doc_id = r.doc_id Join activities act on act.record_id = r.record_id Join assays a on a.assay_id = act.assay_id Join target_dictionary t on t.tid = a.tid Where (m.chembl_id = 'CHEMBL2403108' Or m.molregno In (Select mh.molregno From molecule_hierarchy mh Join molecule_dictionary parent on parent.molregno = mh.parent_molregno Where parent.chembl_id = 'CHEMBL2403108')) And t.chembl_id = 'CHEMBL4247' And act.standard_type = 'IC50' And act.standard_units = 'nM' Return m.chembl_id as compound_chembl_id, s.canonical_smiles, r.compound_key, COALESCE(d.pubmed_id, d.doi) as pubmed_id_or_doi, a.description as assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, t.chembl_id as target_chembl_id, t.pref_name as target_name, t.organism as target_organism.\", \"base_score\": 1.0, \"up_echo_ratio\": 0.151554, \"up_echo_penalty\": 0.0, \"adjusted_score\": 1.0, \"scores\": {\"result_score\": 1.0, \"up_non_echo_score\": 1.0}}\n"
+    }
+]

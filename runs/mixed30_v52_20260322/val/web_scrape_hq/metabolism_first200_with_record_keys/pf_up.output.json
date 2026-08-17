@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.2.yaml",
+  "prompt_pack_version": "v5.2",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 rows from the metabolism table without adding any sorting. Join metabolism to compound_records on substrate_record_id as a mandatory inner join, then join compound_structures on molregno as a mandatory inner join to obtain canonical_smiles and substrate_compound_key from the substrate side. Join metabolism to compound_records on metabolite_record_id as an optional left join to obtain metabolite_compound_key. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 rows from the metabolism table without adding any sorting. Join metabolism to compound_records on substrate_record_id as a mandatory inner join, then join compound_structures on molregno as a mandatory inner join to obtain canonical_smiles and substrate_compound_key from the substrate side. Join metabolism to compound_records on metabolite_record_id as an optional left join to obtain metabolite_compound_key. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key."
+    }
+  }
+}

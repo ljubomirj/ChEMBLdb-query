@@ -1,6 +1,7 @@
 # Hipfire Qwen3.6-27B 1010-Case Artifact Guide
 
-**Artifact root:** `experiments/evals/v5_forward_eval/qwen36-27b-hipfire-local-full-1010/`
+**Artifact root:** `experiments/evals/v5_forward_eval/qwen36-27b-hipfire-local-full-1010/`  
+**Reorg note (2026-08-01):** moved to `runs/qwen36-27b-hipfire-local-full-1010/` (run tree) with symlink bridge at the old path; case manifests/fixtures moved to `cases/v5.1010/cases/`. See `doc/2026-07-31-data-reorg-plan.md`.
 
 This guide describes the directory structure, file types, and contents of the
 completed 1,010-case local Qwen3.6-27B evaluation run.

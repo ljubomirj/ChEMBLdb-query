@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compound records (compound_key and compound_name) and the associated document identifier (doc_id) from ChEMBL that reference the exact document with ChEMBL ID 'CHEMBL5725513'. Return each matching record exactly once, with the document identifier to allow verification of source. No additional filtering (e.g., by activity, assay, or target) is required; only the document identifier is the constraint.",
+    "sql": "SELECT DISTINCT cr.cidx AS compound_key, cr.compound_name, d.doc_id AS doc_id\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5725513';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n11 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "compound_key",
+      "compound_name",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all drug-indication relationships from the drug_indication table joined with molecule_dictionary. For each relationship, provide the following columns: molecule ChEMBL ID (molecule_chembl_id), molecule preferred name (pref_name), max phase for the indication (max_phase_for_ind), MeSH identifier (mesh_id), MeSH heading (mesh_heading), EFO identifier (efo_id), and EFO term (efo_term). Return all rows without limiting the result set.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, di.max_phase_for_ind, di.mesh_id, di.mesh_heading, di.efo_id, di.efo_term FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n7 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n26 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 59954,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "max_phase_for_ind",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

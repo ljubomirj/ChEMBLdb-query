@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_e21e48847208fce0.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_hiv_infection.json",
+  "case_id": "approved_drugs_indication_hiv_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e21e48847208fce0",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: chembl_id, pref_name, canonical_smiles, indication_curie (efo_id prefixed with 'EFO:'), indication_label (mesh_heading), max_phase_for_ind. Source: molecule_dictionary, compound_structures, drug_indication. Join: molecule_dictionary to compound_structures on molregno. molecule_dictionary to drug_indication on molregno. Filter: molecule_dictionary.max_phase = 4. drug_indication.mesh_heading = 'HIV Infection'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, indication_curie ASC, indication_label ASC, max_phase_for_ind ASC.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: chembl_id, pref_name, canonical_smiles, indication_curie (efo_id prefixed with 'EFO:'), indication_label (mesh_heading), max_phase_for_ind. Source: molecule_dictionary, compound_structures, drug_indication. Join: molecule_dictionary to compound_structures on molregno. molecule_dictionary to drug_indication on molregno. Filter: molecule_dictionary.max_phase = 4. drug_indication.mesh_heading = 'HIV Infection'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, indication_curie ASC, indication_label ASC, max_phase_for_ind ASC."
+    }
+  }
+}

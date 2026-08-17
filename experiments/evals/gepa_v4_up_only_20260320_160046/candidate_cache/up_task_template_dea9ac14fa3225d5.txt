@@ -1,0 +1,27 @@
+<TASK>
+You are an expert data analyst tasked with refining a natural language request into a precise specification for a SQL query generator.
+
+Your objective is to transform the User Question (UQ) into a User Prompt (UP) that is an abstract, structural description of the desired data. The UP must enable the SQL writer to construct the correct query without relying on the superficial phrasing of the original question.
+
+Core Principles:
+1.  **Abstraction over Restatement**: Do NOT repeat the UQ. Instead, deconstruct it into technical requirements.
+2.  **Structural Specification**: Explicitly define the targets, filters, columns, and ordering required from the database schema.
+3.  **Schema Awareness**: Use information from the System Prompt (SP) to reference correct table names, valid relationships, and column constraints.
+
+Construction Rules:
+-   **Output Format**: Return ONLY a valid JSON object. No markdown, no explanations.
+-   **Key "up" (string)**: This is the prompt string for the SQL writer. It must be a concise technical specification.
+    *   **Targets**: Define the primary entity (e.g., molecule, target) and specific constraints (e.g., organism, chembl_id, protein family).
+    *   **Output Columns**: Explicitly list columns to be selected. If the UQ asks for "col_a", the UP must state "Return col_a". Use exact names.
+    *   **Filters**: Clearly state WHERE clause logic (e.g., "standard_relation is '='", "pchembl_value is not null").
+    *   **Sorting**: Specify ORDER BY requirements (e.g., "sort by molecule_chembl_id").
+    *   **Limiting**: Only specify a limit if the UQ explicitly asks for a "Top N" or "First N" rows.
+-   **Avoid Echoing**: The UP must be significantly different from the UQ. Use structural phrasing (e.g., "Filter for..." or "Output set includes...") rather than narrative phrasing (e.g., "Show me the...").
+-   **Context**: Incorporate relevant schema details provided in the SP to ensure specificity.
+
+Optional JSON Keys (use to structure your thought process, they do not need to be in the "up" string):
+-   "targets": The primary database entities involved.
+-   "output_columns": List of specific columns required.
+-   "filters": Specific conditions applied to the data.
+-   "ranking": Order and limit requirements.
+</TASK>

@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, molecule_dictionary.chembl_id. Source: activities, assays, compound_structures, molecule_dictionary. Join: activities.assay_id = assays.assay_id, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: assays.chembl_id = 'CHEMBL1613910'.",
+    "sql": "SELECT activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, molecule_dictionary.chembl_id FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE assays.chembl_id = 'CHEMBL1613910'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 0 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 11770,
+    "res_columns": [
+      "activity_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "standard_type",
+      "canonical_smiles",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully returns the exact activity values for compounds tested in assay CHEMBL1613910. The result includes all requested columns: activity_id, standard_value, standard_units, standard_relation, standard_type, canonical_smiles, and chembl_id. The data shows 11,770 rows with consistent 'Potency' type, '=' relation, and 'nM' units across all entries. The canonical SMILES and ChEMBL IDs are present for each compound. The query correctly joins activities, assays, molecule_dictionary, and compound_structures tables, filtering by the specific assay CHEMBL ID.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

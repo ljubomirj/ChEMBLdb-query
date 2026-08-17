@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_structures.json",
+  "case_id": "leelasd_approved_drugs_with_structures",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval. Join molecule_dictionary to compound_records on molregno as an inner join to enforce at least one compound record. Left join compound_structures on molregno to include canonical_smiles without dropping molecules that lack stored structures. Filter rows where max_phase is 3 or 4. Sort by molecule_chembl_id, canonical_smiles, max_phase, and first_approval.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule_chembl_id, pref_name, canonical_smiles, max_phase, and first_approval. Join molecule_dictionary to compound_records on molregno as an inner join to enforce at least one compound record. Left join compound_structures on molregno to include canonical_smiles without dropping molecules that lack stored structures. Filter rows where max_phase is 3 or 4. Sort by molecule_chembl_id, canonical_smiles, max_phase, and first_approval."
+    }
+  }
+}

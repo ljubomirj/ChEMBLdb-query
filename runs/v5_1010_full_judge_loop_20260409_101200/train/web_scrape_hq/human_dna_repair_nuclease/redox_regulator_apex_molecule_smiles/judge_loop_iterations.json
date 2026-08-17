@@ -1,0 +1,105 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619) in ChEMBL assays. Return the public ChEMBL identifier (chembl_id) for each compound and the document (doc_id) where the activity was reported. No additional filtering on assay type, activity units, or activity relationships is required. Use assays.assay_organism to ensure only human (tax_id 9606) assays are included, and match activities.molecule_chembl_id to molecule_dictionary.chembl_id. Ensure only activities with a standard_type that indicates a quantitative measurement (e.g., IC50, EC50, etc.) and a non-null standard_value are considered. Do not restrict by assay confidence, target type, or document type beyond the specified human organism and target molecule.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE md.molecule_chembl_id = 'CHEMBL5619' AND ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) of each compound and the document identifier (doc_id) where the activity was reported. Filter for assays that are performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606). Include only activity rows that have a quantitative standard_type (e.g., IC50, EC50, Ki, etc.) and a non\u2011null standard_value. No other filters (such as assay confidence, target type, activity relation, or document type) should be applied. The results should be presented as a list of chembl_id and doc_id pairs, without any ranking or limit imposed by the prompt.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE md.molecule_chembl_id = 'CHEMBL5619' AND ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) for each compound and the document identifier (doc_id) where the activity was reported. Ensure that only assays performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606) are considered. Include only activity rows with a quantitative measurement, i.e., those where standard_type is not null and standard_value is not null (e.g., IC50, EC50, Ki, etc.). No other filters are required. Present the result as a list of distinct chembl_id/doc_id pairs, without imposing any ranking, limits, or additional columns beyond the requested identifiers.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id FROM molecule_dictionary WHERE molecule_chembl_id = 'CHEMBL5619') SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN md ON a.molregno = md.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) for each compound and the document identifier (doc_id) where the activity was reported. Ensure that only assays performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606) are considered. Include only activity rows with a quantitative measurement, i.e., those where standard_type is not null and standard_value is not null (e.g., IC50, EC50, Ki, etc.). No other filters are required. Present the result as a list of distinct chembl_id/doc_id pairs, without imposing any ranking, limits, or additional columns beyond the requested identifiers.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5619') SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN md ON a.molregno = md.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n14 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 39 | SEARCH td USING COVERING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) for each compound and the document identifier (doc_id) where the activity was reported. Ensure that only assays performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606) are considered. Include only activity rows with a quantitative measurement, i.e., those where standard_type is not null and standard_value is not null (e.g., IC50, EC50, Ki, etc.). No other filters are required. Present the result as a list of distinct chembl_id/doc_id pairs, without imposing any ranking, limits, or additional columns beyond the requested identifiers.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5619') SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN md ON a.molregno = md.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n14 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 39 | SEARCH td USING COVERING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all compounds tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) for each compound and the document identifier (doc_id) where the activity was reported. Ensure assays are performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606). Include only activity rows with quantitative standard_type and non\u2011null standard_value. Present the result as distinct chembl_id/doc_id pairs, without ranking, limits, or extra columns.",
+    "sql": "WITH md AS (SELECT molregno, chembl_id FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5619') SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN md ON a.molregno = md.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 47 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n14 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n32 | 0 | 39 | SEARCH td USING COVERING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve all compounds that have been tested against human DNA repair nuclease/redox regulator APEX1 (CHEMBL5619). Return the public ChEMBL identifier (chembl_id) for each compound and the document identifier (doc_id) where the activity was reported. Ensure that only assays performed on human (assay_organism = 'Homo sapiens' or assay_tax_id = 9606) are considered. Include only activity rows with a quantitative measurement (standard_type is not null and standard_value is not null, e.g., IC50, EC50, Ki, etc.). No other filters are required. Present the result as a list of distinct chembl_id/doc_id pairs, without imposing any ranking, limits, or extra columns beyond the requested identifiers.",
+    "sql": "WITH t AS (SELECT tid, chembl_id FROM target_dictionary WHERE chembl_id = 'CHEMBL5619') SELECT DISTINCT md.chembl_id AS chembl_id, a.doc_id AS doc_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN t ON ass.tid = t.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.assay_organism = 'Homo sapiens' AND a.standard_value IS NOT NULL AND a.standard_type IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n14 | 0 | 224 | SCAN ass\n21 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1094,
+    "res_columns": [
+      "chembl_id",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_b5cca7eb0d0f7620.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl4028802.json",
+  "case_id": "chembl_downloader_document_molecules_chembl4028802",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "b5cca7eb0d0f7620",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://localhost:8081/v1",
+    "raw_text": "{\n  \"up\": \"Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles as canonical_smiles\\nJoin compound_records on molecule_dictionary.molregno = compound_records.molregno\\nJoin docs on compound_records.doc_id = docs.doc_id\\nLeft Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\\nFilter docs.chembl_id = 'CHEMBL4028802'\\nReturn rows\\nSort by molecule",
+    "parsed_json": {
+      "up": "{\n  \"up\": \"Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles as canonical_smiles\\nJoin compound_records on molecule_dictionary.molregno = compound_records.molregno\\nJoin docs on compound_records.doc_id = docs.doc_id\\nLeft Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\\nFilter docs.chembl_id = 'CHEMBL4028802'\\nReturn rows\\nSort by molecule"
+    }
+  }
+}

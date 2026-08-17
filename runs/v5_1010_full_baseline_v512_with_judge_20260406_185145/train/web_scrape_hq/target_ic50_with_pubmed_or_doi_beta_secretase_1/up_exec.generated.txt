@@ -1,0 +1,16 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+From molecule_dictionary md
+Join activities a on md.molregno = a.molregno
+Join assays ass on a.assay_id = ass.assay_id
+Join target_dictionary td on ass.tid = td.tid
+Join compound_structures cs on md.molregno = cs.molregno
+Join docs d on a.doc_id = d.doc_id
+Where ass.assay_organism = 'Homo sapiens'
+  and td.pref_name = 'Beta-secretase 1'
+  and a.standard_type = 'IC50'
+  and a.standard_relation = '='
+  and a.standard_value is not null
+  and a.standard_units = 'nM'
+  and (d.pubmed_id is not null or d.doi is not null)
+  and cs.canonical_smiles is not null
+Order by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

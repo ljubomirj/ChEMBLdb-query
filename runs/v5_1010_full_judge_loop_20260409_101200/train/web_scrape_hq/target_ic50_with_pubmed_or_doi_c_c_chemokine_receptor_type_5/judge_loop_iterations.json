@@ -1,0 +1,20 @@
+[
+  {
+    "n": 2,
+    "up": "For compounds tested against human C-C chemokine receptor type 5 (ChEMBL ID CHEMBL274), return the compound ChEMBL ID, canonical SMILES, IC50 value in nM, and the literature reference (PubMed ID or DOI). Only include rows where the standard type is IC50 and the standard units are nM.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, a.standard_value AS ic50_nM, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL274' AND a.standard_type = 'IC50' AND a.standard_units = 'nM';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 3082,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_egfr_molecule_smiles.json",
+  "case_id": "human_egfr_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request: it filters on target CHEMBL203 and assay_organism = 'Homo sapiens', joins activities to assays and target_dictionary, and returns distinct molecule_chembl_id with canonical_smiles. The result set (13,510 rows) is plausible for EGFR, and the sample rows show valid ChEMBL IDs and SMILES. The execution plan and SQL align with the task constraints.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it filters on target CHEMBL203 and assay_organism = 'Homo sapiens', joins activities to assays and target_dictionary, and returns distinct molecule_chembl_id with canonical_smiles. The result set (13,510 rows) is plausible for EGFR, and the sample rows show valid ChEMBL IDs and SMILES. The execution plan and SQL align with the task constraints.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/human_egfr_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/human_egfr_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/human_egfr_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

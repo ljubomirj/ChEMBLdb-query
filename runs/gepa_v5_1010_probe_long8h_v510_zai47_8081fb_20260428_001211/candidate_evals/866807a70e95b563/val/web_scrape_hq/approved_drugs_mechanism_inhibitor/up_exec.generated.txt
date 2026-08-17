@@ -1,0 +1,13 @@
+Objective: Retrieve approved drugs with an inhibitor mechanism of action and their associated target details.
+
+Output: chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (as target_chembl_id), target_name (as target_name).
+
+Source: molecule_dictionary, drug_mechanism, target_dictionary, compound_structures.
+
+Logic:
+1. Filter molecule_dictionary for approved drugs where max_phase = 4.
+2. Join molecule_dictionary to drug_mechanism via molregno.
+3. Filter drug_mechanism where action_type = 'INHIBITOR'.
+4. Join drug_mechanism to target_dictionary via tid.
+5. Join molecule_dictionary to compound_structures via molregno.
+6. Order results by chembl_id.

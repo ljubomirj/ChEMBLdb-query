@@ -1,0 +1,25 @@
+{
+  "mode": "forward_chain",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "family": "other",
+  "realism_level": "templated_surface",
+  "provider": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic"
+  },
+  "run_root": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs with max_phase = 4. Join molecule_dictionary to drug_indication on molregno. Filter to rows where efo_id and efo_term are not null. Join compound_structures on molregno to require canonical SMILES. Return distinct rows for chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs with max_phase = 4. Join molecule_dictionary to drug_indication on molregno. Filter to rows where efo_id and efo_term are not null. Join compound_structures on molregno to require canonical SMILES. Return distinct rows for chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

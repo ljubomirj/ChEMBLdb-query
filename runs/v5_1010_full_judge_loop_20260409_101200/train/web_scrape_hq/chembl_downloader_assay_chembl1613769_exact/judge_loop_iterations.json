@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "For assay CHEMBL1613769, return the exact activity values and compound structures. Provide the following columns: compound ChEMBL ID, compound name, activity type (e.g., IC50, Ki), exact activity value, activity units, and canonical SMILES. Include only rows where the activity relation is exact ('=').",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, a.standard_type AS activity_type, a.standard_value AS exact_activity_value, a.standard_units AS activity_units, cs.canonical_smiles FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1613769' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n15 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n25 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 28123,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "activity_type",
+      "exact_activity_value",
+      "activity_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

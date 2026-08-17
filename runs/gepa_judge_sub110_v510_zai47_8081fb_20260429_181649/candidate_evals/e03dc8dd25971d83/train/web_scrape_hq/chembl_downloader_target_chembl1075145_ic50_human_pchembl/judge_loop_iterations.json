@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Select: assay.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value\nSource: activities, assays, target_dictionary, molecule_dictionary, compound_structures\nJoin: activities.assay_id = assays.assay_id AND activities.molregno = molecule_dictionary.molregno AND molecule_dictionary.chembl_id = 'CHEMBL1075145' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.tid = 11004\nFilter: activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.tid = 11004\nSort: molecule_chembl_id ASC, assay_chembl_id ASC\nLimit: 1000",
+    "sql": "SELECT DISTINCT a.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nINNER JOIN assays AS ass ON a.assay_id = ass.assay_id\nINNER JOIN target_dictionary AS td ON ass.tid = td.tid\nINNER JOIN molecule_dictionary AS md ON a.molregno = md.molregno\nINNER JOIN compound_structures AS cs ON md.molregno = cs.molregno\nWHERE md.chembl_id = 'CHEMBL1075145'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND ass.assay_organism = 'Homo sapiens'\n  AND td.tid = 11004\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_text": "{\n  \"analysis\": \"The query failed because the `activities` table does not have a `chembl_id` column. The correct column for the assay identifier is `assay_id`. The rest of the query logic appears correct, but the column name must be fixed to match the schema.\",\n  \"score\": 0.85,\n  \"decision\": \"NO\",\n  \"reason\": \"The SQL query contains an invalid column reference (`a.chembl_id` instead of `a.assay_id`). This must be corrected before the query can succeed.\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: assay.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value\nSource: activities, assays, target_dictionary, molecule_dictionary, compound_structures\nJoin: activities.assay_id = assays.assay_id AND activities.molregno = molecule_dictionary.molregno AND molecule_dictionary.chembl_id = 'CHEMBL1075145' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.tid = 11004\nFilter: activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND assays.assay_organism = 'Homo sapiens' AND target_dictionary.tid = 11004\nSort: molecule_chembl_id ASC, assay_chembl_id ASC\nLimit: 1000",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nINNER JOIN assays AS ass ON a.assay_id = ass.assay_id\nINNER JOIN target_dictionary AS td ON ass.tid = td.tid\nINNER JOIN molecule_dictionary AS md ON a.molregno = md.molregno\nINNER JOIN compound_structures AS cs ON md.molregno = cs.molregno\nWHERE md.chembl_id = 'CHEMBL1075145'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND ass.assay_organism = 'Homo sapiens'\n  AND td.tid = 11004\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 0 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n19 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n28 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n33 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n46 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n86 | 0 | 0 | USE TEMP B-TREE FOR RIGHT PART OF ORDER BY",
+    "res_row_count": 0,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query executed successfully but returned 0 rows. The plan shows the joins are correct (target_dictionary.tid = 11004 for CHEMBL1075145, Homo sapiens filter, standard_relation '=', pChEMBL not null). However, the result set is empty, which suggests either: (1) No activities for this target meet all criteria, (2) The target_dictionary.tid mapping may be incorrect, or (3) The assay_organism filter may be too restrictive. The query logic matches the task requirements exactly, but the data may not contain matching rows.\",\n  \"score\": 0.95,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

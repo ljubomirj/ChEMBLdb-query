@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_0aad91c062f256cc.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1250402_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1250402_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "0aad91c062f256cc",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE\n  target_dictionary.chembl_id = 'CHEMBL1250402'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_relation = '='\n  AND activities.pchembl_value IS NOT NULL\nORDER BY\n  molecule_chembl_id ASC,\n  assay_chembl_id ASC\nLIMIT 1000\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE\n  target_dictionary.chembl_id = 'CHEMBL1250402'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_relation = '='\n  AND activities.pchembl_value IS NOT NULL\nORDER BY\n  molecule_chembl_id ASC,\n  assay_chembl_id ASC\nLIMIT 1000"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "n": 2,
+    "up": "Return all IC50 activity records for the compound Chloroquine (ChEMBL ID: CHEMBL76) and any of its salt forms, tested against the target Plasmodium falciparum (ChEMBL ID: CHEMBL364). For each record, provide the compound ChEMBL ID and canonical SMILES, the activity record details (standard value, units, relation, pChEMBL value), assay details (assay ChEMBL ID, description), and the literature reference (PubMed ID or DOI). Include all salt forms by expanding the compound set through the molecule hierarchy.",
+    "sql": "WITH compound_set AS (SELECT parent.molregno, parent.chembl_id, parent.pref_name FROM molecule_dictionary parent WHERE parent.chembl_id = 'CHEMBL76' UNION ALL SELECT child.molregno, child.chembl_id, child.pref_name FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL76') SELECT DISTINCT cs.chembl_id AS molecule_chembl_id, cs.canonical_smiles, act.standard_value, act.standard_units, act.standard_relation, act.pchembl_value, ass.chembl_id AS assay_chembl_id, ass.description, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi FROM compound_set cs JOIN activities act ON act.molregno = cs.molregno JOIN assays ass ON act.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures strct ON strct.molregno = cs.molregno LEFT JOIN docs d ON act.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL364' AND act.standard_type = 'IC50';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.canonical_smiles",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Return all IC50 activity records for Chloroquine (ChEMBL ID: CHEMBL76) and any of its salt forms, tested against Plasmodium falciparum (ChEMBL ID: CHEMBL364). For each record, include the compound ChEMBL ID, canonical SMILES, activity record details (standard value, units, relation, pChEMBL value), assay ChEMBL ID, assay description, and the literature reference (PubMed ID or DOI). Expand the compound set to include all salt forms by using the molecule hierarchy table to find the parent compound and all its children.",
+    "sql": "WITH compound_set AS (\n  SELECT parent.molregno, parent.chembl_id, parent.pref_name\n  FROM molecule_dictionary parent\n  WHERE parent.chembl_id = 'CHEMBL76'\n  UNION ALL\n  SELECT child.molregno, child.chembl_id, child.pref_name\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL76'\n)\nSELECT DISTINCT\n  cs.chembl_id AS molecule_chembl_id,\n  strct.canonical_smiles,\n  act.standard_value,\n  act.standard_units,\n  act.standard_relation,\n  act.pchembl_value,\n  ass.chembl_id AS assay_chembl_id,\n  ass.description,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi\nFROM compound_set cs\nJOIN activities act ON act.molregno = cs.molregno\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN compound_structures strct ON strct.molregno = cs.molregno\nLEFT JOIN docs d ON act.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL364'\n  AND act.standard_type = 'IC50';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n7 | 4 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION ALL\n23 | 16 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n28 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n34 | 16 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n62 | 0 | 32 | SCAN cs\n65 | 0 | 47 | SEARCH strct USING INDEX compound_structures_pk (molregno=?)\n75 | 0 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n87 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n96 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n128 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2139,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "pchembl_value",
+      "assay_chembl_id",
+      "description",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

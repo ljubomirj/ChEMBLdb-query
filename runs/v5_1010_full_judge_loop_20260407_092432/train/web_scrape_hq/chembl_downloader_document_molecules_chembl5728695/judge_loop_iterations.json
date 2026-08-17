@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return the compound records (compound_key and compound_name) from the specified document ID CHEMBL5728695. Include compound records that may have assay data in the activities table, but do not filter by assay details or target properties unless requested. Output each qualifying molecule once, even if it appears in multiple activities. Do not limit the number of rows or add ranking. Return only the columns explicitly requested: compound_key and compound_name. Do not include any other information such as activity values, assay identifiers, or document details beyond the specified document ID.",
+    "sql": "SELECT DISTINCT cr.compound_key, cr.compound_name FROM compound_records cr JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5728695' AND cr.molregno IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n11 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n26 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 843,
+    "res_columns": [
+      "compound_key",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

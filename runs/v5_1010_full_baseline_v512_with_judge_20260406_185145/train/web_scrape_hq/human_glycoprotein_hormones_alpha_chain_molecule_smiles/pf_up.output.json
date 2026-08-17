@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_glycoprotein_hormones_alpha_chain_molecule_smiles.json",
+  "case_id": "human_glycoprotein_hormones_alpha_chain_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select molecule_chembl_id AS compound_chembl_id, canonical_smiles AS canonical_smiles From molecule_dictionary Join activities On molecule_dictionary.molregno = activities.molregno Join assays On activities.assay_id = assays.assay_id Join target_dictionary On assays.tid = target_dictionary.tid Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno Where target_dictionary.chembl_id = 'CHEMBL2146305' And assays.assay_organism = 'Homo sapiens' And activities.standard_type = 'IC50' And activities.standard_relation = '=' And activities.standard_value IS NOT NULL And activities.standard_value > 0 And activities.standard_units = 'nM' And activities.pchembl_value IS NOT NULL And activities.pchembl_value <= 9 And activities.pchembl_value > 0 Order By molecule_chembl_id, canonical_smiles Limit 1000\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id AS compound_chembl_id, canonical_smiles AS canonical_smiles From molecule_dictionary Join activities On molecule_dictionary.molregno = activities.molregno Join assays On activities.assay_id = assays.assay_id Join target_dictionary On assays.tid = target_dictionary.tid Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno Where target_dictionary.chembl_id = 'CHEMBL2146305' And assays.assay_organism = 'Homo sapiens' And activities.standard_type = 'IC50' And activities.standard_relation = '=' And activities.standard_value IS NOT NULL And activities.standard_value > 0 And activities.standard_units = 'nM' And activities.pchembl_value IS NOT NULL And activities.pchembl_value <= 9 And activities.pchembl_value > 0 Order By molecule_chembl_id, canonical_smiles Limit 1000"
+    }
+  }
+}

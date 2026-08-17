@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293255_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293255_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE target_dictionary.chembl_id = 'CHEMBL1293255'\n  AND activities.standard_type = 'IC50'\n  AND activities.pchembl_value IS NOT NULL\n  AND activities.standard_relation = '='\nORDER BY molecule_dictionary.chembl_id ASC, assays.chembl_id ASC\nLIMIT 1000;"
+}

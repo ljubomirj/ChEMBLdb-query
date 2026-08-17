@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, compound_structures.molfile. Source: activities, compound_structures. Join: activities.molregno = compound_structures.molregno. Filter: activities.assay_id = (SELECT assay_id FROM assays WHERE chembl_id = 'CHEMBL1613838').",
+    "sql": "SELECT activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, compound_structures.molfile FROM activities JOIN compound_structures ON activities.molregno = compound_structures.molregno WHERE activities.assay_id = (SELECT assay_id FROM assays WHERE chembl_id = 'CHEMBL1613838')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n5 | 0 | 0 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n8 | 0 | 0 | SCALAR SUBQUERY 1\n13 | 8 | 0 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n26 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 21987,
+    "res_columns": [
+      "activity_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "standard_type",
+      "canonical_smiles",
+      "molfile"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully returns activity values and structures for assay CHEMBL1613838. The result includes all requested columns: activity_id, standard_value, standard_units, standard_relation, standard_type, canonical_smiles, and molfile. The sample shows 171 representative rows from a total of 21,987 rows, with proper distribution across the dataset. The structures are present in both SMILES and MOLFILE formats. The query correctly joins activities with compound_structures and filters by the specific assay_id.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

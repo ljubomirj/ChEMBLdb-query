@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "Show the first 200 metabolism records involving CYP3A4 or CYP3A5. Include the substrate compound name, parent compound name, canonical SMILES, metabolic conversion (met_conversion), pathway key (pathway_key), and organism. Use the metabolism table enzyme name to filter for 'CYP3A4' or 'CYP3A5'. Join compound_structures on the parent compound record to retrieve the SMILES.",
+    "sql": "SELECT DISTINCT\n  met.met_conversion,\n  met.pathway_key,\n  met.organism,\n  parent_cr.compound_name AS parent_compound_name,\n  substr_cr.compound_name AS substrate_compound_name,\n  cs.canonical_smiles\nFROM metabolism met\nJOIN compound_records parent_cr ON met.drug_record_id = parent_cr.record_id\nJOIN compound_records substr_cr ON met.substrate_record_id = substr_cr.record_id\nJOIN molecule_dictionary md ON parent_cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE met.enzyme_name IN ('CYP3A4', 'CYP3A5')\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 126 | SCAN met\n16 | 0 | 47 | SEARCH parent_cr USING INDEX pk_comp_rec_recid (record_id=?)\n23 | 0 | 47 | SEARCH substr_cr USING INDEX pk_comp_rec_recid (record_id=?)\n30 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n60 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 146,
+    "res_columns": [
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "parent_compound_name",
+      "substrate_compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

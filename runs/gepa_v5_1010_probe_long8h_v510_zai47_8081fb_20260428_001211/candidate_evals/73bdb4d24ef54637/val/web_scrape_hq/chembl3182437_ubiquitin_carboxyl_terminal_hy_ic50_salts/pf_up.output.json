@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts.json",
+  "case_id": "chembl3182437_ubiquitin_carboxyl_terminal_hy_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all IC50 activity records for CHEMBL3182437 and its salt forms against the specified target, including compound identifiers, structures, assay details, and literature references.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary, docs\n\n4. Logic: Identify the parent compound by chembl_id 'CHEMBL3182437' in molecule_dictionary. Retrieve all related salt forms by joining molecule_hierarchy on parent_molregno. Include the parent compound in the result set. Join compound_structures to obtain canonical SMILES. Join compound_records and activities on molregno and record_id to fetch activity data. Filter for activities where standard_type is 'IC50'. Join assays to retrieve assay descriptions. Join docs to obtain pubmed_id, preferring it over doi for the reference column. Join target_dictionary to filter for target chembl_id 'CHEMBL3430885' and retrieve target details. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all IC50 activity records for CHEMBL3182437 and its salt forms against the specified target, including compound identifiers, structures, assay details, and literature references.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary, docs\n\n4. Logic: Identify the parent compound by chembl_id 'CHEMBL3182437' in molecule_dictionary. Retrieve all related salt forms by joining molecule_hierarchy on parent_molregno. Include the parent compound in the result set. Join compound_structures to obtain canonical SMILES. Join compound_records and activities on molregno and record_id to fetch activity data. Filter for activities where standard_type is 'IC50'. Join assays to retrieve assay descriptions. Join docs to obtain pubmed_id, preferring it over doi for the reference column. Join target_dictionary to filter for target chembl_id 'CHEMBL3430885' and retrieve target details. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

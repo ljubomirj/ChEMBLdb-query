@@ -1,0 +1,13 @@
+Objective: Retrieve all compounds associated with a specific document, including their identifiers, names, development phase, type, and structure.
+
+Output: molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+
+Source: docs, compound_records, molecule_dictionary, compound_structures
+
+Logic:
+1. Filter docs table where chembl_id = 'CHEMBL1122107'.
+2. Join compound_records to docs via doc_id.
+3. Join molecule_dictionary to compound_records via molregno.
+4. Join compound_structures to molecule_dictionary via molregno.
+5. Select molecule_dictionary.chembl_id AS molecule_chembl_id, pref_name AS molecule_name, max_phase, molecule_type, and canonical_smiles.
+6. Sort by molecule_chembl_id ASC.

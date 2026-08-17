@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_dddb70f8a7bb6095.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/baoilleach_herg_bioassay_metadata.json",
+  "case_id": "baoilleach_herg_bioassay_metadata",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "dddb70f8a7bb6095",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT \n  a.chembl_id AS assay_chembl_id, \n  a.tid, \n  a.description AS assay_description, \n  td.pref_name AS target_name, \n  td.organism AS target_organism, \n  d.journal, \n  d.year, \n  d.volume, \n  d.first_page, \n  d.doi\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN docs d ON d.doc_id = a.doc_id\nWHERE a.assay_type = 'B' \n  AND a.tid = 165\nORDER BY a.chembl_id, a.tid, d.journal, d.year, d.doi\n```",
+    "parsed_json": {
+      "sql": "SELECT \n  a.chembl_id AS assay_chembl_id, \n  a.tid, \n  a.description AS assay_description, \n  td.pref_name AS target_name, \n  td.organism AS target_organism, \n  d.journal, \n  d.year, \n  d.volume, \n  d.first_page, \n  d.doi\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nJOIN docs d ON d.doc_id = a.doc_id\nWHERE a.assay_type = 'B' \n  AND a.tid = 165\nORDER BY a.chembl_id, a.tid, d.journal, d.year, d.doi"
+    }
+  }
+}

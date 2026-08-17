@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact.json",
+  "case_id": "chembl_downloader_assay_chembl3885862_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM assays ass\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ass.chembl_id = 'CHEMBL3885862'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\nORDER BY\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM assays ass\nJOIN activities a ON ass.assay_id = a.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE ass.chembl_id = 'CHEMBL3885862'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\nORDER BY\n  cs.canonical_smiles,\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_cytochrome_p450_2d6_molecule_smiles.json",
+  "case_id": "human_cytochrome_p450_2d6_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve compounds tested against human Cytochrome P450 2D6 (tid=289) with canonical SMILES. The SQL uses a DISTINCT projection on molecule_chembl_id and canonical_smiles, but the result set is empty (row_count: 0). This suggests either no compounds meet all criteria or the query logic is flawed. The join path appears correct: molecule_dictionary (parent compounds) \u2192 compound_records (record linkage) \u2192 activities (activity rows) \u2192 assays (assay metadata) \u2192 target_dictionary (target mapping). However, the filter on assays.assay_organism = 'Homo sapiens' may be too restrictive if the assay organism is stored elsewhere (e.g., target_dictionary.organism). The target_dictionary.tid = 289 filter is correct for human CYP2D6. The absence of rows could also stem from no activities for this target with assay_organism explicitly set to 'Homo sapiens' (some assays may lack organism data). The query does not filter on activity type (e.g., IC50) or standard_value, which may be intentional. The DISTINCT is appropriate to avoid duplicate SMILES for the same compound across multiple assays. The sample_rows_csv is empty, confirming no results. The query is syntactically correct and aligns with the FAQ salts pattern (parent compounds only, no salts). However, the empty result indicates either no data or a potential mismatch in the organism filter. The task is to judge if this result is sufficient to stop iterating; given the empty result, we must consider if the query is correct or if further refinement is needed. The query does not include a LIMIT, but the user did not request a limit. The empty result is a valid outcome if no compounds meet the criteria. The analysis must decide if this is a final answer or if the query needs adjustment (e.g., relaxing organism filter). Given the instructions, we should not assume data gaps; the query is logically sound. The empty result is acceptable, and no further iteration is needed unless the user expects data. The task is to judge if the current result is good enough to stop iterating. Since the query is correct and the empty result is plausible, we can stop.\",\n  \"score\": 0.95,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve compounds tested against human Cytochrome P450 2D6 (tid=289) with canonical SMILES. The SQL uses a DISTINCT projection on molecule_chembl_id and canonical_smiles, but the result set is empty (row_count: 0). This suggests either no compounds meet all criteria or the query logic is flawed. The join path appears correct: molecule_dictionary (parent compounds) \u2192 compound_records (record linkage) \u2192 activities (activity rows) \u2192 assays (assay metadata) \u2192 target_dictionary (target mapping). However, the filter on assays.assay_organism = 'Homo sapiens' may be too restrictive if the assay organism is stored elsewhere (e.g., target_dictionary.organism). The target_dictionary.tid = 289 filter is correct for human CYP2D6. The absence of rows could also stem from no activities for this target with assay_organism explicitly set to 'Homo sapiens' (some assays may lack organism data). The query does not filter on activity type (e.g., IC50) or standard_value, which may be intentional. The DISTINCT is appropriate to avoid duplicate SMILES for the same compound across multiple assays. The sample_rows_csv is empty, confirming no results. The query is syntactically correct and aligns with the FAQ salts pattern (parent compounds only, no salts). However, the empty result indicates either no data or a potential mismatch in the organism filter. The task is to judge if this result is sufficient to stop iterating; given the empty result, we must consider if the query is correct or if further refinement is needed. The query does not include a LIMIT, but the user did not request a limit. The empty result is a valid outcome if no compounds meet the criteria. The analysis must decide if this is a final answer or if the query needs adjustment (e.g., relaxing organism filter). Given the instructions, we should not assume data gaps; the query is logically sound. The empty result is acceptable, and no further iteration is needed unless the user expects data. The task is to judge if the current result is good enough to stop iterating. Since the query is correct and the empty result is plausible, we can stop.",
+      "score": 0.95,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_2d6_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_2d6_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_cytochrome_p450_2d6_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

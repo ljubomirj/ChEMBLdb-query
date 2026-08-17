@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_glycogen_synthase_kinase_3_beta_molecule_smiles.json",
+  "case_id": "human_glycogen_synthase_kinase_3_beta_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve compounds tested against human glycogen synthase kinase-3 beta (CHEMBL262) with assay type 'F' (Functional) and returns their ChEMBL IDs and canonical SMILES. However, the result set is empty (row_count: 0). This could be due to several reasons: (1) The target_dictionary.tid 11004 may not correspond to the exact target name 'Glycogen synthase kinase-3 beta' in the current dataset, (2) The assay_type filter 'F' may be too restrictive, as functional assays for kinase activity might be classified under a different assay_type (e.g., 'B' for Binding or 'A' for ADME), (3) The join conditions may miss some activity records if the activity is recorded under a different molregno or assay_id, or (4) The compound_structures table may not have canonical_smiles for all molecules, causing LEFT JOIN to be more appropriate. The current query uses INNER JOIN for compound_structures, which would exclude molecules without structures. Additionally, the target name filter uses pref_name, which may have case sensitivity or spelling variations. The query also lacks a check for assay_organism to ensure it's human (though target_dictionary.tid 11004 should correspond to human). The most likely issue is that the assay_type 'F' is not the correct type for kinase inhibition assays, which are often labeled as 'B' (Binding) or 'A' (ADME) in ChEMBL. The query should be adjusted to use a broader assay_type or remove the assay_type filter to capture all relevant assays.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve compounds tested against human glycogen synthase kinase-3 beta (CHEMBL262) with assay type 'F' (Functional) and returns their ChEMBL IDs and canonical SMILES. However, the result set is empty (row_count: 0). This could be due to several reasons: (1) The target_dictionary.tid 11004 may not correspond to the exact target name 'Glycogen synthase kinase-3 beta' in the current dataset, (2) The assay_type filter 'F' may be too restrictive, as functional assays for kinase activity might be classified under a different assay_type (e.g., 'B' for Binding or 'A' for ADME), (3) The join conditions may miss some activity records if the activity is recorded under a different molregno or assay_id, or (4) The compound_structures table may not have canonical_smiles for all molecules, causing LEFT JOIN to be more appropriate. The current query uses INNER JOIN for compound_structures, which would exclude molecules without structures. Additionally, the target name filter uses pref_name, which may have case sensitivity or spelling variations. The query also lacks a check for assay_organism to ensure it's human (though target_dictionary.tid 11004 should correspond to human). The most likely issue is that the assay_type 'F' is not the correct type for kinase inhibition assays, which are often labeled as 'B' (Binding) or 'A' (ADME) in ChEMBL. The query should be adjusted to use a broader assay_type or remove the assay_type filter to capture all relevant assays.",
+      "score": 0.65,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycogen_synthase_kinase_3_beta_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycogen_synthase_kinase_3_beta_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_glycogen_synthase_kinase_3_beta_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

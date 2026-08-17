@@ -1,0 +1,40 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all activity records for the assay with ChEMBL ID 'CHEMBL1613836'. For each activity record, include the standard_type, standard_relation, standard_value, and standard_units. Also include the canonical SMILES of the tested compound. Do not apply any filters on relation type, units, confidence score, or any other column. Include every available activity record; do not group or limit results.",
+    "sql": "SELECT a.standard_type, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1613836'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 32120,
+    "res_columns": [
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all activity records for the assay with ChEMBL ID 'CHEMBL1613836'. For each activity record, include the standard_type, standard_relation, standard_value, and standard_units. Also include the canonical SMILES of the tested compound from the compound_structures table if available. Only include records where the standard_relation is '=' (exact measured values) and where standard_value is not null and standard_relation is not null. Do not apply any other filters. Include every qualifying record; do not group or limit the results.",
+    "sql": "SELECT a.standard_type, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1613836' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 32120,
+    "res_columns": [
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

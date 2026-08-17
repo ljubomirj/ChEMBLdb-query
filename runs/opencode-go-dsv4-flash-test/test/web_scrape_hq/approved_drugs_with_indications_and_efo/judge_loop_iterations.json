@@ -1,0 +1,102 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs from the ChEMBL database. Approved drugs are those with max_phase = 4 in the molecule_dictionary table. For each approved drug, provide the following columns: chembl_id (ChEMBL identifier), pref_name (preferred name), canonical_smiles (canonical SMILES from compound_structures), indication_curie (EFO identifier from drug_indication.efo_id), indication_label (EFO indication label from drug_indication.efo_term), and max_phase_for_ind (maximum phase for the indication from drug_indication). Only include rows where both efo_id and efo_term are not null. Return distinct rows for exactly these six columns. The data should be obtained by joining molecule_dictionary, compound_structures (on molregno), and drug_indication (on molregno). Do not add any extra filters.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_term IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n15 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 31760,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve approved drugs from ChEMBL database. Approved drugs are those with max_phase = 4 in the molecule_dictionary table. For each approved drug, provide the following columns: chembl_id (the ChEMBL identifier), pref_name (preferred name), canonical_smiles (canonical SMILES from compound_structures), indication_curie (the EFO identifier from drug_indication.efo_id), indication_label (the EFO indication label from drug_indication.efo_term), and max_phase_for_ind (the maximum phase for the indication from drug_indication.max_phase_for_ind). Only include rows where both efo_id and efo_term are not null. Return distinct rows for exactly these six columns. The data should be obtained by joining molecule_dictionary with compound_structures on molregno and with drug_indication on molregno. Do not add any extra filters or limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_term IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n15 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 31760,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve approved drugs (molecules with max_phase = 4 in molecule_dictionary) from ChEMBL. For each approved drug, provide the following columns: chembl_id (the ChEMBL identifier from molecule_dictionary), pref_name (preferred name from molecule_dictionary), canonical_smiles (canonical SMILES from compound_structures), indication_curie (the EFO identifier from drug_indication.efo_id), indication_label (the EFO indication label from drug_indication.efo_term), and max_phase_for_ind (the maximum phase for the indication from drug_indication.max_phase_for_ind). Only include rows where drug_indication.efo_id is not null and starts with 'EFO:' to ensure it is an EFO ontology identifier, and drug_indication.efo_term is not null. Return distinct rows for exactly these six columns. Join molecule_dictionary with compound_structures on molregno, and with drug_indication on molregno. Do not add any other filters or limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_term IS NOT NULL AND di.efo_id LIKE 'EFO:%';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 21176,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve approved drugs from ChEMBL (molecules with max_phase = 4 in molecule_dictionary). For each approved drug, provide the following six columns: chembl_id (ChEMBL identifier from molecule_dictionary), pref_name (preferred name from molecule_dictionary), canonical_smiles (canonical SMILES from compound_structures), indication_curie (the EFO identifier from drug_indication.efo_id, restricted to rows where efo_id starts with 'EFO:' to ensure it is an EFO ontology identifier), indication_label (the EFO label from drug_indication.efo_term), and max_phase_for_ind (the maximum phase for the indication from drug_indication.max_phase_for_ind). Only include rows where drug_indication.efo_id is not null and starts with 'EFO:', and drug_indication.efo_term is not null. Return distinct rows for exactly these six columns. Join molecule_dictionary with compound_structures on molregno, and with drug_indication on molregno. Do not add any other filters or row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_id LIKE 'EFO:%' AND di.efo_term IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 21176,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve approved drugs (molecules with max_phase = 4 in molecule_dictionary) from ChEMBL. For each approved drug, provide the following six columns exactly: chembl_id (from molecule_dictionary), pref_name (from molecule_dictionary), canonical_smiles (from compound_structures), indication_curie (the EFO identifier from drug_indication.efo_id, restricted to rows where efo_id starts with 'EFO:'), indication_label (the EFO label from drug_indication.efo_term), and max_phase_for_ind (from drug_indication.max_phase_for_ind). Only include rows where molecule_dictionary.max_phase = 4, drug_indication.efo_id IS NOT NULL AND drug_indication.efo_id LIKE 'EFO:%', and drug_indication.efo_term IS NOT NULL. Return distinct rows for exactly those six columns. Join molecule_dictionary with compound_structures on molregno, and with drug_indication on molregno. Do not add any other filters or row limits.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_id LIKE 'EFO:%' AND di.efo_term IS NOT NULL;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 21176,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,99 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES of compounds tested against the enzyme 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays. The query must return distinct compound records. No additional filters (e.g., assay confidence score, target type, units, or source) are required beyond the target name and organism.",
+    "sql": "WITH target_assays AS (SELECT a.assay_id, a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens') SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles FROM target_assays ta JOIN molecule_dictionary md ON ta.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id ORDER BY md.molecule_chembl_id, cs.canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for compounds tested against the enzyme 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays, returning distinct compound entries without any additional filters or ranking.",
+    "sql": "WITH target_assays AS (SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens') SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles FROM target_assays ta JOIN activities a ON ta.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id ORDER BY md.molecule_chembl_id, cs.canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES of compounds tested against the enzyme 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays, returning distinct compound entries. The target is the single protein 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112, which belongs to the protein family 'PROTEIN' and is defined in the target dictionary with tid linked to assays. No additional filters (e.g., assay confidence score, unit restrictions, or source) are required. The result should include each qualifying compound once, with its ChEMBL ID and SMILES.",
+    "sql": "WITH target_assays AS (SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens') SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles FROM target_assays ta JOIN activities a ON ta.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id ORDER BY md.molecule_chembl_id, cs.canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the ChEMBL IDs and canonical SMILES for compounds tested against the enzyme 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays. Return distinct compound records. The target is the single protein with pref_name '3-hydroxyacyl-CoA dehydrogenase type-2' in organism 'Homo sapiens'. No additional filters (e.g., assay confidence, units, source) are required. The result must list each qualifying compound once, with its ChEMBL ID and SMILES.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens' ORDER BY md.molecule_chembl_id, cs.canonical_smiles",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the ChEMBL IDs (chembl_id) and canonical SMILES for compounds tested against the single protein target 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays. The result must list each qualifying compound once, showing its ChEMBL identifier and its canonical SMILES. Include only compounds where the assay target is 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 in the organism Homo sapiens. No other filters (e.g., assay confidence, units, source) are required. Return distinct pairs (chembl_id, canonical_smiles).",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.chembl_id = cs.molecule_chembl_id WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens' ORDER BY md.chembl_id, cs.canonical_smiles",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the ChEMBL IDs (chembl_id) and canonical SMILES for compounds tested against the target 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays. Return distinct compound entries with exactly two columns: chembl_id and canonical_smiles. The target must be the single protein with pref_name '3-hydroxyacyl\u2011CoA dehydrogenase type\u20112' and the assay must be performed in the organism Homo sapiens. No other filters (e.g., assay confidence score, units, source, date) are required. Each qualifying compound should appear once only.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2'\n  AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n24 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n34 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n64 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 15292,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the ChEMBL IDs (chembl_id) and canonical SMILES for compounds tested against the single protein target 3\u2011hydroxyacyl\u2011CoA dehydrogenase type\u20112 (CHEMBL4159) in human assays. The result must list each qualifying compound once, showing its ChEMBL identifier and its canonical SMILES. The target must be the single protein with pref_name '3-hydroxyacyl\u2011CoA dehydrogenase type\u20112' and the assay must be performed in the organism Homo sapiens. No other filters (e.g., assay confidence score, units, source, date) are required. Return distinct pairs (chembl_id, canonical_smiles).",
+    "sql": "WITH target_assays AS (SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name = '3-hydroxyacyl-CoA dehydrogenase type-2' AND td.organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM target_assays ta JOIN activities a ON ta.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id, cs.canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n17 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n29 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n45 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n55 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n67 | 0 | 54 | SEARCH a USING COVERING INDEX fk_act_assay_id (assay_id=?)",
+    "res_row_count": 15301,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

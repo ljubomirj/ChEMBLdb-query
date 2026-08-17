@@ -1,0 +1,69 @@
+{
+  "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-test/test/web_scrape_hq/approved_drugs_indication_multiple_myeloma/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-test/test/web_scrape_hq/approved_drugs_indication_multiple_myeloma/result.generated.csv",
+    "row_count": 29,
+    "column_names": [
+      "chembl_id",
+      "name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 166,
+    "actual_rows": 29,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "missing_cols": [
+      "pref_name",
+      "indication_curie",
+      "indication_label"
+    ],
+    "extra_cols": [
+      "name",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "status": "partial",
+    "score": 0.36988,
+    "column_recall": 0.5,
+    "row_ratio": 0.174699
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_multiple_myeloma",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    },
+    "judge_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    }
+  }
+}

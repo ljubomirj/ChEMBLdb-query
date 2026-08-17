@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 12,047 rows of IC50 activities for Cytochrome P450 3A4, but the sample rows reveal several issues: (1) The query incorrectly includes activities with 'standard_relation' '>' (e.g., 30000.0 nM) which are not exact IC50 values (the task requires exact IC50 values, i.e., '='). (2) The 'activity_comment' column is empty in the sample rows, but the query includes it as a raw column without filtering for meaningful comments. (3) The 'assay_description' in the sample rows is generic ('Inhibition of recombinant human Cytochrome P450 3A4...') but the task requires exact assay details (e.g., 'IC50' as the assay type). (4) The query does not enforce the exact IC50 condition (standard_relation = '=') as required by the task, leading to inclusion of '>' relations. (5) The 'activity_comment' should be omitted as it's not requested in the output schema (the task asks for 'activity_comment' but the sample rows show it's empty; however, the task explicitly lists it as a required column). The current result is not good enough because it violates the exact IC50 requirement and includes non-exact relations.\",\n  \"score\": 0.45,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 12,047 rows of IC50 activities for Cytochrome P450 3A4, but the sample rows reveal several issues: (1) The query incorrectly includes activities with 'standard_relation' '>' (e.g., 30000.0 nM) which are not exact IC50 values (the task requires exact IC50 values, i.e., '='). (2) The 'activity_comment' column is empty in the sample rows, but the query includes it as a raw column without filtering for meaningful comments. (3) The 'assay_description' in the sample rows is generic ('Inhibition of recombinant human Cytochrome P450 3A4...') but the task requires exact assay details (e.g., 'IC50' as the assay type). (4) The query does not enforce the exact IC50 condition (standard_relation = '=') as required by the task, leading to inclusion of '>' relations. (5) The 'activity_comment' should be omitted as it's not requested in the output schema (the task asks for 'activity_comment' but the sample rows show it's empty; however, the task explicitly lists it as a required column). The current result is not good enough because it violates the exact IC50 requirement and includes non-exact relations.",
+      "score": 0.45,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_cytochrome_p450_3a4/pf_judge.generated_artifact_record.json"
+  }
+}

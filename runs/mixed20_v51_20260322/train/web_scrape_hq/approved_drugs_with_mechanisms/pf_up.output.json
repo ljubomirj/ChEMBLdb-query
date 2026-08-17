@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_mechanisms.json",
+  "case_id": "approved_drugs_with_mechanisms",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name). Join molecule_dictionary INNER JOIN drug_mechanism on molregno, INNER JOIN compound_structures on molregno, LEFT JOIN target_dictionary on drug_mechanism.tid. Filter molecule_dictionary.max_phase = 4 and canonical_smiles is not null. Return DISTINCT rows. Sort by all eight output columns.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name). Join molecule_dictionary INNER JOIN drug_mechanism on molregno, INNER JOIN compound_structures on molregno, LEFT JOIN target_dictionary on drug_mechanism.tid. Filter molecule_dictionary.max_phase = 4 and canonical_smiles is not null. Return DISTINCT rows. Sort by all eight output columns."
+    }
+  }
+}

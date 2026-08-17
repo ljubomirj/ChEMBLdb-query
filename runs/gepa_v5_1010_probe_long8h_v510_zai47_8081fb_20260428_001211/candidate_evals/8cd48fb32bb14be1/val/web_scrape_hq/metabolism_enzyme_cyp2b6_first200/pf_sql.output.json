@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8cd48fb32bb14be1.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2b6_first200.json",
+  "case_id": "metabolism_enzyme_cyp2b6_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "8cd48fb32bb14be1",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT cs.canonical_smiles, cr_sub.compound_name AS substrate_compound_name, cr_par.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno LEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id WHERE LOWER(m.enzyme_name) LIKE '%cyp2b6%' ORDER BY cs.canonical_smiles ASC, cr_sub.compound_name ASC, cr_par.compound_name ASC, m.met_conversion ASC, m.pathway_key ASC, m.organism ASC, m.enzyme_name ASC LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT cs.canonical_smiles, cr_sub.compound_name AS substrate_compound_name, cr_par.compound_name AS parent_compound_name, m.met_conversion, m.pathway_key, m.organism, m.enzyme_name FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno LEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id WHERE LOWER(m.enzyme_name) LIKE '%cyp2b6%' ORDER BY cs.canonical_smiles ASC, cr_sub.compound_name ASC, cr_par.compound_name ASC, m.met_conversion ASC, m.pathway_key ASC, m.organism ASC, m.enzyme_name ASC LIMIT 200"
+    }
+  }
+}

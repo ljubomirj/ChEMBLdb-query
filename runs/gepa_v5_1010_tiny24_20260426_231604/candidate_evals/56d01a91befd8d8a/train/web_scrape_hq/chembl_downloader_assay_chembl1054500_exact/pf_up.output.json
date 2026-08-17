@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/data1/data/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_tiny24_20260426_231604/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/data1/data/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1054500_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1054500_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units for all activity rows in assay CHEMBL1054500. Join molecule_dictionary to activities on molregno, then join assays on assay_id. Filter by assay chembl_id CHEMBL1054500, standard_value is not null, and standard_relation equals '='. Join compound_structures on molregno as an INNER JOIN to ensure canonical_smiles is present. Return all qualifying activity rows without deduplication. Sort results by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units for all activity rows in assay CHEMBL1054500. Join molecule_dictionary to activities on molregno, then join assays on assay_id. Filter by assay chembl_id CHEMBL1054500, standard_value is not null, and standard_relation equals '='. Join compound_structures on molregno as an INNER JOIN to ensure canonical_smiles is present. Return all qualifying activity rows without deduplication. Sort results by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units."
+    }
+  }
+}

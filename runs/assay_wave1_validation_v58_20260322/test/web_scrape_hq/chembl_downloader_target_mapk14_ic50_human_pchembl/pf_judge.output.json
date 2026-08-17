@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_mapk14_ic50_human_pchembl",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements all constraints: filters to target CHEMBL260 (MAPK14), target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation '=', and non-null pchembl_value. It joins activities with assays, target_dictionary, molecule_dictionary, and compound_structures, and orders by molecule_chembl_id then assay_chembl_id. The result set includes 6269 rows with the requested columns and sample rows match the expected schema. No deduplication was applied, preserving activity-row multiplicity as requested.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements all constraints: filters to target CHEMBL260 (MAPK14), target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation '=', and non-null pchembl_value. It joins activities with assays, target_dictionary, molecule_dictionary, and compound_structures, and orders by molecule_chembl_id then assay_chembl_id. The result set includes 6269 rows with the requested columns and sample rows match the expected schema. No deduplication was applied, preserving activity-row multiplicity as requested.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

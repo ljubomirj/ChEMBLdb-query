@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "I need a list of distinct molecule ChEMBL IDs, compound names, and canonical SMILES for all molecules associated with the document whose ChEMBL ID is 'CHEMBL3638969'. The output should contain three columns: the molecule's ChEMBL ID (from molecule_dictionary.chembl_id), the compound name (the preferred name from molecule_dictionary.pref_name), and the canonical SMILES (from compound_structures.canonical_smiles). Only include molecules that have a non-null canonical SMILES. The association between molecules and the document is via compound_records (linking molregno to doc_id) and docs (joining on doc_id and filtering by docs.chembl_id = 'CHEMBL3638969'). Order the final rows by molecule ChEMBL ID, then by compound name, then by canonical SMILES, all in ascending order.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name AS compound_name, cs.canonical_smiles FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL3638969' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, md.pref_name, cs.canonical_smiles;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

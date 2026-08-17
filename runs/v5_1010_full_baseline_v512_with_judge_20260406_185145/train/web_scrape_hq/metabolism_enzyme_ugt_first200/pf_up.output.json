@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_ugt_first200.json",
+  "case_id": "metabolism_enzyme_ugt_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\\nJoin metabolism m on m.met_id = m.met_id\\nJoin compound_records cr on m.substrate_record_id = cr.record_id\\nJoin molecule_dictionary sub on cr.molregno = sub.molregno\\nJoin compound_structures cs on sub.molregno = cs.molregno\\nJoin molecule_dictionary parent on m.metabolite_record_id = parent.molregno\\nJoin molecule_dictionary sub_parent on m.metabolite_record_id = sub_parent.molregno\\nJoin target_dictionary t on m.enzyme_tid = t.tid\\nFilter t.target_type = 'ENZYME' and t.pref_name = 'UGT enzymes'\\nLimit 200\\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\"\n}",
+    "parsed_json": {
+      "up": "Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\nJoin metabolism m on m.met_id = m.met_id\nJoin compound_records cr on m.substrate_record_id = cr.record_id\nJoin molecule_dictionary sub on cr.molregno = sub.molregno\nJoin compound_structures cs on sub.molregno = cs.molregno\nJoin molecule_dictionary parent on m.metabolite_record_id = parent.molregno\nJoin molecule_dictionary sub_parent on m.metabolite_record_id = sub_parent.molregno\nJoin target_dictionary t on m.enzyme_tid = t.tid\nFilter t.target_type = 'ENZYME' and t.pref_name = 'UGT enzymes'\nLimit 200\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name"
+    }
+  }
+}

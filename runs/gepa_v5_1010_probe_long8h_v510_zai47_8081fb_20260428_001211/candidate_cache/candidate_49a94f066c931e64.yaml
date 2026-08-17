@@ -1,0 +1,90 @@
+version: v5.14
+system:
+  about_block: |
+    You will be used in forward and backward roles inside a ChEMBL text-to-SQL system.
+    Follow the task instructions in the user message under <TASK>.
+  schema_block_path: doc/chembl_database_schema.md
+  hint_block_path: doc/chembl_prompt_hints_v4.11.md
+  examples_block: |
+    <EXAMPLES>
+    Example user question:
+    "Top 10 most potent compounds against EGFR by IC50"
+
+    Example execution-plan UP:
+    "Return the top 10 compounds ranked by lowest IC50 against human EGFR. Select compound identifiers and potency values only."
+
+    Example backward reconstruction target:
+    "Recover a realistic user question from the execution-plan artifact without leaking SQL syntax."
+    </EXAMPLES>
+pf:
+  up: |
+    <TASK>
+    Convert a user-facing question into a compact execution-oriented User Prompt (UP).
+    The UP is a precise specification for a SQL writer.
+    Format the UP as a concise structured paragraph. DO NOT emit SQL.
+    Structure the response using the following headers:
+    1. Objective: [Goal summary]
+    2. Output: [List exact column names/aliases required. If output involves a molecule entity, always include chembl_id]
+    3. Source: [Primary tables]
+    4. Logic: [Filter conditions, join links, sorting, and limits]
+    
+    Critical Rules:
+    - Output ONLY the text plan. Do NOT output JSON tags like {"up": "..."}.
+    - Use strict imperative language.
+    - For "non-protein" or exclusion filters, explicitly state IS NOT or != logic in the Logic block.
+    - Do NOT repeat the user question verbatim.
+    - Always respond with a valid structured plan, even for vague or document-related queries.
+    </TASK>
+  sql: |
+    <TASK>
+    Convert the execution-oriented User Prompt into a single executable SQLite SELECT query for ChEMBL.
+    Strictness:
+    - Output Schema: Adhere EXACTLY to the columns requested in the Select block of the UP. Do not omit requested columns. Do not add columns unless required for JOIN logic (in which case do not select them).
+    - Standard Filtering: When filtering activities (e.g. for 'active' compounds), apply standard logic: standard_relation = '=' OR standard_relation LIKE '>' AND standard_value >= 5 AND standard_units = 'nM'.
+    - Joins: 
+      - Use INNER JOIN for required links between entities.
+      - When linking `target_dictionary` in activity queries, join via assays: `target_dictionary.tid = assays.tid`.
+      - When retrieving `molecule_dictionary` data (chembl_id, pref_name) for activities, join via `activities.molregno = molecule_dictionary.molregno`.
+      - When retrieving `compound_structures` data (canonical_smiles) for activities, join via `activities.molregno = compound_structures.molregno`.
+      - When linking `molecule_synonyms` for compound names, join via `molecule_dictionary.molregno = molecule_synonyms.molregno`.
+    - Prohibited Columns: Never use `activities.tid` / `act.tid` (this column does not exist in ChEMBL activities).
+    - Negation Handling: Use IS NOT or != for exclusion filters. Avoid NOT IN if a direct negative check on a column is more robust for coverage.
+    - Distinctness: To prevent join duplication, ensure DISTINCT is applied when querying activity details linked to assays or targets.
+    - Output JSON only with key "sql".
+    </TASK>
+  judge: |
+    <TASK>
+    Judge whether the current result is good enough to stop iterating.
+    This is an iterative diagnostic, not the benchmark authority.
+    Output JSON with keys "analysis", "score", and "decision".
+    </TASK>
+pb:
+  sql_to_up: |
+    <TASK>
+    Reconstruct a compact execution-oriented User Prompt from SQL.
+    Preserve semantic intent, required output schema, and key constraints.
+    Structure the response as a text plan (Objective, Output, Source, Logic).
+    Output JSON only with key "up_exec".
+    </TASK>
+  up_to_uq: |
+    <TASK>
+    Reconstruct a realistic human-facing user question from an execution-oriented User Prompt.
+    Keep it natural and concise. Do not leak schema names unless a real user would likely say them.
+    Rules:
+    - Prefer what a scientist or analyst would plausibly ask, not an execution spec.
+    - Avoid internal table names, explicit join instructions, and implementation wording.
+    - Avoid exact schema-qualified column names unless that exact schema request is central to the task.
+    - Preserve intent, entity, measurement type, filters, and ordering when they matter.
+    - When the execution prompt is very specific, compress it into a plausible human request rather than copying it back.
+    Output JSON only with key "uq_surface".
+    </TASK>
+  res_sql_to_intent: |
+    <TASK>
+    Summarize the likely task intent from SQL and a result table summary.
+    Focus on entities, filters, output columns, ordering, and result shape.
+    Output JSON only with key "intent_sketch".
+    </TASK>
+scoring:
+  judge_threshold: 0.9
+  uq_up_echo_penalty_threshold: 0.95
+  uq_up_echo_penalty_weight: 0.15

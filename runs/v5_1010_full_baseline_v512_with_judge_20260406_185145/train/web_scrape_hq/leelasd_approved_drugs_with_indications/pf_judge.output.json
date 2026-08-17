@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 11,524 rows of approved oral non-withdrawn drugs with their canonical SMILES, max phase, indication headings, and first approval years. The query correctly filters for therapeutic_flag=1, oral=1, black_box_warning=0, withdrawn_flag=0, and orders by first_approval descending. The DISTINCT clause ensures unique rows for the selected columns. The sample rows show valid data with appropriate indication headings and years. However, the result includes duplicate indication headings for the same compound (e.g., RESMETIROM appears twice with different indications), which violates the DISTINCT requirement for the full row set. The DISTINCT applies to all selected columns, but the duplicate rows have identical values for all columns except mesh_heading, meaning they are distinct rows per the query. The user requested DISTINCT rows only for the requested output columns, which is satisfied. The result meets the task requirements: approved drugs with the specified attributes, ordered by most recent first approval, with DISTINCT rows for the output columns. No further iteration is needed.\",\n  \"score\": 0.95,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 11,524 rows of approved oral non-withdrawn drugs with their canonical SMILES, max phase, indication headings, and first approval years. The query correctly filters for therapeutic_flag=1, oral=1, black_box_warning=0, withdrawn_flag=0, and orders by first_approval descending. The DISTINCT clause ensures unique rows for the selected columns. The sample rows show valid data with appropriate indication headings and years. However, the result includes duplicate indication headings for the same compound (e.g., RESMETIROM appears twice with different indications), which violates the DISTINCT requirement for the full row set. The DISTINCT applies to all selected columns, but the duplicate rows have identical values for all columns except mesh_heading, meaning they are distinct rows per the query. The user requested DISTINCT rows only for the requested output columns, which is satisfied. The result meets the task requirements: approved drugs with the specified attributes, ordered by most recent first approval, with DISTINCT rows for the output columns. No further iteration is needed.",
+      "score": 0.95,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/leelasd_approved_drugs_with_indications/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/leelasd_approved_drugs_with_indications/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/leelasd_approved_drugs_with_indications/pf_judge.generated_artifact_record.json"
+  }
+}

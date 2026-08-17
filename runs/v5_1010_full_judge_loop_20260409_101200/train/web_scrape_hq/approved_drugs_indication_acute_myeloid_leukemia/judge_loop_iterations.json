@@ -1,0 +1,34 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs indicated for acute myeloid leukemia. Return the preferred name (pref_name) and ChEMBL ID (chembl_id) of the drugs.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND di.mesh_heading = 'Leukemia, Myelogenous, Acute, NOS'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve approved drugs (max_phase = 4) indicated for acute myeloid leukemia. The MeSH heading is 'Leukemia, Myeloid, Acute'. Return the drug preferred name (pref_name) and ChEMBL ID (chembl_id).",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND di.mesh_heading = 'Leukemia, Myeloid, Acute'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 205,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

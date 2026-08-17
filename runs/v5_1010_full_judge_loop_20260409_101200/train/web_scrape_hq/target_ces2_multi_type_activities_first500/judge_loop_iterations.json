@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 500 activity measurements for compounds tested against the target with ChEMBL ID 'CHEMBL206', including compound structures. Rank the results by potency (most potent first). Return the compound ChEMBL ID, canonical SMILES, standard activity value, standard units, standard type, and activity ID.",
+    "sql": "WITH ranked_activities AS (SELECT a.activity_id, a.molregno, a.standard_value, a.standard_units, a.standard_type, cs.canonical_smiles, md.chembl_id, ROW_NUMBER() OVER (ORDER BY a.standard_value ASC) AS rn FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL206' AND a.standard_value IS NOT NULL) SELECT chembl_id, canonical_smiles, standard_value, standard_units, standard_type, activity_id FROM ranked_activities WHERE rn <= 500;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE ranked_activities\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n17 | 5 | 255 | SEARCH a USING INDEX idx_act_std_val (standard_value>?)\n22 | 5 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n29 | 5 | 0 | BLOOM FILTER ON td (tid=?)\n37 | 5 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n47 | 5 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n54 | 5 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n79 | 2 | 257 | SCAN (subquery-3)\n127 | 0 | 257 | SCAN ranked_activities",
+    "res_row_count": 500,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "activity_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

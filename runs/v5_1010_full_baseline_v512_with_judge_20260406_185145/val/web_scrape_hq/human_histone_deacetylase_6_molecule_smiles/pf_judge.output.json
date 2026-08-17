@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_histone_deacetylase_6_molecule_smiles.json",
+  "case_id": "human_histone_deacetylase_6_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query returned 0 rows because the target name filter 'histone deacetylase 6' did not match any entries in target_dictionary.pref_name. The correct target name in ChEMBL is 'Histone deacetylase 6' (capitalized). Additionally, the query did not explicitly filter for human targets (tax_id = 9606), so it would include all organisms if the name matched. The execution plan also requested an INNER JOIN on compound_structures, which is correct for requiring SMILES.\",\n  \"score\": 0.4,\n  \"decision\": \"continue\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows because the target name filter 'histone deacetylase 6' did not match any entries in target_dictionary.pref_name. The correct target name in ChEMBL is 'Histone deacetylase 6' (capitalized). Additionally, the query did not explicitly filter for human targets (tax_id = 9606), so it would include all organisms if the name matched. The execution plan also requested an INNER JOIN on compound_structures, which is correct for requiring SMILES.",
+      "score": 0.4,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/human_histone_deacetylase_6_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/human_histone_deacetylase_6_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/val/web_scrape_hq/human_histone_deacetylase_6_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

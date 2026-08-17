@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  met.substrate_record_id,\n  met.metabolite_record_id,\n  cr_sub.compound_key AS substrate_compound_key,\n  cr_met.compound_key AS metabolite_compound_key,\n  met.met_conversion,\n  met.pathway_key\nFROM metabolism met\nJOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_met ON met.metabolite_record_id = cr_met.record_id\nLIMIT 200\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  met.substrate_record_id,\n  met.metabolite_record_id,\n  cr_sub.compound_key AS substrate_compound_key,\n  cr_met.compound_key AS metabolite_compound_key,\n  met.met_conversion,\n  met.pathway_key\nFROM metabolism met\nJOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_met ON met.metabolite_record_id = cr_met.record_id\nLIMIT 200"
+    }
+  }
+}

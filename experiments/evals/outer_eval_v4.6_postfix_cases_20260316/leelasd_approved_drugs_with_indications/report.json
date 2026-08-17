@@ -1,0 +1,69 @@
+{
+  "ts_utc": "2026-03-16T18:48:35Z",
+  "eval_label": "leelasd_approved_drugs_with_indications",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.6.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 1,
+      "n_pass": 1,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "leelasd_approved_drugs_with_indications",
+          "uq": "Retrieve approved drugs from ChEMBL together with preferred name, canonical SMILES, max clinical phase, indication heading, and first approval year. Keep only approved drugs with max_phase = 4 and return exactly chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval, ordered by most recent first approval. Return DISTINCT rows only for those requested output columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.6_postfix_cases_20260316/leelasd_approved_drugs_with_indications/val/web_scrape_hq/leelasd_approved_drugs_with_indications/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.6_postfix_cases_20260316/leelasd_approved_drugs_with_indications/val/web_scrape_hq/leelasd_approved_drugs_with_indications/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 29285,
+          "actual_rows": 29285,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 1,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

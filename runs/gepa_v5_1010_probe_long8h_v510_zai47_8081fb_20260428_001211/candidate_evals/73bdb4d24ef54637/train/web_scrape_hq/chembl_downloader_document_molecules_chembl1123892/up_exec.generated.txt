@@ -1,0 +1,7 @@
+1. Objective: Extract distinct molecule identifiers, names, and canonical SMILES for all compounds referenced in a specific document, ensuring structures are present.
+
+2. Output: chembl_id, compound_name, canonical_smiles
+
+3. Source: docs, compound_records, molecule_dictionary, compound_structures
+
+4. Logic: Filter docs where chembl_id = 'CHEMBL1123892'. Join compound_records on doc_id. Join molecule_dictionary on molregno to obtain chembl_id. Join compound_structures on molregno and require canonical_smiles IS NOT NULL. Apply DISTINCT to the projection. Order by chembl_id, compound_name, canonical_smiles.

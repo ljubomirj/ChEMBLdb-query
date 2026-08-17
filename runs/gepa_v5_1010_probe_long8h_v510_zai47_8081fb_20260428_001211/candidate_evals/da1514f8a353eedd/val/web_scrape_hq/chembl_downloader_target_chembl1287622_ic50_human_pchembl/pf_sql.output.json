@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_da1514f8a353eedd.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1287622_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1287622_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "da1514f8a353eedd",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  assays.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value\nFROM activities act\nINNER JOIN assays ON act.assay_id = assays.assay_id\nINNER JOIN target_dictionary td ON td.tid = assays.tid\nINNER JOIN molecule_dictionary md ON act.molregno = md.molregno\nINNER JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL1287622'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\nORDER BY\n  molecule_chembl_id ASC,\n  assay_chembl_id ASC\nLIMIT 1000\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  assays.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  act.standard_type,\n  act.pchembl_value\nFROM activities act\nINNER JOIN assays ON act.assay_id = assays.assay_id\nINNER JOIN target_dictionary td ON td.tid = assays.tid\nINNER JOIN molecule_dictionary md ON act.molregno = md.molregno\nINNER JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  td.chembl_id = 'CHEMBL1287622'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\nORDER BY\n  molecule_chembl_id ASC,\n  assay_chembl_id ASC\nLIMIT 1000"
+    }
+  }
+}

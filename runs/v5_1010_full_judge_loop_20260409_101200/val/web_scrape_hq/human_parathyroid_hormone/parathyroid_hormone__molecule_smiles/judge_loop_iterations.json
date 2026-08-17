@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Return the canonical SMILES for all distinct molecules that have been tested in assays targeting the human parathyroid hormone receptor (ChEMBL ID CHEMBL1793).",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1793' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 227 | SEARCH cs USING INDEX idx_cmpdstr_smiles (canonical_smiles>?)\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n26 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n35 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 46854,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

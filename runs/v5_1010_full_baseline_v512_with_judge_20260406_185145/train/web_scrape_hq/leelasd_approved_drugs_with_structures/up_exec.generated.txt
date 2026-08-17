@@ -1,0 +1,8 @@
+Select molecule_dictionary.chembl_id AS molecule_chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, molecule_dictionary.first_approval
+Join molecule_dictionary ON molecule_dictionary.molregno = compound_records.molregno
+Join compound_records ON compound_records.molregno = molecule_dictionary.molregno
+Join compound_structures ON compound_structures.molregno = molecule_dictionary.molregno
+Filter molecule_dictionary.max_phase IN (3, 4)
+Filter compound_records.record_id IS NOT NULL
+Return molecule_chembl_id, pref_name, canonical_smiles, max_phase, first_approval
+Sort by molecule_chembl_id, canonical_smiles, max_phase, first_approval

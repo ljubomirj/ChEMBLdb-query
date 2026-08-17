@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 rows from the metabolism table. Join metabolism to compound_records on substrate_record_id = compound_records.record_id, then join compound_structures on that compound_records.molregno for canonical_smiles and substrate_compound_key \u2014 this substrate-side join is mandatory (INNER JOIN). Join compound_records again on metabolite_record_id = compound_records.record_id for metabolite_compound_key \u2014 this metabolite-side join is optional (LEFT JOIN). Do not add sorting; preserve source row order. Return exactly: canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, pathway_key.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 rows from the metabolism table. Join metabolism to compound_records on substrate_record_id = compound_records.record_id, then join compound_structures on that compound_records.molregno for canonical_smiles and substrate_compound_key \u2014 this substrate-side join is mandatory (INNER JOIN). Join compound_records again on metabolite_record_id = compound_records.record_id for metabolite_compound_key \u2014 this metabolite-side join is optional (LEFT JOIN). Do not add sorting; preserve source row order. Return exactly: canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, pathway_key."
+    }
+  }
+}

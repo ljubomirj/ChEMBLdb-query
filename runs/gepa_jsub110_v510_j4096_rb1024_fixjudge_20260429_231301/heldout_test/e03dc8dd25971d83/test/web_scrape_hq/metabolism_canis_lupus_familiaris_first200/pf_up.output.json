@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_j4096_rb1024_fixjudge_20260429_231301/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_canis_lupus_familiaris_first200.json",
+  "case_id": "metabolism_canis_lupus_familiaris_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "Select: metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, molecule_dictionary.chembl_id AS substrate_chembl_id, molecule_dictionary.pref_name AS substrate_name, compound_structures.canonical_smiles, compound_records.compound_name. Source: metabolism. Join: Join compound_records on metabolism.substrate_record_id = compound_records.record_id. Join molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno. Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Filter: metabolism.tax_id = 9615. Sort: metabolism.met_id ascending. Limit: 200."
+}

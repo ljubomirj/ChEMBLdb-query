@@ -1,0 +1,18 @@
+[
+  {
+    "n": 2,
+    "up": "Identify all distinct targets (ChEMBL ID and preferred name) for assays where the assay organism is Staphylococcus aureus. Return a list of unique target entries.",
+    "sql": "SELECT DISTINCT td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Staphylococcus aureus'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n23 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 110,
+    "res_columns": [
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "case_id": "chembl_downloader_document_molecules_chembl3544494",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape_1010/chembl_downloader_document_molecules_chembl3544494/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl3544494/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl3544494/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape_1010/chembl_downloader_document_molecules_chembl3544494/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape_1010/chembl_downloader_document_molecules_chembl3544494/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape_1010/chembl_downloader_document_molecules_chembl3544494/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl3544494/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape_1010/chembl_downloader_document_molecules_chembl3544494/documentation.txt"
+  },
+  "metadata": {
+    "family": "document",
+    "origin": "v5.1010_document_wave2_grounded_sql_no_llm",
+    "source_title": "chembl_downloader document molecules instantiated for CHEMBL3544494: Drug metabolism data",
+    "source_url": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "tags": [
+      "document",
+      "v5.1010",
+      "document_wave2",
+      "grounded_sql",
+      "no_llm_generation",
+      "local_llm_surface_repair"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {},
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "v5.1010 extension from unused document_wave2 candidate; row_count=697; candidate_index=3; title=Drug metabolism data\nv5.1010 LocalLLM repair: generated up_exec via PB_SQL and rewrote deterministic document UQ via PB_UP."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_pancreatic_carcinoma.json",
+  "case_id": "approved_drugs_indication_pancreatic_carcinoma",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT md.pref_name AS drug_name, di.efo_term AS indication FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE md.therapeutic_flag = 1 AND di.efo_term LIKE '%pancreatic carcinoma%' ORDER BY md.pref_name ASC;"
+}

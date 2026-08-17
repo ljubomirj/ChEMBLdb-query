@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity data for the target CHEMBL1811 (Prostaglandin E2 receptor EP1 subtype). Return up to 1000 rows. For each row, include the assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Only include rows where the standard relation is '=' and the pChEMBL value is not null. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH target_ids AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1811'), valid_activities AS (SELECT activities.activity_id, activities.assay_id, activities.molregno, activities.standard_type, activities.pchembl_value FROM activities JOIN target_ids ON activities.tid = target_ids.tid WHERE activities.standard_type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL ORDER BY activities.molregno, activities.assay_id LIMIT 1000) SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, valid_activities.standard_type, valid_activities.pchembl_value FROM valid_activities JOIN assays ON valid_activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN compound_structures ON valid_activities.molregno = compound_structures.molregno JOIN molecule_dictionary ON valid_activities.molregno = molecule_dictionary.molregno ORDER BY molecule_dictionary.chembl_id, assays.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: activities.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: activities.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve IC50 activity data for the human single-protein target CHEMBL1811 (Prostaglandin E2 receptor EP1 subtype). Return the first 1000 rows. For each row, include the assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Only include rows where the standard relation is '=' and the pChEMBL value is not null. Order the results by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH ranked_activities AS (\n  SELECT\n    a.activity_id,\n    a.assay_id,\n    a.molregno,\n    a.standard_type,\n    a.pchembl_value,\n    ass.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    ROW_NUMBER() OVER (\n      PARTITION BY a.activity_id\n      ORDER BY md.chembl_id, ass.chembl_id\n    ) AS rn\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE\n    td.chembl_id = 'CHEMBL1811'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n  ORDER BY md.chembl_id, ass.chembl_id\n  LIMIT 1000\n)\nSELECT\n  assay_chembl_id,\n  target_type,\n  tax_id,\n  canonical_smiles,\n  molecule_chembl_id,\n  standard_type,\n  pchembl_value\nFROM ranked_activities;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n2 | 0 | 0 | CO-ROUTINE ranked_activities\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n17 | 5 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 5 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 5 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 5 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 5 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 5 | 0 | USE TEMP B-TREE FOR ORDER BY\n105 | 2 | 130 | SCAN (subquery-3)\n172 | 2 | 0 | USE TEMP B-TREE FOR ORDER BY\n188 | 0 | 115 | SCAN ranked_activities",
+    "res_row_count": 609,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

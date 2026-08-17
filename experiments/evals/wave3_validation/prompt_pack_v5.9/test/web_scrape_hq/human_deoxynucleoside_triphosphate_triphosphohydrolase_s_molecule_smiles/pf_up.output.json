@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_deoxynucleoside_triphosphate_triphosphohydrolase_s_molecule_smiles.json",
+  "case_id": "human_deoxynucleoside_triphosphate_triphosphohydrolase_s_molecule_smiles",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\"up\":\"Select distinct molecule ChEMBL IDs (aliased as compound_chembl_id) and canonical SMILES (aliased as canonical_smiles) for compounds tested against the target named 'deoxynucleoside triphosphate triphosphohydrolase' in Homo sapiens. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Filter target_dictionary.pref_name for 'deoxynucleoside triphosphate triphosphohydrolase' and target_dictionary.organism (or tax_id) for Homo sapiens. Also filter assays.assay_organism for 'Homo sapiens' to restrict to assays performed on human cells. INNER JOIN compound_structures on molregno to ensure canonical_smiles is present. Deduplicate on (compound_chembl_id, canonical_smiles). Sort by compound_chembl_id ascending.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL IDs (aliased as compound_chembl_id) and canonical SMILES (aliased as canonical_smiles) for compounds tested against the target named 'deoxynucleoside triphosphate triphosphohydrolase' in Homo sapiens. Join molecule_dictionary to activities on molregno, activities to assays on assay_id, and assays to target_dictionary on tid. Filter target_dictionary.pref_name for 'deoxynucleoside triphosphate triphosphohydrolase' and target_dictionary.organism (or tax_id) for Homo sapiens. Also filter assays.assay_organism for 'Homo sapiens' to restrict to assays performed on human cells. INNER JOIN compound_structures on molregno to ensure canonical_smiles is present. Deduplicate on (compound_chembl_id, canonical_smiles). Sort by compound_chembl_id ascending."
+    }
+  }
+}

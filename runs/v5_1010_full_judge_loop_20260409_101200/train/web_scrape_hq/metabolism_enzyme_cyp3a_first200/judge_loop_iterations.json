@@ -1,0 +1,120 @@
+[
+  {
+    "n": 1,
+    "up": "Fetch the first 200 metabolism records that involve CYP3A enzymes. For each record, retrieve the substrate compound name, its structure (canonical SMILES or molfile), the metabolic conversion description, the metabolic pathway, and the organism in which the metabolism was observed. The results should be ordered by the metabolism record identifier (met_id) in ascending order, but without imposing any row limit beyond the first 200 records returned by the query.",
+    "sql": "WITH ranked AS (SELECT m.met_id, m.met_conversion, m.pathway_key, m.met_comment, s.compound_name, s.canonical_smiles, s.molregno, m.organism, m.met_conversion, m.pathway_key, s.molregno AS substrate_molregno FROM metabolism m JOIN compound_dictionary cd ON m.substrate_record_id = cd.record_id JOIN compound_structures cs ON cd.molregno = cs.molregno JOIN compound_dictionary s ON cd.molregno = s.molregno WHERE m.enzyme_name LIKE '%CYP3A%' ORDER BY m.met_id LIMIT 200) SELECT * FROM ranked ORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: compound_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: compound_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return the first 200 metabolism records that involve CYP3A enzymes. For each record, provide the substrate's canonical SMILES (or molfile), the substrate compound name, the metabolic conversion description, the metabolic pathway, and the organism in which the metabolism was observed. Return the results in ascending order of the metabolism record identifier (met_id) and include at most the first 200 records returned by the query. The user wants the substrate's full chemical structure (SMILES/molecule), compound name, conversion, pathway, and organism; no other data or filters are needed.",
+    "sql": "WITH met_records AS (\n    SELECT \n        m.met_id,\n        m.met_conversion,\n        m.pathway_key,\n        m.met_comment,\n        m.organism,\n        m.substrate_record_id,\n        m.metabolite_record_id,\n        m.pathway_id,\n        m.drug_record_id,\n        m.organism,\n        ms.canonical_smiles,\n        mds.pref_name AS substrate_name,\n        ms.molregno AS substrate_molregno\n    FROM metabolism m\n    JOIN assay_dictionary ad ON m.drug_record_id = ad.record_id\n    LEFT JOIN compound_structures cs ON ad.molregno = cs.molregno\n    LEFT JOIN compound_dictionary ms ON ad.molregno = ms.molregno\n    WHERE m.enzyme_name LIKE '%CYP3A%'\n    ORDER BY m.met_id\n    LIMIT 200\n)\nSELECT \n    met_id,\n    substrate_name,\n    canonical_smiles,\n    met_conversion,\n    pathway_key,\n    organism\nFROM met_records\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: assay_dictionary",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: assay_dictionary",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find the first 200 metabolism entries that involve CYP3A enzymes and return the substrate compound details. For each entry, retrieve the substrate's canonical SMILES (or molfile), the substrate compound name (pref_name from molecule_dictionary), the metabolic conversion description, the metabolic pathway (pathway_key), and the organism in which the metabolism was observed. Order the results by met_id (the primary key of the metabolism table) in ascending order, but do not impose a row limit beyond the first 200 records returned by the query. No other filters or output columns are required.",
+    "sql": "WITH met AS (\n  SELECT \n    m.met_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.met_comment,\n    m.organism,\n    m.substrate_record_id,\n    m.metabolite_record_id,\n    m.pathway_id,\n    m.drug_record_id,\n    ms.canonical_smiles,\n    md.pref_name AS substrate_name,\n    ms.molregno AS substrate_molregno\n  FROM metabolism m\n  JOIN molecule_dictionary md ON m.substrate_record_id = md.record_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE m.enzyme_name LIKE '%CYP3A%'\n  ORDER BY m.met_id\n  LIMIT 200\n)\nSELECT \n  met_id,\n  substrate_name,\n  canonical_smiles,\n  met_conversion,\n  pathway_key,\n  organism\nFROM met\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ms.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ms.canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find the first 200 metabolism entries involving CYP3A enzymes. For each entry return the substrate's canonical SMILES, the substrate compound name (from molecule_dictionary pref_name), the metabolic conversion description, the metabolic pathway (pathway_key), and the organism in which the metabolism was observed. Order the result set by metabolism record identifier (met_id) ascending and limit the returned rows to the first 200 records. No other filters, columns, or ranking beyond the explicit ordering are required.",
+    "sql": "WITH met AS (\n    SELECT \n        m.met_id,\n        m.met_conversion,\n        m.pathway_key,\n        m.met_comment,\n        m.organism,\n        m.substrate_record_id,\n        m.metabolite_record_id,\n        m.pathway_id,\n        m.drug_record_id,\n        cs.canonical_smiles,\n        md.pref_name AS substrate_name,\n        md.molregno AS substrate_molregno\n    FROM metabolism m\n    JOIN molecule_dictionary md ON m.substrate_record_id = md.record_id\n    JOIN compound_structures cs ON md.molregno = cs.molregno\n    WHERE m.enzyme_name LIKE '%CYP3A%'\n    ORDER BY m.met_id\n    LIMIT 200\n)\nSELECT \n    met_id,\n    substrate_name,\n    canonical_smiles,\n    met_conversion,\n    pathway_key,\n    organism\nFROM met\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.record_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.record_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find the first 200 metabolism records that involve CYP3A enzymes. For each record return the substrate's canonical SMILES, the substrate compound name (pref_name from molecule_dictionary), the metabolic conversion description (met_conversion), the metabolic pathway (pathway_key), and the organism in which the metabolism was observed. Order the results by met_id ascending and return at most the first 200 records. No additional filters or columns are needed.",
+    "sql": "WITH met AS ( SELECT m.met_id, m.met_conversion, m.pathway_key, m.met_comment, m.organism, m.substrate_record_id, m.metabolite_record_id, m.pathway_id, m.drug_record_id, cs.canonical_smiles, md.pref_name AS substrate_name, md.molregno AS substrate_molregno FROM metabolism m JOIN molecule_dictionary md ON m.substrate_record_id = md.record_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.enzyme_name LIKE '%CYP3A%' ORDER BY m.met_id LIMIT 200 ) SELECT met_id, substrate_name, canonical_smiles, met_conversion, pathway_key, organism FROM met ORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.record_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.record_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find the first 200 metabolism records that involve CYP3A enzymes. For each record return the substrate's canonical SMILES, the substrate compound name (pref_name from molecule_dictionary), the metabolic conversion description (met_conversion), the metabolic pathway (pathway_key), and the organism in which the metabolism was observed. Order the results by the metabolism record identifier (met_id) ascending and return at most the first 200 records. No additional filters or columns are needed.",
+    "sql": "WITH met_records AS (\n  SELECT \n    m.met_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.met_comment,\n    m.organism,\n    md.pref_name AS substrate_name,\n    cs.canonical_smiles,\n    m.substrate_record_id\n  FROM metabolism m\n  JOIN molecule_dictionary md ON m.substrate_record_id = md.record_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE m.enzyme_name LIKE '%CYP3A%'\n  ORDER BY m.met_id\n  LIMIT 200\n)\nSELECT \n  met_id,\n  substrate_name,\n  canonical_smiles,\n  met_conversion,\n  pathway_key,\n  organism\nFROM met_records\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.record_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.record_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Find the first 200 metabolism records that involve CYP3A enzymes. For each record, provide:\n- the substrate compound\u2019s canonical SMILES (or molfile)\n- the substrate compound name (from molecule_dictionary.pref_name)\n- the metabolic conversion description (metabolism.met_conversion)\n- the metabolic pathway (metabolism.pathway_key)\n- the organism in which the metabolism was observed (metabolism.organism).\nOrder the result set by the metabolism primary key (met_id) in ascending order and include at most the first 200 records returned by the query.\nNo additional filters, columns, or ranking beyond the explicit ordering are required.\n\nNote: The query should join metabolism.substrate_record_id to compound_records.record_id to obtain the molregno, then join molecule_dictionary.molregno to get the compound name and structure.",
+    "sql": "WITH met_records AS (\n  SELECT \n    m.met_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.met_comment,\n    m.organism,\n    md.pref_name AS substrate_name,\n    cs.canonical_smiles,\n    m.substrate_record_id,\n    cr.molregno AS substrate_molregno\n  FROM metabolism m\n  JOIN compound_records cr ON m.substrate_record_id = cr.record_id\n  JOIN molecule_dictionary md ON cr.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE m.enzyme_name LIKE '%CYP3A%'\n  ORDER BY m.met_id\n  LIMIT 200\n)\nSELECT \n  met_id,\n  substrate_name,\n  canonical_smiles,\n  met_conversion,\n  pathway_key,\n  organism\nFROM met_records\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n2 | 0 | 0 | CO-ROUTINE met_records\n13 | 2 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n19 | 2 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n26 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n56 | 0 | 92 | SCAN met_records",
+    "res_row_count": 200,
+    "res_columns": [
+      "met_id",
+      "substrate_name",
+      "canonical_smiles",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Find the first 200 metabolism records that involve CYP3A enzymes. For each record, provide the substrate compound\u2019s canonical SMILES, the substrate compound name (pref_name from molecule_dictionary), the metabolic conversion description (metabolism.met_conversion), the metabolic pathway (metabolism.pathway_key), and the organism in which the metabolism was observed. Order the result set by the metabolism primary key (met_id) in ascending order and include at most the first 200 records returned by the query. No additional filters, columns, or ranking beyond the explicit ordering are required.",
+    "sql": "WITH met_records AS (\n  SELECT\n    m.met_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.met_comment,\n    m.organism,\n    md.pref_name AS substrate_name,\n    cs.canonical_smiles,\n    cr.molregno AS substrate_molregno\n  FROM metabolism m\n  JOIN compound_records cr ON m.substrate_record_id = cr.record_id\n  JOIN molecule_dictionary md ON cr.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE m.enzyme_name LIKE '%CYP3A%'\n  ORDER BY m.met_id\n  LIMIT 200\n)\nSELECT\n  met_id,\n  substrate_name,\n  canonical_smiles,\n  met_conversion,\n  pathway_key,\n  organism\nFROM met_records\nORDER BY met_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n2 | 0 | 0 | CO-ROUTINE met_records\n13 | 2 | 132 | SCAN m USING INDEX sqlite_autoindex_metabolism_1\n19 | 2 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n26 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 92 | SCAN met_records",
+    "res_row_count": 200,
+    "res_columns": [
+      "met_id",
+      "substrate_name",
+      "canonical_smiles",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

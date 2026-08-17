@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1861_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1861_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve IC50 activities with exact standard relation '=' and non-null pChEMBL values for human single-protein target CHEMBL1861 (4-hydroxyphenylpyruvate dioxygenase). The SQL logic appears correct: it joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures with appropriate filters (assay_organism = 'Homo sapiens', tid = 1861, target_type = 'SINGLE PROTEIN', act.type = 'IC50', standard_relation = '=', pchembl_value IS NOT NULL). However, the result set is empty (row_count: 0). This could be due to:\\n\\n1. No IC50 activities with exact relation '=' and non-null pChEMBL values for this target in the database.\\n2. The target CHEMBL1861 may not have any IC50 activities with the exact relation '=' (e.g., activities might use '>' or '<' instead).\\n3. The assay_organism filter might be too restrictive (e.g., assays may not have assay_organism = 'Homo sapiens' for this target).\\n4. The target_dictionary.tid = 1861 filter may not match any assays (e.g., the target might be assigned a different tid or target_type).\\n\\nGiven the empty result, the query logic is likely sound but the data may not support the exact criteria. The user request is for the first 1000 rows, and the query correctly limits to 1000. The output schema matches the request (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value). The sample rows are empty, which is expected if no data matches. The query is well-formed and follows the required joins and filters. However, the empty result suggests the data may not exist as specified, not a query error.\",\n  \"score\": 0.9,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve IC50 activities with exact standard relation '=' and non-null pChEMBL values for human single-protein target CHEMBL1861 (4-hydroxyphenylpyruvate dioxygenase). The SQL logic appears correct: it joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures with appropriate filters (assay_organism = 'Homo sapiens', tid = 1861, target_type = 'SINGLE PROTEIN', act.type = 'IC50', standard_relation = '=', pchembl_value IS NOT NULL). However, the result set is empty (row_count: 0). This could be due to:\n\n1. No IC50 activities with exact relation '=' and non-null pChEMBL values for this target in the database.\n2. The target CHEMBL1861 may not have any IC50 activities with the exact relation '=' (e.g., activities might use '>' or '<' instead).\n3. The assay_organism filter might be too restrictive (e.g., assays may not have assay_organism = 'Homo sapiens' for this target).\n4. The target_dictionary.tid = 1861 filter may not match any assays (e.g., the target might be assigned a different tid or target_type).\n\nGiven the empty result, the query logic is likely sound but the data may not support the exact criteria. The user request is for the first 1000 rows, and the query correctly limits to 1000. The output schema matches the request (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value). The sample rows are empty, which is expected if no data matches. The query is well-formed and follows the required joins and filters. However, the empty result suggests the data may not exist as specified, not a query error.",
+      "score": 0.9,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1861_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1861_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1861_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

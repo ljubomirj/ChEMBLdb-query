@@ -1,0 +1,6 @@
+Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as pref_name, compound_structures.canonical_smiles as canonical_smiles, drug_indication.mesh_id as indication_curie, drug_indication.mesh_heading as indication_label, drug_indication.max_phase_for_ind as max_phase_for_ind
+From molecule_dictionary
+Join drug_indication on molecule_dictionary.molregno = drug_indication.molregno
+Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno
+Where drug_indication.mesh_heading = 'Acute Myeloid Leukemia' and molecule_dictionary.therapeutic_flag = 1
+Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind

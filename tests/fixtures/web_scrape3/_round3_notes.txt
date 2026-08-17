@@ -1,0 +1,15 @@
+Round 3 focuses on fresh public SQL sources not previously promoted into the execution path.
+
+Promoted immediately:
+- chembl_downloader_target_pde5_single_protein_pchembl
+- chembl_downloader_target_dpp4_ic50_human_pchembl
+- chembl_downloader_document_molecules_chembl1123859
+- chembl_downloader_assay_chembl829152_exact
+
+Kept as source-only for now:
+- abhik_human_sub50nm_activity_extract
+
+Reasoning:
+- The four promoted cases are concrete, SQLite-native, and medium/small enough to execute repeatedly.
+- The `abhik` extract is useful source material but broad enough that it should not enter the default execution path until narrowed.
+- The two target-centric pChEMBL cases initially failed under the `src/db_llm_query.py` wrapper because `v3` judged full 2.5k-4.6k row tables directly; rerunning them through `src/db_llm_query_v4.py` sampled the judge payload correctly and both exact-matched the gold SQL.

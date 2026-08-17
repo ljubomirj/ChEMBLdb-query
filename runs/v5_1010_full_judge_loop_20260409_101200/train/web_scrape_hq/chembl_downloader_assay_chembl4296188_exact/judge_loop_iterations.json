@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return the exact activity values for compounds tested in assay CHEMBL4296188. Include the ChEMBL ID of the molecule, the activity type, the relation, the value, and the units. The results should be restricted to exact measurements where the relation is '='.",
+    "sql": "SELECT\n  md.chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE a.assay_id = (SELECT assay_id FROM assays WHERE chembl_id = 'CHEMBL4296188')\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n5 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n8 | 0 | 0 | SCALAR SUBQUERY 1\n13 | 8 | 39 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 21595,
+    "res_columns": [
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

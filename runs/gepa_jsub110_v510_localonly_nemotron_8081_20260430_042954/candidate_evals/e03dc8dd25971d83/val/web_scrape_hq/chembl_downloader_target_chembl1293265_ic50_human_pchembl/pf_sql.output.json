@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293265_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293265_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT a.chembl_id AS assay_chembl_id, td.target_type AS target_type, td.tax_id AS tax_id, ms.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type AS standard_type, act.pchembl_value AS pChEMBL_value FROM activities act INNER JOIN assays a ON act.assay_id = a.assay_id INNER JOIN target_dictionary td ON a.tid = td.tid INNER JOIN molecule_dictionary md ON act.molregno = md.molregno INNER JOIN compound_structures ms ON md.molregno = ms.molregno WHERE act.type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1293265' AND td.tax_id = 9606 AND td.target_type = 'SINGLE PROTEIN' ORDER BY md.chembl_id ASC, a.chembl_id ASC LIMIT 1000;"
+}

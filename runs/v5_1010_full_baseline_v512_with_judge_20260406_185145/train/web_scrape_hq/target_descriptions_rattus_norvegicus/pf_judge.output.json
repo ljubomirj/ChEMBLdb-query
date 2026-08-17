@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_rattus_norvegicus.json",
+  "case_id": "target_descriptions_rattus_norvegicus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query correctly retrieves distinct target descriptions for assays involving Rattus norvegicus by joining activities, assays, and target_dictionary tables with appropriate filters and joins. The sample rows show plausible target names, and the row count (1339) indicates a substantial result set. The SQL uses DISTINCT as required and orders results alphabetically. However, the sample rows include targets that may not be directly related to Rattus norvegicus (e.g., '1,25-dihydroxyvitamin D(3) 24-hydroxylase' is a human enzyme), suggesting potential contamination from assays with other organisms. The join logic is correct, but the sample rows raise a concern about organism filtering accuracy. The query meets the user's request for distinct target names and Rattus norvegicus filtering, but the sample data hints at possible false positives. The result is likely sufficient for the user's needs, as the core logic is sound and the issue may be due to assay data inconsistencies rather than query flaws.\",\n  \"score\": 0.85,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query correctly retrieves distinct target descriptions for assays involving Rattus norvegicus by joining activities, assays, and target_dictionary tables with appropriate filters and joins. The sample rows show plausible target names, and the row count (1339) indicates a substantial result set. The SQL uses DISTINCT as required and orders results alphabetically. However, the sample rows include targets that may not be directly related to Rattus norvegicus (e.g., '1,25-dihydroxyvitamin D(3) 24-hydroxylase' is a human enzyme), suggesting potential contamination from assays with other organisms. The join logic is correct, but the sample rows raise a concern about organism filtering accuracy. The query meets the user's request for distinct target names and Rattus norvegicus filtering, but the sample data hints at possible false positives. The result is likely sufficient for the user's needs, as the core logic is sound and the issue may be due to assay data inconsistencies rather than query flaws.",
+      "score": 0.85,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_rattus_norvegicus/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_rattus_norvegicus/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_rattus_norvegicus/pf_judge.generated_artifact_record.json"
+  }
+}

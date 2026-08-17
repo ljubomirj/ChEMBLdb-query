@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_872bcfd4387ad7ec.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_pancreatic_carcinoma.json",
+  "case_id": "approved_drugs_indication_pancreatic_carcinoma",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "872bcfd4387ad7ec",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, di.mesh_heading, di.mesh_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_id = 'D010190'"
+}

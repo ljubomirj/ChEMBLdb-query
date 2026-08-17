@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay identified by ChEMBL ID CHEMBL1054500, retrieve the exact activity values. Return the following columns: the molecule ChEMBL ID (molecule_chembl_id), the molecule pref_name, the activity standard_type, the standard_relation, the standard_value, the standard_units, and the pchembl_value. Include only rows where the standard_relation is '=' (exact values).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.pchembl_value FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1054500' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13509,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

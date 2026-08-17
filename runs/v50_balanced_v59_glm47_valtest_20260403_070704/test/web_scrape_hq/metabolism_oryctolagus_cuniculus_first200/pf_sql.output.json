@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_oryctolagus_cuniculus_first200.json",
+  "case_id": "metabolism_oryctolagus_cuniculus_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n  cs.canonical_smiles,\\n  md_sub.pref_name AS substrate_compound_name,\\n  md_parent.pref_name AS parent_compound_name,\\n  m.met_conversion,\\n  m.pathway_key,\\n  m.organism,\\n  m.enzyme_name\\nFROM metabolism m\\nINNER JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\\nINNER JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\\nINNER JOIN compound_structures cs ON md_sub.molregno = cs.molregno\\nLEFT JOIN molecule_hierarchy mh ON md_sub.molregno = mh.molregno\\nLEFT JOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno\\nWHERE m.organism = 'Oryctolagus cuniculus'\\nLIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  md_sub.pref_name AS substrate_compound_name,\n  md_parent.pref_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nFROM metabolism m\nINNER JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nINNER JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nINNER JOIN compound_structures cs ON md_sub.molregno = cs.molregno\nLEFT JOIN molecule_hierarchy mh ON md_sub.molregno = mh.molregno\nLEFT JOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno\nWHERE m.organism = 'Oryctolagus cuniculus'\nLIMIT 200"
+    }
+  }
+}

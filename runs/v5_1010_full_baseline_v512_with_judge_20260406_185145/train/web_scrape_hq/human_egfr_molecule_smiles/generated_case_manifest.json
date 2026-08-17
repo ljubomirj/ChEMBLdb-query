@@ -1,0 +1,59 @@
+{
+  "case_id": "human_egfr_molecule_smiles",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "/Users/ljubomir/ChEMBLdb-query/database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_egfr_molecule_smiles/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_egfr_molecule_smiles/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_egfr_molecule_smiles/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "promoted_from_web_scrape",
+    "source_title": "https://gist.github.com/1056279",
+    "source_url": "https://gist.github.com/1056279",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "sort_keys": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "tags": [
+      "other",
+      "v4_promoted",
+      "local_llm_surface_repair"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "compound_chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Auto-generated v5 manifest from v4 registry entry.\nv5.1010 LocalLLM repair: generated up_exec via PB_SQL."
+  }
+}

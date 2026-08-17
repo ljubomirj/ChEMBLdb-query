@@ -1,0 +1,10 @@
+Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+Join molecule_dictionary m ON m.molregno = a.molregno
+Join activities a ON a.molregno = m.molregno AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL
+Join assays ass ON ass.assay_id = a.assay_id
+Join target_dictionary td ON td.tid = ass.tid
+Left Join compound_structures cs ON cs.molregno = m.molregno
+Filter ass.assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL1255131' AND a.type = 'IC50'
+Return assay_chembl_id, target_type, tax_id, cs.canonical_smiles AS canonical_smiles, m.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value
+Sort by molecule_chembl_id, assay_chembl_id
+Limit 1000

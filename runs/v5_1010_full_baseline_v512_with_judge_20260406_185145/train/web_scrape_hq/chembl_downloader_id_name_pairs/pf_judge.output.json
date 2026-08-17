@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_id_name_pairs.json",
+  "case_id": "chembl_downloader_id_name_pairs",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query retrieves ChEMBL identifiers and preferred names for molecules that have structures and non-null names, which matches the user's request. The SQL correctly joins molecule_dictionary with compound_structures to ensure structures exist (canonical_smiles is not null) and filters for non-null preferred names. The result set includes 42,299 rows with the expected columns (molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles). The sample rows show valid ChEMBL IDs, names, and canonical SMILES, confirming the query works as intended. The use of DISTINCT ensures no duplicate rows, and the ordering is correct. The result is complete and accurate for the given task.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query retrieves ChEMBL identifiers and preferred names for molecules that have structures and non-null names, which matches the user's request. The SQL correctly joins molecule_dictionary with compound_structures to ensure structures exist (canonical_smiles is not null) and filters for non-null preferred names. The result set includes 42,299 rows with the expected columns (molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles). The sample rows show valid ChEMBL IDs, names, and canonical SMILES, confirming the query works as intended. The use of DISTINCT ensures no duplicate rows, and the ordering is correct. The result is complete and accurate for the given task.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_id_name_pairs/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_id_name_pairs/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_id_name_pairs/pf_judge.generated_artifact_record.json"
+  }
+}

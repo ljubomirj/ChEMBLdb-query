@@ -1,0 +1,38 @@
+{
+  "mode": "forward",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "selected_step": "sql",
+  "pf_sections": [
+    "up",
+    "sql",
+    "judge"
+  ],
+  "pb_sections_present": [
+    "sql_to_up",
+    "up_to_uq",
+    "res_sql_to_intent"
+  ],
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/doc/examples/v5_case_example/case_manifest.json",
+  "case_id": "example_mapk14_target_pchembl",
+  "corpus": "doc_examples",
+  "split": null,
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "up_exec_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/example_chain_20260321_b/example_mapk14_target_pchembl/up_exec.generated.txt",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"sql\": \"SELECT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON act.molregno = cs.molregno JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL260' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, a.chembl_id\"}\n```",
+    "parsed_json": {
+      "sql": "SELECT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON act.molregno = cs.molregno JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL260' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, a.chembl_id"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/v5_runs/example_chain_20260321_b/example_mapk14_target_pchembl/pf_sql.output.json",
+    "sql": "experiments/v5_runs/example_chain_20260321_b/example_mapk14_target_pchembl/sql.generated.sql",
+    "generated_case_manifest": "experiments/v5_runs/example_chain_20260321_b/example_mapk14_target_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/v5_runs/example_chain_20260321_b/example_mapk14_target_pchembl/pf_sql.generated_artifact_record.json"
+  }
+}

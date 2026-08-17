@@ -1,0 +1,82 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs that are indicated for HIV infection. For each drug, provide the following details: the drug's ChEMBL ID, its preferred name, its canonical SMILES (if available), the EFO ID of the indication, the indication label (either the MeSH heading or the EFO term), and the maximum clinical phase reached for that indication (max_phase_for_ind). Only include drugs that have reached phase 4 (approved) for the indication. The indication must be related to HIV infection \u2013 include rows where the MeSH heading or EFO term contains 'HIV'.",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS pref_name, cs.canonical_smiles AS canonical_smiles, di.efo_id AS efo_id, COALESCE(di.mesh_heading, di.efo_term) AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.mesh_heading LIKE '%HIV%' OR di.efo_term LIKE '%HIV%') ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 83,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all approved drugs that have an indication related to HIV infection. Approved drugs are those where the maximum clinical phase for the indication is 4 (max_phase_for_ind = 4). The indication must be HIV-related, which can be identified by the MeSH heading or EFO term containing the string 'HIV'. For each such drug-indication pair, output the following columns: the drug's ChEMBL ID (from molecule_dictionary), its preferred name (pref_name), its canonical SMILES (from compound_structures, if available), the EFO ID of the indication (efo_id), the indication label (use the MeSH heading if present, otherwise the EFO term), and the maximum phase for that indication (max_phase_for_ind). The data should come from the drug_indication table, joined to molecule_dictionary on molregno, and left joined to compound_structures on molregno to include SMILES even if not available. Ensure each qualifying drug-indication pair is listed; do not deduplicate unless explicitly requested.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, COALESCE(di.mesh_heading, di.efo_term) AS indication_label, di.max_phase_for_ind FROM drug_indication di INNER JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.mesh_heading LIKE '%HIV%' OR di.efo_term LIKE '%HIV%') ORDER BY md.chembl_id",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 83,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all approved drugs indicated for HIV infection. Use drug_indication as the primary table. Approved means max_phase_for_ind = 4. HIV-related indications are those where mesh_heading or efo_term contains 'HIV'. For each qualifying indication, output the drug's ChEMBL ID (from molecule_dictionary), preferred name, canonical SMILES (if available), the indication's EFO ID, indication label (use mesh_heading if not null else efo_term), and max_phase_for_ind. Join drug_indication to molecule_dictionary on molregno for drug identifiers and name, and left join compound_structures on molregno for SMILES. Do not deduplicate; return one row per indication. Order by drug ChEMBL ID.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, COALESCE(di.mesh_heading, di.efo_term) AS indication_label, di.max_phase_for_ind FROM drug_indication di INNER JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (di.mesh_heading LIKE '%HIV%' OR di.efo_term LIKE '%HIV%') ORDER BY md.chembl_id",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n17 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 83,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find all drugs that are approved for the treatment of HIV infection, defined as having an indication record in drug_indication where max_phase_for_ind equals 4 and the indication is exactly the MeSH heading 'HIV Infections' (case\u2011sensitive exact match). For each such drug\u2011indication pair, retrieve the following: the drug's ChEMBL ID (chembl_id from molecule_dictionary), its preferred name (pref_name), its canonical SMILES (canonical_smiles from compound_structures; if none exists, leave it as NULL), the EFO ID of the indication (efo_id from drug_indication), the indication label (use mesh_heading if not NULL, otherwise efo_term), and the maximum phase for that indication (max_phase_for_ind). Connect drug_indication to molecule_dictionary via molregno, and left\u2011join compound_structures also via molregno so that drugs without a structure are still included. Return one row per indication (do not deduplicate). Order the result by the drug's ChEMBL ID. Do not add any filters beyond those described (no unit restrictions, no relation restrictions, no confidence\u2011score or doc\u2011type filters).",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, COALESCE(di.mesh_heading, di.efo_term) AS indication_label, di.max_phase_for_ind FROM drug_indication di INNER JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON di.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND di.mesh_heading = 'HIV Infections' ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 80,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1142978.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1142978",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\"up\": \"Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles. Join molecule_dictionary to compound_records on molregno, compound_records to docs on doc_id, and LEFT JOIN compound_structures on molecule_dictionary.molregno. Filter docs.chembl_id = 'CHEMBL1142978'. Sort by molecule_chembl_id ascending. Return all rows.\"}\n```",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles. Join molecule_dictionary to compound_records on molregno, compound_records to docs on doc_id, and LEFT JOIN compound_structures on molecule_dictionary.molregno. Filter docs.chembl_id = 'CHEMBL1142978'. Sort by molecule_chembl_id ascending. Return all rows."
+    }
+  }
+}

@@ -1,0 +1,7 @@
+1. Objective: Retrieve exact activity measurements for compounds tested in assay CHEMBL1217644, restricted to rows with non-null values and an equality relation.
+
+2. Output: canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, standard_units
+
+3. Source: assays, activities, molecule_dictionary, compound_structures
+
+4. Logic: Filter assays where chembl_id = 'CHEMBL1217644'. Join to activities on assay_id. Join to molecule_dictionary on molregno. Join to compound_structures on molregno. Filter activities where standard_value IS NOT NULL, standard_relation IS NOT NULL, and standard_relation = '='. Return all matching rows without deduplication.

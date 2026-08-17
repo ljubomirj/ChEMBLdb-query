@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_j4096_rb1024_fixjudge_20260429_231301/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/(+/_)_tylophorine_non_protein_target_ic50_salts.json",
+  "case_id": "(+/_)_tylophorine_non_protein_target_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "Return IC50 activities for tylophorine (CHEMBL493620) and its salt forms against target CHEMBL3879801. Include compound identifiers, structures, activity values, and literature references.\n\nSelect:\n- molecule_dictionary.chembl_id AS compound_chembl_id\n- molecule_dictionary.pref_name AS compound_name\n- compound_structures.canonical_smiles\n- activities.standard_value\n- activities.standard_units\n- docs.pubmed_id\n- docs.doi\n\nSource:\n- molecule_dictionary (parent compound)\n- molecule_hierarchy (salt forms)\n- activities (bioactivity data)\n- docs (literature references)\n- compound_structures (chemical structures)\n\nJoin:\n- Identify parent compound by chembl_id 'CHEMBL493620' in molecule_dictionary.\n- Join molecule_hierarchy on parent_molregno to find all salt forms (children).\n- Join compound_records on molregno to link compounds to activities.\n- Join activities on record_id to get bioactivity data.\n- Join docs on doc_id to get literature references.\n- Left join compound_structures on molregno to include structures.\n\nFilter:\n- Parent compound chembl_id = 'CHEMBL493620'\n- Target chembl_id = 'CHEMBL3879801'\n- Activity standard_type = 'IC50'\n\nSort:\n- None specified\n\nLimit:\n- None specified"
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds that have been tested in assays targeting the human Chromobox protein homolog 1 (CBX1). For each compound, output its ChEMBL identifier (chembl_id) and its canonical SMILES structure (canonical_smiles). Identify the target in the target_dictionary where the preferred name contains 'Chromobox protein homolog 1' or a synonym 'CBX1' and the organism is 'Homo sapiens'. Join assays to this target via assays.tid, activities via activities.assay_id, molecule_dictionary via activities.molregno, and compound_structures via molecule_dictionary.molregno. Keep only distinct compounds (no duplicate rows). Do not apply any additional filters (e.g., on activity type, value, units, confidence score, or target type).",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM target_dictionary td\nJOIN assays a ON a.tid = td.tid\nJOIN activities act ON act.assay_id = a.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE (td.pref_name LIKE '%Chromobox protein homolog 1%' OR td.pref_name LIKE '%CBX1%')\n  AND td.organism = 'Homo sapiens'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 92013,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all distinct compounds that have been tested in any assay targeting the human Chromobox protein homolog 1 (also known as CBX1). For each compound, provide its ChEMBL identifier and its canonical SMILES structure. The target should be the Homo sapiens protein with preferred name 'Chromobox protein homolog 1' or the synonym 'CBX1'. Do not filter by activity type, value, units, confidence score, or target type. Only include compounds tested in human assays (organism Homo sapiens). Return distinct compounds only.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM target_dictionary td\nJOIN assays ass ON ass.tid = td.tid\nJOIN activities act ON act.assay_id = ass.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.organism = 'Homo sapiens'\n  AND (td.pref_name = 'Chromobox protein homolog 1'\n       OR EXISTS (SELECT 1 FROM target_components tc\n                  JOIN component_synonyms cs2 ON cs2.component_id = tc.component_id\n                  WHERE tc.tid = td.tid AND cs2.component_synonym = 'CBX1'))",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 8\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n51 | 0 | 0 | CORRELATED SCALAR SUBQUERY 1\n56 | 51 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n61 | 51 | 0 | SEARCH cs2 USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)",
+    "res_row_count": 92013,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all distinct compounds that have been tested in any assay targeting human Chromobox protein homolog 1 (CBX1). Identify the target in target_dictionary as Homo sapiens with preferred name 'Chromobox protein homolog 1' or where a component synonym is 'CBX1'. For each such compound, return its ChEMBL identifier (chembl_id from molecule_dictionary) and its canonical SMILES (canonical_smiles from compound_structures). Include only compounds that have at least one activity record in an assay linked to this target (via assays and activities). Do not filter by activity type, value, units, confidence score, or target type. Return all matching distinct compounds, with no row limit.",
+    "sql": "WITH target_tids AS (\n  SELECT td.tid\n  FROM target_dictionary td\n  WHERE td.organism = 'Homo sapiens'\n    AND (td.pref_name = 'Chromobox protein homolog 1'\n         OR EXISTS (SELECT 1\n                    FROM target_components tc\n                    JOIN component_synonyms cs ON cs.component_id = tc.component_id\n                    WHERE tc.tid = td.tid\n                      AND cs.component_synonym = 'CBX1'))\n)\nSELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM target_tids tt\nJOIN assays a ON a.tid = tt.tid\nJOIN activities act ON act.assay_id = a.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 8\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n33 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n51 | 0 | 0 | CORRELATED SCALAR SUBQUERY 1\n56 | 51 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n61 | 51 | 0 | SEARCH cs USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)",
+    "res_row_count": 92013,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all distinct chemical compounds that have been tested in any activity assay targeting the human Chromobox protein homolog 1 (CBX1). Identify the target in the target_dictionary: the Homo sapiens protein with preferred name exactly 'Chromobox protein homolog 1'. In case that name is absent or ambiguous, also consider the target where a component synonym (gene symbol) is 'CBX1', linked via target_components and component_synonyms. For each such target, join to its assays (assays.tid), then to activities (activities.assay_id), then to the molecule_dictionary (activities.molregno) to obtain the compound's ChEMBL identifier, and finally to compound_structures (molecule_dictionary.molregno) to obtain the canonical SMILES. Return only the compound's ChEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles). Each compound should appear at most once (use DISTINCT). Do not apply any additional filters (no restrictions on activity type, value, units, confidence score, target type, or document type). Do not limit the number of rows.",
+    "sql": "WITH target_cbx1 AS (\n    SELECT tid FROM target_dictionary\n    WHERE organism = 'Homo sapiens'\n      AND pref_name = 'Chromobox protein homolog 1'\n    UNION\n    SELECT tc.tid\n    FROM target_components tc\n    JOIN component_synonyms cs ON cs.component_id = tc.component_id\n    JOIN target_dictionary td ON td.tid = tc.tid\n    WHERE td.organism = 'Homo sapiens'\n      AND cs.component_synonym = 'CBX1'\n)\nSELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM target_cbx1 tc\nJOIN assays a ON a.tid = tc.tid\nJOIN activities act ON act.assay_id = a.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE target_cbx1\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n21 | 5 | 0 | UNION USING TEMP B-TREE\n26 | 21 | 0 | SEARCH td USING INDEX idx_td_org (organism=?)\n31 | 21 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n36 | 21 | 0 | SEARCH cs USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)\n65 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n68 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n86 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n100 | 0 | 0 | SEARCH tc USING AUTOMATIC COVERING INDEX (tid=?)",
+    "res_row_count": 92013,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "List all distinct compounds that have been tested in any human assay targeting Chromobox protein homolog 1 (CBX1). Identify the target in the target_dictionary as Homo sapiens with the preferred name exactly 'Chromobox protein homolog 1', or where a component synonym is 'CBX1' linked via target_components and component_synonyms. Once the target is identified, join to its assays (assays.tid), then to activities (activities.assay_id), then to molecule_dictionary (activities.molregno) for the compound's ChEMBL identifier, and finally to compound_structures (molecule_dictionary.molregno) for the canonical SMILES. Only include assays where the assay_organism is 'Homo sapiens' to ensure the testing was in human systems. Return each compound's ChEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles), with no duplicates. Do not apply any additional filters (e.g., activity type, value, units, confidence score, target type, document type) and do not limit the number of rows.",
+    "sql": "WITH target_cbx1 AS (\n    SELECT tid FROM target_dictionary\n    WHERE organism = 'Homo sapiens'\n      AND pref_name = 'Chromobox protein homolog 1'\n    UNION\n    SELECT tc.tid\n    FROM target_components tc\n    JOIN component_synonyms cs ON cs.component_id = tc.component_id\n    JOIN target_dictionary td ON td.tid = tc.tid\n    WHERE td.organism = 'Homo sapiens'\n      AND cs.component_synonym = 'CBX1'\n)\nSELECT DISTINCT md.chembl_id, cs.canonical_smiles\nFROM target_cbx1 tc\nJOIN assays a ON a.tid = tc.tid AND a.assay_organism = 'Homo sapiens'\nJOIN activities act ON act.assay_id = a.assay_id\nJOIN molecule_dictionary md ON md.molregno = act.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE target_cbx1\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n21 | 5 | 0 | UNION USING TEMP B-TREE\n26 | 21 | 0 | SEARCH td USING INDEX idx_td_org (organism=?)\n31 | 21 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n36 | 21 | 0 | SEARCH cs USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)\n65 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n68 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n86 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n102 | 0 | 0 | SEARCH tc USING AUTOMATIC COVERING INDEX (tid=?)",
+    "res_row_count": 605,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find all distinct compounds that have been tested in any assay targeting the human Chromobox protein homolog 1 (CBX1). The target must be identified as Homo sapiens in the target_dictionary: either the preferred name is 'Chromobox protein homolog 1', or the gene symbol 'CBX1' exists in a component_synonym linked via target_components. Only include assays where the assay_organism is 'Homo sapiens' (to ensure human assays). Join from the target to assays (assays.tid), then to activities (activities.assay_id), then to molecule_dictionary (activities.molregno) for the compound's ChEMBL ID, and finally to compound_structures (molecule_dictionary.molregno) for the canonical SMILES. Return each compound's ChEMBL identifier (chembl_id) and canonical SMILES (canonical_smiles), with no duplicates. Do not apply any other filters (e.g., activity type, value, units, confidence score, target type, document type) and do not limit the number of rows.",
+    "sql": "WITH target_tids AS ( SELECT tid FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name = 'Chromobox protein homolog 1' UNION SELECT tc.tid FROM target_components tc JOIN component_synonyms cs ON cs.component_id = tc.component_id JOIN target_dictionary td ON td.tid = tc.tid WHERE td.organism = 'Homo sapiens' AND cs.component_synonym = 'CBX1' ) SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM target_tids tt JOIN assays a ON a.tid = tt.tid AND a.assay_organism = 'Homo sapiens' JOIN activities act ON act.assay_id = a.assay_id JOIN molecule_dictionary md ON md.molregno = act.molregno JOIN compound_structures cs ON cs.molregno = md.molregno;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE target_tids\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n21 | 5 | 0 | UNION USING TEMP B-TREE\n26 | 21 | 0 | SEARCH td USING INDEX idx_td_org (organism=?)\n31 | 21 | 0 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n36 | 21 | 0 | SEARCH cs USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)\n65 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n68 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 0 | 0 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n86 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n102 | 0 | 0 | SEARCH tt USING AUTOMATIC COVERING INDEX (tid=?)",
+    "res_row_count": 605,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

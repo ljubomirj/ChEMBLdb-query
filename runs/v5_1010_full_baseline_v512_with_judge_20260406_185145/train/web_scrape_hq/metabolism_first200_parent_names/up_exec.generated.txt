@@ -1,0 +1,9 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key
+Join metabolism on metabolism.met_id = activity.met_id
+Join compound_records on compound_records.record_id = metabolism.substrate_record_id
+Join molecule_dictionary as substrate on substrate.molregno = compound_records.molregno
+Left Join molecule_hierarchy on molecule_hierarchy.molregno = substrate.molregno and molecule_hierarchy.parent_molregno = substrate.molregno
+Left Join molecule_dictionary as parent on parent.molregno = molecule_hierarchy.parent_molregno
+Join compound_structures on compound_structures.molregno = substrate.molregno
+Filter pathway_key is not null
+Limit 200

@@ -1,0 +1,12 @@
+Select molecule_chembl_id AS compound_chembl_id, canonical_smiles, compound_records.compound_key AS compound_key, COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism
+Join activities ON activities.record_id = compound_records.record_id
+Join assays ON activities.assay_id = assays.assay_id
+Join target_dictionary ON assays.tid = target_dictionary.tid
+Join compound_records ON activities.record_id = compound_records.record_id
+Join compound_structures ON compound_structures.molregno = compound_records.molregno
+Join docs ON compound_records.doc_id = docs.doc_id
+Filter activities.standard_type = 'IC50'
+Filter activities.standard_units = 'nM'
+Filter target_dictionary.pref_name = '5-lipoxygenase'
+Filter target_dictionary.tax_id = 9606
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

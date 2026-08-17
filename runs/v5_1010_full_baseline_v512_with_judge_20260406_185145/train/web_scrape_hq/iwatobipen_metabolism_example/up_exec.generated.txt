@@ -1,0 +1,7 @@
+Select canonical_smiles, compound_name, met_conversion, pathway_key
+Join metabolism on metabolism.met_id = activity.met_id
+Join compound_records on compound_records.record_id = metabolism.substrate_record_id
+Join molecule_dictionary on molecule_dictionary.molregno = compound_records.molregno
+Left Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Filter met_conversion is not null
+Limit 200

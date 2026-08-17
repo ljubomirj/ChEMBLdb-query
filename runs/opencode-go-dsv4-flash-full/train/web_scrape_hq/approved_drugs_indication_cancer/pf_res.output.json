@@ -1,0 +1,70 @@
+{
+  "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_cancer/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_cancer/result.generated.csv",
+    "row_count": 1588,
+    "column_names": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 299,
+    "actual_rows": 1588,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "missing_cols": [
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "extra_cols": [
+      "drug_name",
+      "structure",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "status": "partial",
+    "score": 0.175315,
+    "column_recall": 0.166667,
+    "row_ratio": 0.188287
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_cancer",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    },
+    "judge_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    }
+  }
+}

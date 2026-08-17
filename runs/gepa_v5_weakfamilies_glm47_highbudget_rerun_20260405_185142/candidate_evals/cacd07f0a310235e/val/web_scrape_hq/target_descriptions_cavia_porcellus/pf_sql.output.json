@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_cacd07f0a310235e.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_cavia_porcellus.json",
+  "case_id": "target_descriptions_cavia_porcellus",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "cacd07f0a310235e",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nWHERE a.assay_organism = 'Cavia porcellus'\nORDER BY td.pref_name ASC\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT td.pref_name AS target_description\nFROM assays a\nJOIN target_dictionary td ON td.tid = a.tid\nWHERE a.assay_organism = 'Cavia porcellus'\nORDER BY td.pref_name ASC"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_b5a2da6f1fe92ceb.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_descriptions_plasmodium_falciparum.json",
+  "case_id": "target_descriptions_plasmodium_falciparum",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b5a2da6f1fe92ceb",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT td.pref_name AS target_description FROM target_dictionary td JOIN assays a ON td.tid = a.tid WHERE a.assay_organism = 'Plasmodium falciparum' ORDER BY td.pref_name\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT td.pref_name AS target_description FROM target_dictionary td JOIN assays a ON td.tid = a.tid WHERE a.assay_organism = 'Plasmodium falciparum' ORDER BY td.pref_name"
+    }
+  }
+}

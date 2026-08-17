@@ -1,0 +1,52 @@
+[
+  {
+    "n": 1,
+    "up": "Select: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, pChEMBL value. Source: activities, assays, target_dictionary, compound_structures, molecule_dictionary. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1741220', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule ChEMBL ID ascending, assay ChEMBL ID ascending. Limit: 1000.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1741220' AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, a.chembl_id ASC LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: assays.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: assays.chembl_id",
+    "judge_text": "```json\n{\n  \"analysis\": \"The query failed because it attempted to select `assays.chembl_id`, but the `assays` table does not contain a `chembl_id` column. According to the schema, the `assays` table has an `assay_id` (BIGINT) as its primary key, not a ChEMBL identifier. The `chembl_id` column exists in tables like `molecule_dictionary`, `target_dictionary`, and `docs`, but not in `assays`. The user request asked for 'assay ChEMBL ID', which is a conceptual mismatch with the actual database schema where assays are identified by numeric `assay_id`. The correct column to select from the `assays` table is `assay_id`, or the request needs to be interpreted as asking for the assay identifier (which is numeric).\",\n  \"score\": 0,\n  \"decision\": \"CONTINUE\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: assay_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Source: activities, assays, target_dictionary, compound_structures, molecule_dictionary. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1741220', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule_dictionary.chembl_id ASC, assays.assay_id ASC. Limit: 1000.",
+    "sql": "SELECT assays.assay_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1741220' AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, a.assay_id ASC LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: assays.assay_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: assays.assay_id",
+    "judge_text": "```json\n{\n  \"analysis\": \"The query failed because the SELECT clause referenced 'assays.assay_id' but the table alias for 'assays' was defined as 'a' in the FROM clause. This is a simple alias mismatch error. The execution plan correctly identified the tables and join logic, but the SELECT list needs to use the correct alias 'a.assay_id' to match the FROM clause definition.\",\n  \"score\": 0,\n  \"decision\": \"CONTINUE\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Select: assay_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Source: activities, assays, target_dictionary, compound_structures, molecule_dictionary. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1741220', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule_dictionary.chembl_id ASC, assays.assay_id ASC. Limit: 1000.",
+    "sql": "SELECT a.assay_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1741220' AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id ASC, a.assay_id ASC LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 86,
+    "res_columns": [
+      "assay_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly filters for IC50 activities with exact standard relation ('=') and non-null pChEMBL values against the specified target CHEMBL1741220. It joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures to retrieve all requested columns: assay_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. The results are ordered by molecule_chembl_id and assay_id as requested, and limited to 1000 rows. The returned 86 rows match the expected schema and constraints.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

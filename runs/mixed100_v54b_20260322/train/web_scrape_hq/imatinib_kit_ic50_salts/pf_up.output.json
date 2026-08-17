@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/imatinib_kit_ic50_salts.json",
+  "case_id": "imatinib_kit_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_hierarchy to define the compound set from parent CHEMBL941 including all salts. Join compound_structures for canonical_smiles. Join compound_records, docs, activities, assays, and target_dictionary for activity provenance. Filter for target CHEMBL1936 and standard_type IC50 with units nM. Return all matching rows without limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_hierarchy to define the compound set from parent CHEMBL941 including all salts. Join compound_structures for canonical_smiles. Join compound_records, docs, activities, assays, and target_dictionary for activity provenance. Filter for target CHEMBL1936 and standard_type IC50 with units nM. Return all matching rows without limit."
+    }
+  }
+}

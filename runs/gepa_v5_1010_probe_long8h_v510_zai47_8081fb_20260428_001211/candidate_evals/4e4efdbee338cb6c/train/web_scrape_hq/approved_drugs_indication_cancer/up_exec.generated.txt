@@ -1,0 +1,7 @@
+1. Objective: Retrieve all approved drugs (max_phase = 4) associated with cancer indications, returning their identifiers, names, structures, and specific indication details.
+
+2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (mapped from efo_id), indication_label (mapped from efo_term), max_phase_for_ind
+
+3. Source: molecule_dictionary, drug_indication, compound_structures
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno to retrieve canonical SMILES. Filter drug_indication where max_phase_for_ind = 4. Filter for cancer indications by matching efo_term to 'cancer' (case-insensitive) or via relevant EFO ID patterns. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.

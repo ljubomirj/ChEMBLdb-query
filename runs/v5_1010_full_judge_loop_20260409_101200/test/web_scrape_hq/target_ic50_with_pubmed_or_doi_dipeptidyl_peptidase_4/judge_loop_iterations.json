@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact IC50 activity values for compounds tested against human dipeptidyl peptidase-4 (CHEMBL284). Include only activities where a PubMed ID or DOI exists. Return the compound ChEMBL ID, canonical SMILES, compound key, PubMed ID (prefer this over DOI), DOI (if PubMed ID is missing), assay description, target ChEMBL ID, and target preferred name. Ensure that activity rows with missing PubMed ID and DOI are excluded from the results.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN docs d ON act.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL284'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n59 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n85 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4304,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

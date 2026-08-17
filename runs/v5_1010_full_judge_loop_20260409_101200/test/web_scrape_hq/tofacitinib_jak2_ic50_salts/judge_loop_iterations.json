@@ -1,0 +1,42 @@
+[
+  {
+    "n": 3,
+    "up": "Retrieve all bioactivity details for compound CHEMBL221959 (Tofacitinib) and all its related salts against the target CHEMBL2971 (Tyrosine-protein kinase JAK2). Include only IC50 measurements. To identify the parent compound and all related salts, use the molecule_hierarchy table: find all child compounds where parent_molregno corresponds to the molregno of CHEMBL221959. For the resulting set of compounds (parent and salts), join to activities via the compound_records table using the record_id link, and retrieve publication information via the docs table linked from compound_records. Return the following columns for each matching activity record: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.",
+    "sql": "WITH target_set AS (\n    SELECT molregno, chembl_id, pref_name, organism\n    FROM molecule_dictionary\n    WHERE chembl_id IN (\n        SELECT chembl_id FROM molecule_dictionary WHERE molregno = (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL221959')\n        UNION\n        SELECT md.chembl_id FROM molecule_dictionary md JOIN molecule_hierarchy mh ON mh.molregno = md.molregno WHERE mh.parent_molregno = (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL221959')\n    )\n)\nSELECT \n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    cr.compound_key,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n    ass.description AS assay_description,\n    a.standard_type,\n    a.standard_relation,\n    a.standard_value,\n    a.standard_units,\n    a.activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM target_set md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN activities a ON cr.record_id = a.record_id\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nLEFT JOIN docs d ON cr.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL2971'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: organism",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: organism",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all IC50 bioactivity records in nM for compound CHEMBL221959 (Tofacitinib) and all its related salts against target CHEMBL2971 (Tyrosine-protein kinase JAK2). To identify the compound set, use the molecule_hierarchy table: select CHEMBL221959 as the parent and retrieve all child molregnos where parent_molregno matches the parent's molregno. Join these compounds to activities using the exact FAQ salts pattern: join molecule_dictionary to compound_records on molregno, then compound_records to activities on record_id. Retrieve publication information by joining docs to compound_records on doc_id. Return the following columns for each activity: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.",
+    "sql": "WITH compound_set AS (\n    SELECT parent.molregno\n    FROM molecule_dictionary parent\n    WHERE parent.chembl_id = 'CHEMBL221959'\n    UNION\n    SELECT child.molregno\n    FROM molecule_dictionary parent\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n    JOIN molecule_dictionary child ON child.molregno = mh.molregno\n    WHERE parent.chembl_id = 'CHEMBL221959'\n)\nSELECT \n    md.chembl_id AS compound_chembl_id,\n    cs.canonical_smiles,\n    cr.compound_key,\n    COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n    ass.description AS assay_description,\n    a.standard_type,\n    a.standard_relation,\n    a.standard_value,\n    a.standard_units,\n    a.activity_comment,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_name,\n    td.organism AS target_organism\nFROM compound_set cs_base\nJOIN molecule_dictionary md ON md.molregno = cs_base.molregno\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN activities a ON cr.record_id = a.record_id\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nLEFT JOIN docs d ON cr.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL2971'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 16\n2 | 0 | 0 | CO-ROUTINE compound_set\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n8 | 4 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n16 | 3 | 0 | UNION USING TEMP B-TREE\n22 | 16 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n27 | 16 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n33 | 16 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n62 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n67 | 0 | 32 | SCAN cs_base\n70 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n77 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n86 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n96 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n105 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n113 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN",
+    "res_row_count": 111,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

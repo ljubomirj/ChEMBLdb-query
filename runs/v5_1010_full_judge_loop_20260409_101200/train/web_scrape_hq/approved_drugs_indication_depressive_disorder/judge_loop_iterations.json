@@ -1,0 +1,42 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve data for approved drugs indicated for depressive disorder. For each qualifying drug-indication record, return the molecule's ChEMBL ID, the preferred molecule name, the canonical SMILES, the EFO ID for the indication, the EFO term (indication label), and the max_phase value specific to that indication. Filter for indications where the EFO term relates to depressive disorder (e.g., 'depressive disorder').",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.efo_term LIKE '%depressive disorder%'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 570,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve data for approved drugs indicated for depressive disorder. For each qualifying drug-indication record, return the molecule's ChEMBL ID, the preferred molecule name, the canonical SMILES, the EFO ID for the indication, the EFO term (indication label), and the max_phase value specific to that indication. Filter for indications where the EFO term relates to depressive disorder (e.g., 'major depressive disorder', 'depressive disorder') and where max_phase_for_ind equals 4 (approved/marketed).",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.efo_term LIKE '%depressive disorder%' AND di.max_phase_for_ind = 4",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 156,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

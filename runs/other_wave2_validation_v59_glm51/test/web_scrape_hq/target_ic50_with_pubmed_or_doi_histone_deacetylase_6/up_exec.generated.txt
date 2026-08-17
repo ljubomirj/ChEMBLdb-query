@@ -1,0 +1,33 @@
+Select IC50 activity records against the human single-protein target Histone deacetylase 6 (CHEMBL1865) with compound structures and publication references.
+
+Filter:
+- target_dictionary.chembl_id = 'CHEMBL1865'
+- activities.standard_type = 'IC50'
+- compound_structures.canonical_smiles IS NOT NULL
+- docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL
+
+Join path (use indexed assay_id path):
+- activities → assays on assay_id
+- assays → target_dictionary on tid
+- activities → compound_records on record_id
+- compound_records → molecule_dictionary on molregno
+- molecule_dictionary → compound_structures on molregno (INNER JOIN, structures required)
+- activities → docs on doc_id
+
+Return columns:
+- molecule_dictionary.chembl_id AS compound_chembl_id
+- compound_structures.canonical_smiles
+- compound_records.compound_key
+- COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi
+- assays.description AS assay_description
+- activities.standard_type
+- activities.standard_relation
+- activities.standard_value
+- activities.standard_units
+- activities.activity_comment
+- target_dictionary.chembl_id AS target_chembl_id
+- target_dictionary.pref_name AS target_name
+- target_dictionary.organism AS target_organism
+
+Do not deduplicate — preserve every qualifying activity row.
+Order by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_histone_deacetylase_1_molecule_smiles.json",
+  "case_id": "human_histone_deacetylase_1_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve compounds with SMILES tested against human histone deacetylase 1 (HDAC1) in human assays. The SQL joins the required tables (molecule_dictionary, compound_records, activities, assays, target_dictionary, compound_structures) and filters on target name and organism. However, the result set is empty (row_count: 0). This could be due to:\\n\\n1. **No matching activities**: There may be no activity records for HDAC1 in human assays in ChEMBL, or the target name may not exactly match 'histone deacetylase 1' (e.g., case sensitivity, synonyms, or alternative naming).\\n2. **Assay organism mismatch**: The assay may be attributed to a different organism (e.g., 'Mus musculus' for mouse) even if the target is human.\\n3. **Missing SMILES**: The compound_structures table may not have canonical_smiles for the compounds, but this is handled via LEFT JOIN, so it shouldn't exclude rows.\\n4. **Target dictionary precision**: The target_dictionary.pref_name may not exactly match 'histone deacetylase 1' (e.g., it could be 'Histone deacetylase 1' with capital letters or include a different naming convention).\\n\\nThe query logic is correct per the user question, but the result suggests no data matches the criteria. This could be a data coverage issue in ChEMBL or a misalignment in filtering.\",\n  \"score\": 0.75,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve compounds with SMILES tested against human histone deacetylase 1 (HDAC1) in human assays. The SQL joins the required tables (molecule_dictionary, compound_records, activities, assays, target_dictionary, compound_structures) and filters on target name and organism. However, the result set is empty (row_count: 0). This could be due to:\n\n1. **No matching activities**: There may be no activity records for HDAC1 in human assays in ChEMBL, or the target name may not exactly match 'histone deacetylase 1' (e.g., case sensitivity, synonyms, or alternative naming).\n2. **Assay organism mismatch**: The assay may be attributed to a different organism (e.g., 'Mus musculus' for mouse) even if the target is human.\n3. **Missing SMILES**: The compound_structures table may not have canonical_smiles for the compounds, but this is handled via LEFT JOIN, so it shouldn't exclude rows.\n4. **Target dictionary precision**: The target_dictionary.pref_name may not exactly match 'histone deacetylase 1' (e.g., it could be 'Histone deacetylase 1' with capital letters or include a different naming convention).\n\nThe query logic is correct per the user question, but the result suggests no data matches the criteria. This could be a data coverage issue in ChEMBL or a misalignment in filtering.",
+      "score": 0.75,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_deacetylase_1_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_deacetylase_1_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_deacetylase_1_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

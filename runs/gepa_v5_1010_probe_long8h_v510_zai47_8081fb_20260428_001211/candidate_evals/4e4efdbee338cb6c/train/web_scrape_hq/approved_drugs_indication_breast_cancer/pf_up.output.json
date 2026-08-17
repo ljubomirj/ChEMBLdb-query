@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_breast_cancer.json",
+  "case_id": "approved_drugs_indication_breast_cancer",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "Objective: List all approved drugs (max_phase_for_ind = 4) indicated for breast cancer, returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase.  \nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind  \nSource: molecule_dictionary (core molecule data), drug_indication (indication details), compound_structures (canonical SMILES)  \nLogic: Join molecule_dictionary to drug_indication on molregno, join drug_indication to compound_structures on molregno, filter drug_indication.max_phase_for_ind = 4 AND drug_indication.indication_label = 'breast cancer', select distinct rows, sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.",
+    "parsed_json": {
+      "up": "Objective: List all approved drugs (max_phase_for_ind = 4) indicated for breast cancer, returning ChEMBL ID, preferred name, canonical SMILES, indication EFO ID, indication label, and max phase.  \nOutput: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind  \nSource: molecule_dictionary (core molecule data), drug_indication (indication details), compound_structures (canonical SMILES)  \nLogic: Join molecule_dictionary to drug_indication on molregno, join drug_indication to compound_structures on molregno, filter drug_indication.max_phase_for_ind = 4 AND drug_indication.indication_label = 'breast cancer', select distinct rows, sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

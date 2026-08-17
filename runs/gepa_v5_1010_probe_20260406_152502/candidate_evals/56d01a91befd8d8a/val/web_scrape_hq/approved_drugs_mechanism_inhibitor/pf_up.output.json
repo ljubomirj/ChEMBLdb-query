@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_152502/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs with mechanism of action classified as an inhibitor. Join molecule_dictionary to drug_mechanism on molregno and to target_dictionary on tid. Filter for max_phase = 4 and action_type = 'INHIBITOR'. Join compound_structures on molregno to retrieve canonical_smiles. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, and target_name. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, and target_name.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs with mechanism of action classified as an inhibitor. Join molecule_dictionary to drug_mechanism on molregno and to target_dictionary on tid. Filter for max_phase = 4 and action_type = 'INHIBITOR'. Join compound_structures on molregno to retrieve canonical_smiles. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, and target_name. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, and target_name."
+    }
+  }
+}

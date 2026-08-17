@@ -15,7 +15,7 @@ from typing import List, Dict, Any, Tuple
 BASE_DIR = Path("/Users/ljubomir/ChEMBLdb-query")
 DB_PATH = BASE_DIR / "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db"
 FIXTURES_BASE = BASE_DIR / "tests/fixtures"
-CASES_FILE = BASE_DIR / "tests/cases/web_scrape_hq_cases.json"
+CASES_FILE = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases.json"
 
 # Existing cases
 with open(CASES_FILE) as f:

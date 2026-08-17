@@ -1,0 +1,1 @@
+Select molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles from molecule_dictionary md join compound_records cr on md.molregno = cr.molregno join docs d on cr.doc_id = d.doc_id left join compound_structures cs on md.molregno = cs.molregno where d.chembl_id = 'CHEMBL5260832' return rows sorted by molecule_chembl_id

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_ugt1a9_first200.json",
+  "case_id": "metabolism_enzyme_ugt1a9_first200",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 200 metabolism records for the enzyme UGT1A9. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures to retrieve canonical_smiles. Join to molecule_dictionary to get substrate compound names. Optionally join to molecule_hierarchy anchored from the substrate molregno to retrieve parent compound names. Return canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 metabolism records for the enzyme UGT1A9. Join metabolism to compound_records on substrate_record_id to get the substrate molregno, then join to compound_structures to retrieve canonical_smiles. Join to molecule_dictionary to get substrate compound names. Optionally join to molecule_hierarchy anchored from the substrate molregno to retrieve parent compound names. Return canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name. Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name."
+    }
+  }
+}

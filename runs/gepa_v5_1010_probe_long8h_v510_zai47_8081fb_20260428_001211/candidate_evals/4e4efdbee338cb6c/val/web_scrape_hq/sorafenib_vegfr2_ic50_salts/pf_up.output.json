@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve activity details for the parent compound CHEMBL1336 and all its salts that have IC50 bioactivity values in nM against target CHEMBL279. Use molecule_hierarchy parent mapping to include the parent compound and all related salts.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary\n\n4. Logic: \n   - Filter molecule_dictionary for parent compound CHEMBL1336.\n   - Join molecule_hierarchy on parent_molregno to include all child salts.\n   - Join compound_structures on molregno to get canonical_smiles.\n   - Join compound_records on molregno to get compound_key.\n   - Join docs on doc_id to get pubmed_id_or_doi (prefer pubmed_id, fallback to doi).\n   - Join activities on record_id to get activity details.\n   - Join assays on assay_id to get assay_description.\n   - Join target_dictionary on tid to get target details.\n   - Filter activities for standard_type = 'IC50' and standard_units = 'nM'.\n   - Filter target_dictionary for chembl_id = 'CHEMBL279'.\n   - Return all matching rows without limit.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve activity details for the parent compound CHEMBL1336 and all its salts that have IC50 bioactivity values in nM against target CHEMBL279. Use molecule_hierarchy parent mapping to include the parent compound and all related salts.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary\n\n4. Logic: \n   - Filter molecule_dictionary for parent compound CHEMBL1336.\n   - Join molecule_hierarchy on parent_molregno to include all child salts.\n   - Join compound_structures on molregno to get canonical_smiles.\n   - Join compound_records on molregno to get compound_key.\n   - Join docs on doc_id to get pubmed_id_or_doi (prefer pubmed_id, fallback to doi).\n   - Join activities on record_id to get activity details.\n   - Join assays on assay_id to get assay_description.\n   - Join target_dictionary on tid to get target details.\n   - Filter activities for standard_type = 'IC50' and standard_units = 'nM'.\n   - Filter target_dictionary for chembl_id = 'CHEMBL279'.\n   - Return all matching rows without limit."
+    }
+  }
+}

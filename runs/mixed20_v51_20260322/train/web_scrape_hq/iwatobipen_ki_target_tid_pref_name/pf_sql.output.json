@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_ki_target_tid_pref_name.json",
+  "case_id": "iwatobipen_ki_target_tid_pref_name",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT t.tid AS target_tid, t.pref_name AS target_name FROM activities a JOIN assays ay ON a.assay_id = ay.assay_id JOIN target_dictionary t ON ay.tid = t.tid WHERE a.standard_type = 'Ki' AND a.standard_relation = '=' ORDER BY target_tid, target_name\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT t.tid AS target_tid, t.pref_name AS target_name FROM activities a JOIN assays ay ON a.assay_id = ay.assay_id JOIN target_dictionary t ON ay.tid = t.tid WHERE a.standard_type = 'Ki' AND a.standard_relation = '=' ORDER BY target_tid, target_name"
+    }
+  }
+}

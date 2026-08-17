@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_7057aa0009e1920d.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123890.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123890",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "7057aa0009e1920d",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT molecule_dictionary.chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles FROM docs JOIN compound_records ON docs.doc_id = compound_records.doc_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE docs.chembl_id = 'CHEMBL1123890' AND compound_structures.canonical_smiles IS NOT NULL ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT molecule_dictionary.chembl_id, molecule_dictionary.pref_name AS compound_name, compound_structures.canonical_smiles FROM docs JOIN compound_records ON docs.doc_id = compound_records.doc_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE docs.chembl_id = 'CHEMBL1123890' AND compound_structures.canonical_smiles IS NOT NULL ORDER BY molecule_dictionary.chembl_id ASC, molecule_dictionary.pref_name ASC, compound_structures.canonical_smiles ASC"
+    }
+  }
+}

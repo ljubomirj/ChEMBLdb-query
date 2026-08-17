@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_1820029b8bf4ecce.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_tyrosine_protein_kinase_jak3_molecule_smiles.json",
+  "case_id": "human_tyrosine_protein_kinase_jak3_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "1820029b8bf4ecce",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL identifier and canonical SMILES for compounds tested against human JAK3. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter target_dictionary.pref_name for JAK3 and organism for Homo sapiens. Inner join compound_structures on molregno to require canonical SMILES. Sort by molecule ChEMBL identifier.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL identifier and canonical SMILES for compounds tested against human JAK3. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter target_dictionary.pref_name for JAK3 and organism for Homo sapiens. Inner join compound_structures on molregno to require canonical SMILES. Sort by molecule ChEMBL identifier."
+    }
+  }
+}

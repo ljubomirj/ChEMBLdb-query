@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_zai_glm47_local8081_20260430_205744/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1613838_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1613838_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, compound_structures.molfile FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN compound_structures ON activities.molregno = compound_structures.molregno WHERE assays.chembl_id = 'CHEMBL1613838'"
+}

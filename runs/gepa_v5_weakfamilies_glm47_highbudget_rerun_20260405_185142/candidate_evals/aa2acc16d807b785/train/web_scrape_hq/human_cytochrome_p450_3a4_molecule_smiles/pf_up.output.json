@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_aa2acc16d807b785.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles.json",
+  "case_id": "human_cytochrome_p450_3a4_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "aa2acc16d807b785",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL IDs and canonical SMILES for compounds tested against human Cytochrome P450 3A4. Join molecule_dictionary to activities, then assays, then target_dictionary, filtering on target_dictionary.pref_name = 'Cytochrome P450 3A4' and target_dictionary.organism = 'Homo sapiens'. Inner join compound_structures to require canonical SMILES. Return columns named compound_chembl_id and canonical_smiles. Sort by compound_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL IDs and canonical SMILES for compounds tested against human Cytochrome P450 3A4. Join molecule_dictionary to activities, then assays, then target_dictionary, filtering on target_dictionary.pref_name = 'Cytochrome P450 3A4' and target_dictionary.organism = 'Homo sapiens'. Inner join compound_structures to require canonical SMILES. Return columns named compound_chembl_id and canonical_smiles. Sort by compound_chembl_id."
+    }
+  }
+}

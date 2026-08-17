@@ -1,0 +1,3 @@
+# web_scrape6
+
+Round six focuses on lightweight non-salts target-centric pChEMBL cases instantiated from the public chembl_downloader get_target_sql() query family.

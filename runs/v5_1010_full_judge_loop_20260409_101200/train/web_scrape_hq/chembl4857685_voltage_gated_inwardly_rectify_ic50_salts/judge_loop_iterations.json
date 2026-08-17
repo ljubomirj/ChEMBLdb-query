@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "For CHEMBL4857685 and all of its salt forms (molecule_hierarchy), retrieve all IC50 activities (standard_type = 'IC50') against the target CHEMBL240. Return the compound CHEMBL ID, the IC50 value with its units, and the activity relation. Do not filter by confidence score, document type, or relation.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation\nFROM molecule_dictionary parent\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\nJOIN molecule_dictionary md ON md.molregno = mh.molregno\nJOIN activities a ON a.molregno = md.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nWHERE\n  parent.chembl_id = 'CHEMBL4857685'\n  AND td.chembl_id = 'CHEMBL240'\n  AND a.standard_type = 'IC50';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n19 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n24 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n47 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n67 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 21,
+    "res_columns": [
+      "molecule_chembl_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

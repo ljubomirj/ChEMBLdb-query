@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e6c781685e6a2a0.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_chronic_kidney_disease.json",
+  "case_id": "approved_drugs_indication_chronic_kidney_disease",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e6c781685e6a2a0",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, 'EFO:' || di.efo_id AS indication_curie, di.mesh_heading AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND LOWER(di.mesh_heading) = 'chronic kidney disease' ORDER BY md.chembl_id ASC, md.pref_name ASC, cs.canonical_smiles ASC, indication_curie ASC, indication_label ASC, di.max_phase_for_ind ASC\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, 'EFO:' || di.efo_id AS indication_curie, di.mesh_heading AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND LOWER(di.mesh_heading) = 'chronic kidney disease' ORDER BY md.chembl_id ASC, md.pref_name ASC, cs.canonical_smiles ASC, indication_curie ASC, indication_label ASC, di.max_phase_for_ind ASC"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_survival_motor_neuron_protein_molecule_smiles.json",
+  "case_id": "human_survival_motor_neuron_protein_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query correctly identifies compounds tested against the human survival motor neuron protein (CHEMBL1293232) in assays performed on Homo sapiens. It joins the necessary tables (activities, assays, target_dictionary, molecule_dictionary, compound_structures) to ensure the target is correct and the assay organism is human. The SELECT DISTINCT ensures each compound is listed once, and the output columns match the requested molecule_chembl_id and canonical_smiles. The sample rows show valid SMILES strings, and the row count (33,548) indicates a substantial result set, which is plausible for a well-studied target. The query is well-formed and returns the expected data without unnecessary joins or filters.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query correctly identifies compounds tested against the human survival motor neuron protein (CHEMBL1293232) in assays performed on Homo sapiens. It joins the necessary tables (activities, assays, target_dictionary, molecule_dictionary, compound_structures) to ensure the target is correct and the assay organism is human. The SELECT DISTINCT ensures each compound is listed once, and the output columns match the requested molecule_chembl_id and canonical_smiles. The sample rows show valid SMILES strings, and the row count (33,548) indicates a substantial result set, which is plausible for a well-studied target. The query is well-formed and returns the expected data without unnecessary joins or filters.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_survival_motor_neuron_protein_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_survival_motor_neuron_protein_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_survival_motor_neuron_protein_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

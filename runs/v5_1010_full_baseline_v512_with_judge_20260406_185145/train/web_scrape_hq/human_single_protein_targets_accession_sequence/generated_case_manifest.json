@@ -1,0 +1,68 @@
+{
+  "case_id": "human_single_protein_targets_accession_sequence",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "/Users/ljubomir/ChEMBLdb-query/database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_single_protein_targets_accession_sequence/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_single_protein_targets_accession_sequence/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_single_protein_targets_accession_sequence/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "promoted_from_web_scrape",
+    "source_title": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples",
+    "source_url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "sort_keys": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "tags": [
+      "other",
+      "v4_promoted",
+      "local_llm_surface_repair"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "target_chembl_id": "target_chembl_id",
+      "chembl_id": "target_chembl_id",
+      "target_name": "target_name",
+      "pref_name": "target_name",
+      "target_type": "target_type",
+      "protein_accession": "protein_accession",
+      "accession": "protein_accession",
+      "protein_sequence": "protein_sequence",
+      "sequence": "protein_sequence"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Auto-generated v5 manifest from v4 registry entry.\nv5.1010 LocalLLM repair: generated up_exec via PB_SQL."
+  }
+}

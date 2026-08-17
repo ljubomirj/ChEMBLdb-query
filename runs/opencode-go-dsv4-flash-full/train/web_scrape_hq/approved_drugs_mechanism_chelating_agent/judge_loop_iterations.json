@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all approved drugs (molecules with max_phase = 4 in molecule_dictionary) that have at least one mechanism of action in the drug_mechanism table classified as 'CHELATING AGENT' (action_type). For each such drug, output the drug preferred name, drug ChEMBL ID, canonical SMILES from compound_structures, and for each associated target (via drug_mechanism.tid to target_dictionary) output the target preferred name, target type, target organism, and target ChEMBL ID. Show each drug\u2013target combination separately. Do not add any filters beyond those explicitly mentioned.",
+    "sql": "SELECT DISTINCT\n    md.pref_name AS drug_name,\n    md.chembl_id AS drug_chembl_id,\n    cs.canonical_smiles,\n    td.pref_name AS target_name,\n    td.target_type,\n    td.organism,\n    td.chembl_id AS target_chembl_id\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE md.max_phase = 4\n  AND dm.action_type = 'CHELATING AGENT';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 22,
+    "res_columns": [
+      "drug_name",
+      "drug_chembl_id",
+      "canonical_smiles",
+      "target_name",
+      "target_type",
+      "organism",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

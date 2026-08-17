@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity records for the compound tylophorine and its salt forms tested in the RAW264.7 cell line. Return the ChEMBL ID of the compound, the IC50 value, the units, the assay ID, the document ID, the activity comment, the relationship, the pChEMBL value, the assay description, and the assay organism.",
+    "sql": "WITH tylophorine_compounds AS (SELECT child.molregno, child.chembl_id FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL452687' UNION SELECT parent.molregno, parent.chembl_id FROM molecule_dictionary parent WHERE parent.chembl_id = 'CHEMBL452687') SELECT DISTINCT tc.chembl_id, a.standard_value, a.standard_units, a.assay_id, a.doc_id, a.activity_comment, a.standard_relation, a.pchembl_value, ass.description, ass.assay_organism FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN tylophorine_compounds tc ON a.molregno = tc.molregno WHERE a.standard_type = 'IC50' AND ass.assay_cell_type = 'RAW264.7';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 12\n2 | 0 | 0 | CO-ROUTINE tylophorine_compounds\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n12 | 4 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n17 | 4 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n23 | 4 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 3 | 0 | UNION USING TEMP B-TREE\n37 | 34 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n58 | 0 | 32 | SCAN tc\n61 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n70 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n94 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units",
+      "assay_id",
+      "doc_id",
+      "activity_comment",
+      "standard_relation",
+      "pchembl_value",
+      "description",
+      "assay_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all IC50 activity records for the compound tylophorine and its salt forms when tested in the RAW264.7 cell line. Return the ChEMBL ID of the compound, the IC50 value, the units, the assay ID, the document ID, the activity comment, the relationship, the pChEMBL value, the assay description, and the assay organism.",
+    "sql": "WITH tylophorine_compounds AS (\n  SELECT child.molregno, child.chembl_id\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL452687'\n  UNION\n  SELECT parent.molregno, parent.chembl_id\n  FROM molecule_dictionary parent\n  WHERE parent.chembl_id = 'CHEMBL452687'\n)\nSELECT DISTINCT\n  tc.chembl_id,\n  a.standard_value,\n  a.standard_units,\n  a.assay_id,\n  a.doc_id,\n  a.activity_comment,\n  a.standard_relation,\n  a.pchembl_value,\n  ass.description,\n  ass.assay_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN cell_dictionary cd ON ass.cell_id = cd.cell_id\nJOIN tylophorine_compounds tc ON a.molregno = tc.molregno\nWHERE a.standard_type = 'IC50'\n  AND cd.cell_name = 'RAW264.7';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n2 | 0 | 0 | CO-ROUTINE tylophorine_compounds\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n12 | 4 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n17 | 4 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n23 | 4 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 3 | 0 | UNION USING TEMP B-TREE\n37 | 34 | 39 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n60 | 0 | 32 | SCAN tc\n63 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n72 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n78 | 0 | 39 | SEARCH cd USING INDEX sqlite_autoindex_cell_dictionary_1 (cell_id=?)\n103 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units",
+      "assay_id",
+      "doc_id",
+      "activity_comment",
+      "standard_relation",
+      "pchembl_value",
+      "description",
+      "assay_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find IC50 activity records for the compound tylophorine (including its salt forms and derivatives) when tested in the RAW264.7 cell line. The query should identify tylophorine using its preferred name or synonyms from the molecule dictionary and hierarchy tables. For the cell line, match against the cell name in the cell dictionary (e.g., 'RAW 264.7' or 'RAW264.7'). Return the ChEMBL ID of the compound, the standard IC50 value, the standard units, the assay ID, the document ID, the activity comment, the standard relation, the pChEMBL value, the assay description, and the assay organism.",
+    "sql": "WITH tylophorine_compounds AS (\n  SELECT DISTINCT md.molregno, md.chembl_id\n  FROM molecule_dictionary md\n  LEFT JOIN molecule_hierarchy mh ON mh.molregno = md.molregno\n  LEFT JOIN molecule_hierarchy mh_parent ON mh.parent_molregno = md.molregno\n  LEFT JOIN molecule_synonyms ms ON ms.molregno = md.molregno\n  WHERE LOWER(md.pref_name) LIKE '%tylophorine%'\n     OR LOWER(ms.synonyms) LIKE '%tylophorine%'\n     OR mh.parent_molregno IN (\n         SELECT parent.molregno \n         FROM molecule_dictionary parent \n         WHERE LOWER(parent.pref_name) LIKE '%tylophorine%'\n       )\n)\nSELECT DISTINCT\n  tc.chembl_id,\n  a.standard_value,\n  a.standard_units,\n  a.assay_id,\n  a.doc_id,\n  a.activity_comment,\n  a.standard_relation,\n  a.pchembl_value,\n  ass.description,\n  ass.assay_organism\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN cell_dictionary cd ON ass.cell_id = cd.cell_id\nJOIN tylophorine_compounds tc ON a.molregno = tc.molregno\nWHERE a.standard_type = 'IC50'\n  AND (cd.cell_name LIKE '%RAW264.7%' OR cd.cell_name LIKE '%RAW 264.7%');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 14\n2 | 0 | 0 | CO-ROUTINE tylophorine_compounds\n9 | 2 | 235 | SCAN md USING INDEX sqlite_autoindex_molecule_dictionary_1\n12 | 2 | 47 | SEARCH mh USING INDEX sqlite_autoindex_molecule_hierarchy_1 (molregno=?) LEFT-JOIN\n20 | 2 | 52 | SEARCH ms USING COVERING INDEX sqlite_autoindex_molecule_synonyms_2 (molregno=?) LEFT-JOIN\n38 | 2 | 0 | LIST SUBQUERY 1\n41 | 38 | 229 | SCAN parent\n51 | 38 | 0 | CREATE BLOOM FILTER\n83 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n88 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n95 | 0 | 0 | BLOOM FILTER ON cd (cell_id=?)\n107 | 0 | 39 | SEARCH cd USING INDEX sqlite_autoindex_cell_dictionary_1 (cell_id=?)\n123 | 0 | 0 | BLOOM FILTER ON tc (molregno=?)\n135 | 0 | 57 | SEARCH tc USING AUTOMATIC COVERING INDEX (molregno=?)\n158 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 32,
+    "res_columns": [
+      "chembl_id",
+      "standard_value",
+      "standard_units",
+      "assay_id",
+      "doc_id",
+      "activity_comment",
+      "standard_relation",
+      "pchembl_value",
+      "description",
+      "assay_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,95 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds with associated documents whose chembl_id equals 'CHEMBL5728930'. Return each compound's internal numeric identifier (molregno) and its preferred name (pref_name).",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name\nFROM molecule_dictionary md\nWHERE md.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 1\n4 | 0 | 39 | SEARCH md USING INDEX idx_moldict_chembl_id (chembl_id=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find each compound (molregno and preferred name) that is mentioned in document CHEMBL5728930. The document may reference compounds through assay or activity records; therefore, we must include compounds that have a `record_id` in the `activities` table linked to `docs.doc_id = 5728930`. The result should list the compound's internal identifier `molregno` and its preferred name `pref_name` as separate columns. If the same compound appears multiple times in the document (e.g., through multiple activity records), return it once only. No other compound attributes, filtering on activity type, units, or target are required by the question.",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5728930'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find each compound (internal identifier molregno and preferred name pref_name) that is mentioned in document CHEMBL5728930. Return distinct pairs of molregno and pref_name for all molecules that have at least one activity record linked to this document via the activities table and its doc_id field. No other filtering, activity type, units, target or document type restrictions are required.",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find each compound (molregno and preferred name pref_name) that appears in the ChEMBL document with identifier CHEMBL5728930. For every compound linked to this document via any activity record (i.e., at least one row in activities where doc_id points to this document), return exactly the two columns molregno and pref_name, and ensure each compound is listed only once (DISTINCT). No filtering on activity type, units, target, assay, or document type is required unless explicitly stated in the question. The result should list the internal ChEMBL numeric identifier (molregno) and the canonical compound name (pref_name) for all compounds mentioned in the document.",
+    "sql": "WITH doc_activities AS (\n  SELECT a.molregno, a.activity_id\n  FROM activities a\n  WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728930')\n),\ncompound_names AS (\n  SELECT md.molregno, md.pref_name\n  FROM molecule_dictionary md\n)\nSELECT DISTINCT cn.molregno, cn.pref_name\nFROM doc_activities da\nJOIN compound_names cn ON da.molregno = cn.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n6 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n9 | 0 | 0 | SCALAR SUBQUERY 1\n14 | 9 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find each compound (molregno and preferred name pref_name) that appears in the ChEMBL document CHEMBL5728930. Return distinct pairs of molregno and pref_name for all molecules that have at least one activity record linked to this document via the activities table and its doc_id field. The result should list the internal ChEMBL numeric identifier (molregno) and the canonical compound name (pref_name) for all compounds mentioned in the document. No filtering on activity type, units, target, assay, or document type is required unless explicitly stated in the question. Include each compound only once (DISTINCT).",
+    "sql": "WITH doc_activities AS (SELECT a.molregno FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728930')) SELECT DISTINCT da.molregno, md.pref_name FROM doc_activities da JOIN molecule_dictionary md ON da.molregno = md.molregno ORDER BY da.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n7 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n10 | 0 | 0 | SCALAR SUBQUERY 1\n15 | 10 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n45 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 812,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find each compound (molregno and preferred name pref_name) that appears in the ChEMBL document with identifier CHEMBL5728930. Return distinct pairs of molregno and pref_name for all molecules that have at least one activity record linked to this document via the activities table and its doc_id field. The result should list the internal ChEMBL numeric identifier (molregno) and the canonical compound name (pref_name) for all compounds mentioned in the document. No filtering on activity type, units, target, assay, or document type is required unless explicitly stated in the question. Include each compound only once (DISTINCT).",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name\nFROM activities a\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5728930';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

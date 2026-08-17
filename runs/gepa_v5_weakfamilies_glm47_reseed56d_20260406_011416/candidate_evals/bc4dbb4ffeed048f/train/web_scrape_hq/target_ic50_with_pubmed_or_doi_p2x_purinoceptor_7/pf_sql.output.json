@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_bc4dbb4ffeed048f.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_p2x_purinoceptor_7.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_p2x_purinoceptor_7",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "bc4dbb4ffeed048f",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, r.chembl_id AS compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM molecule_dictionary m JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id JOIN activities act ON r.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON m.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4805' AND act.standard_type = 'IC50'\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, r.chembl_id AS compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM molecule_dictionary m JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id JOIN activities act ON r.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON m.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL4805' AND act.standard_type = 'IC50'"
+    }
+  }
+}

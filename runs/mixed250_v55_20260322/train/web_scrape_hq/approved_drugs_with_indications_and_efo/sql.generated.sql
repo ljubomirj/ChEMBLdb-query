@@ -1,0 +1,20 @@
+SELECT DISTINCT
+  m.chembl_id,
+  m.pref_name,
+  cs.canonical_smiles,
+  di.efo_id AS indication_curie,
+  di.efo_term AS indication_label,
+  di.max_phase_for_ind
+FROM molecule_dictionary m
+JOIN drug_indication di ON m.molregno = di.molregno
+JOIN compound_structures cs ON m.molregno = cs.molregno
+WHERE m.max_phase = 4
+  AND di.efo_id IS NOT NULL
+  AND di.efo_term IS NOT NULL
+ORDER BY
+  m.chembl_id,
+  m.pref_name,
+  cs.canonical_smiles,
+  di.efo_id,
+  di.efo_term,
+  di.max_phase_for_ind

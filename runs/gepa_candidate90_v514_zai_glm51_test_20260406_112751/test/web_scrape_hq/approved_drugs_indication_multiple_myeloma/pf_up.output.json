@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_multiple_myeloma.json",
+  "case_id": "approved_drugs_indication_multiple_myeloma",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs indicated for multiple myeloma. Filter molecule_dictionary to max_phase = 4. Join molecule_dictionary to drug_indication on molregno. Join compound_structures via INNER JOIN on molregno for canonical_smiles. Filter drug_indication where mesh_heading or efo_term contains 'multiple myeloma'. Return chembl_id, pref_name, canonical_smiles, efo_id aliased as indication_curie, efo_term aliased as indication_label, max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs indicated for multiple myeloma. Filter molecule_dictionary to max_phase = 4. Join molecule_dictionary to drug_indication on molregno. Join compound_structures via INNER JOIN on molregno for canonical_smiles. Filter drug_indication where mesh_heading or efo_term contains 'multiple myeloma'. Return chembl_id, pref_name, canonical_smiles, efo_id aliased as indication_curie, efo_term aliased as indication_label, max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind."
+    }
+  }
+}

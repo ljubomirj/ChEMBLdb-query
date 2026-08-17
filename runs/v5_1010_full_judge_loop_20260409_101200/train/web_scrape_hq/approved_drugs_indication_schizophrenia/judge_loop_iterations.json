@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs indicated for schizophrenia. For each drug, return the following information: ChEMBL ID, drug name, canonical SMILES, EFO ID, indication label (EFO term), and the maximum phase for that specific indication. Use the drug_indication table to filter by the MeSH heading 'Schizophrenia' and link to the drug information and structures.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading = 'Schizophrenia'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 301,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for schizophrenia. Include the ChEMBL ID, drug name, canonical SMILES, EFO ID, indication label (EFO term), and max phase for the indication. Filter for indications where the MeSH heading is 'Schizophrenia' and the max phase is 4.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading = 'Schizophrenia' AND di.max_phase_for_ind = 4",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 29,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "I need to count the number of IC50 activities grouped by target type. The target type is the classification found in the target_dictionary.target_type column (e.g., 'SINGLE PROTEIN', 'PROTEIN COMPLEX'). IC50 activities are defined as entries in the activities table where standard_type equals 'IC50'. Join activities to assays on assay_id, then to target_dictionary on tid. For each target type, count the number of distinct activity_id. Return two columns: target_type (as the first column) and the count as 'activity_count' (as the second column). Include all target types that appear, even if the target_type is NULL. Do not apply any additional filters (e.g., no restrictions on confidence score, units, relation, or assay type).",
+    "sql": "SELECT td.target_type, COUNT(DISTINCT a.activity_id) AS activity_count\nFROM activities a\nINNER JOIN assays ass ON a.assay_id = ass.assay_id\nLEFT JOIN target_dictionary td ON ass.tid = td.tid\nWHERE a.standard_type = 'IC50'\nGROUP BY td.target_type;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 0 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n16 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n22 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n31 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY\n72 | 0 | 0 | USE TEMP B-TREE FOR count(DISTINCT)",
+    "res_row_count": 21,
+    "res_columns": [
+      "target_type",
+      "activity_count"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

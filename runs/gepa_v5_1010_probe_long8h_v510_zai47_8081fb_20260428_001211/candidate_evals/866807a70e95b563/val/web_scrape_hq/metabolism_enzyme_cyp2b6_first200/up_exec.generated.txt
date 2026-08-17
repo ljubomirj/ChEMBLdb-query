@@ -1,0 +1,15 @@
+Objective: Retrieve metabolism records for the enzyme CYP2B6, including substrate structure and names, along with metabolic context.
+
+Output: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+
+Source: metabolism, compound_records, compound_structures, molecule_dictionary
+
+Logic:
+1. Filter metabolism table where enzyme_name is 'CYP2B6'.
+2. Join metabolism to compound_records on metabolism.substrate_record_id = compound_records.record_id to link the substrate.
+3. Join compound_records to molecule_dictionary on compound_records.molregno = molecule_dictionary.molregno to obtain the substrate name.
+4. Join metabolism to compound_records again on metabolism.drug_record_id = compound_records.record_id to link the parent compound.
+5. Join the parent compound_records to molecule_dictionary again on compound_records.molregno = molecule_dictionary.molregno to obtain the parent name.
+6. Join the substrate molecule_dictionary to compound_structures on molecule_dictionary.molregno = compound_structures.molregno to obtain the canonical SMILES.
+7. Order the results by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, and enzyme_name.
+8. Limit the output to 200 rows.

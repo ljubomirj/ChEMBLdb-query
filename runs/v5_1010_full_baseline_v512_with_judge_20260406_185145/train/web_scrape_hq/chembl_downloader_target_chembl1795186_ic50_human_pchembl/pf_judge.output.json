@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1795186_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1795186_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query returned 0 rows, which indicates a mismatch between the expected data and the query constraints. The target CHEMBL1795186 (Bromodomain-containing protein 3) is a human single-protein target (tid=1795186, target_type='SINGLE PROTEIN'), but the join pattern may be incorrect. The current query joins `target_dictionary` to `assays` via `td.tid = a.tid`, but `assays.tid` is the target ID for the assay, not necessarily the target of the activity. The correct path should link the activity to the target via `activities.tid` (which is not a column in the schema) or through the assay's target. However, the schema does not have a direct `activities.tid` column; instead, the target is associated with the assay. The issue likely stems from the fact that `assays.tid` may not be populated for all assays, or the target may not be linked correctly. Additionally, the `activities.bao_endpoint` filter for 'IC50' may not match the actual endpoint values (e.g., 'IC50' vs. 'IC50 (in vitro)'). The sample rows in the schema show 'IC50' as a valid bao_endpoint, but the actual data may use a different endpoint or the target may not have IC50 activities. The query also assumes that `activities.standard_relation = '='` and `pchembl_value` is present, which is correct, but the join to `compound_structures` may fail if the compound lacks a structure. However, the main issue is likely the target linkage. The correct approach is to ensure that the assay's target is the specified target (tid=1795186) and that the activity is for that assay. The current query does this, but the data may not have any IC50 activities for this target with pChEMBL values. Given the constraints, the query is logically correct, but the result is empty due to data availability or subtle schema mismatches (e.g., `assays.assay_organism` vs. `target_dictionary.organism`). The query is well-formed, but the result is empty, which may be accurate for the given target and endpoint.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows, which indicates a mismatch between the expected data and the query constraints. The target CHEMBL1795186 (Bromodomain-containing protein 3) is a human single-protein target (tid=1795186, target_type='SINGLE PROTEIN'), but the join pattern may be incorrect. The current query joins `target_dictionary` to `assays` via `td.tid = a.tid`, but `assays.tid` is the target ID for the assay, not necessarily the target of the activity. The correct path should link the activity to the target via `activities.tid` (which is not a column in the schema) or through the assay's target. However, the schema does not have a direct `activities.tid` column; instead, the target is associated with the assay. The issue likely stems from the fact that `assays.tid` may not be populated for all assays, or the target may not be linked correctly. Additionally, the `activities.bao_endpoint` filter for 'IC50' may not match the actual endpoint values (e.g., 'IC50' vs. 'IC50 (in vitro)'). The sample rows in the schema show 'IC50' as a valid bao_endpoint, but the actual data may use a different endpoint or the target may not have IC50 activities. The query also assumes that `activities.standard_relation = '='` and `pchembl_value` is present, which is correct, but the join to `compound_structures` may fail if the compound lacks a structure. However, the main issue is likely the target linkage. The correct approach is to ensure that the assay's target is the specified target (tid=1795186) and that the activity is for that assay. The current query does this, but the data may not have any IC50 activities for this target with pChEMBL values. Given the constraints, the query is logically correct, but the result is empty due to data availability or subtle schema mismatches (e.g., `assays.assay_organism` vs. `target_dictionary.organism`). The query is well-formed, but the result is empty, which may be accurate for the given target and endpoint.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795186_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795186_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1795186_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

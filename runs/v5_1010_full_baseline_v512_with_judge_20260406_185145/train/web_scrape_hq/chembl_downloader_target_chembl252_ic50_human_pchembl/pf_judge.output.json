@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl252_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve IC50 activities for the human single-protein target CHEMBL252 (Endothelin-1 receptor) with pChEMBL values. However, the result set is empty (row_count: 0). The SQL uses `act.bao_endpoint = 'IC50'` to filter for IC50 activities, but the sample rows in the schema show that `bao_endpoint` values are like 'BAO_0000190' (e.g., 'BAO_0000190' for IC50), not the literal string 'IC50'. The correct endpoint for IC50 is likely a Bao ID (e.g., 'BAO_0000190'), not the text 'IC50'. Additionally, the query uses `act.standard_relation = '='` which is correct for exact IC50 values, but the `bao_endpoint` filter is misaligned with the actual data. The target type and tax_id filters are correct (SINGLE PROTEIN, tax_id 9606, CHEMBL252), and the joins are appropriate. The column aliases and ordering match the request, but the `bao_endpoint` condition must be corrected to use the Bao ID associated with IC50 (e.g., 'BAO_0000190') instead of the literal string 'IC50'. Without this correction, the query returns no rows.\",\n  \"score\": 0.4,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve IC50 activities for the human single-protein target CHEMBL252 (Endothelin-1 receptor) with pChEMBL values. However, the result set is empty (row_count: 0). The SQL uses `act.bao_endpoint = 'IC50'` to filter for IC50 activities, but the sample rows in the schema show that `bao_endpoint` values are like 'BAO_0000190' (e.g., 'BAO_0000190' for IC50), not the literal string 'IC50'. The correct endpoint for IC50 is likely a Bao ID (e.g., 'BAO_0000190'), not the text 'IC50'. Additionally, the query uses `act.standard_relation = '='` which is correct for exact IC50 values, but the `bao_endpoint` filter is misaligned with the actual data. The target type and tax_id filters are correct (SINGLE PROTEIN, tax_id 9606, CHEMBL252), and the joins are appropriate. The column aliases and ordering match the request, but the `bao_endpoint` condition must be corrected to use the Bao ID associated with IC50 (e.g., 'BAO_0000190') instead of the literal string 'IC50'. Without this correction, the query returns no rows.",
+      "score": 0.4,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

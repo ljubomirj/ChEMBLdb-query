@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve approved drugs (where max_phase = 4) that have drug indications associated with a maximum clinical trial phase of 3. For each drug-indication pair, return the drug's preferred name (pref_name), the drug's ChEMBL ID (chembl_id), the indication's MeSH ID (mesh_id), MeSH heading (mesh_heading), EFO ID (efo_id), and EFO term (efo_term).",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, di.mesh_id, di.mesh_heading, di.efo_id, di.efo_term FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 3",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 173 | SCAN di USING INDEX sqlite_autoindex_drug_indication_2\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 11433,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

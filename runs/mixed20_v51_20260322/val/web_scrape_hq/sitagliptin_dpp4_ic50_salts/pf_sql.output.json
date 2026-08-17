@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/sitagliptin_dpp4_ic50_salts.json",
+  "case_id": "sitagliptin_dpp4_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n    m.chembl_id AS compound_chembl_id,\\n    s.canonical_smiles,\\n    r.compound_key,\\n    COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\\n    a.description AS assay_description,\\n    act.standard_type,\\n    act.standard_relation,\\n    act.standard_value,\\n    act.standard_units,\\n    act.activity_comment,\\n    t.chembl_id AS target_chembl_id,\\n    t.pref_name AS target_name,\\n    t.organism AS target_organism\\nFROM molecule_dictionary m\\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\\nJOIN compound_records r ON m.molregno = r.molregno\\nJOIN docs d ON r.doc_id = d.doc_id\\nJOIN activities act ON r.record_id = act.record_id\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary t ON a.tid = t.tid\\nWHERE (\\n    m.chembl_id = 'CHEMBL1422'\\n    OR m.chembl_id IN (\\n        SELECT DISTINCT m1.chembl_id\\n        FROM molecule_dictionary m1\\n        JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\\n        JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\\n        WHERE m2.chembl_id = 'CHEMBL1422'\\n    )\\n)\\nAND act.standard_type = 'IC50'\\nAND act.standard_units = 'nM'\\nAND t.chembl_id = 'CHEMBL284'\\nORDER BY\\n    m.chembl_id,\\n    r.compound_key,\\n    COALESCE(d.pubmed_id, d.doi),\\n    a.description,\\n    act.standard_type,\\n    act.standard_relation,\\n    act.standard_value,\\n    act.standard_units,\\n    t.chembl_id,\\n    t.pref_name,\\n    t.organism\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n    m.chembl_id AS compound_chembl_id,\n    s.canonical_smiles,\n    r.compound_key,\n    COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n    a.description AS assay_description,\n    act.standard_type,\n    act.standard_relation,\n    act.standard_value,\n    act.standard_units,\n    act.activity_comment,\n    t.chembl_id AS target_chembl_id,\n    t.pref_name AS target_name,\n    t.organism AS target_organism\nFROM molecule_dictionary m\nLEFT JOIN compound_structures s ON s.molregno = m.molregno\nJOIN compound_records r ON m.molregno = r.molregno\nJOIN docs d ON r.doc_id = d.doc_id\nJOIN activities act ON r.record_id = act.record_id\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary t ON a.tid = t.tid\nWHERE (\n    m.chembl_id = 'CHEMBL1422'\n    OR m.chembl_id IN (\n        SELECT DISTINCT m1.chembl_id\n        FROM molecule_dictionary m1\n        JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno\n        JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno\n        WHERE m2.chembl_id = 'CHEMBL1422'\n    )\n)\nAND act.standard_type = 'IC50'\nAND act.standard_units = 'nM'\nAND t.chembl_id = 'CHEMBL284'\nORDER BY\n    m.chembl_id,\n    r.compound_key,\n    COALESCE(d.pubmed_id, d.doi),\n    a.description,\n    act.standard_type,\n    act.standard_relation,\n    act.standard_value,\n    act.standard_units,\n    t.chembl_id,\n    t.pref_name,\n    t.organism"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for CYP2A6, including the substrate structure, compound names, metabolic conversion, pathway, and organism.",
+    "sql": "SELECT\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  md_substrate.pref_name AS substrate_name,\n  md_metabolite.pref_name AS metabolite_name,\n  cs_substrate.canonical_smiles AS substrate_smiles\nFROM metabolism m\nJOIN compound_records cr_substrate ON m.substrate_record_id = cr_substrate.record_id\nJOIN molecule_dictionary md_substrate ON cr_substrate.molregno = md_substrate.molregno\nLEFT JOIN compound_structures cs_substrate ON md_substrate.molregno = cs_substrate.molregno\nLEFT JOIN compound_records cr_metabolite ON m.metabolite_record_id = cr_metabolite.record_id\nLEFT JOIN molecule_dictionary md_metabolite ON cr_metabolite.molregno = md_metabolite.molregno\nWHERE m.enzyme_tid = (SELECT tid FROM target_dictionary WHERE pref_name LIKE 'CYP2A6%')\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n13 | 0 | 126 | SCAN m\n18 | 0 | 0 | SCALAR SUBQUERY 1\n22 | 18 | 156 | SCAN target_dictionary\n32 | 0 | 47 | SEARCH cr_substrate USING INDEX pk_comp_rec_recid (record_id=?)\n39 | 0 | 47 | SEARCH md_substrate USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs_substrate USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n54 | 0 | 47 | SEARCH cr_metabolite USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 47 | SEARCH md_metabolite USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_name",
+      "metabolite_name",
+      "substrate_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return the first 200 metabolism records for the enzyme CYP2A6. For each record, include the metabolic conversion description, pathway key, organism, substrate compound name, substrate canonical SMILES, and metabolite compound name if available. Filter where the enzyme name is CYP2A6.",
+    "sql": "SELECT\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  md_substrate.pref_name AS substrate_name,\n  cs_substrate.canonical_smiles AS substrate_smiles,\n  md_metabolite.pref_name AS metabolite_name\nFROM metabolism m\nJOIN compound_records cr_substrate ON m.substrate_record_id = cr_substrate.record_id\nJOIN molecule_dictionary md_substrate ON cr_substrate.molregno = md_substrate.molregno\nLEFT JOIN compound_structures cs_substrate ON md_substrate.molregno = cs_substrate.molregno\nLEFT JOIN compound_records cr_metabolite ON m.metabolite_record_id = cr_metabolite.record_id\nLEFT JOIN molecule_dictionary md_metabolite ON cr_metabolite.molregno = md_metabolite.molregno\nWHERE m.enzyme_name = 'CYP2A6'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 126 | SCAN m\n17 | 0 | 47 | SEARCH cr_substrate USING INDEX pk_comp_rec_recid (record_id=?)\n24 | 0 | 47 | SEARCH md_substrate USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 47 | SEARCH cs_substrate USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n39 | 0 | 47 | SEARCH cr_metabolite USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n48 | 0 | 47 | SEARCH md_metabolite USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 12,
+    "res_columns": [
+      "met_conversion",
+      "pathway_key",
+      "organism",
+      "substrate_name",
+      "substrate_smiles",
+      "metabolite_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

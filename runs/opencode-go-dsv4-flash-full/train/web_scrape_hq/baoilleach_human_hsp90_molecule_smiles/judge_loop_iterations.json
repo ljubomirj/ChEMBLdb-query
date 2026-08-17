@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds that have been tested in Homo sapiens assays against target CHEMBL3880 (HSP90). Use molecule_dictionary for chembl_id, compound_structures for canonical_smiles, activities to link compounds to assays, assays to filter by organism, and target_dictionary to identify the target. Filter on assays.assay_organism = 'Homo sapiens' and target_dictionary.chembl_id = 'CHEMBL3880'. Return only the distinct pairs of molecule_chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS molecule_chembl_id,\n    cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON a.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL3880'\n  AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 0 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n21 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n26 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n35 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 2510,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

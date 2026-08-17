@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Select distinct chembl_id, compound_name, canonical_smiles. Source: molecule_dictionary, docs, compound_records, compound_structures. Join: docs to compound_records on doc_id, compound_records to molecule_dictionary on molregno, molecule_dictionary to compound_structures on molregno. Filter: docs.chembl_id equals 'CHEMBL1131436' and compound_structures.canonical_smiles is not null. Sort: chembl_id ascending, compound_name ascending, canonical_smiles ascending.",
+    "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1131436' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id ASC, cr.compound_name ASC, cs.canonical_smiles ASC",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieved 100 distinct molecules from document CHEMBL1131436. The SQL correctly joins docs, compound_records, molecule_dictionary, and compound_structures, filters by the specific document ID and non-null canonical_smiles, and orders by the requested columns. The result set includes all required columns (chembl_id, compound_name, canonical_smiles) and appears complete for the given document.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

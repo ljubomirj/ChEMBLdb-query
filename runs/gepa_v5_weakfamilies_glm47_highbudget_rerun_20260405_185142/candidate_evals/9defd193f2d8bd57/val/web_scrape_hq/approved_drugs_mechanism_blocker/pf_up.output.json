@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_9defd193f2d8bd57.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_mechanism_blocker.json",
+  "case_id": "approved_drugs_mechanism_blocker",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "9defd193f2d8bd57",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs with mechanism action_type 'BLOCKER'. Join molecule_dictionary to drug_mechanism on molregno. Join target_dictionary on drug_mechanism.tid. Join compound_structures on molregno for canonical SMILES. Filter where max_phase equals 4 and action_type equals 'BLOCKER'. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs with mechanism action_type 'BLOCKER'. Join molecule_dictionary to drug_mechanism on molregno. Join target_dictionary on drug_mechanism.tid. Join compound_structures on molregno for canonical SMILES. Filter where max_phase equals 4 and action_type equals 'BLOCKER'. Return chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name."
+    }
+  }
+}

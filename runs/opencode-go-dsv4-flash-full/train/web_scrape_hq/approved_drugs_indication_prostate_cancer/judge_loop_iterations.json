@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) that are indicated for prostate cancer. For each drug, provide its ChEMBL ID (from molecule_dictionary.chembl_id), generic name (molecule_dictionary.pref_name), canonical SMILES (from compound_structures.canonical_smiles), and the indication details: mesh_heading, efo_term, and max_phase_for_ind (from the drug_indication table). Use drug_indication to filter for indications related to prostate cancer; match records where the mesh_heading or efo_term contains 'prostate' or 'prostatic neoplasms' (e.g., lower(mesh_heading) LIKE '%prostate%' or lower(efo_term) LIKE '%prostate%'). Join molecule_dictionary on molregno, and join compound_structures on molregno to obtain SMILES. Return all matching drug\u2013indication pairs; do not limit the number of rows. Do not add extra filters on standard_type, unit, relation, or confidence_score.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (LOWER(di.mesh_heading) LIKE '%prostate%' OR LOWER(di.efo_term) LIKE '%prostate%')",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n16 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 605,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs specifically indicated for prostate cancer. For each drug, provide its ChEMBL ID (from molecule_dictionary.chembl_id), generic name (molecule_dictionary.pref_name), canonical SMILES (from compound_structures.canonical_smiles), and indication details: the MeSH heading (drug_indication.mesh_heading), the EFO term (drug_indication.efo_term), and the maximum phase for that indication (drug_indication.max_phase_for_ind). Only include indications where the maximum phase for the indication is 4 (i.e., the drug is approved for that indication). Restrict the indications to prostate cancer specifically: the MeSH heading must contain 'Prostatic Neoplasms' (e.g., LOWER(mesh_heading) LIKE '%prostatic neoplasms%') OR the EFO term must contain 'prostate cancer' or 'prostatic neoplasms' (e.g., LOWER(efo_term) LIKE '%prostate cancer%' OR LOWER(efo_term) LIKE '%prostatic neoplasms%'). Join molecule_dictionary with drug_indication on molregno, and left-join compound_structures on molregno to obtain SMILES. Do not limit the number of rows; return all matching drug\u2013indication pairs. Do not add any additional filters on activity data, confidence score, assay type, or target type.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.max_phase_for_ind = 4 AND (LOWER(di.mesh_heading) LIKE '%prostatic neoplasms%' OR LOWER(di.efo_term) LIKE '%prostate cancer%' OR LOWER(di.efo_term) LIKE '%prostatic neoplasms%')",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n22 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 87,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

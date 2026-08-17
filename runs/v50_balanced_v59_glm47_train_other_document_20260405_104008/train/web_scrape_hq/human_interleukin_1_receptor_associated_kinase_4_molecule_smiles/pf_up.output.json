@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_interleukin_1_receptor_associated_kinase_4_molecule_smiles.json",
+  "case_id": "human_interleukin_1_receptor_associated_kinase_4_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL identifiers and canonical SMILES for compounds tested against human Interleukin-1 receptor-associated kinase 4 (IRAK4). Join molecule_dictionary to activities on molregno, join activities to assays on assay_id, and join assays to target_dictionary on tid. Filter target_dictionary.pref_name for human Interleukin-1 receptor-associated kinase 4 (IRAK4). Join compound_structures on molregno as an inner join to require canonical SMILES. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL identifiers and canonical SMILES for compounds tested against human Interleukin-1 receptor-associated kinase 4 (IRAK4). Join molecule_dictionary to activities on molregno, join activities to assays on assay_id, and join assays to target_dictionary on tid. Filter target_dictionary.pref_name for human Interleukin-1 receptor-associated kinase 4 (IRAK4). Join compound_structures on molregno as an inner join to require canonical SMILES. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id."
+    }
+  }
+}

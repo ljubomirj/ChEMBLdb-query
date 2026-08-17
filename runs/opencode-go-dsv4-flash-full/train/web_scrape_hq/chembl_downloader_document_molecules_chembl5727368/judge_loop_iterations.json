@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Find all molecules that are reported in the document with ChEMBL ID CHEMBL5727368. The document is stored in the docs table (chembl_id = 'CHEMBL5727368'). List each molecule's ChEMBL ID, preferred name, and, if available, the compound name and compound key from the compound record that links the molecule to this document. Also include the canonical SMILES of the molecule. The connections are: docs.doc_id \u2192 compound_records.doc_id (via the doc_id foreign key), and compound_records.molregno \u2192 molecule_dictionary.molregno. Add the SMILES via molecule_dictionary.molregno \u2192 compound_structures.molregno. Do not impose any other filters; return all qualifying molecules.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id,\n       md.pref_name,\n       cr.compound_name,\n       cr.compound_key,\n       cs.canonical_smiles\nFROM docs d\nINNER JOIN compound_records cr ON d.doc_id = cr.doc_id\nINNER JOIN molecule_dictionary md ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL5727368';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 912,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "compound_name",
+      "compound_key",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_hypertension.json",
+  "case_id": "approved_drugs_indication_hypertension",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, COALESCE(di.efo_term, di.mesh_heading) AS indication_label, di.max_phase_for_ind FROM molecule_dictionary m JOIN drug_indication di ON m.molregno = di.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase = 4 AND (LOWER(di.efo_term) LIKE '%hypertension%' OR LOWER(di.mesh_heading) LIKE '%hypertension%') ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, indication_curie, indication_label, di.max_phase_for_ind\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, COALESCE(di.efo_term, di.mesh_heading) AS indication_label, di.max_phase_for_ind FROM molecule_dictionary m JOIN drug_indication di ON m.molregno = di.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase = 4 AND (LOWER(di.efo_term) LIKE '%hypertension%' OR LOWER(di.mesh_heading) LIKE '%hypertension%') ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, indication_curie, indication_label, di.max_phase_for_ind"
+    }
+  }
+}

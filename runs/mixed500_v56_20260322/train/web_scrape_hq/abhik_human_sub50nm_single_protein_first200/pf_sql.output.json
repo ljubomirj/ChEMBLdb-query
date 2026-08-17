@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT activity_id, md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, a.standard_type, a.standard_value, a.standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.organism = 'Homo sapiens' AND td.target_type = 'SINGLE PROTEIN' AND a.standard_units = 'nM' AND a.standard_type IN ('EC50', 'IC50', 'AC50') AND a.standard_value < 50 ORDER BY activity_id ASC LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT activity_id, md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, a.standard_type, a.standard_value, a.standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.organism = 'Homo sapiens' AND td.target_type = 'SINGLE PROTEIN' AND a.standard_units = 'nM' AND a.standard_type IN ('EC50', 'IC50', 'AC50') AND a.standard_value < 50 ORDER BY activity_id ASC LIMIT 200"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "n": 1,
+    "up": "Find distinct compounds from document CHEMBL5604063 with their ChEMBL IDs, names, and canonical SMILES. Return rows for each qualifying compound with columns: compound_chembl_id (the public ChEMBL identifier), pref_name (compound name), canonical_smiles (canonical SMILES).\n\nTarget: The query operates on molecules (compounds) that are associated with document CHEMBL5604063 via the activity or assay data pathways. No target protein type, organism, or assay-specific constraints are required; focus solely on the document's compound set. No additional filters on activity types, units, or assay confidence scores are needed.\n\nOutput: Return one row per distinct compound matching the document, with columns compound_chembl_id (molecule_chembl_id), pref_name (pref_name), canonical_smiles (canonical_smiles). No ranking or top\u2011N is requested.\n\nNote: Ensure that SMILES are canonical and that duplicate compounds (same CHEMBL ID) are deduplicated in the result.",
+    "sql": "WITH doc_compounds AS (\n  SELECT DISTINCT a.molecule_chembl_id\n  FROM activities a\n  JOIN docs d ON a.doc_id = d.doc_id\n  WHERE d.chembl_id = 'CHEMBL5604063'\n)\nSELECT md.chembl_id AS compound_chembl_id,\n       md.pref_name AS pref_name,\n       cs.canonical_smiles AS canonical_smiles\nFROM doc_compounds dc\nJOIN molecule_dictionary md ON dc.molecule_chembl_id = md.molecule_chembl_id\nLEFT JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id\nWHERE cs.canonical_smiles IS NOT NULL\nGROUP BY md.chembl_id, md.pref_name, cs.canonical_smiles\n;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find distinct compounds reported in document CHEMBL5604063, including their ChEMBL IDs, names, and canonical SMILES. Return rows for each qualifying compound with columns: compound_chembl_id (the public ChEMBL identifier), pref_name (compound name), canonical_smiles (canonical SMILES). Target: The query operates on molecules (compounds) that are associated with document CHEMBL5604063 via the activity or assay data pathways. No target protein type, organism, or assay-specific constraints are required; focus solely on the document's compound set. No additional filters on activity types, units, or assay confidence scores are needed. Output: Return one row per distinct compound matching the document, with columns compound_chembl_id (molecule_chembl_id), pref_name (pref_name), canonical_smiles (canonical_smiles). No ranking or top\u2011N is requested. Ensure that SMILES are canonical and that duplicate compounds (same CHEMBL ID) are deduplicated in the result.",
+    "sql": "WITH doc_compounds AS ( SELECT DISTINCT a.molecule_chembl_id AS molregno\n FROM activities a\n JOIN docs d ON a.doc_id = d.doc_id\n WHERE d.chembl_id = 'CHEMBL5604063'\n ),\n molregno AS ( SELECT md.molregno,\n                md.chembl_id,\n                md.pref_name,\n                cs.canonical_smiles\n           FROM doc_compounds dc\n           JOIN molecule_dictionary md ON dc.molregno = md.molregno\n           LEFT JOIN compound_structures cs ON md.molregno = cs.molregno\n           WHERE cs.canonical_smiles IS NOT NULL\n         )\n SELECT DISTINCT chembl_id AS compound_chembl_id,\n                pref_name,\n                canonical_smiles\n FROM molregno\n ;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct compounds that are linked to document CHEMBL5604063. For each compound return its public ChEMBL identifier (compound_chembl_id), its most recent compound name (pref_name), and its canonical SMILES (canonical_smiles). The compounds must be associated with the document via any activity, assay or compound record, but there are no additional constraints on target protein, organism, assay type, activity units, confidence scores, or date ranges. Ensure that each compound appears only once in the result set (deduplicate by CHEMBL ID).",
+    "sql": "WITH doc_compounds AS (\n  SELECT DISTINCT a.molregno\n  FROM activities a\n  JOIN docs d ON a.doc_id = d.doc_id\n  WHERE d.chembl_id = 'CHEMBL5604063'\n),\n  mol_data AS (\n    SELECT md.molregno,\n           md.chembl_id AS compound_chembl_id,\n           md.pref_name,\n           cs.canonical_smiles AS canonical_smiles\n    FROM doc_compounds dc\n    JOIN molecule_dictionary md ON dc.molregno = md.molregno\n    LEFT JOIN compound_structures cs ON md.molregno = cs.molregno\n    WHERE cs.canonical_smiles IS NOT NULL\n  )\n  SELECT DISTINCT compound_chembl_id, pref_name, canonical_smiles\n  FROM mol_data\n  ORDER BY compound_chembl_id, pref_name, canonical_smiles;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE doc_compounds\n8 | 2 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n25 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n36 | 0 | 65 | SCAN dc\n39 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2772,
+    "res_columns": [
+      "compound_chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

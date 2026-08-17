@@ -1,0 +1,45 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct compound identifiers from document CHEMBL5728495. The query should return the ChEMBL identifier (chembl_id) of each compound reported in the given document. All results must be filtered by the specified document identifier (doc_id = CHEMBL5728495). The compound identifiers should be presented as a list of distinct CHEMBL compound identifiers without additional filtering or transformation.",
+    "sql": "SELECT DISTINCT cs.chembl_id\nFROM docs d\nJOIN activities a ON d.doc_id = a.doc_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE d.chembl_id = 'CHEMBL5728495';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound identifiers reported in document CHEMBL5728495. Return each compound's public ChEMBL identifier (chembl_id) from the compound_dictionary table. The result must be filtered by the specified document identifier (docs.chembl_id = 'CHEMBL5728495') and must include only distinct compound identifiers. No additional filtering, limits, or transformations are required.",
+    "sql": "SELECT DISTINCT md.pref_name AS chembl_id\nFROM docs d\nJOIN compound_records cr ON d.doc_id = cr.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5728495'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1,
+    "res_columns": [
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compound identifiers reported in document CHEMBL5728495. Return each compound's public ChEMBL identifier (chembl_id) from the compound_dictionary table. The result must be filtered by the specified document identifier (docs.chembl_id = 'CHEMBL5728495') and must include only distinct compound identifiers. No additional filtering, limits, or transformations are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5728495';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 812,
+    "res_columns": [
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

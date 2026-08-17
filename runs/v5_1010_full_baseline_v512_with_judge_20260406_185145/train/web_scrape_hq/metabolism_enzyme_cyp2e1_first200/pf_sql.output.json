@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2e1_first200.json",
+  "case_id": "metabolism_enzyme_cyp2e1_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT cs.canonical_smiles AS canonical_smiles,\\n       sub.pref_name AS substrate_compound_name,\\n       parent.pref_name AS parent_compound_name,\\n       met.met_conversion AS met_conversion,\\n       met.pathway_key AS pathway_key,\\n       met.organism AS organism,\\n       t.pref_name AS enzyme_name\\nFROM metabolism met\\nJOIN compound_records sub_rec ON met.substrate_record_id = sub_rec.record_id\\nJOIN molecule_dictionary sub ON sub.molregno = sub_rec.molregno\\nJOIN compound_structures cs ON cs.molregno = sub_rec.molregno\\nJOIN molecule_dictionary parent ON parent.molregno = met.metabolite_record_id\\nJOIN target_dictionary t ON t.tid = met.enzyme_tid\\nWHERE t.pref_name = 'CYP2E1'\\nLIMIT 200\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT cs.canonical_smiles AS canonical_smiles,\n       sub.pref_name AS substrate_compound_name,\n       parent.pref_name AS parent_compound_name,\n       met.met_conversion AS met_conversion,\n       met.pathway_key AS pathway_key,\n       met.organism AS organism,\n       t.pref_name AS enzyme_name\nFROM metabolism met\nJOIN compound_records sub_rec ON met.substrate_record_id = sub_rec.record_id\nJOIN molecule_dictionary sub ON sub.molregno = sub_rec.molregno\nJOIN compound_structures cs ON cs.molregno = sub_rec.molregno\nJOIN molecule_dictionary parent ON parent.molregno = met.metabolite_record_id\nJOIN target_dictionary t ON t.tid = met.enzyme_tid\nWHERE t.pref_name = 'CYP2E1'\nLIMIT 200"
+    }
+  }
+}

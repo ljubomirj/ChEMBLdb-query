@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for cardiovascular disease, including their ChEMBL ID, name, structure (canonical SMILES), and indication details (MeSH heading and EFO term). A drug is considered approved if its max_phase is 4. Join the molecule_dictionary with compound_structures, drug_indication, and filter for cardiovascular-related MeSH headings (start with 'C' or are known cardiovascular disease codes).",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.mesh_id LIKE 'C%' OR di.mesh_id IN ('D015428', 'D003327', 'D003324', 'D002318', 'D017023', 'D006332', 'D006327', 'D019601', 'D015906', 'D003329', 'D003325', 'D002316', 'D002317', 'D003327', 'D003324', 'D002318', 'D017023', 'D006332', 'D006327', 'D019601', 'D015906', 'D003329', 'D003325', 'D002316', 'D002317', 'D003327', 'D003324', 'D002318', 'D017023', 'D006332', 'D006327', 'D019601', 'D015906', 'D003329', 'D003325', 'D002316', 'D002317'))",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n131 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n140 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n159 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 327,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

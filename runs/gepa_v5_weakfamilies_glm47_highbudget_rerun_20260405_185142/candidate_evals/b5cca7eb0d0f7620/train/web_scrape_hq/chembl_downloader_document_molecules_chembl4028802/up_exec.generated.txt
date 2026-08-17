@@ -1,0 +1,2 @@
+{
+  "up": "Select molecule_dictionary.chembl_id as molecule_chembl_id, molecule_dictionary.pref_name as molecule_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles as canonical_smiles\nJoin compound_records on molecule_dictionary.molregno = compound_records.molregno\nJoin docs on compound_records.doc_id = docs.doc_id\nLeft Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\nFilter docs.chembl_id = 'CHEMBL4028802'\nReturn rows\nSort by molecule

@@ -14,7 +14,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = REPO_ROOT / 'database/latest/chembl_36/chembl_36_sqlite/chembl_36.db'
-REGISTRY_PATH = REPO_ROOT / 'tests/cases/web_scrape_hq_cases.json'
+REGISTRY_PATH = REPO_ROOT / 'cases/registries/archive/web_scrape_hq_cases.json'
 OUTPUT_JSON = REPO_ROOT / 'experiments/other_wave2_candidates_v4.9.json'
 OUTPUT_MD = REPO_ROOT / 'experiments/other_wave2_candidates_v4.9.md'
 

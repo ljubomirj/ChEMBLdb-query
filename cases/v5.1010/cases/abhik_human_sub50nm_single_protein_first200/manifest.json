@@ -1,0 +1,61 @@
+{
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/uq.txt",
+    "up_exec": null,
+    "sql_gold": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/sqlite.sql",
+    "res_gold": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/source.sql",
+    "sqlite_sql": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/sqlite.sql",
+    "documentation": "cases/v5.1010/cases/abhik_human_sub50nm_single_protein_first200/provenance/original/web_scrape3--abhik_human_sub50nm_single_protein_first200/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "derived_narrowing_of_public_sql",
+    "source_title": "chembl.sql gist: narrowed human sub-50nM single-protein extract",
+    "source_url": "https://gist.githubusercontent.com/abhik1368/581c14bdd96d64c2e08c/raw/chembl.sql",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "activity_id",
+      "molecule_chembl_id",
+      "target_chembl_id",
+      "target_name",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "sort_keys": [
+      "activity_id"
+    ],
+    "tags": [
+      "other",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "molecule_chembl_id"
+    },
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "activity_id"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

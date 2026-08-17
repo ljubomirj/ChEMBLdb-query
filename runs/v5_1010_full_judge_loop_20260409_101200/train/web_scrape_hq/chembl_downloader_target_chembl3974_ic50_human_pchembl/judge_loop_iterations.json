@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return rows for bioactivities where the assay target is the human single-protein target CHEMBL3974. Filter for activities with a standard_type of 'IC50' and a valid pChEMBL value. Retrieve the following columns: the ChEMBL ID of the assay (assays.chembl_id), the target type (target_dictionary.target_type), the target taxonomy ID (target_dictionary.tax_id), the canonical SMILES of the molecule (compound_structures.canonical_smiles), the ChEMBL ID of the molecule (molecule_dictionary.chembl_id), the standard type (activities.standard_type), and the pChEMBL value (activities.pchembl_value). Limit the output to the first 1000 rows. Order the results by the molecule ChEMBL ID and then by the assay ChEMBL ID.",
+    "sql": "SELECT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE target_dictionary.chembl_id = 'CHEMBL3974'\n  AND activities.standard_type = 'IC50'\n  AND activities.pchembl_value IS NOT NULL\nORDER BY molecule_dictionary.chembl_id, assays.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

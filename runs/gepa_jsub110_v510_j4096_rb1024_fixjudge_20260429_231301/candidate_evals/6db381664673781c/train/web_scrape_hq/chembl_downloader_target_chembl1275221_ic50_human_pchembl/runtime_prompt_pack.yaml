@@ -1,0 +1,78 @@
+version: v5.gepa
+prompt_hints_path: /opt/ljubomir/ChEMBLdb-query/doc/chembl_prompt_hints_v4.11.md
+about_block: 'You will be used in forward and backward roles inside a ChEMBL text-to-SQL
+  system.
+
+  Follow the task instructions in the user message under <TASK>.
+
+  '
+examples_block: '<EXAMPLES>
+
+  Example user question:
+
+  "Top 10 most potent compounds against EGFR by IC50"
+
+
+  Example execution-plan UP:
+
+  "Return the top 10 compounds ranked by lowest IC50 against human EGFR. Select compound
+  identifiers and potency values only."
+
+
+  Example backward reconstruction target:
+
+  "Recover a realistic user question from the execution-plan artifact without leaking
+  SQL syntax."
+
+  </EXAMPLES>
+
+  '
+up_task_template: "<TASK>\nConvert a user-facing question into a compact execution-oriented\
+  \ User Prompt (UP).\nThe UP is a precise specification for a SQL writer, not a paraphrase.\n\
+  Rules:\n- Do NOT repeat the user question.\n- Do NOT use SQL keywords or write SQL\
+  \ syntax (e.g., avoid SELECT, FROM, JOIN).\n- Normalize the task using strict imperative\
+  \ blocks.\n- Explicitly specify:\n  Select: [List exact column names/aliases required].\n\
+  \  Source: [List primary tables/entities required].\n  Join: [Specify exact table\
+  \ links if multi-source].\n  Filter: [Exact filter logic, values, and comparisons].\n\
+  \  Sort: [Columns and direction].\n  Limit: [Quantity, if specified].\n- Preserve\
+  \ output columns and aliases EXACTLY as requested.\n- Deduplication: Implicitly\
+  \ handled via Joins/Filters. Mention DISTINCT only if rows must be unique across\
+  \ a specific set or if the task explicitly requires uniqueness.\nOutput JSON only\
+  \ with key \"up\".\n</TASK>\n"
+sql_task_template: '<TASK>
+
+  Convert the execution-oriented User Prompt into a single executable SQLite SELECT
+  query for ChEMBL.
+
+  Strictness:
+
+  - Preserve requested output schema (column names and aliases) EXACTLY.
+
+  - Use INNER JOIN for required links between entities.
+
+  - Do NOT hallucinate filters or columns not implied by the UP.
+
+  - Schema-critical join rule: when joining `target_dictionary` in activity queries,
+  join via assays as `target_dictionary.tid = assays.tid` (for aliasing: `td.tid =
+  a.tid`).
+
+  - Never use `activities.tid` / `act.tid` (this column does not exist in ChEMBL activities).
+
+  Output JSON only with key "sql".
+
+  </TASK>
+
+  '
+judge_task_template: '<TASK>
+
+  Judge whether the current result is good enough to stop iterating.
+
+  This is an iterative diagnostic, not the benchmark authority.
+
+  Prioritize exact match of column sets and row counts for "exact" retrieval tasks.
+
+  Output JSON with keys "analysis", "score", and "decision".
+
+  </TASK>
+
+  '

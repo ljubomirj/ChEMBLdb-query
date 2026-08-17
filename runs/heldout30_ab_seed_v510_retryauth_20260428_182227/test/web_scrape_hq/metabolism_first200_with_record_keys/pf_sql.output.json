@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.10.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT cs_sub.canonical_smiles, m.substrate_record_id, m.metabolite_record_id, cr_sub.compound_key AS substrate_compound_key, cr_met.compound_key AS metabolite_compound_key, m.met_conversion, m.pathway_key FROM metabolism m INNER JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id INNER JOIN compound_structures cs_sub ON cr_sub.molregno = cs_sub.molregno LEFT JOIN compound_records cr_met ON m.metabolite_record_id = cr_met.record_id ORDER BY cs_sub.canonical_smiles, m.substrate_record_id, m.metabolite_record_id, cr_sub.compound_key, cr_met.compound_key, m.met_conversion, m.pathway_key LIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT cs_sub.canonical_smiles, m.substrate_record_id, m.metabolite_record_id, cr_sub.compound_key AS substrate_compound_key, cr_met.compound_key AS metabolite_compound_key, m.met_conversion, m.pathway_key FROM metabolism m INNER JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id INNER JOIN compound_structures cs_sub ON cr_sub.molregno = cs_sub.molregno LEFT JOIN compound_records cr_met ON m.metabolite_record_id = cr_met.record_id ORDER BY cs_sub.canonical_smiles, m.substrate_record_id, m.metabolite_record_id, cr_sub.compound_key, cr_met.compound_key, m.met_conversion, m.pathway_key LIMIT 200"
+    }
+  }
+}

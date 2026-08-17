@@ -1,0 +1,57 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL5212 (Membrane-associated guanylate kinase, WW and PDZ domain-containing protein 3). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays ass ON act.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5212' AND act.standard_type = 'IC50' AND act.standard_relation = '=' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 13,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity records that have a pChEMBL value for the human single\u2011protein target CHEMBL5212 (Membrane\u2011associated guanylate kinase, WW and PDZ domain\u2011containing protein 3). Include assay ChEMBL ID, target type, target tax_id, canonical SMILES, molecule ChEMBL ID, activity standard type, and pChEMBL value. Apply only standard relation '=', non\u2011null pChEMBL values, and filter target to chembl_id = 'CHEMBL5212'. Return results ordered by molecule ChEMBL ID and assay ChEMBL ID, without any additional limits or filters.",
+    "sql": "WITH IC50_HUMAN AS (\n  SELECT \n    a.standard_type,\n    a.pchembl_value,\n    a.standard_relation,\n    a.value,\n    a.units,\n    a.molregno,\n    a.assay_id,\n    a.molecule_chembl_id,\n    a.doc_id,\n    a.record_id,\n    a.toin,\n    a.bao_endpoint,\n    a.uo_units,\n    a.qudt_units,\n    a.tid,\n    a.relationship,\n    a.type AS activity_type,\n    a.structure_id,\n    a.activity_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL5212'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n)\nSELECT \n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  act.standard_type,\n  act.pchembl_value,\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id\nFROM IC50_HUMAN act\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve up to 1000 IC50 activity rows that have a pChEMBL value for the human single\u2011protein target CHEMBL5212 (Membrane\u2011associated guanylate kinase, WW and PDZ domain\u2011containing protein 3). Include assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type (should be 'IC50'), and pChEMBL value. Apply only exact standard relation '=' rows with non\u2011null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       act.standard_type,\n       act.pchembl_value\nFROM activities act\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL5212'\n  AND act.standard_type = 'IC50'\n  AND act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\nORDER BY md.chembl_id,\n         ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 13,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

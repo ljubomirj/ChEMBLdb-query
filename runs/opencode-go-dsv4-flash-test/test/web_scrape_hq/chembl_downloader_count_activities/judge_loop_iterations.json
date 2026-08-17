@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Count the total number of activity records. Return a single integer representing the total row count from the activities table, without any filtering or aggregation beyond the count.",
+    "sql": "SELECT COUNT(*) AS activity_count FROM activities;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 1\n4 | 0 | 0 | SCAN activities USING COVERING INDEX fk_act_molregno",
+    "res_row_count": 1,
+    "res_columns": [
+      "activity_count"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

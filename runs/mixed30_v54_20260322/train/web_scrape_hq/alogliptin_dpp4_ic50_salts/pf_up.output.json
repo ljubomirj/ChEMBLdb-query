@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/alogliptin_dpp4_ic50_salts.json",
+  "case_id": "alogliptin_dpp4_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Define compound set: parent CHEMBL376359 plus all salts via molecule_hierarchy (parent_molregno = parent.molregno). Join FAQ provenance path: molecule_dictionary -> compound_records on molregno -> activities on record_id -> docs on doc_id -> assays on assay_id -> target_dictionary on tid. LEFT JOIN compound_structures on molregno for canonical_smiles. Filter: standard_type = 'IC50', standard_units = 'nM', target chembl_id = 'CHEMBL284'. Compute pubmed_id_or_doi preferring pubmed_id, falling back to doi. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. No row limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Define compound set: parent CHEMBL376359 plus all salts via molecule_hierarchy (parent_molregno = parent.molregno). Join FAQ provenance path: molecule_dictionary -> compound_records on molregno -> activities on record_id -> docs on doc_id -> assays on assay_id -> target_dictionary on tid. LEFT JOIN compound_structures on molregno for canonical_smiles. Filter: standard_type = 'IC50', standard_units = 'nM', target chembl_id = 'CHEMBL284'. Compute pubmed_id_or_doi preferring pubmed_id, falling back to doi. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. No row limit."
+    }
+  }
+}

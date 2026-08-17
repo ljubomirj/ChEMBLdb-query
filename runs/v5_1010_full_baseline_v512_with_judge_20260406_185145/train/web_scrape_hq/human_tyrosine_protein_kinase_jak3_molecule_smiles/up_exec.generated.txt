@@ -1,0 +1,8 @@
+Select molecule_chembl_id, canonical_smiles
+Join activities on activities.molregno = molecule_dictionary.molregno
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Join compound_structures on compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.pref_name = 'JAK3' AND target_dictionary.target_type = 'PROTEIN'
+Sort by molecule_chembl_id
+Return molecule_chembl_id, canonical_smiles

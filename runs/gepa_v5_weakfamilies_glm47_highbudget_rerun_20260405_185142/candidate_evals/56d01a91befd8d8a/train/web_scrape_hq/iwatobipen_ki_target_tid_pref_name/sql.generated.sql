@@ -1,0 +1,1 @@
+SELECT DISTINCT a.tid AS target_tid, td.pref_name AS target_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_type = 'Ki' AND a.standard_relation = '=' ORDER BY target_tid, target_name

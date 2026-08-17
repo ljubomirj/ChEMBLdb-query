@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_dpp4_molecule_smiles.json",
+  "case_id": "human_dpp4_molecule_smiles",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select distinct molecule ChEMBL ID aliased as compound_chembl_id and canonical_smiles from molecule_dictionary joined to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter where target_dictionary.chembl_id = 'CHEMBL284' and assays.assay_organism = 'Homo sapiens'. Inner join compound_structures on molregno. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id then canonical_smiles.\"}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL ID aliased as compound_chembl_id and canonical_smiles from molecule_dictionary joined to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter where target_dictionary.chembl_id = 'CHEMBL284' and assays.assay_organism = 'Homo sapiens'. Inner join compound_structures on molregno. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id then canonical_smiles."
+    }
+  }
+}

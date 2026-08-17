@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs from ChEMBL (molecule_dictionary) that are in clinical phase 4 (max_phase = 4) and have records in both drug_mechanism and compound_structures tables. For each such drug, provide the following columns: chembl_id (drug ChEMBL ID), pref_name (drug preferred name), canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id (target ChEMBL ID from target_dictionary), target_name (target preferred name from target_dictionary). Enforce inner join from molecule_dictionary to drug_mechanism on molregno, and inner join from molecule_dictionary to compound_structures on molregno, and left join from drug_mechanism to target_dictionary on tid. Ensure that canonical_smiles is not null. Return distinct rows for exactly these eight columns. Do not include any other columns.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, md.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary md INNER JOIN drug_mechanism dm ON md.molregno = dm.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n11 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 2959,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

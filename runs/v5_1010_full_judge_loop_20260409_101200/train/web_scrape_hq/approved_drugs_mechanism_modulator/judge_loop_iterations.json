@@ -1,0 +1,37 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs whose mechanism of action is classified as MODULATOR. For each drug, include the following information: 1) Drug identifiers (ChEMBL ID, preferred name, maximum phase), 2) Molecular structure (canonical SMILES), 3) Mechanism of action details (action type), and 4) Target information (target ChEMBL ID, preferred name, organism). Include all variants of approved drugs (e.g., salts) by considering the parent molecule's approval status.",
+    "sql": "WITH parent_drugs AS (SELECT md.molregno FROM molecule_dictionary md WHERE md.max_phase = 4), drug_hierarchy AS (SELECT mh.parent_molregno, mh.molregno FROM molecule_hierarchy mh WHERE mh.parent_molregno IN (SELECT molregno FROM parent_drugs)), all_approved_drugs AS (SELECT parent_molregno AS molregno FROM parent_drugs UNION SELECT molregno FROM drug_hierarchy) SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_pref_name, md.max_phase, cs.canonical_smiles, dm.action_type, dm.mechanism_of_action, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name, td.organism FROM all_approved_drugs ad JOIN molecule_dictionary md ON ad.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE dm.action_type = 'MODULATOR' ORDER BY md.pref_name",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: parent_molregno",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: parent_molregno",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all approved drugs (max_phase = 4) with a mechanism of action classified as 'MODULATOR'. For each drug, include: 1) Drug identifiers (ChEMBL ID and preferred name), 2) Molecular structure (canonical SMILES), 3) Mechanism details (action type and mechanism of action description), and 4) Target information (target ChEMBL ID, preferred name, and organism). Include salts and derivatives by joining the molecule_hierarchy table to capture all forms related to the approved parent compound.",
+    "sql": "WITH approved_parents AS (\n    SELECT md.molregno\n    FROM molecule_dictionary md\n    WHERE md.max_phase = 4\n),\nall_approved_forms AS (\n    SELECT parent_molregno AS molregno\n    FROM approved_parents\n    JOIN molecule_hierarchy mh ON mh.parent_molregno = approved_parents.molregno\n    UNION\n    SELECT molregno FROM approved_parents\n)\nSELECT DISTINCT\n    md.chembl_id AS drug_chembl_id,\n    md.pref_name AS drug_pref_name,\n    cs.canonical_smiles,\n    dm.action_type,\n    dm.mechanism_of_action,\n    td.chembl_id AS target_chembl_id,\n    td.pref_name AS target_pref_name,\n    td.organism\nFROM all_approved_forms aaf\nJOIN molecule_dictionary md ON aaf.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nWHERE dm.action_type = 'MODULATOR'\nORDER BY md.pref_name",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 15\n2 | 0 | 0 | CO-ROUTINE all_approved_forms\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n9 | 4 | 208 | SEARCH md USING INDEX idx_moldict_max_phase (max_phase=?)\n14 | 4 | 47 | SEARCH mh USING COVERING INDEX idx_molhier_parent (parent_molregno=?)\n24 | 3 | 0 | UNION USING TEMP B-TREE\n27 | 24 | 208 | SEARCH md USING INDEX idx_moldict_max_phase (max_phase=?)\n51 | 0 | 144 | SCAN dm\n55 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n62 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n71 | 0 | 0 | BLOOM FILTER ON aaf (molregno=?)\n82 | 0 | 53 | SEARCH aaf USING AUTOMATIC COVERING INDEX (molregno=?)\n88 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n116 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n117 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 35,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_pref_name",
+      "canonical_smiles",
+      "action_type",
+      "mechanism_of_action",
+      "target_chembl_id",
+      "target_pref_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

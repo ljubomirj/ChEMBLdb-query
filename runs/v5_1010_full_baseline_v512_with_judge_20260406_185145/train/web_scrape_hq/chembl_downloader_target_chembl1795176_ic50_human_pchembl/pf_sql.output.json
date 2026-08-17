@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1795176_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1795176_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT a.chembl_id AS assay_chembl_id,\\n       td.target_type,\\n       td.tax_id,\\n       cs.canonical_smiles,\\n       md.chembl_id AS molecule_chembl_id,\\n       act.standard_type,\\n       act.pchembl_value\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nLEFT JOIN compound_structures cs ON act.molregno = cs.molregno\\nWHERE act.standard_relation = '='\\n  AND act.pchembl_value IS NOT NULL\\n  AND act.bao_endpoint = 'IC50'\\n  AND td.chembl_id = 'CHEMBL1795176'\\n  AND td.target_type = 'SINGLE PROTEIN'\\n  AND td.tax_id = 9606\\nORDER BY molecule_chembl_id, assay_chembl_id\\nLIMIT 1000\"\n}",
+    "parsed_json": {
+      "sql": "SELECT a.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       act.standard_type,\n       act.pchembl_value\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nLEFT JOIN compound_structures cs ON act.molregno = cs.molregno\nWHERE act.standard_relation = '='\n  AND act.pchembl_value IS NOT NULL\n  AND act.bao_endpoint = 'IC50'\n  AND td.chembl_id = 'CHEMBL1795176'\n  AND td.target_type = 'SINGLE PROTEIN'\n  AND td.tax_id = 9606\nORDER BY molecule_chembl_id, assay_chembl_id\nLIMIT 1000"
+    }
+  }
+}

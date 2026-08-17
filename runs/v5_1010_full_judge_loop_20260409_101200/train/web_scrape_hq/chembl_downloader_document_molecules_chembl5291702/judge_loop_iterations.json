@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the list of molecules reported in document CHEMBL5291702. Return the ChEMBL ID (molecule_chembl_id) and the preferred name (pref_name) for each distinct molecule found in this document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5291702'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1046,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

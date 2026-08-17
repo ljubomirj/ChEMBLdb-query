@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123873",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles as canonical_smiles\\nFrom molecule_dictionary\\nLeft Join compound_records on molecule_dictionary.molregno = compound_records.molregno\\nLeft Join docs on compound_records.doc_id = docs.doc_id\\nLeft Join activities on compound_records.record_id = activities.record_id\\nLeft Join assays on activities.assay_id = assays.assay_id\\nLeft Join target_dictionary on assays.tid = target_dictionary.tid\\nLeft Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\\nWhere docs.chembl_id = 'CHEMBL1123873'\\nAnd compound_structures.canonical_smiles is not null\\nOrder by molecule_chembl_id, compound_name, canonical_smiles\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id as chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles as canonical_smiles\nFrom molecule_dictionary\nLeft Join compound_records on molecule_dictionary.molregno = compound_records.molregno\nLeft Join docs on compound_records.doc_id = docs.doc_id\nLeft Join activities on compound_records.record_id = activities.record_id\nLeft Join assays on activities.assay_id = assays.assay_id\nLeft Join target_dictionary on assays.tid = target_dictionary.tid\nLeft Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno\nWhere docs.chembl_id = 'CHEMBL1123873'\nAnd compound_structures.canonical_smiles is not null\nOrder by molecule_chembl_id, compound_name, canonical_smiles"
+    }
+  }
+}

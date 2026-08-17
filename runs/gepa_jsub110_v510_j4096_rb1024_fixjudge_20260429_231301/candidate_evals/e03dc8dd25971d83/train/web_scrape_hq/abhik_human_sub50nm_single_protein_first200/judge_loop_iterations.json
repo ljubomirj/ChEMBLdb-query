@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: activity_id, molecule_dictionary.chembl_id AS molecule_chembl_id, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, activities.standard_type, activities.standard_value, activities.standard_units. Source: activities, molecule_dictionary, target_dictionary, assays. Join: activities.molregno = molecule_dictionary.molregno, activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid. Filter: target_dictionary.organism = 'Homo sapiens', target_dictionary.target_type = 'SINGLE PROTEIN', activities.standard_units = 'nM', activities.standard_type IN ('EC50', 'IC50', 'AC50'), activities.standard_value < 50. Sort: activity_id ASC. Limit: 200.",
+    "sql": "SELECT activities.activity_id, molecule_dictionary.chembl_id AS molecule_chembl_id, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, activities.standard_type, activities.standard_value, activities.standard_units FROM activities JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid WHERE target_dictionary.organism = 'Homo sapiens' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND activities.standard_units = 'nM' AND activities.standard_type IN ('EC50', 'IC50', 'AC50') AND activities.standard_value < 50 ORDER BY activities.activity_id ASC LIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n11 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_unit (standard_units=?)\n35 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n41 | 0 | 0 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n52 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 200,
+    "res_columns": [
+      "activity_id",
+      "molecule_chembl_id",
+      "target_chembl_id",
+      "target_name",
+      "standard_type",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The SQL query correctly implements the user request. It joins activities with molecule_dictionary, assays, and target_dictionary to retrieve activity rows for human single-protein targets. The filters are correctly applied: organism = 'Homo sapiens', target_type = 'SINGLE PROTEIN', standard_units = 'nM', standard_type IN ('EC50', 'IC50', 'AC50'), and standard_value < 50. The result is ordered by activity_id and limited to 200 rows. The output columns match the requested schema exactly, using chembl_id for molecule_chembl_id as specified. The query execution plan shows efficient index usage, and the returned 200 rows contain valid high-potency activity data.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

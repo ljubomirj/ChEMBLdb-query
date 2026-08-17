@@ -1,0 +1,83 @@
+{
+  "ts_utc": "2026-03-16T19:23:50Z",
+  "eval_label": "target_ic50_with_pubmed_or_doi_dpp4",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.6.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 1,
+      "n_pass": 1,
+      "pass_rate": 1.0,
+      "mean_score": 1.0,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "target_ic50_with_pubmed_or_doi_dpp4",
+          "uq": "Retrieve IC50 activities in nM against target CHEMBL284 (Dipeptidyl peptidase 4) together with canonical SMILES, compound ChEMBL ID, compound key, PubMed ID or DOI, assay description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target ChEMBL ID, target name, and target organism. Keep only rows with target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', non-null canonical_smiles, and at least one of pubmed_id or doi. For pubmed_id_or_doi, prefer the PubMed ID when both pubmed_id and doi are present; otherwise use the DOI. Join docs from activities.doc_id = docs.doc_id, and left join compound_records from activities.record_id = compound_records.record_id only to obtain compound_key. The final SELECT must be DISTINCT across exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism; do not emit duplicate projected rows from many-to-many joins.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/fix_outer_misses_20260316/target_ic50_with_pubmed_or_doi_dpp4/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/fix_outer_misses_20260316/target_ic50_with_pubmed_or_doi_dpp4/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 4992,
+          "actual_rows": 4992,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 1,
+    "pass_rate": 1.0,
+    "mean_score": 1.0
+  }
+}

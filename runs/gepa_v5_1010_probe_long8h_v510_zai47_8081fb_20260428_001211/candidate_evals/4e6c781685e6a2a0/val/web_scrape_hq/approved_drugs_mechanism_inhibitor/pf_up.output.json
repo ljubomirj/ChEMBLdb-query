@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e6c781685e6a2a0.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e6c781685e6a2a0",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: molecule chembl_id, molecule pref_name, canonical SMILES, max phase, mechanism of action, action type, target chembl_id, target name. Source: molecule dictionary, drug mechanism, target dictionary. Join: molecule dictionary to drug mechanism on molregno, drug mechanism to target dictionary on tid. Filter: max phase equals 4, action type equals 'INHIBITOR'. Sort: chembl_id ascending, pref_name ascending, canonical SMILES ascending, max phase ascending, mechanism of action ascending, action type ascending, target chembl_id ascending, target name ascending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: molecule chembl_id, molecule pref_name, canonical SMILES, max phase, mechanism of action, action type, target chembl_id, target name. Source: molecule dictionary, drug mechanism, target dictionary. Join: molecule dictionary to drug mechanism on molregno, drug mechanism to target dictionary on tid. Filter: max phase equals 4, action type equals 'INHIBITOR'. Sort: chembl_id ascending, pref_name ascending, canonical SMILES ascending, max phase ascending, mechanism of action ascending, action type ascending, target chembl_id ascending, target name ascending."
+    }
+  }
+}

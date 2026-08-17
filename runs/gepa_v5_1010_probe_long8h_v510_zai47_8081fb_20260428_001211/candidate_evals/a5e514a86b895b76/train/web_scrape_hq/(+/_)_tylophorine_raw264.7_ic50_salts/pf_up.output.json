@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_a5e514a86b895b76.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/(+/_)_tylophorine_raw264.7_ic50_salts.json",
+  "case_id": "(+/_)_tylophorine_raw264.7_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "a5e514a86b895b76",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve IC50 activity records with provenance for (+/-)-TYLOPHORINE (CHEMBL493620) and its salt forms tested against the RAW264.7 cell line target.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary\n\n4. Logic: Identify the parent compound by chembl_id 'CHEMBL493620'. Include the parent and all child salt forms via molecule_hierarchy (parent_molregno). Join to compound_structures for canonical_smiles. Join to compound_records and docs for provenance (compound_key, pubmed_id_or_doi). Join to activities and assays for assay_description and activity metrics. Filter for standard_type 'IC50'. Join to target_dictionary and filter for target chembl_id 'CHEMBL612557' (RAW264.7). Sort by all output columns.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve IC50 activity records with provenance for (+/-)-TYLOPHORINE (CHEMBL493620) and its salt forms tested against the RAW264.7 cell line target.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, docs, activities, assays, target_dictionary\n\n4. Logic: Identify the parent compound by chembl_id 'CHEMBL493620'. Include the parent and all child salt forms via molecule_hierarchy (parent_molregno). Join to compound_structures for canonical_smiles. Join to compound_records and docs for provenance (compound_key, pubmed_id_or_doi). Join to activities and assays for assay_description and activity metrics. Filter for standard_type 'IC50'. Join to target_dictionary and filter for target chembl_id 'CHEMBL612557' (RAW264.7). Sort by all output columns."
+    }
+  }
+}

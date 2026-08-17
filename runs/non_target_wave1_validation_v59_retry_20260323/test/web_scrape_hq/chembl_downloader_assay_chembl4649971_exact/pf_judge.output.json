@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649971_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query successfully returns exact activity values for compounds tested in assay CHEMBL4649971, including canonical SMILES structures. The result set contains 68,784 rows, which is a realistic size for a high-throughput screening assay. The columns match the user's request: canonical_smiles (structure), chembl_id (compound identifier), and the exact activity metadata (standard_type, standard_relation, standard_value, standard_units). The filtering for exact values (standard_relation = '=' and standard_value IS NOT NULL) was correctly applied. The sample rows show diverse compounds with Percent Effect measurements, including negative values which are valid for this assay type. The query correctly joins activities to assays, molecule_dictionary, and compound_structures, and sorts by the requested columns.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query successfully returns exact activity values for compounds tested in assay CHEMBL4649971, including canonical SMILES structures. The result set contains 68,784 rows, which is a realistic size for a high-throughput screening assay. The columns match the user's request: canonical_smiles (structure), chembl_id (compound identifier), and the exact activity metadata (standard_type, standard_relation, standard_value, standard_units). The filtering for exact values (standard_relation = '=' and standard_value IS NOT NULL) was correctly applied. The sample rows show diverse compounds with Percent Effect measurements, including negative values which are valid for this assay type. The query correctly joins activities to assays, molecule_dictionary, and compound_structures, and sorts by the requested columns.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_histone_acetyltransferase_kat2a_molecule_smiles.json",
+  "case_id": "human_histone_acetyltransferase_kat2a_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query correctly implements the user's request: retrieve SMILES for compounds tested against human KAT2A with IC50=nM in B-type assays. The SQL uses proper joins (molecule_dictionary \u2192 compound_records \u2192 activities \u2192 assays \u2192 target_dictionary \u2192 compound_structures) with exact filters (pref_name, assay_organism, assay_type, standard_type, standard_relation, standard_units, non-null value). The DISTINCT ensures no duplicate SMILES, and LIMIT 1000 respects the example's intent. The result set is empty, but this is plausible: KAT2A (a human enzyme) may not have B-type (binding) assays in ChEMBL with IC50=nM data, or the specific combination may be absent. The query is logically sound and matches the user's requirements. No errors in joins, filters, or column aliases. The output columns are correctly named (molecule_chembl_id, canonical_smiles). The empty result is a valid outcome given the data, not a query flaw.\",\n  \"score\": 100,\n  \"decision\": \"stop\"\n}",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user's request: retrieve SMILES for compounds tested against human KAT2A with IC50=nM in B-type assays. The SQL uses proper joins (molecule_dictionary \u2192 compound_records \u2192 activities \u2192 assays \u2192 target_dictionary \u2192 compound_structures) with exact filters (pref_name, assay_organism, assay_type, standard_type, standard_relation, standard_units, non-null value). The DISTINCT ensures no duplicate SMILES, and LIMIT 1000 respects the example's intent. The result set is empty, but this is plausible: KAT2A (a human enzyme) may not have B-type (binding) assays in ChEMBL with IC50=nM data, or the specific combination may be absent. The query is logically sound and matches the user's requirements. No errors in joins, filters, or column aliases. The output columns are correctly named (molecule_chembl_id, canonical_smiles). The empty result is a valid outcome given the data, not a query flaw.",
+      "score": 100,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_acetyltransferase_kat2a_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_acetyltransferase_kat2a_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_histone_acetyltransferase_kat2a_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

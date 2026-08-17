@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_herg_ic50_export.json",
+  "case_id": "baoilleach_herg_ic50_export",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT\n  activities.activity_id,\n  assays.chembl_id AS assay_chembl_id,\n  activities.standard_relation,\n  activities.standard_value,\n  activities.standard_units,\n  activities.standard_type,\n  molecule_dictionary.chembl_id AS molecule_chembl_id\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nWHERE assays.tid = 165\n  AND activities.standard_type = 'IC50'\nORDER BY\n  activities.activity_id,\n  assays.chembl_id,\n  molecule_dictionary.chembl_id\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  activities.activity_id,\n  assays.chembl_id AS assay_chembl_id,\n  activities.standard_relation,\n  activities.standard_value,\n  activities.standard_units,\n  activities.standard_type,\n  molecule_dictionary.chembl_id AS molecule_chembl_id\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nWHERE assays.tid = 165\n  AND activities.standard_type = 'IC50'\nORDER BY\n  activities.activity_id,\n  assays.chembl_id,\n  molecule_dictionary.chembl_id"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve first 1000 rows where a human single-protein target (CHEMBL1741179, DNA dC->dU-editing enzyme APOBEC-3A) has exact IC50 activity (standard_type = 'IC50') with non-null pChEMBL values. Return assay ChEMBL ID (chembl_id), target type (pref_name), target tax_id, molecule's canonical SMILES (canonical_smiles), molecule ChEMBL ID (chembl_id), activity standard type (standard_type), and pChEMBL value (pChEMBL value). Filter to activities where standard_type = 'IC50', pChEMBL value is present, and assay organism = 'Homo sapiens'. Join activities to assays, target_dictionary, compound_structures, and filter assays.assay_organism = 'Homo sapiens' (exact match) to ensure human target. Order results by molecule chembl_id ascending then assay chembl_id ascending. Return exactly the requested columns without extra fields. Ensure DISTINCT is applied only if multiple rows per (molecule, assay) could exist but query uses MIN(pChEMBL) to handle duplicates; however, as per UQ, simply retrieve rows with pChEMBL non-null, so no aggregation needed. Use standard type 'IC50' and filter on exact relation '=' implied by activity rows with pChEMBL. The standard relation is already exact for IC50 values. The output must be ordered as specified.",
+    "sql": "SELECT DISTINCT a.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pChEMBL_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\n  AND td.chembl_id = 'CHEMBL1741179'\n  AND ass.assay_organism = 'Homo sapiens'\nORDER BY md.chembl_id ASC, a.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\"up\":\"Find activity rows for the human protein target CHEMBL1741179 (DNA dC->dU-editing enzyme APOBEC-3A) that are exact IC50 measurements (standard_type='IC50') with non-null pChEMBL values. Return assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.pref_name), target tax_id, molecule's canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), activity standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). The target must be a single-protein (CHEMBL1741179) and the assay organism must be Homo sapiens. Results must be ordered by molecule ChEMBL ID ascending, then assay ChEMBL ID ascending, and the first 1000 rows must be returned. All returned columns must be exactly the requested fields with no additional columns or joins that could alter the result set.\",\"targets\":[\"CHEMBL1741179\"],\"output_columns\":[\"assays.chembl_id\",\"target_dictionary.pref_name\",\"target_dictionary.tax_id\",\"compound_structures.canonical_smiles\",\"molecule_dictionary.chembl_id\",\"activities.standard_type\",\"activities.pchembl_value\"],\"filters\":[\"activities.standard_type = 'IC50'\",\"activities.pchembl_value IS NOT NULL\",\"target_dictionary.chembl_id = 'CHEMBL1741179'\",\"assays.assay_organism = 'Homo sapiens'\"],\"ranking\":\"order by molecule ChEMBL ID ASC then assay ChEMBL ID ASC, limit 1000\"}",
+    "sql": "SELECT a.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pChEMBL_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\n  AND td.chembl_id = 'CHEMBL1741179'\n  AND ass.assay_organism = 'Homo sapiens'\nORDER BY md.chembl_id ASC, a.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find activity rows for the human protein target CHEMBL1741179 (DNA dC->dU-editing enzyme APOBEC-3A) that are exact IC50 measurements (standard_type='IC50') with non-null pChEMBL values. Return assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.pref_name), target tax_id, molecule's canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), activity standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). The target must be a single-protein (CHEMBL1741179) and the assay organism must be Homo sapiens. Results must be ordered by molecule ChEMBL ID ascending, then assay ChEMBL ID ascending, and the first 1000 rows must be returned. All returned columns must be exactly the requested fields with no additional columns or joins that could alter the result set.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pChEMBL_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1741179' AND ass.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id ASC, a.assay_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 activity records where human protein target CHEMBL1741179 (DNA dC->dU-editing enzyme APOBEC-3A) shows an exact IC50 measurement (standard_type='IC50') with a non\u2011null pChEMBL value. Return the assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.pref_name), target tax_id, the molecule\u2019s canonical SMILES (compound_structures.canonical_smiles), the molecule\u2019s ChEMBL ID (molecule_dictionary.chembl_id), the activity standard type (activities.standard_type) and the pChEMBL value (activities.pchembl_value). Ensure the assay organism is Homo sapiens. Order results by molecule ChEMBL ID ascending, then assay ChEMBL ID ascending, and return exactly the listed columns with no additional fields.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pChEMBL_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1741179' AND ass.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id ASC, a.assay_id ASC LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n73 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 457,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pChEMBL_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find activity rows for the human protein target CHEMBL1741179 (DNA dC->dU-editing enzyme APOBEC-3A) that are exact IC50 measurements (standard_type='IC50') with non-null pChEMBL values. Return assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.pref_name), target tax_id, molecule's canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), activity standard type (activities.standard_type), and pChEMBL value (activities.pchembl_value). Ensure the assay organism is Homo sapiens. Order results by molecule ChEMBL ID ascending, then assay ChEMBL ID ascending, and return exactly the listed columns with no additional fields.",
+    "sql": "WITH a AS (SELECT * FROM activities WHERE standard_type = 'IC50' AND pchembl_value IS NOT NULL), ASSESSORS AS (SELECT DISTINCT a.molregno, ass.assay_id, ass.chembl_id AS assay_chembl_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE a.molregno IN (SELECT molregno FROM activities WHERE standard_type = 'IC50' AND pchembl_value IS NOT NULL AND assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL1741179') ) SELECT ass.chembl_id AS assay_chembl_id, td.pref_name AS target_type, td.tax_id, cs.canonical_smiles AS canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value AS pChEMBL_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_type = 'IC50' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1741179' AND ass.assay_organism = 'Homo sapiens' ORDER BY md.chembl_id ASC, a.assay_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n73 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 457,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pChEMBL_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the IC50 activity values (in nM) for compounds tested against human Rho-associated protein kinase 2 (CHEMBL ID: CHEMBL2973). For each qualifying activity, return the compound ChEMBL ID, canonical SMILES, standard IC50 value in nM, assay description, target name, target organism, and the PubMed ID or DOI of the source document.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.pref_name AS target_name,\n  td.organism AS target_organism,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL2973'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7036,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "ic50_nM",
+      "assay_description",
+      "target_name",
+      "target_organism",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

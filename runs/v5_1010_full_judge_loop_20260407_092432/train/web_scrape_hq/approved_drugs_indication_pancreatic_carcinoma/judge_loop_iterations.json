@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of approved drugs indicated for pancreatic carcinoma. For each drug, provide the preferred name, the ChEMBL ID, and the maximum clinical phase. Only include drugs with max_phase = 4.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id, md.max_phase FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_heading = 'Pancreatic Neoplasms';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 174 | SCAN di\n9 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n26 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 202,
+    "res_columns": [
+      "pref_name",
+      "chembl_id",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

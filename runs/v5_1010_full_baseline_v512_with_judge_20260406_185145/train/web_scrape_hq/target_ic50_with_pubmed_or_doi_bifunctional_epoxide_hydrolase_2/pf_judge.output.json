@@ -1,0 +1,37 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_bifunctional_epoxide_hydrolase_2.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_bifunctional_epoxide_hydrolase_2",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result set contains 3035 rows of IC50 activities for human Bifunctional epoxide hydrolase 2 (CHEMBL2409). The query correctly filters for standard_type='IC50', standard_relation='=', standard_units='nM', and target CHEMBL2409. However, the sample rows reveal several issues: 1) The 'activity_comment' column is empty for all rows, but the sample shows non-empty comments (e.g., 'Inhibition of sEH (unknown origin) assessed as substrate PHOME hydrolysis after 1 hr by fluorescence method'). This suggests the activity_comment field is not being populated correctly in the join path. 2) The 'standard_units' column shows 'nM' as expected, but the sample rows have inconsistent units (e.g., 'nM' vs 'uM' in the sample data). 3) The 'pubmed_id_or_doi' column shows PubMed IDs (e.g., 24679441) but the task requires PubMed ID OR DOI, and the query uses docs.pubmed_id directly without checking for DOI. 4) The 'compound_key' column shows values like '24', '15', etc., but the sample rows indicate these should be compound keys (e.g., 'Zileuton' is a compound_key, not a numeric ID). The query joins compound_records but does not properly filter for the correct compound_key format. The target details (target_chembl_id, target_name, target_organism) are correctly included. The row count (3035) seems high for a single target, but may be acceptable given the dataset size. The main concern is the missing activity_comment and potential unit inconsistencies.\",\n  \"score\": 0.65,\n  \"decision\": \"continue\",\n  \"reason\": \"The query returns the required columns and filters correctly for IC50 in nM against CHEMBL2409, but the sample data shows missing activity_comment values and potential unit inconsistencies. The activity_comment should be populated from activities.activity_comment or activities.standard_text_value, but the current join uses activities.activity_comment which is empty in the sample. The query should be adjusted to include activity_comment from the correct source and ensure units are consistently in nM. The compound_key format also appears incorrect (numeric vs. string). These issues need to be resolved before the result is final.\"\n}",
+    "parsed_json": {
+      "analysis": "The current result set contains 3035 rows of IC50 activities for human Bifunctional epoxide hydrolase 2 (CHEMBL2409). The query correctly filters for standard_type='IC50', standard_relation='=', standard_units='nM', and target CHEMBL2409. However, the sample rows reveal several issues: 1) The 'activity_comment' column is empty for all rows, but the sample shows non-empty comments (e.g., 'Inhibition of sEH (unknown origin) assessed as substrate PHOME hydrolysis after 1 hr by fluorescence method'). This suggests the activity_comment field is not being populated correctly in the join path. 2) The 'standard_units' column shows 'nM' as expected, but the sample rows have inconsistent units (e.g., 'nM' vs 'uM' in the sample data). 3) The 'pubmed_id_or_doi' column shows PubMed IDs (e.g., 24679441) but the task requires PubMed ID OR DOI, and the query uses docs.pubmed_id directly without checking for DOI. 4) The 'compound_key' column shows values like '24', '15', etc., but the sample rows indicate these should be compound keys (e.g., 'Zileuton' is a compound_key, not a numeric ID). The query joins compound_records but does not properly filter for the correct compound_key format. The target details (target_chembl_id, target_name, target_organism) are correctly included. The row count (3035) seems high for a single target, but may be acceptable given the dataset size. The main concern is the missing activity_comment and potential unit inconsistencies.",
+      "score": 0.65,
+      "decision": "continue",
+      "reason": "The query returns the required columns and filters correctly for IC50 in nM against CHEMBL2409, but the sample data shows missing activity_comment values and potential unit inconsistencies. The activity_comment should be populated from activities.activity_comment or activities.standard_text_value, but the current join uses activities.activity_comment which is empty in the sample. The query should be adjusted to include activity_comment from the correct source and ensure units are consistently in nM. The compound_key format also appears incorrect (numeric vs. string). These issues need to be resolved before the result is final."
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_bifunctional_epoxide_hydrolase_2/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_bifunctional_epoxide_hydrolase_2/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_bifunctional_epoxide_hydrolase_2/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,12 @@
+SELECT
+  cs.canonical_smiles,
+  cr_sub.compound_name AS substrate_compound_name,
+  md_par.pref_name AS parent_compound_name,
+  m.met_conversion,
+  m.pathway_key
+FROM metabolism m
+JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id
+JOIN compound_structures cs ON cr_sub.molregno = cs.molregno
+JOIN molecule_hierarchy mh ON m.drug_record_id = mh.molregno
+JOIN molecule_dictionary md_par ON mh.parent_molregno = md_par.molregno
+LIMIT 200

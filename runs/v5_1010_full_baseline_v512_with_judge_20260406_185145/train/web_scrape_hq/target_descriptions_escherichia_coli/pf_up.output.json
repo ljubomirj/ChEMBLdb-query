@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_escherichia_coli.json",
+  "case_id": "target_descriptions_escherichia_coli",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select DISTINCT target_dictionary.pref_name AS target_description\\nJoin activities ON activities.assay_id = assays.assay_id\\nJoin assays ON assays.assay_id = activities.assay_id\\nJoin target_dictionary ON target_dictionary.tid = activities.tid\\nFilter assays.assay_organism = 'Escherichia coli'\\nSort target_description\"\n}",
+    "parsed_json": {
+      "up": "Select DISTINCT target_dictionary.pref_name AS target_description\nJoin activities ON activities.assay_id = assays.assay_id\nJoin assays ON assays.assay_id = activities.assay_id\nJoin target_dictionary ON target_dictionary.tid = activities.tid\nFilter assays.assay_organism = 'Escherichia coli'\nSort target_description"
+    }
+  }
+}

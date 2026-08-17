@@ -1,0 +1,61 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compound records from the documents with the Chembl ID CHEMBL5726094. Return each compound's internal identifier (CHEMBL ID), internal numeric key, compound name, record ID, the source database identifier (src_id), and the compound's key as used in the original source. Each distinct compound (each distinct molecule_chembl_id) should appear once. Include any associated data such as the record identifier, document ID, and the source type (src_short_name).",
+    "sql": "SELECT DISTINCT a.chembl_id AS compound_chembl_id, a.record_id, md.pref_name AS compound_name, a.doc_id, s.src_short_name AS source_type\nFROM activities a\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN docs ON a.doc_id = docs.doc_id\nJOIN compound_records cr ON a.molregno = cr.molregno AND a.record_id = cr.record_id\nJOIN source s ON cr.src_id = s.src_id\nWHERE docs.chembl_id = 'CHEMBL5726094';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compound records from the document with Chembl ID CHEMBL5726094. For each compound, return: the compound's public ChEMBL identifier, the internal numeric key (molregno), the compound's name (pref_name), the compound record identifier (record_id), the source database short name (src_short_name), and the source database description. Present each distinct molecule_chembl_id only once, even if it appears in multiple records or activities. No additional filters or joins should be added beyond those necessary to answer the document-specific query.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS compound_chembl_id, cr.molregno AS molregno, md.pref_name AS compound_name, cr.record_id, s.src_short_name AS source_type, s.src_description AS source_description\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN source s ON cr.src_id = s.src_id\nWHERE d.chembl_id = 'CHEMBL5726094';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compound records from the document with Chembl ID CHEMBL5726094. For each compound, return the compound's public ChEMBL identifier, the internal numeric key (molregno), the compound's name (pref_name), the compound record identifier (record_id), the source database short name (src_short_name), and the source database description. Present each distinct molecule_chembl_id only once, even if it appears in multiple records or activities. Include any associated data such as the record identifier, document ID, and the source type (src_short_name).",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS compound_chembl_id, cr.molregno AS molregno, md.pref_name AS compound_name, cr.record_id, s.src_short_name, s.src_description\nFROM compound_records cr\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN source s ON cr.src_id = s.src_id\nWHERE d.chembl_id = 'CHEMBL5726094';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compounds (with their public ChEMBL identifier, internal numeric key molregno, preferred name pref_name, compound record identifier record_id, source short name src_short_name, and source description src_description) that are listed in the document with chembl_id CHEMBL5726094. Each compound should appear only once (distinct on molecule_chembl_id), regardless of how many records or activities it has in that document. No additional filters or joins beyond those required to connect the compound to the specified document.",
+    "sql": "SELECT DISTINCT d.chembl_id AS compound_chembl_id, cr.molregno, md.pref_name AS compound_name, cr.record_id, s.src_short_name, s.src_description FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN source s ON cr.src_id = s.src_id WHERE d.chembl_id = 'CHEMBL5726094';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 32 | SEARCH s USING INTEGER PRIMARY KEY (rowid=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 814,
+    "res_columns": [
+      "compound_chembl_id",
+      "molregno",
+      "compound_name",
+      "record_id",
+      "src_short_name",
+      "src_description"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

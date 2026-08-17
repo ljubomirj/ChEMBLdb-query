@@ -1,0 +1,42 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_lysine_specific_histone_demethylase_1a.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_lysine_specific_histone_demethylase_1a",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": [\n    \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\",\n    \"Join molecule_dictionary m ON m.molregno = a.molregno\",\n    \"Join activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.bao_endpoint = 'BAO_0000190'\",\n    \"Join assays ass ON a.assay_id = ass.assay_id AND ass.assay_organism = 'Homo sapiens'\",\n    \"Join target_dictionary t ON ass.tid = t.tid AND t.target_type = 'SINGLE PROTEIN' AND t.pref_name = 'Lysine-specific histone demethylase 1A'\",\n    \"Join compound_structures cs ON cs.molregno = m.molregno\",\n    \"Join docs d ON a.doc_id = d.doc_id\",\n    \"Join pubmed_or_doi p ON d.pubmed_id = p.pubmed_id OR d.doi = p.doi\",\n    \"Filter t.chembl_id = 'CHEMBL6136'\",\n    \"Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\",\n    \"Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism\",\n    \"Limit 2000\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism",
+        "Join molecule_dictionary m ON m.molregno = a.molregno",
+        "Join activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.bao_endpoint = 'BAO_0000190'",
+        "Join assays ass ON a.assay_id = ass.assay_id AND ass.assay_organism = 'Homo sapiens'",
+        "Join target_dictionary t ON ass.tid = t.tid AND t.target_type = 'SINGLE PROTEIN' AND t.pref_name = 'Lysine-specific histone demethylase 1A'",
+        "Join compound_structures cs ON cs.molregno = m.molregno",
+        "Join docs d ON a.doc_id = d.doc_id",
+        "Join pubmed_or_doi p ON d.pubmed_id = p.pubmed_id OR d.doi = p.doi",
+        "Filter t.chembl_id = 'CHEMBL6136'",
+        "Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism",
+        "Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism",
+        "Limit 2000"
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound records (including their record_id, molecule_chembl_id, and compound_name) that are directly cited in the document CHEMBL5728609. The desired results should include the exact molecule identifiers and their associated compound names as recorded in the Chembl compound records. No additional filtering (such as activity data, assay types, organism, or target descriptions) should be applied unless explicitly specified; the query must therefore simply return all molecule entries that have a link to the given document CHEMBL5728609, preserving the mapping between each molecule and its name as stored in the database. Output the list of molecules and their corresponding names, with each molecule appearing once if it is referenced multiple times.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id,\n  mr.compound_name,\n  mr.record_id\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN compound_records mr ON a.record_id = mr.record_id\nWHERE d.chembl_id = 'CHEMBL5728609'\nORDER BY mr.compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds (chembl_id, compound_name) that are cited in the document with chembl_id CHEMBL5728609. For each compound, include its unique chembl identifier and the corresponding compound name as recorded in the compound records table. No other filtering or additional data is required.",
+    "sql": "SELECT DISTINCT md.chembl_id,\n  mr.compound_name\nFROM docs d\nJOIN compound_records mr ON d.doc_id = mr.doc_id\nJOIN molecule_dictionary md ON mr.molregno = md.molregno\nWHERE d.chembl_id = 'CHEMBL5728609'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH mr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 819,
+    "res_columns": [
+      "chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.35,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules (chembl_id and compound_name) that are cited in document CHEMBL5728609. Return one row per molecule with its ChEMBL identifier and the associated compound name. Do not filter on document type or any other criteria beyond the document identifier. Ensure each molecule appears only once in the output.",
+    "sql": "SELECT DISTINCT d.chembl_id AS compound_chembl_id, mr.compound_name AS compound_name FROM docs d JOIN compound_records mr ON d.doc_id = mr.doc_id WHERE d.chembl_id = 'CHEMBL5728609' ORDER BY compound_name COLLATE NOCASE;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n12 | 0 | 75 | SEARCH mr USING INDEX fk_comp_rec_docid (doc_id=?)\n27 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n28 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 819,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

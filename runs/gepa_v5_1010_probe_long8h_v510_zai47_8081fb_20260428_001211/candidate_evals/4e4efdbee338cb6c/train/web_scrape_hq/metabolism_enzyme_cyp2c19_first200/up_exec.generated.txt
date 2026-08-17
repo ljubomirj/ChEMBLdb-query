@@ -1,0 +1,13 @@
+Objective: Retrieve the first 200 metabolism records for enzyme CYP2C19, showing substrate structures, compound names, metabolism conversion, pathway, and organism.
+
+Output: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+
+Source: metabolism, compound_dictionary, compound_structures
+
+Logic: 
+- Join metabolism to compound_dictionary on metabolism.substrate_record_id = compound_dictionary.record_id for substrate compound names.
+- Join metabolism to compound_dictionary on metabolism.parent_record_id = compound_dictionary.record_id for parent compound names.
+- Join metabolism to compound_structures on metabolism.substrate_record_id = compound_structures.record_id for substrate canonical_smiles.
+- Filter where metabolism.enzyme_name = 'CYP2C19'.
+- Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name.
+- Limit to 200 rows.

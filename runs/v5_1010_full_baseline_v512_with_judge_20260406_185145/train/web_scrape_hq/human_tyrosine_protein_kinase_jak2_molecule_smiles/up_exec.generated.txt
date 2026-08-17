@@ -1,0 +1,10 @@
+Select molecule_chembl_id AS compound_chembl_id, canonical_smiles
+Join molecule_dictionary m ON m.molregno = a.molregno
+Join activities a ON a.molregno = m.molregno
+Join assays ass ON a.assay_id = ass.assay_id
+Join target_dictionary t ON ass.tid = t.tid
+Join target_type tt ON t.target_type = tt.target_type
+Filter tt.target_type = 'PROTEIN' AND t.organism = 'Homo sapiens'
+Join compound_structures cs ON cs.molregno = m.molregno
+Return molecule_chembl_id AS compound_chembl_id, canonical_smiles
+Sort by compound_chembl_id

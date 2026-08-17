@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649965_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649965_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request by joining molecule_dictionary, activities, compound_structures, and assays. It filters for the specific assay CHEMBL4649965, enforces structure presence via INNER JOIN to compound_structures, and filters for exact activity values (standard_relation = '=' and standard_value IS NOT NULL). The result set includes the requested columns (canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units) and returns 66,852 rows, which is plausible for a large screening assay. The sample rows show valid data with negative percent effect values, indicating the query executed successfully.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request by joining molecule_dictionary, activities, compound_structures, and assays. It filters for the specific assay CHEMBL4649965, enforces structure presence via INNER JOIN to compound_structures, and filters for exact activity values (standard_relation = '=' and standard_value IS NOT NULL). The result set includes the requested columns (canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units) and returns 66,852 rows, which is plausible for a large screening assay. The sample rows show valid data with negative percent effect values, indicating the query executed successfully.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/chembl_downloader_assay_chembl4649965_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/chembl_downloader_assay_chembl4649965_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/val/web_scrape_hq/chembl_downloader_assay_chembl4649965_exact/pf_judge.generated_artifact_record.json"
+  }
+}

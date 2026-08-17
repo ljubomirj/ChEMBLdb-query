@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds that appear in the document with ChEMBL ID CHEMBL1143196. Output the following columns: compound ChEMBL ID, compound name (preferred name), maximum phase, molecule type, and canonical SMILES. Sort the results by compound ChEMBL ID in ascending order. Only return compounds that have a canonical SMILES recorded.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS compound_name,\n  md.max_phase,\n  md.molecule_type,\n  cs.canonical_smiles\nFROM docs d\nJOIN compound_records cr ON d.doc_id = cr.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL1143196'\n  AND cs.canonical_smiles IS NOT NULL\nORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n53 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 396,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

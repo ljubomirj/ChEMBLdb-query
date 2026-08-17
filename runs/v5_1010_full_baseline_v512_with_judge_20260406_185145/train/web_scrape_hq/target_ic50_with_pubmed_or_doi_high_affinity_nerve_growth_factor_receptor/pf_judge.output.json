@@ -1,0 +1,37 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_high_affinity_nerve_growth_factor_receptor.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_high_affinity_nerve_growth_factor_receptor",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 6711 rows, which is far more than the expected small set of compounds for the specific target (CHEMBL2815) and activity type (IC50 in nM). The sample rows show multiple entries for the same compound (e.g., 35352 appears three times with different compound_keys and PubMed IDs), indicating that the query is returning multiple records per compound rather than a deduplicated list of compounds. The user request asks for a list of compounds with IC50 activity against the human high-affinity nerve growth factor receptor (CHEMBL2815), including compound identifiers, SMILES, assay description, and PubMed ID or DOI. The current query includes many columns and does not enforce distinctness on the compound identifiers, leading to duplicate compounds. The result set is too large and not focused on the core request (compound identifiers, SMILES, PubMed/DOI). The query also includes unnecessary columns (e.g., standard_type, standard_relation, standard_value, standard_units, activity_comment) that are not requested in the final output. The ordering is also not aligned with the user's implicit expectation of a concise list.\",\n  \"score\": 0.45,\n  \"decision\": \"continue\",\n  \"reason\": \"The result set is overly large, contains duplicate compounds, and includes unnecessary columns. The query does not enforce distinctness on the compound identifiers as required by the user's request for a list of compounds. The output should be limited to the core columns (compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, target_name, target_organism) with distinct compound identifiers and filtered to the specific target and activity. The current result does not meet the user's needs and requires refinement.\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 6711 rows, which is far more than the expected small set of compounds for the specific target (CHEMBL2815) and activity type (IC50 in nM). The sample rows show multiple entries for the same compound (e.g., 35352 appears three times with different compound_keys and PubMed IDs), indicating that the query is returning multiple records per compound rather than a deduplicated list of compounds. The user request asks for a list of compounds with IC50 activity against the human high-affinity nerve growth factor receptor (CHEMBL2815), including compound identifiers, SMILES, assay description, and PubMed ID or DOI. The current query includes many columns and does not enforce distinctness on the compound identifiers, leading to duplicate compounds. The result set is too large and not focused on the core request (compound identifiers, SMILES, PubMed/DOI). The query also includes unnecessary columns (e.g., standard_type, standard_relation, standard_value, standard_units, activity_comment) that are not requested in the final output. The ordering is also not aligned with the user's implicit expectation of a concise list.",
+      "score": 0.45,
+      "decision": "continue",
+      "reason": "The result set is overly large, contains duplicate compounds, and includes unnecessary columns. The query does not enforce distinctness on the compound identifiers as required by the user's request for a list of compounds. The output should be limited to the core columns (compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, target_name, target_organism) with distinct compound identifiers and filtered to the specific target and activity. The current result does not meet the user's needs and requires refinement."
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_high_affinity_nerve_growth_factor_receptor/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_high_affinity_nerve_growth_factor_receptor/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_high_affinity_nerve_growth_factor_receptor/pf_judge.generated_artifact_record.json"
+  }
+}

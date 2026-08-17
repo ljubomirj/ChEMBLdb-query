@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1613838_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1613838_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "Select the exact activity values and structures for all compounds tested in the specified assay.\n\nSelect:\n- activities.standard_value\n- activities.standard_units\n- activities.standard_relation\n- activities.standard_type\n- compound_structures.canonical_smiles\n- compound_structures.standard_inchi\n- compound_structures.molfile\n\nSource:\n- assays\n- activities\n- compound_structures\n\nJoin:\n- assays.assay_id = activities.assay_id\n- activities.molregno = compound_structures.molregno\n\nFilter:\n- assays.chembl_id = 'CHEMBL1613838'\n\nLimit:\n- None"
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl3378_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl3378_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve IC50 activity rows with pChEMBL values for human TNFRSF1A (CHEMBL3378). The SQL appears correct: it filters for standard_relation '=', non-null pChEMBL, human organism, target tid=3378, and joins to get assay, target, molecule, and structure data. However, the result set is empty (row_count: 0). This could be due to:\\n1. No IC50 activities for this target with pChEMBL values in the dataset.\\n2. Incorrect target tid (3378) or organism filter.\\n3. Missing joins (e.g., molecule_dictionary may not link correctly).\\n4. The target may not have 'SINGLE PROTEIN' type or may not be human.\\nThe query logic matches the user request, but the empty result suggests data or filter issues. No obvious SQL errors.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve IC50 activity rows with pChEMBL values for human TNFRSF1A (CHEMBL3378). The SQL appears correct: it filters for standard_relation '=', non-null pChEMBL, human organism, target tid=3378, and joins to get assay, target, molecule, and structure data. However, the result set is empty (row_count: 0). This could be due to:\n1. No IC50 activities for this target with pChEMBL values in the dataset.\n2. Incorrect target tid (3378) or organism filter.\n3. Missing joins (e.g., molecule_dictionary may not link correctly).\n4. The target may not have 'SINGLE PROTEIN' type or may not be human.\nThe query logic matches the user request, but the empty result suggests data or filter issues. No obvious SQL errors.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3378_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3378_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3378_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

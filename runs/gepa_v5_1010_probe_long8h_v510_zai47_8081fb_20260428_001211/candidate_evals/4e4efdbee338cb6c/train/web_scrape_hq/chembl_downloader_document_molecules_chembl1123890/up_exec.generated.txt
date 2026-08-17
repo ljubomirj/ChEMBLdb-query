@@ -1,0 +1,9 @@
+1. Objective: Retrieve distinct molecules from document CHEMBL1123890 with available canonical SMILES, returning public ChEMBL ID, compound name, and canonical SMILES, sorted by ChEMBL ID, compound name, and SMILES.
+2. Output: chembl_id, compound_name, canonical_smiles
+3. Source: molecule_dictionary, compound_records, compound_structures
+4. Logic: 
+   - Join molecule_dictionary to compound_records on molecule_dictionary.molregno = compound_records.molregno and compound_records.doc_id = 'CHEMBL1123890'
+   - Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno and compound_structures.canonical_smiles IS NOT NULL
+   - Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.compound_name AS compound_name, compound_structures.canonical_smiles AS canonical_smiles
+   - Apply DISTINCT on the three selected columns
+   - Sort by chembl_id, compound_name, canonical_smiles

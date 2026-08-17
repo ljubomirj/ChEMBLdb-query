@@ -1,0 +1,77 @@
+{
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260407_092432/train/web_scrape_hq/chembl_downloader_drug_indications/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260407_092432/train/web_scrape_hq/chembl_downloader_drug_indications/result.generated.csv",
+    "row_count": 59786,
+    "column_names": [
+      "molecule_name",
+      "chembl_id",
+      "molregno",
+      "parent_chembl_id",
+      "parent_molecule_name",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term",
+      "max_phase"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 59954,
+    "actual_rows": 59786,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "mesh_id",
+      "mesh_heading",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "pref_name",
+      "chembl_id",
+      "molregno",
+      "parent_chembl_id",
+      "parent_molecule_name",
+      "mesh_id",
+      "mesh_heading",
+      "indication_curie",
+      "indication_label",
+      "max_phase"
+    ],
+    "missing_cols": [
+      "max_phase_for_ind"
+    ],
+    "extra_cols": [
+      "molregno",
+      "parent_chembl_id",
+      "parent_molecule_name",
+      "max_phase"
+    ],
+    "status": "partial",
+    "score": 0.913165,
+    "column_recall": 0.857143,
+    "row_ratio": 0.997198
+  },
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_id": "chembl_downloader_drug_indications",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "llamacpp",
+      "model": "nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "judge_provider": {
+      "provider": "llamacpp",
+      "model": "nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    }
+  }
+}

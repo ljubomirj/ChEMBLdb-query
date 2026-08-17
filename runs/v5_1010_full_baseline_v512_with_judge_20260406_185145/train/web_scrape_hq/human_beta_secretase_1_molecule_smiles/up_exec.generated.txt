@@ -1,0 +1,11 @@
+Select molecule_chembl_id AS compound_chembl_id, compound_structures.canonical_smiles AS canonical_smiles
+Join activities ON activities.molregno = molecule_dictionary.molregno
+Join assays ON assays.assay_id = activities.assay_id
+Join target_dictionary ON target_dictionary.tid = assays.tid
+Join compound_structures ON compound_structures.molregno = molecule_dictionary.molregno
+Filter target_dictionary.tid = 4822
+Filter assays.assay_organism = 'Homo sapiens'
+Filter activities.type = 'IC50'
+Filter activities.standard_relation = '='
+Filter activities.standard_value IS NOT NULL
+Sort by molecule_chembl_id

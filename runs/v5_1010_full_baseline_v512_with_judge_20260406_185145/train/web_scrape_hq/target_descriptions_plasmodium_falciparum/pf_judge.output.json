@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_plasmodium_falciparum.json",
+  "case_id": "target_descriptions_plasmodium_falciparum",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query attempts to retrieve distinct target descriptions for assays using Plasmodium falciparum. The SQL correctly joins activities, assays, target_dictionary, molecule_dictionary, compound_records, and docs, and filters on assay_organism and target_type. However, the result set is empty, which suggests either no matching rows exist or the join conditions are too restrictive. The join on molecule_dictionary and compound_records may be unnecessary for target descriptions and could be causing a loss of rows if those tables have no matching records. The filter on target_dictionary.target_type = 'PROTEIN' is appropriate. The empty result indicates the query may be missing valid data due to overly strict joins or missing relationships in the schema.\",\n  \"score\": 0.7,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query attempts to retrieve distinct target descriptions for assays using Plasmodium falciparum. The SQL correctly joins activities, assays, target_dictionary, molecule_dictionary, compound_records, and docs, and filters on assay_organism and target_type. However, the result set is empty, which suggests either no matching rows exist or the join conditions are too restrictive. The join on molecule_dictionary and compound_records may be unnecessary for target descriptions and could be causing a loss of rows if those tables have no matching records. The filter on target_dictionary.target_type = 'PROTEIN' is appropriate. The empty result indicates the query may be missing valid data due to overly strict joins or missing relationships in the schema.",
+      "score": 0.7,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_plasmodium_falciparum/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_plasmodium_falciparum/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_plasmodium_falciparum/pf_judge.generated_artifact_record.json"
+  }
+}

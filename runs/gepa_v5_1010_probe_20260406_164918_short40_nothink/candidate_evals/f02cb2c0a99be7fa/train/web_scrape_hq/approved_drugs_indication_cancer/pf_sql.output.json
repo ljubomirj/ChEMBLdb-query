@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_cancer.json",
+  "case_id": "approved_drugs_indication_cancer",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT m.chembl_id AS chembl_id,\\n       m.pref_name AS pref_name,\\n       cs.canonical_smiles AS canonical_smiles,\\n       di.mesh_id AS indication_curie,\\n       di.mesh_heading AS indication_label,\\n       di.max_phase_for_ind AS max_phase_for_ind\\nFROM molecule_dictionary m\\nJOIN drug_indication di ON m.molregno = di.molregno\\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\\nWHERE di.mesh_heading = 'Cancer'\\nORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.mesh_id, di.mesh_heading, di.max_phase_for_ind;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS chembl_id,\n       m.pref_name AS pref_name,\n       cs.canonical_smiles AS canonical_smiles,\n       di.mesh_id AS indication_curie,\n       di.mesh_heading AS indication_label,\n       di.max_phase_for_ind AS max_phase_for_ind\nFROM molecule_dictionary m\nJOIN drug_indication di ON m.molregno = di.molregno\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\nWHERE di.mesh_heading = 'Cancer'\nORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.mesh_id, di.mesh_heading, di.max_phase_for_ind;"
+    }
+  }
+}

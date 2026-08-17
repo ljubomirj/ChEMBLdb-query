@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl4513217_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4513217_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the UP_EXEC plan: it joins molecule_dictionary, compound_structures, activities, and assays; filters by assay CHEMBL4513217, non-null standard_value, and exact equality relation; and sorts by the requested columns. The result set (68,436 rows) includes canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units as specified. The sample rows show valid data with negative percentage inhibition values, which are plausible for this assay type. No deduplication was applied, preserving row multiplicity as required. The execution matches the user request and the execution plan exactly.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the UP_EXEC plan: it joins molecule_dictionary, compound_structures, activities, and assays; filters by assay CHEMBL4513217, non-null standard_value, and exact equality relation; and sorts by the requested columns. The result set (68,436 rows) includes canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units as specified. The sample rows show valid data with negative percentage inhibition values, which are plausible for this assay type. No deduplication was applied, preserving row multiplicity as required. The execution matches the user request and the execution plan exactly.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4513217_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4513217_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4513217_exact/pf_judge.generated_artifact_record.json"
+  }
+}

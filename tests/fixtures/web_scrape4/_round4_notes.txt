@@ -1,0 +1,14 @@
+Round 4 focuses on public source code/docs with concrete target, assay, or document identifiers that still map cleanly into the local ChEMBL 36 SQLite export.
+
+Promoted immediately:
+- baoilleach_herg_bioassay_metadata
+- baoilleach_herg_ic50_export
+- leelasd_approved_drugs_with_structures
+
+Derived promotion from an earlier broad source case:
+- abhik_human_sub50nm_single_protein_first200
+
+Reasoning:
+- The hERG `tid=165` patterns are explicit in the public gist and still execute cleanly in the local DB.
+- The approved-drugs-with-structures case is medium-sized, stable, and complements the indications/mechanisms family.
+- The original `abhik` extract is too broad for the default execution path; the narrowed single-protein first-200 variant preserves the high-potency source semantics while making the benchmark practical.

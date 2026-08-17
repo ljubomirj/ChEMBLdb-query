@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, molecule_dictionary.max_phase AS max_phase, drug_mechanism.mechanism_of_action AS mechanism_of_action, action_type.action_type AS action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name\\nJoin molecule_dictionary ON molecule_dictionary.molregno = drug_mechanism.molregno\\nJoin drug_mechanism ON drug_mechanism.molregno = molecule_dictionary.molregno\\nJoin action_type ON action_type.action_type = drug_mechanism.action_type\\nJoin assays ON assays.assay_id = drug_mechanism.tid\\nJoin target_dictionary ON target_dictionary.tid = assays.tid\\nJoin compound_structures ON compound_structures.molregno = molecule_dictionary.molregno\\nFilter molecule_dictionary.therapeutic_flag = 1\\nFilter drug_mechanism.action_type = 'INHIBITOR'\\nSort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, compound_structures.canonical_smiles AS canonical_smiles, molecule_dictionary.max_phase AS max_phase, drug_mechanism.mechanism_of_action AS mechanism_of_action, action_type.action_type AS action_type, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name\nJoin molecule_dictionary ON molecule_dictionary.molregno = drug_mechanism.molregno\nJoin drug_mechanism ON drug_mechanism.molregno = molecule_dictionary.molregno\nJoin action_type ON action_type.action_type = drug_mechanism.action_type\nJoin assays ON assays.assay_id = drug_mechanism.tid\nJoin target_dictionary ON target_dictionary.tid = assays.tid\nJoin compound_structures ON compound_structures.molregno = molecule_dictionary.molregno\nFilter molecule_dictionary.therapeutic_flag = 1\nFilter drug_mechanism.action_type = 'INHIBITOR'\nSort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name"
+    }
+  }
+}

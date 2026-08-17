@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Select: drug ChEMBL ID, drug name, indication MeSH heading, indication MeSH ID, max phase for indication. Source: molecule_dictionary, drug_indication. Join: molecule_dictionary.molregno = drug_indication.molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_heading = 'Pancreatic Carcinoma'.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, di.mesh_heading, di.mesh_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_heading = 'Pancreatic Carcinoma'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "mesh_heading",
+      "mesh_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query returned 0 rows because the filter `di.mesh_heading = 'Pancreatic Carcinoma'` is too strict. The MeSH term in the database is likely 'Pancreatic Neoplasms' (D010190). The user asked for 'approved drugs', which is correctly interpreted as `max_phase = 4`. The column selection and join logic are correct, but the filter value needs to be corrected to match the database content.\",\n  \"score\": 0.5,\n  \"decision\": \"CONTINUE\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: drug ChEMBL ID, drug name, indication MeSH heading, indication MeSH ID, max phase for indication. Source: molecule_dictionary, drug_indication. Join: molecule_dictionary.molregno = drug_indication.molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_id = 'D010190'.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, di.mesh_heading, di.mesh_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_id = 'D010190'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 257,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "mesh_heading",
+      "mesh_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly filters for pancreatic carcinoma (MeSH ID D010190) and returns the requested columns: drug ChEMBL ID, drug name, indication MeSH heading, indication MeSH ID, and max phase for indication. The filter `md.max_phase = 4` correctly restricts results to approved drugs. The sample data shows expected drugs like GEMCITABINE HYDROCHLORIDE, ERLOTINIB HYDROCHLORIDE, and PACLITAXEL with max_phase_for_ind = 4.0, confirming the query logic is sound. The result set is comprehensive (257 rows) and directly answers the user's question.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

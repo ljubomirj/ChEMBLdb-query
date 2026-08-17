@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_amine_oxidase_flavin_containing_b",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Return IC50 activity rows for compounds tested against the target with chembl_id CHEMBL2039 (human amine oxidase [flavin-containing] B). Use the strict provenance join path: molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary. Filter activities where standard_type = 'IC50' and target_dictionary.chembl_id = 'CHEMBL2039'. Join compound_structures via INNER JOIN on molregno for canonical_smiles. Output columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles, compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fall back to docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Keep every qualifying activity row; do not deduplicate. Sort by all output columns in the listed order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Return IC50 activity rows for compounds tested against the target with chembl_id CHEMBL2039 (human amine oxidase [flavin-containing] B). Use the strict provenance join path: molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary. Filter activities where standard_type = 'IC50' and target_dictionary.chembl_id = 'CHEMBL2039'. Join compound_structures via INNER JOIN on molregno for canonical_smiles. Output columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles, compound_key (from compound_records), pubmed_id_or_doi (prefer docs.pubmed_id, fall back to docs.doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Keep every qualifying activity row; do not deduplicate. Sort by all output columns in the listed order."
+    }
+  }
+}

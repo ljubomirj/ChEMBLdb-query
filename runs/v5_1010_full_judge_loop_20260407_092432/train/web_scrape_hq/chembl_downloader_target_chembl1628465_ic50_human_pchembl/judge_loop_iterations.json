@@ -1,0 +1,125 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows where the assay targets the human single-protein protein CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6) and the activity is measured as an IC50 with pChEMBL values. For each activity, provide: assay.chembl_id (as assay_chembl_id), target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id (as molecule_chembl_id), activities.standard_type, and activities.pchembl_value. Filter to exact activity records where activities.standard_relation = '=' and activities.pchembl_value IS NOT NULL, and limit to the human target with tid = 1628465. Order the final result set by molecule_chembl_id and assay_chembl_id. Do not apply any additional filters for assay organims, confidence scores, or document types.",
+    "sql": "WITH target_activities AS (\n  SELECT\n    a.assay_id,\n    a.molecule_chembl_id,\n    a.standard_type,\n    a.pchembl_value,\n    a.standard_relation,\n    a.standard_value,\n    a.standard_units,\n    a.type AS activity_type,\n    a.relation AS activity_relation,\n    a.value AS activity_value,\n    a.units AS activity_units,\n    a.text_value AS activity_text_value,\n    a.standard_text_value AS standard_text_value,\n    a.data_validity_comment,\n    a.potential_duplicate,\n    a.bao_endpoint,\n    a.uo_units,\n    a.qudt_units,\n    a.toid,\n    a.upper_value,\n    a.standard_upper_value,\n    a.src_id,\n    a.doc_id,\n    a.record_id,\n    a.activity_comment\n  FROM activities a\n  WHERE\n    a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n    AND a.tid = 1628465\n)\nSELECT\n  ds.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  cs.canonical_smiles,\n  md.chembl_id AS molecule_chembl_id,\n  ta.standard_type,\n  ta.pchembl_value\nFROM target_activities ta\nJOIN assays ds ON ta.assay_id = ds.assay_id\nJOIN target_dictionary td ON ds.tid = td.tid\nJOIN molecule_dictionary md ON ta.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON ta.molecule_chembl_id = cs.molregno\nWHERE\n  ta.standard_relation = '='\n  AND ta.pchembl_value IS NOT NULL\nORDER BY\n  md.chembl_id,\n  ds.chembl_id\nLIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows for IC50 activities with pChEMBL values, targeting the human single-protein protein with chembl_id CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, return the assay ChEMBL ID, target type, target tax_id, canonical SMILES of the compound, molecule ChEMBL ID, activity standard type (must be 'IC50' and pChEMBL value not null), ordered by molecule ChEMBL ID and assay ChEMBL ID. Ensure only exact standard relation '=' rows are included.",
+    "sql": "WITH target_activities AS ( SELECT a.assay_id, a.molregno AS molecule_chembl_id, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' ) SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, ta.standard_type, ta.pchembl_value FROM target_activities ta JOIN assays ass ON ta.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON ta.molecule_chembl_id = md.molregno JOIN compound_structures cs ON ta.molecule_chembl_id = cs.molregno ORDER BY molecule_chembl_id, assay_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ta.standard_type",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ta.standard_type",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 activity rows for exact IC50 assays with pChEMBL values, targeting the human single\u2011protein protein with CHEMBL ID CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, provide the assay ChEMBL ID, target type, target tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity standard type (must be 'IC50' and pChEMBL value non\u2011null), ordered by molecule ChEMBL ID and assay ChEMBL ID, using only rows where standard_relation = '='. Do not filter on assay organism, confidence scores, or document types.",
+    "sql": "WITH target_activities AS (SELECT a.assay_id, a.molregno AS molecule_chembl_id, a.pchembl_value, a.type AS activity_type FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, ta.standard_type, ta.pchembl_value FROM target_activities ta JOIN assays ass ON ta.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON ta.molecule_chembl_id = md.molregno JOIN compound_structures cs ON ta.molecule_chembl_id = cs.molregno ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ta.standard_type",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ta.standard_type",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 activity rows for exact IC50 assays with pChEMBL values, targeting the human single\u2011protein protein with CHEMBL ID CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, provide the assay ChEMBL ID, target type, target tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity standard type (must be 'IC50' and pChEMBL value non\u2011null), ordered by molecule ChEMBL ID and assay ChEMBL ID, using only rows where standard_relation = '='. Do not filter on assay organism, confidence scores, or document types.",
+    "sql": "SELECT DISTINCT a.assay_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND a.standard_type = 'IC50' ORDER BY md.chembl_id, a.assay_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n78 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n79 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 1000 activity rows for exact IC50 assays with pChEMBL values, targeting the human single\u2011protein protein with CHEMBL ID CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, provide the assay ChEMBL ID, target type, target tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity standard type (must be 'IC50' and pChEMBL value non\u2011null), ordered by molecule ChEMBL ID and assay ChEMBL ID, using only rows where standard_relation = '='. Do not filter on assay organism, confidence scores, or document types.",
+    "sql": "WITH target_activities AS (SELECT a.assay_id, a.molregno AS molecule_chembl_id, a.pchembl_value, a.standard_type FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND a.standard_type = 'IC50') SELECT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, ta.standard_type, ta.pchembl_value FROM target_activities ta JOIN assays ass ON ta.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON ta.molecule_chembl_id = md.molregno JOIN compound_structures cs ON ta.molecule_chembl_id = cs.molregno ORDER BY md.chembl_id, ass.chembl_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n17 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n43 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n52 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n62 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n95 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the first 1000 activity rows for exact IC50 assays with non-null pChEMBL values, targeting the human single\u2011protein protein with CHEMBL ID CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, return the assay ChEMBL ID, target type, target tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity standard type (must be 'IC50' and pChEMBL value non\u2011null), ordered by molecule ChEMBL ID and assay ChEMBL ID, using only rows where standard_relation = '='. Do not filter on assay organism, confidence scores, or document types.",
+    "sql": "SELECT DISTINCT a.assay_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND a.standard_type = 'IC50' ORDER BY md.chembl_id, a.assay_id LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n78 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n79 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the first 1000 activity rows for exact IC50 assays with non-null pChEMBL values, targeting the human single\u2011protein protein with CHEMBL ID CHEMBL1628465 (Transient receptor potential cation channel subfamily V member 6). For each activity, return the assay ChEMBL ID, target type, target tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity standard type (must be 'IC50' and pChEMBL value non\u2011null), ordered by molecule ChEMBL ID and assay ChEMBL ID, using only rows where standard_relation = '='. Do not filter on assay organism, confidence scores, or document types.",
+    "sql": "SELECT DISTINCT a.assay_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno WHERE a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628465' AND a.standard_type = 'IC50' ORDER BY md.chembl_id, a.assay_id LIMIT 1000",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n47 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n78 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n79 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 109,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

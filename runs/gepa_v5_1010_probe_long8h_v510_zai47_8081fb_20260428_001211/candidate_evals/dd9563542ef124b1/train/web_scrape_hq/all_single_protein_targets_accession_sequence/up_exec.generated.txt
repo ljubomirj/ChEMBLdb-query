@@ -1,0 +1,6 @@
+Select: target_chembl_id, target_name, target_type, protein_accession, protein_sequence
+Source: target_dictionary, component_sequences
+Join: target_dictionary.tid = target_components.tid; target_components.component_id = component_sequences.component_id
+Filter: target_dictionary.target_type = 'SINGLE PROTEIN'
+Sort: target_chembl_id ASC, target_name ASC, target_type ASC, protein_accession ASC, protein_sequence ASC
+Limit: None

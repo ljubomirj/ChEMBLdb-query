@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select activity_id, molecule_dictionary.chembl_id as molecule_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, activities.standard_type, activities.standard_value, activities.standard_units. Join activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno. Join activities to assays on activities.assay_id = assays.assay_id. Join assays to target_dictionary on assays.tid = target_dictionary.tid. Filter target_dictionary.organism = 'Homo sapiens', target_dictionary.target_type = 'SINGLE PROTEIN', activities.standard_units = 'nM', activities.standard_type in ('EC50', 'IC50', 'AC50'), and activities.standard_value < 50. Keep all qualifying activity rows without deduplication. Sort by activity_id ascending. Limit to 200 rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select activity_id, molecule_dictionary.chembl_id as molecule_chembl_id, target_dictionary.chembl_id as target_chembl_id, target_dictionary.pref_name as target_name, activities.standard_type, activities.standard_value, activities.standard_units. Join activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno. Join activities to assays on activities.assay_id = assays.assay_id. Join assays to target_dictionary on assays.tid = target_dictionary.tid. Filter target_dictionary.organism = 'Homo sapiens', target_dictionary.target_type = 'SINGLE PROTEIN', activities.standard_units = 'nM', activities.standard_type in ('EC50', 'IC50', 'AC50'), and activities.standard_value < 50. Keep all qualifying activity rows without deduplication. Sort by activity_id ascending. Limit to 200 rows."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return the ChEMBL ID and canonical SMILES for compounds that have been tested against the target with ChEMBL ID CHEMBL5162 (Neuropeptide S receptor) in assays where the assay organism is Homo sapiens.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5162' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 15066,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

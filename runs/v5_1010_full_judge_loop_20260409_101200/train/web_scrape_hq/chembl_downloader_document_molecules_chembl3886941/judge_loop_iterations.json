@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "List the compounds mentioned in the document with ChEMBL ID CHEMBL3886941. For each compound, return the following columns:\n- molecule_chembl_id: The ChEMBL identifier of the molecule.\n- pref_name: The preferred name of the molecule.\n- canonical_smiles: The canonical SMILES string for the molecule.\n\nOnly include compounds that have a defined structure (canonical_smiles is not NULL).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL3886941' AND cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 701,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity values (standard_value and standard_units) against the HepG2 cell line (CHEMBL395) for the compound CHEMBL3338195 and all of its salt forms. The results should include the canonical SMILES for each compound. Use the molecule_hierarchy table to identify all salts (children) where CHEMBL3338195 is the parent. Join the resulting set of molregnos to the activities table via compound_records and assays, filtering for assays where tid matches CHEMBL395 and standard_type is 'IC50'.",
+    "sql": "WITH compound_hierarchy AS (\n  SELECT parent.molregno AS parent_molregno,\n         parent.chembl_id AS parent_chembl_id,\n         child.molregno AS child_molregno,\n         child.chembl_id AS child_chembl_id,\n         COALESCE(child.molregno, parent.molregno) AS query_molregno\n  FROM molecule_dictionary parent\n  LEFT JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  LEFT JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL3338195'\n)\nSELECT DISTINCT\n  ch.child_chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  a.standard_value,\n  a.standard_units\nFROM compound_hierarchy ch\nJOIN compound_records cr ON cr.molregno = ch.query_molregno\nJOIN activities a ON a.record_id = cr.record_id\nJOIN compound_structures cs ON cs.molregno = ch.query_molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON td.tid = ass.tid\nWHERE a.standard_type = 'IC50'\n  AND td.chembl_id = 'CHEMBL395';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n18 | 0 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n23 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n28 | 0 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?) LEFT-JOIN\n36 | 0 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n65 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n73 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n102 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

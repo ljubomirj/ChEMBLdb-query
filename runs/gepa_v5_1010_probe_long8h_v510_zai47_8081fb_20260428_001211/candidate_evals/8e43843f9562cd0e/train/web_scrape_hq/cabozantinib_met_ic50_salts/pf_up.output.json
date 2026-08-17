@@ -1,0 +1,86 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8e43843f9562cd0e.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/cabozantinib_met_ic50_salts.json",
+  "case_id": "cabozantinib_met_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "8e43843f9562cd0e",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": {\n    \"Select\": [\n      \"compound_chembl_id\",\n      \"canonical_smiles\",\n      \"compound_key\",\n      \"pubmed_id_or_doi\",\n      \"assay_description\",\n      \"standard_type\",\n      \"standard_relation\",\n      \"standard_value\",\n      \"standard_units\",\n      \"activity_comment\",\n      \"target_chembl_id\",\n      \"target_name\",\n      \"target_organism\"\n    ],\n    \"Source\": [\n      \"molecule_dictionary\",\n      \"molecule_hierarchy\",\n      \"compound_records\",\n      \"compound_structures\",\n      \"activities\",\n      \"assays\",\n      \"target_dictionary\",\n      \"docs\"\n    ],\n    \"Join\": [\n      \"molecule_dictionary parent ON parent.chembl_id = 'CHEMBL2105717'\",\n      \"molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\",\n      \"molecule_dictionary child ON child.molregno = mh.molregno\",\n      \"compound_structures ON child.molregno = compound_structures.molregno\",\n      \"compound_records ON child.molregno = compound_records.molregno\",\n      \"activities ON compound_records.record_id = activities.record_id\",\n      \"assays ON activities.assay_id = assays.assay_id\",\n      \"target_dictionary ON activities.tid = target_dictionary.tid\",\n      \"docs ON activities.doc_id = docs.doc_id\"\n    ],\n    \"Filter\": [\n      \"target_dictionary.chembl_id = 'CHEMBL3717'\",\n      \"activities.standard_type = 'IC50'\",\n      \"activities.standard_units = 'nM'\"\n    ],\n    \"Sort\": [\n      \"compound_chembl_id ASC\",\n      \"compound_key ASC\",\n      \"pubmed_id_or_doi ASC\",\n      \"assay_description ASC\",\n      \"standard_type ASC\",\n      \"standard_relation ASC\",\n      \"standard_value ASC\",\n      \"standard_units ASC\",\n      \"target_chembl_id ASC\",\n      \"target_name ASC\",\n      \"target_organism ASC\"\n    ],\n    \"Limit\": \"None\"\n  }\n}\n```",
+    "parsed_json": {
+      "up": {
+        "Select": [
+          "compound_chembl_id",
+          "canonical_smiles",
+          "compound_key",
+          "pubmed_id_or_doi",
+          "assay_description",
+          "standard_type",
+          "standard_relation",
+          "standard_value",
+          "standard_units",
+          "activity_comment",
+          "target_chembl_id",
+          "target_name",
+          "target_organism"
+        ],
+        "Source": [
+          "molecule_dictionary",
+          "molecule_hierarchy",
+          "compound_records",
+          "compound_structures",
+          "activities",
+          "assays",
+          "target_dictionary",
+          "docs"
+        ],
+        "Join": [
+          "molecule_dictionary parent ON parent.chembl_id = 'CHEMBL2105717'",
+          "molecule_hierarchy mh ON mh.parent_molregno = parent.molregno",
+          "molecule_dictionary child ON child.molregno = mh.molregno",
+          "compound_structures ON child.molregno = compound_structures.molregno",
+          "compound_records ON child.molregno = compound_records.molregno",
+          "activities ON compound_records.record_id = activities.record_id",
+          "assays ON activities.assay_id = assays.assay_id",
+          "target_dictionary ON activities.tid = target_dictionary.tid",
+          "docs ON activities.doc_id = docs.doc_id"
+        ],
+        "Filter": [
+          "target_dictionary.chembl_id = 'CHEMBL3717'",
+          "activities.standard_type = 'IC50'",
+          "activities.standard_units = 'nM'"
+        ],
+        "Sort": [
+          "compound_chembl_id ASC",
+          "compound_key ASC",
+          "pubmed_id_or_doi ASC",
+          "assay_description ASC",
+          "standard_type ASC",
+          "standard_relation ASC",
+          "standard_value ASC",
+          "standard_units ASC",
+          "target_chembl_id ASC",
+          "target_name ASC",
+          "target_organism ASC"
+        ],
+        "Limit": "None"
+      }
+    }
+  }
+}

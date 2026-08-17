@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_pde5_molecule_smiles.json",
+  "case_id": "human_pde5_molecule_smiles",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL ID and canonical SMILES for compounds tested in assays where the assay organism is Homo sapiens and the target is CHEMBL1827. Join molecule_dictionary to activities via molregno, join activities to assays via assay_id, join assays to target_dictionary via tid, and join molecule_dictionary to compound_structures via molregno. Filter assays.assay_organism equals Homo sapiens and target_dictionary.chembl_id equals CHEMBL1827. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id and canonical_smiles.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL ID and canonical SMILES for compounds tested in assays where the assay organism is Homo sapiens and the target is CHEMBL1827. Join molecule_dictionary to activities via molregno, join activities to assays via assay_id, join assays to target_dictionary via tid, and join molecule_dictionary to compound_structures via molregno. Filter assays.assay_organism equals Homo sapiens and target_dictionary.chembl_id equals CHEMBL1827. Return compound_chembl_id and canonical_smiles. Sort by compound_chembl_id and canonical_smiles."
+    }
+  }
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "n": 2,
+    "up": "Return the first 200 metabolism records for the organism dog (Canis lupus familiaris, tax_id 9615). For each record, provide the substrate structure (canonical SMILES), substrate compound name (pref_name), metabolic conversion description, pathway key, and enzyme name. If the enzyme name is not available, it may be NULL. Join metabolism with compound_structures (on substrate molregno) and molecule_dictionary to retrieve the structure and name.",
+    "sql": "SELECT cs.canonical_smiles, md.pref_name, m.met_conversion, m.pathway_key, m.enzyme_name FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN molecule_dictionary md ON cr_sub.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE m.tax_id = 9615 LIMIT 200",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 126 | SCAN m\n13 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 3,
+    "res_columns": [
+      "canonical_smiles",
+      "pref_name",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay with ChEMBL ID 'CHEMBL1614428', retrieve all activity records that have exact activity values (i.e., standard_relation = '=' and standard_value is not null) along with the chemical structures of the tested compounds. Include the following columns: assay_chembl_id (the ChEMBL ID of the assay), compound_chembl_id (the ChEMBL ID of the molecule), activity_id, standard_type, standard_relation, standard_value, standard_units, pchembl_value, and canonical_smiles (the SMILES representation of the compound). The data should be ordered by activity_id. Ensure the results are connected through the appropriate joins: activities to assays (using assay_id), activities to compound_records (using record_id), compound_records to molecule_dictionary (using molregno), and molecule_dictionary to compound_structures (using molregno).",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, molecule_dictionary.chembl_id AS compound_chembl_id, activities.activity_id, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.pchembl_value, compound_structures.canonical_smiles FROM activities INNER JOIN assays ON activities.assay_id = assays.assay_id INNER JOIN compound_records ON activities.record_id = compound_records.record_id INNER JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno INNER JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE assays.chembl_id = 'CHEMBL1614428' AND activities.standard_relation = '=' AND activities.standard_value IS NOT NULL ORDER BY activities.activity_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 0 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n17 | 0 | 0 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 0 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?)\n33 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 6330,
+    "res_columns": [
+      "assay_chembl_id",
+      "compound_chembl_id",
+      "activity_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

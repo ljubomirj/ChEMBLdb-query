@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_canis_lupus_familiaris_first200.json",
+  "case_id": "metabolism_canis_lupus_familiaris_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\\nJoin compound_structures INNER on compound_structures.molregno = metabolism.substrate_record_id\\nJoin molecule_dictionary AS substrate on substrate.molregno = metabolism.substrate_record_id\\nJoin molecule_dictionary AS parent on parent.molregno = metabolism.metabolite_record_id\\nJoin metabolism on metabolism.substrate_record_id = substrate.molregno\\nJoin compound_records on compound_records.molregno = substrate.molregno\\nJoin docs on docs.doc_id = compound_records.doc_id\\nJoin assays on assays.assay_id = metabolism.assay_id\\nJoin target_dictionary on target_dictionary.tid = assays.tid\\nFilter target_dictionary.organism = 'Canis lupus familiaris'\\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\\nLimit 200\"\n}",
+    "parsed_json": {
+      "up": "Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\nJoin compound_structures INNER on compound_structures.molregno = metabolism.substrate_record_id\nJoin molecule_dictionary AS substrate on substrate.molregno = metabolism.substrate_record_id\nJoin molecule_dictionary AS parent on parent.molregno = metabolism.metabolite_record_id\nJoin metabolism on metabolism.substrate_record_id = substrate.molregno\nJoin compound_records on compound_records.molregno = substrate.molregno\nJoin docs on docs.doc_id = compound_records.doc_id\nJoin assays on assays.assay_id = metabolism.assay_id\nJoin target_dictionary on target_dictionary.tid = assays.tid\nFilter target_dictionary.organism = 'Canis lupus familiaris'\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\nLimit 200"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "n": 1,
+    "up": "Return all IC50 bioactivity records for tylophorine (CHEMBL493620) and its salt forms against target CHEMBL3879801. Include the molecule ChEMBL ID, preferred name, canonical SMILES, activity relation, standard value, standard units, document PubMed ID, document year, and document title.",
+    "sql": "WITH compound_hierarchy AS (SELECT parent.molregno AS parent_molregno, parent.chembl_id AS parent_chembl_id, child.molregno AS child_molregno, child.chembl_id AS child_chembl_id, child.pref_name AS child_pref_name, cs.canonical_smiles FROM molecule_dictionary parent LEFT JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno LEFT JOIN molecule_dictionary child ON child.molregno = mh.molregno LEFT JOIN compound_structures cs ON cs.molregno = COALESCE(child.molregno, parent.molregno) WHERE parent.chembl_id = 'CHEMBL493620'), relevant_molecules AS (SELECT parent_molregno AS molregno, parent_chembl_id AS chembl_id, NULL AS pref_name, NULL AS canonical_smiles FROM compound_hierarchy WHERE parent_molregno IS NOT NULL UNION ALL SELECT child_molregno, child_chembl_id, child_pref_name, canonical_smiles FROM compound_hierarchy WHERE child_molregno IS NOT NULL) SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, a.standard_relation, a.standard_value, a.standard_units, COALESCE(d.pubmed_id, CAST(d.doi AS TEXT)) AS pubmed_id_or_doi, d.year, d.title FROM relevant_molecules rm JOIN molecule_dictionary md ON md.molregno = rm.molregno LEFT JOIN compound_structures cs ON cs.molregno = rm.molregno JOIN activities a ON a.molregno = rm.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid LEFT JOIN docs d ON d.doc_id = a.doc_id WHERE td.chembl_id = 'CHEMBL3879801' AND a.standard_type = 'IC50';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 19\n2 | 0 | 0 | CO-ROUTINE relevant_molecules\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n10 | 4 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n17 | 4 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?) LEFT-JOIN\n25 | 4 | 45 | SEARCH child USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n46 | 3 | 0 | UNION ALL\n55 | 46 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n60 | 46 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?) LEFT-JOIN\n68 | 46 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n79 | 46 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n122 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n127 | 0 | 35 | SCAN rm\n130 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n140 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n149 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n161 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n170 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n206 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 24,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pubmed_id_or_doi",
+      "year",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

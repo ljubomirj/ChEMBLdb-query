@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Please provide a list of all approved drugs (molecules with max_phase = 4) where the drug's mechanism of action includes acting as an antagonist (action_type = 'ANTAGONIST'). For each such drug, display the drug's ChEMBL ID (from molecule_dictionary.chembl_id), its preferred name (molecule_dictionary.pref_name), and for each target it antagonizes, the target's ChEMBL ID (target_dictionary.chembl_id) and preferred name (target_dictionary.pref_name). Join molecule_dictionary to drug_mechanism on molregno, and drug_mechanism to target_dictionary on tid. Filter drug_mechanism.action_type = 'ANTAGONIST' and molecule_dictionary.max_phase = 4. Return distinct rows.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS drug_chembl_id,\n  md.pref_name AS drug_name,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name\nFROM molecule_dictionary md\nJOIN drug_mechanism dm ON md.molregno = dm.molregno\nJOIN target_dictionary td ON dm.tid = td.tid\nWHERE md.max_phase = 4\n  AND dm.action_type = 'ANTAGONIST';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN dm\n11 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 498,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.98,
+    "judge_decision": true
+  }
+]

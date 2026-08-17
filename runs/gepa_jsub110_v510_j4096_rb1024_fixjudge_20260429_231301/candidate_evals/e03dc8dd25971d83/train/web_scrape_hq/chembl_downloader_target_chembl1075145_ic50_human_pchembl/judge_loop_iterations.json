@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, pChEMBL value. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1075145', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule ChEMBL ID ASC, assay ChEMBL ID ASC. Limit: 1000.",
+    "sql": "SELECT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE target_dictionary.chembl_id = 'CHEMBL1075145'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_relation = '='\n  AND activities.pchembl_value IS NOT NULL\nORDER BY molecule_dictionary.chembl_id ASC, assays.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 667,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly retrieves IC50 activity rows for the specified target (CHEMBL1075145) with all requested columns. The filters for exact standard relation ('=') and non-null pChEMBL values are properly applied. The result set contains 667 rows (within the requested limit of 1000), sorted by molecule ChEMBL ID and assay ChEMBL ID as requested. All required columns are present: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. The target type is consistently 'SINGLE PROTEIN' and tax_id is 9606 (human), matching the user's specification for a human single-protein target.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

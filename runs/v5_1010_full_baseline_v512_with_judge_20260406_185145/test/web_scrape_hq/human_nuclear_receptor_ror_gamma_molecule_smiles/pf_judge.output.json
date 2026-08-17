@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_nuclear_receptor_ror_gamma_molecule_smiles.json",
+  "case_id": "human_nuclear_receptor_ror_gamma_molecule_smiles",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly identifies compounds tested against the specified target (CHEMBL1741186) in human assays and returns their ChEMBL IDs and canonical SMILES. The join path (molecule_dictionary -> activities -> assays -> target_dictionary) is appropriate for filtering by target and assay organism. The INNER JOIN with compound_structures ensures only compounds with structures are returned. The row count (9057) is plausible for a popular target like ROR-\u03b3. The column naming 'compound_chembl_id' matches the execution plan, though the user question asked for 'compounds' (which typically maps to 'molecule_chembl_id' per the hints). However, the result is functionally correct and complete.\",\n  \"score\": 0.95,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly identifies compounds tested against the specified target (CHEMBL1741186) in human assays and returns their ChEMBL IDs and canonical SMILES. The join path (molecule_dictionary -> activities -> assays -> target_dictionary) is appropriate for filtering by target and assay organism. The INNER JOIN with compound_structures ensures only compounds with structures are returned. The row count (9057) is plausible for a popular target like ROR-\u03b3. The column naming 'compound_chembl_id' matches the execution plan, though the user question asked for 'compounds' (which typically maps to 'molecule_chembl_id' per the hints). However, the result is functionally correct and complete.",
+      "score": 0.95,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/human_nuclear_receptor_ror_gamma_molecule_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/human_nuclear_receptor_ror_gamma_molecule_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/human_nuclear_receptor_ror_gamma_molecule_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

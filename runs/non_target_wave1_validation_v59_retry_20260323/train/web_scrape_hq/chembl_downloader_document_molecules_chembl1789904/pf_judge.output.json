@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1789904.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1789904",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly identifies distinct molecules from document CHEMBL1789904 by joining molecule_dictionary, compound_records, docs, and compound_structures. It filters on the document ChEMBL ID and requires canonical SMILES via an INNER JOIN. The result set (4420 rows) is plausible for a large screening document, and the sample rows show valid ChEMBL IDs, compound names, and SMILES. The execution matches the user request exactly.\",\n  \"score\": 10,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly identifies distinct molecules from document CHEMBL1789904 by joining molecule_dictionary, compound_records, docs, and compound_structures. It filters on the document ChEMBL ID and requires canonical SMILES via an INNER JOIN. The result set (4420 rows) is plausible for a large screening document, and the sample rows show valid ChEMBL IDs, compound names, and SMILES. The execution matches the user request exactly.",
+      "score": 10,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1789904/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1789904/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1789904/pf_judge.generated_artifact_record.json"
+  }
+}

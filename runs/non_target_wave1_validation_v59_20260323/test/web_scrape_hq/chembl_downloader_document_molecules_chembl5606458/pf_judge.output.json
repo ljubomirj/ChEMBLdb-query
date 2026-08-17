@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl5606458.json",
+  "case_id": "chembl_downloader_document_molecules_chembl5606458",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly identifies distinct compounds from the specified document. It uses INNER JOIN for compound_structures, ensuring only compounds with canonical SMILES are returned. The result set (2771 rows) is plausible for a document extraction task. The columns match the user request (ChEMBL ID, name, canonical SMILES). The query is efficient and follows ChEMBL schema conventions.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly identifies distinct compounds from the specified document. It uses INNER JOIN for compound_structures, ensuring only compounds with canonical SMILES are returned. The result set (2771 rows) is plausible for a document extraction task. The columns match the user request (ChEMBL ID, name, canonical SMILES). The query is efficient and follows ChEMBL schema conventions.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5606458/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5606458/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_20260323/test/web_scrape_hq/chembl_downloader_document_molecules_chembl5606458/pf_judge.generated_artifact_record.json"
+  }
+}

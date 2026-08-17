@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Extract the raw activity metadata for all compounds tested in assay CHEMBL1614281. Include the following fields for each activity record: molecule ChEMBL ID, standard type, relation, value, units, bao_endpoint, assay_type, and target ID. Return all rows associated with this assay.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.bao_endpoint, ass.assay_type, ass.tid FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1614281'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n39 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 12276,
+    "res_columns": [
+      "molecule_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "bao_endpoint",
+      "assay_type",
+      "tid"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

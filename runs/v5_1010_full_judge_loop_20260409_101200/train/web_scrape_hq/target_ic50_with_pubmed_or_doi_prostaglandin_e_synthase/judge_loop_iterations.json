@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Return exact IC50 values (in nM) for compounds tested against human prostaglandin E synthase (CHEMBL5658). For each matching activity row, provide the ChEMBL ID, canonical SMILES, and a PubMed ID or DOI. Only include activities where the standard relation is '='.",
+    "sql": "SELECT\n  md.chembl_id,\n  cs.canonical_smiles,\n  a.standard_value AS ic50_nM,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL5658'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 2624,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "ic50_nM",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Identify the parent compound CHEMBL493620 and all its salt forms using the molecule hierarchy. Retrieve bioactivity records for these compounds against target CHEMBL3879801. Filter for activities where the standard type is IC50. Return the ChEMBL identifier of the tested compound, the standard IC50 value, the standard units, the canonical SMILES, the PubMed ID, and the DOI.",
+    "sql": "SELECT DISTINCT child.chembl_id AS compound_chembl_id, act.standard_value, act.standard_units, cs.canonical_smiles, d.pubmed_id, d.doi FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno JOIN compound_records cr ON cr.molregno = child.molregno JOIN activities act ON act.record_id = cr.record_id JOIN assays a ON a.assay_id = act.assay_id JOIN target_dictionary td ON td.tid = a.tid LEFT JOIN compound_structures cs ON cs.molregno = child.molregno LEFT JOIN docs d ON d.doc_id = act.doc_id WHERE parent.chembl_id = 'CHEMBL493620' AND td.chembl_id = 'CHEMBL3879801' AND act.standard_type = 'IC50'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n20 | 0 | 0 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n25 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n30 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n36 | 0 | 0 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n51 | 0 | 0 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n59 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n68 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n107 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 24,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles",
+      "pubmed_id",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves IC50 activities for tylophorine (CHEMBL493620) and its salt forms against target CHEMBL3879801. The result includes 24 rows covering the parent compound and various salt derivatives (hydrochloride, hydrobromide, hydroiodide, and carboxylate salts). All requested columns are present: compound ChEMBL ID, standard value, standard units, canonical SMILES, PubMed ID, and DOI. The data is consistent with a single source (PMID 25221661, DOI 10.1021/ml500255j). The query correctly uses the molecule hierarchy to find all related forms and joins with compound_structures and docs for structures and references.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "n": 2,
+    "up": "Show the first 200 metabolism records involving CYP2C8. For each record, return the substrate structure (canonical SMILES), substrate compound name, parent drug name (from the drug record), metabolic conversion description, pathway key, and organism. Include only records where the enzyme target is CYP2C8.",
+    "sql": "WITH cyp2c8_targets AS (SELECT tid FROM target_dictionary WHERE pref_name = 'CYP2C8'), metabolism_cte AS (SELECT met_id, drug_record_id, substrate_record_id, pathway_id, pathway_key, enzyme_name, enzyme_tid, met_conversion, organism, tax_id, met_comment FROM metabolism WHERE enzyme_tid IN (SELECT tid FROM cyp2c8_targets) LIMIT 200) SELECT m.met_id, s.canonical_smiles, cs.substrate_name, cd.parent_name, m.met_conversion, m.pathway_key, m.organism FROM metabolism_cte m LEFT JOIN compound_structures s ON m.substrate_record_id = (SELECT molregno FROM compound_records WHERE record_id = m.substrate_record_id) LEFT JOIN (SELECT cr.record_id, md.pref_name AS substrate_name FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno) cs ON m.substrate_record_id = cs.record_id LEFT JOIN (SELECT cr.record_id, md.pref_name AS parent_name FROM compound_records cr JOIN molecule_dictionary md ON cr.molregno = md.molregno) cd ON m.drug_record_id = cd.record_id LIMIT 200",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 19\n2 | 0 | 0 | CO-ROUTINE metabolism_cte\n5 | 2 | 126 | SCAN metabolism\n10 | 2 | 0 | LIST SUBQUERY 2\n14 | 10 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n23 | 10 | 0 | CREATE BLOOM FILTER\n49 | 0 | 0 | MATERIALIZE cs\n54 | 49 | 229 | SCAN md\n56 | 49 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n72 | 0 | 0 | MATERIALIZE cd\n77 | 72 | 229 | SCAN md\n79 | 72 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n95 | 0 | 92 | SCAN m\n98 | 0 | 227 | SCAN s USING COVERING INDEX idx_cmpdstr_smiles LEFT-JOIN\n103 | 0 | 0 | CORRELATED SCALAR SUBQUERY 4\n108 | 103 | 39 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?)\n124 | 0 | 0 | BLOOM FILTER ON cs (record_id=?)\n134 | 0 | 54 | SEARCH cs USING AUTOMATIC COVERING INDEX (record_id=?) LEFT-JOIN\n147 | 0 | 0 | BLOOM FILTER ON cd (record_id=?)\n157 | 0 | 54 | SEARCH cd USING AUTOMATIC COVERING INDEX (record_id=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "met_id",
+      "canonical_smiles",
+      "substrate_name",
+      "parent_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Show the first 200 metabolism records where the enzyme is CYP2C8. For each record, return the substrate structure (canonical SMILES), substrate compound name, parent drug name, metabolic conversion description, pathway key, and organism.",
+    "sql": "WITH metabolism_data AS (\n  SELECT\n    m.met_id,\n    m.drug_record_id,\n    m.substrate_record_id,\n    m.met_conversion,\n    m.pathway_key,\n    m.organism\n  FROM metabolism m\n  WHERE m.enzyme_name = 'CYP2C8'\n  LIMIT 200\n)\nSELECT\n  md_sub.chembl_id AS substrate_chembl_id,\n  cs.canonical_smiles,\n  md_sub.pref_name AS substrate_name,\n  md_parent.pref_name AS parent_drug_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism_data m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nLEFT JOIN compound_structures cs ON md_sub.molregno = cs.molregno\nLEFT JOIN compound_records cr_parent ON m.drug_record_id = cr_parent.record_id\nLEFT JOIN molecule_dictionary md_parent ON cr_parent.molregno = md_parent.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE metabolism_data\n5 | 2 | 126 | SCAN m\n29 | 0 | 92 | SCAN m\n32 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?)\n39 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n54 | 0 | 47 | SEARCH cr_parent USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 47 | SEARCH md_parent USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 19,
+    "res_columns": [
+      "substrate_chembl_id",
+      "canonical_smiles",
+      "substrate_name",
+      "parent_drug_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

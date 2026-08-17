@@ -1,0 +1,12 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Join compound_structures INNER on compound_structures.molregno = metabolism.substrate_record_id
+Join molecule_dictionary AS substrate on substrate.molregno = metabolism.substrate_record_id
+Join molecule_dictionary AS parent on parent.molregno = metabolism.metabolite_record_id
+Join metabolism on metabolism.substrate_record_id = substrate.molregno
+Join compound_records on compound_records.molregno = substrate.molregno
+Join docs on docs.doc_id = compound_records.doc_id
+Join assays on assays.assay_id = metabolism.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Filter target_dictionary.organism = 'Canis lupus familiaris'
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Limit 200

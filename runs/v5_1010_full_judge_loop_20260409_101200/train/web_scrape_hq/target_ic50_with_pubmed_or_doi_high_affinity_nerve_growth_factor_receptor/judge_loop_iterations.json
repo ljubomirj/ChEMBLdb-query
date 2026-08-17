@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds with an IC50 activity value in nM against the target with ChEMBL ID CHEMBL2815 (human high-affinity nerve growth factor receptor). Return the following information: the compound's ChEMBL ID, the compound's canonical SMILES string, the assay description, the target's preferred name, and the target's organism. Also provide the PubMed ID or DOI associated with the activity record.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id,\n  cs.canonical_smiles,\n  ass.description,\n  td.pref_name,\n  td.organism,\n  d.pubmed_id,\n  d.doi\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE td.chembl_id = 'CHEMBL2815'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n51 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n71 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9311,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "description",
+      "pref_name",
+      "organism",
+      "pubmed_id",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

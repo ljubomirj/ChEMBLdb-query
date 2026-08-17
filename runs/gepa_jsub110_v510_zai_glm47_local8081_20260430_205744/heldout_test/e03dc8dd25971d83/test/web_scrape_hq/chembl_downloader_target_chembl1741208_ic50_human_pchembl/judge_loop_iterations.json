@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, pChEMBL value. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, activities.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1741208', activities.standard_type = 'IC50', activities.pchembl_value IS NOT NULL, activities.standard_relation = '='. Sort: molecule ChEMBL ID ascending, assay ChEMBL ID ascending. Limit: 1000.",
+    "sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON activities.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL1741208' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL AND activities.standard_relation = '=' ORDER BY molecule_dictionary.chembl_id ASC, assays.chembl_id ASC LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 806,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly filters for the target CHEMBL1741208 (NLRP3), standard_type='IC50', exact standard_relation='=', and non-null pchembl_value. It joins activities, assays, target_dictionary, molecule_dictionary, and compound_structures, returning the requested columns: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. The result set contains 806 rows, which is within the requested limit of 1000. The rows are ordered by molecule_chembl_id and assay_chembl_id as specified. The sample confirms correct data types and values (e.g., target_type='SINGLE PROTEIN', tax_id='9606', pchembl_value as numeric strings). The execution plan shows efficient index usage. The query fully satisfies the user request.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

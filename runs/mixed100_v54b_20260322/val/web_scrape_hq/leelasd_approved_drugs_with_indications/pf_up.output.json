@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+  "case_id": "leelasd_approved_drugs_with_indications",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs from ChEMBL. Join molecule_dictionary to compound_structures to obtain canonical SMILES. Join drug_indication to retrieve indication headings. Return chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval. Order by first_approval descending. Return distinct rows for the requested output columns.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs from ChEMBL. Join molecule_dictionary to compound_structures to obtain canonical SMILES. Join drug_indication to retrieve indication headings. Return chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval. Order by first_approval descending. Return distinct rows for the requested output columns."
+    }
+  }
+}

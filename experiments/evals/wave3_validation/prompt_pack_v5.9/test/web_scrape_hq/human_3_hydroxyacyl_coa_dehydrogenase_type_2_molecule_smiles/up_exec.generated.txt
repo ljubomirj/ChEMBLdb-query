@@ -1,0 +1,9 @@
+Select distinct molecule ChEMBL IDs (aliased as compound_chembl_id) and canonical SMILES (aliased as canonical_smiles) for compounds tested against target CHEMBL4159 in human assays.
+
+Join path: molecule_dictionary INNER JOIN activities ON activities.molregno = molecule_dictionary.molregno, INNER JOIN assays ON activities.assay_id = assays.assay_id, INNER JOIN target_dictionary ON assays.tid = target_dictionary.tid, INNER JOIN compound_structures ON compound_structures.molregno = molecule_dictionary.molregno.
+
+Filter: target_dictionary.chembl_id = 'CHEMBL4159' AND assays.assay_organism = 'Homo sapiens'.
+
+Deduplicate on (compound_chembl_id, canonical_smiles).
+
+Sort by compound_chembl_id ascending.

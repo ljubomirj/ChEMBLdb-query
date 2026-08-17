@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs whose mechanism of action is classified as a chelating agent. For each drug, return the following information: the ChEMBL ID (chembl_id), the preferred name (pref_name), the mechanism of action description (mechanism_of_action), the canonical SMILES string (canonical_smiles), and the target ChEMBL ID (target_chembl_id). Only include drugs where max_phase is 4 and the action_type is 'CHELATING AGENT'.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, dm.mechanism_of_action, cs.canonical_smiles, td.chembl_id AS target_chembl_id FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND dm.action_type = 'CHELATING AGENT';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 17,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "mechanism_of_action",
+      "canonical_smiles",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

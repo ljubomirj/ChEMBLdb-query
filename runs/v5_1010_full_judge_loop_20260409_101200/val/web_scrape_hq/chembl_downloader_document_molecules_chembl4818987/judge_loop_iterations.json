@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "For document CHEMBL4818987, retrieve all distinct compounds reported in it. For each compound, return its ChEMBL ID, preferred name, maximum clinical phase, molecule type, and canonical SMILES. Join molecule_dictionary, compound_records, docs, and compound_structures as needed.",
+    "sql": "SELECT\n  md.chembl_id AS chembl_id,\n  md.pref_name AS pref_name,\n  md.max_phase AS max_phase,\n  md.molecule_type AS molecule_type,\n  cs.canonical_smiles AS canonical_smiles\nFROM docs d\nJOIN compound_records cr ON d.doc_id = cr.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL4818987'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 215,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

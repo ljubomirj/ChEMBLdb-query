@@ -1,0 +1,13 @@
+Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+Join activities on activity_id
+Join assays on assay_id
+Join target_dictionary on tid
+Left Join compound_structures on molregno
+Filter activities.standard_relation = '='
+Filter activities.pchembl_value IS NOT NULL
+Filter assays.assay_organism = 'Homo sapiens'
+Filter target_dictionary.tid = 1681611
+Filter target_dictionary.target_type = 'SINGLE PROTEIN'
+Filter target_dictionary.pref_name = 'Prolactin-releasing peptide receptor'
+Sort by molecule_chembl_id, assay_chembl_id
+Limit 1000

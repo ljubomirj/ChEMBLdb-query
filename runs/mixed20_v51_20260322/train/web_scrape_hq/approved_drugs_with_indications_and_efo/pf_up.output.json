@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.1.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, max_phase_for_ind from molecule_dictionary joined to drug_indication on molregno, left joined to compound_structures on molregno. Filter molecule_dictionary max_phase = 4, efo_id is not null, efo_term is not null. Return distinct rows over the six output columns. Sort by all six columns ascending.\"}\n```",
+    "parsed_json": {
+      "up": "Select chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, max_phase_for_ind from molecule_dictionary joined to drug_indication on molregno, left joined to compound_structures on molregno. Filter molecule_dictionary max_phase = 4, efo_id is not null, efo_term is not null. Return distinct rows over the six output columns. Sort by all six columns ascending."
+    }
+  }
+}

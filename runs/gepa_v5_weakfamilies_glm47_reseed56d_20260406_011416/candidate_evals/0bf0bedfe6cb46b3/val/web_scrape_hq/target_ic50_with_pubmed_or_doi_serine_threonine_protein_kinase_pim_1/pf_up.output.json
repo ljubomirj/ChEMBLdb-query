@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_0bf0bedfe6cb46b3.yaml",
+  "prompt_pack_version": "v5.16",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_pim_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_pim_1",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "0bf0bedfe6cb46b3",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, then to activities on record_id, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno. Filter by target_dictionary.pref_name = 'Pim-1 kinase' and target_dictionary.organism = 'Homo sapiens' and activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Keep all activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id, then to activities on record_id, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno. Filter by target_dictionary.pref_name = 'Pim-1 kinase' and target_dictionary.organism = 'Homo sapiens' and activities.standard_type = 'IC50' and activities.standard_units = 'nM'. Keep all activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

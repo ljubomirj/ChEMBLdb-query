@@ -1,0 +1,34 @@
+[
+  {
+    "n": 1,
+    "up": "Find all molecules that are reported in the document with ChEMBL identifier CHEMBL5729049. The document is stored in the `docs` table and is uniquely identified by its `chembl_id` column. For each molecule, return its ChEMBL ID (`molecule_dictionary.chembl_id`) and its preferred name (`molecule_dictionary.pref_name`). The connection is: `docs` \u2192 `activities` (on `doc_id`) \u2192 `molecule_dictionary` (on `molregno`). Return each qualifying molecule only once (distinct). Do not apply any additional filters on document type, confidence score, target type, or units.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM docs d JOIN activities a ON d.doc_id = a.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729049'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 775,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all molecules that are reported in the document with ChEMBL identifier CHEMBL5729049. The document is stored in the `docs` table, uniquely identified by its `chembl_id` column. For each molecule, return its ChEMBL ID (`molecule_dictionary.chembl_id`) and its preferred name (`molecule_dictionary.pref_name`). Use the `compound_records` table to link documents to molecules: join `docs` to `compound_records` on `doc_id`, then join `compound_records` to `molecule_dictionary` on `molregno`. Return each distinct molecule only once. Do not apply any additional filters on document type, assay data, confidence score, target type, or units.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE d.chembl_id = 'CHEMBL5729049'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 775,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

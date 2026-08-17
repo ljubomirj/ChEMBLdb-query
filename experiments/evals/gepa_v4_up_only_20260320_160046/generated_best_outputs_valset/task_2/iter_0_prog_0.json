@@ -1,0 +1,64 @@
+[
+    0.85,
+    {
+        "current_candidate": "<TASK>\nYou are a prompt writer that crafts a single improved User Prompt (UP) for a Text-to-SQL model.\nThe user gave you a User Question UQ thas is listed below. For that user question UQ, we are to retrieve data from the ChEMBLdb chemistry database.\nWe will do it in two steps.\nStep 1 (this one): Write a User Prompt (UP), given the User Question (UQ) passed below, and the database schema and other relevant information passed in the System Prompt (SP).\nStep 2 (next one): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP) with the database schema etc.\nNow in this turn we are doing step 1. It's best if we do it now. But if we fail, we will retry in later iterations.\nRules:\n- Output ONLY a single JSON object on one line (no markdown, no code fences).\n- Required key: \"up\" (string). This is the user prompt that will be passed to the SQL-writer.\n- Optional keys (use when helpful): \"targets\", \"output_columns\", \"filters\", \"ranking\", \"notes\".\n- The \"up\" string must be explicit about:\n  + target definitions (e.g., target types, organism, protein family constraints)\n  + required output columns and their required aliases (if UQ specifies column names, they MUST be preserved in SELECT output)\n  + filters, units, and date ranges\n  + whether results should be ranked and any top-N; but do not add limits to the number of rows yourself, if the UQ does not request itself; do not mistake any number in the UQ as a number of rows to be returned\n- Do NOT ask for SQL or mention SQL output; describe the desired data/results only.\n- Follow FILTER_PROFILE guidance when provided.\n- Use prior judge advice from the latest history block when present.\n- STRICT COLUMN PROJECTION: If the User Question specifies exact column names (e.g., \"return col_a, col_b\"), the User Prompt MUST explicitly instruct the SQL-writer to select ONLY those columns with EXACTLY those names in the final output. Do not add extra columns, rename columns, or omit requested columns.\n</TASK>"
+    },
+    {
+        "case_id": "sitagliptin_dpp4_ic50_salts",
+        "corpus": "web_scrape_hq",
+        "uq": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt",
+        "generated_sql": "WITH related_chembl_ids AS (",
+        "judge_text": null,
+        "expected_rows": 70,
+        "actual_rows": 70,
+        "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+        ],
+        "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+        ],
+        "missing_cols": [],
+        "extra_cols": [],
+        "status": "pass",
+        "score": 0.85,
+        "generated_up": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+        "base_score": 1.0,
+        "up_echo_ratio": 1.0,
+        "up_echo_penalty": 0.15,
+        "adjusted_score": 0.85,
+        "scores": {
+            "result_score": 1.0,
+            "up_non_echo_score": 0.85
+        },
+        "log": "{\"case_id\": \"sitagliptin_dpp4_ic50_salts\", \"corpus\": \"web_scrape_hq\", \"uq\": \"Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt\", \"generated_sql\": \"WITH related_chembl_ids AS (\", \"judge_text\": null, \"expected_rows\": 70, \"actual_rows\": 70, \"expected_cols\": [\"compound_chembl_id\", \"canonical_smiles\", \"compound_key\", \"pubmed_id_or_doi\", \"assay_description\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\", \"activity_comment\", \"target_chembl_id\", \"target_name\", \"target_organism\"], \"actual_cols\": [\"compound_chembl_id\", \"canonical_smiles\", \"compound_key\", \"pubmed_id_or_doi\", \"assay_description\", \"standard_type\", \"standard_relation\", \"standard_value\", \"standard_units\", \"activity_comment\", \"target_chembl_id\", \"target_name\", \"target_organism\"], \"missing_cols\": [], \"extra_cols\": [], \"status\": \"pass\", \"score\": 0.85, \"generated_up\": \"Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.\", \"base_score\": 1.0, \"up_echo_ratio\": 1.0, \"up_echo_penalty\": 0.15, \"adjusted_score\": 0.85, \"scores\": {\"result_score\": 1.0, \"up_non_echo_score\": 0.85}}\n"
+    }
+]

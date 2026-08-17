@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_aea43a9013295c3c.yaml",
+  "prompt_pack_version": "v5.15",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_rac_alpha_serine_threonine_protein_kinase.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_rac_alpha_serine_threonine_protein_kinase",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "aea43a9013295c3c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select all IC50 activity rows in nM for human RAC-alpha serine/threonine-protein kinase (CHEMBL4282). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Use the join path molecule_dictionary -> activities -> assays -> target_dictionary, with INNER JOIN compound_structures for canonical_smiles. Join docs via activities.doc_id to retrieve pubmed_id_or_doi. Do not deduplicate rows. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select all IC50 activity rows in nM for human RAC-alpha serine/threonine-protein kinase (CHEMBL4282). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Use the join path molecule_dictionary -> activities -> assays -> target_dictionary, with INNER JOIN compound_structures for canonical_smiles. Join docs via activities.doc_id to retrieve pubmed_id_or_doi. Do not deduplicate rows. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

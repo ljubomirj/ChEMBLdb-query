@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_leucine_rich_repeat_serine_threonine_protein_kinas.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_leucine_rich_repeat_serine_threonine_protein_kinas",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 4273 rows of activity data for the target CHEMBL1075104 (human leucine\u2011rich repeat serine/threonine\u2011protein kinase) filtered by IC50 = nM. The query correctly joins molecule_dictionary, compound_records, compound_structures, docs, assays, target_dictionary, and activities, and selects the required columns with proper aliases (e.g., compound_chembl_id, pubmed_id_or_doi). The sample rows show the expected fields populated, including canonical SMILES, PubMed IDs, assay descriptions, and target information. The filtering criteria (standard_type='IC50', standard_relation='=', standard_units='nM', target_chembl_id='CHEMBL1075104') are correctly applied. The result set includes multiple assay descriptions (e.g., wild\u2011type, G2019S mutant, I2020T mutant) which matches the user's request for activity values for the target. The row count is high but expected for a well\u2011studied target. No obvious missing columns or incorrect joins are present.\",\n  \"score\": 90,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 4273 rows of activity data for the target CHEMBL1075104 (human leucine\u2011rich repeat serine/threonine\u2011protein kinase) filtered by IC50 = nM. The query correctly joins molecule_dictionary, compound_records, compound_structures, docs, assays, target_dictionary, and activities, and selects the required columns with proper aliases (e.g., compound_chembl_id, pubmed_id_or_doi). The sample rows show the expected fields populated, including canonical SMILES, PubMed IDs, assay descriptions, and target information. The filtering criteria (standard_type='IC50', standard_relation='=', standard_units='nM', target_chembl_id='CHEMBL1075104') are correctly applied. The result set includes multiple assay descriptions (e.g., wild\u2011type, G2019S mutant, I2020T mutant) which matches the user's request for activity values for the target. The row count is high but expected for a well\u2011studied target. No obvious missing columns or incorrect joins are present.",
+      "score": 90,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_leucine_rich_repeat_serine_threonine_protein_kinas/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_leucine_rich_repeat_serine_threonine_protein_kinas/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_leucine_rich_repeat_serine_threonine_protein_kinas/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query successfully returns exact IC50 activity values for compounds tested against CHEMBL4296 (human sodium channel protein type 9 subunit alpha). The result includes all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, and IC50 measurement details (standard_type, standard_relation, standard_value, standard_units, activity_comment). The INNER JOIN on compound_structures enforces the SMILES requirement, and the WHERE clause ensures at least one PubMed ID or DOI is present. The row count (3543) is reasonable for this target, and the sample rows show correct data types and values. The query meets all user requirements.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query successfully returns exact IC50 activity values for compounds tested against CHEMBL4296 (human sodium channel protein type 9 subunit alpha). The result includes all requested columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, and IC50 measurement details (standard_type, standard_relation, standard_value, standard_units, activity_comment). The INNER JOIN on compound_structures enforces the SMILES requirement, and the WHERE clause ensures at least one PubMed ID or DOI is present. The row count (3543) is reasonable for this target, and the sample rows show correct data types and values. The query meets all user requirements.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_47616040c2994120.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "47616040c2994120",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary. Join molecule_hierarchy on parent_molregno from parent CHEMBL1336 to include parent and salts; join child molecules via molregno; join compound_structures on molregno; join compound_records on molregno; join activities on record_id; join assays on assay_id; join target_dictionary on tid. Filter parent CHEMBL1336; target CHEMBL279; standard_type IC50; standard_units nM. Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. No limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, assays, target_dictionary. Join molecule_hierarchy on parent_molregno from parent CHEMBL1336 to include parent and salts; join child molecules via molregno; join compound_structures on molregno; join compound_records on molregno; join activities on record_id; join assays on assay_id; join target_dictionary on tid. Filter parent CHEMBL1336; target CHEMBL279; standard_type IC50; standard_units nM. Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism. No limit."
+    }
+  }
+}

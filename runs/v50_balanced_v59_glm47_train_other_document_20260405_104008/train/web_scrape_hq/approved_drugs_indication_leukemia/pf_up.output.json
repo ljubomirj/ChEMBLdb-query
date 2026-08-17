@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_leukemia.json",
+  "case_id": "approved_drugs_indication_leukemia",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select approved drugs (max_phase = 4) with an indication of leukemia. Join drug_indication to molecule_dictionary on molregno, and join compound_structures on molregno to retrieve canonical SMILES. Filter where mesh_heading contains 'leukemia' (case-insensitive). Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select approved drugs (max_phase = 4) with an indication of leukemia. Join drug_indication to molecule_dictionary on molregno, and join compound_structures on molregno to retrieve canonical SMILES. Filter where mesh_heading contains 'leukemia' (case-insensitive). Return chembl_id, pref_name, canonical_smiles, efo_id as indication_curie, efo_term as indication_label, and max_phase_for_ind. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind."
+    }
+  }
+}

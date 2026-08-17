@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.5.yaml",
+  "prompt_pack_version": "v5.5",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123873",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123873' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, cr.compound_name, cs.canonical_smiles\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123873' AND cs.canonical_smiles IS NOT NULL ORDER BY md.chembl_id, cr.compound_name, cs.canonical_smiles"
+    }
+  }
+}

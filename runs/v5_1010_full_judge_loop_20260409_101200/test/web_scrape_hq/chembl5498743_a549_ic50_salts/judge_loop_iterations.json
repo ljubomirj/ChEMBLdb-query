@@ -1,0 +1,37 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity records for compound CHEMBL5498743 and its salt forms against target CHEMBL392. Include the following information for each record: compound ChEMBL ID, preferred name, canonical SMILES, assay description, literature PubMed ID or DOI, and the IC50 value with its units and relation.",
+    "sql": "WITH target_mols AS (\n  SELECT\n    parent.molregno,\n    parent.chembl_id AS chembl_id,\n    parent.pref_name AS pref_name\n  FROM molecule_dictionary parent\n  WHERE parent.chembl_id = 'CHEMBL5498743'\n  UNION ALL\n  SELECT\n    child.molregno,\n    child.chembl_id,\n    child.pref_name\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL5498743'\n)\nSELECT\n  tm.chembl_id,\n  tm.pref_name,\n  cs.canonical_smiles,\n  a.description AS assay_description,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  a.standard_value,\n  a.standard_units,\n  a.standard_relation\nFROM target_mols tm\nJOIN compound_structures cs ON cs.molregno = tm.molregno\nJOIN activities a ON a.molregno = tm.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN docs d ON d.doc_id = a.doc_id\nJOIN target_dictionary td ON td.tid = ass.tid\nWHERE\n  td.chembl_id = 'CHEMBL392'\n  AND a.standard_type = 'IC50';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: a.description",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.description",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all IC50 activity records for compound CHEMBL5498743 and its salt forms against target CHEMBL392. Return the following details for each record: compound ChEMBL ID, preferred name, canonical SMILES, assay description, literature PubMed ID or DOI (preferring PubMed ID if both exist), IC50 value, units, and relation.",
+    "sql": "WITH target_mols AS (\n  SELECT\n    parent.molregno,\n    parent.chembl_id AS chembl_id,\n    parent.pref_name AS pref_name\n  FROM molecule_dictionary parent\n  WHERE parent.chembl_id = 'CHEMBL5498743'\n  UNION ALL\n  SELECT\n    child.molregno,\n    child.chembl_id,\n    child.pref_name\n  FROM molecule_dictionary parent\n  JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno\n  JOIN molecule_dictionary child ON child.molregno = mh.molregno\n  WHERE parent.chembl_id = 'CHEMBL5498743'\n)\nSELECT\n  tm.chembl_id,\n  tm.pref_name,\n  cs.canonical_smiles,\n  ass.description AS assay_description,\n COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  act.standard_value,\n  act.standard_units,\n  act.standard_relation\nFROM target_mols tm\nJOIN compound_structures cs ON cs.molregno = tm.molregno\nJOIN activities act ON act.molregno = tm.molregno\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN docs d ON d.doc_id = act.doc_id\nJOIN target_dictionary td ON td.tid = ass.tid\nWHERE\n  td.chembl_id = 'CHEMBL392'\n  AND act.standard_type = 'IC50';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 17\n1 | 0 | 0 | COMPOUND QUERY\n2 | 1 | 0 | LEFT-MOST SUBQUERY\n15 | 2 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n20 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n25 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n34 | 2 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n45 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n54 | 2 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n74 | 1 | 0 | UNION ALL\n91 | 74 | 47 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n96 | 74 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n101 | 74 | 50 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n107 | 74 | 47 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n113 | 74 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n122 | 74 | 60 | SEARCH act USING INDEX fk_act_molregno (molregno=?)\n133 | 74 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n142 | 74 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 5,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "assay_description",
+      "pubmed_id_or_doi",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

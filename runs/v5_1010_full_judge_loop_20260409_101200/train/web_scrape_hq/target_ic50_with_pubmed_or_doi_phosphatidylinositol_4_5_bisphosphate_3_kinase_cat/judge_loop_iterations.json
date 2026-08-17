@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "List the IC50 activity values (in nM) for compounds tested against human Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha. For each matching activity, return the compound's ChEMBL ID, canonical SMILES, PubMed ID or DOI, assay description, target ChEMBL ID, and target name. Only include results where the compound has a canonical SMILES and the associated document has a PubMed ID or DOI.",
+    "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  a.standard_value AS ic50_nM\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha isoform'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n22 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n28 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n39 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 4923,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "ic50_nM"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

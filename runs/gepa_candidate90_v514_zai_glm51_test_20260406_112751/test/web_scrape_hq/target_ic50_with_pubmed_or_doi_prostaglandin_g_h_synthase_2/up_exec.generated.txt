@@ -1,0 +1,33 @@
+Return all exact IC50 activity rows (standard_relation = '=') measured in nM for compounds tested against the target with chembl_id CHEMBL230 (human prostaglandin G/H synthase 2). Do not deduplicate; keep every qualifying activity row.
+
+Join path (strict provenance):
+1. molecule_dictionary (md) -> compound_records (cr) on md.molregno = cr.molregno
+2. compound_records (cr) -> docs (d) on cr.doc_id = d.doc_id
+3. compound_records (cr) -> activities (act) on cr.record_id = act.record_id
+4. activities (act) -> assays (a) on act.assay_id = a.assay_id
+5. assays (a) -> target_dictionary (td) on a.tid = td.tid
+6. molecule_dictionary (md) INNER JOIN compound_structures (cs) on md.molregno = cs.molregno
+
+Filters:
+- td.chembl_id = 'CHEMBL230'
+- act.standard_type = 'IC50'
+- act.standard_relation = '='
+- act.standard_units = 'nM'
+- act.standard_value IS NOT NULL
+
+Output columns (use these exact aliases):
+- compound_chembl_id: md.chembl_id
+- canonical_smiles: cs.canonical_smiles
+- compound_key: cr.compound_key
+- pubmed_id_or_doi: COALESCE(CAST(d.pubmed_id AS TEXT), d.doi)
+- assay_description: a.description
+- standard_type: act.standard_type
+- standard_relation: act.standard_relation
+- standard_value: act.standard_value
+- standard_units: act.standard_units
+- activity_comment: act.activity_comment
+- target_chembl_id: td.chembl_id
+- target_name: td.pref_name
+- target_organism: td.organism
+
+Sort by the full output row (all columns in listed order). No row limit.

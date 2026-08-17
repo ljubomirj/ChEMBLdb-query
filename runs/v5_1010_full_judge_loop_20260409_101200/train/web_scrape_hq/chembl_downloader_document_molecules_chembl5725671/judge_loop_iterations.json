@@ -1,0 +1,171 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compound identifiers (both ChEMBL IDs and molecule names) that are reported in the scientific publication with the document identifier CHEMBL5725671. Return each qualifying compound exactly once. If the document includes multiple records for the same molecule (e.g., from different sections), return the molecule only once. The query must join the document (docs) table to the activity and compound data via the activity record links, ensuring that the doc_id matches CHEMBL5725671 and that the compound information comes from the associated records.",
+    "sql": "SELECT DISTINCT m.pref_name AS compound_name, m.chembl_id\nFROM molecule_dictionary m\nJOIN compound_records cr ON m.molregno = cr.molregno\nJOIN activities a ON cr.record_id = a.record_id\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5725671';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the set of distinct compounds reported in the document CHEMBL5725671. Return for each compound: (1) the ChEMBL identifier (prefixed with 'CHEMBL'), (2) the preferred compound name (pref_name) from the molecule_dictionary, and (3) the compound_key (e.g., record identifier) that links the molecule to this specific document. Ensure each molecule appears only once in the results, even if it appears multiple times in the document. The document identifier must be matched via docs.doc_id = CHEMBL5725671. No additional filters or ordering are required.",
+    "sql": "WITH matched_records AS (SELECT cr.molregno, cr.record_id, cr.cidx, cr.compound_key FROM compound_records cr JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671') SELECT DISTINCT m.chembl_id, m.pref_name, mr.compound_key FROM molecule_dictionary m JOIN matched_records mr ON m.molregno = mr.molregno ORDER BY m.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n22 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n28 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n46 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 774,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each qualifying molecule exactly once, providing its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name) from the molecule_dictionary, and the record identifier (cidx) that links the molecule to this specific document. Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and join through compound_records to activities and then to the document. No additional filters or ordering are required; each molecule should appear only once in the results even if it appears multiple times in the document.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the set of distinct molecules that are reported in the scientific publication with document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and joins through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and joins through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.8,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and joins through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and joins through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "WITH doc_activities AS (SELECT a.activity_id, a.molregno, a.record_id FROM activities a JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671') SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM doc_activities da JOIN molecule_dictionary m ON da.molregno = m.molregno JOIN compound_records cr ON da.record_id = cr.record_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and join through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx). Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and join through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve all molecules that are reported in the scientific publication identified by the document identifier CHEMBL5725671. Return each molecule exactly once with its full ChEMBL identifier (prefixed with 'CHEMBL'), its preferred compound name (pref_name from molecule_dictionary), and the compound record identifier (cidx) that links the molecule to this specific document. Ensure the document match uses docs.doc_id = 'CHEMBL5725671' and join through compound_records to activities to retrieve the correct cidx. No additional filters, ordering, or limits are required.",
+    "sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, m.pref_name AS compound_name, cr.cidx AS compound_key FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN activities a ON cr.record_id = a.record_id JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5725671';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293293_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293293_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\\nJoin activities on activities.activity_id = activities.activity_id\\nJoin assays on assays.assay_id = activities.assay_id\\nJoin target_dictionary on target_dictionary.tid = assays.tid\\nJoin molecule_dictionary on molecule_dictionary.molregno = activities.molregno\\nJoin compound_structures on compound_structures.molregno = activities.molregno\\nFilter activities.standard_relation = '='\\nFilter activities.pchembl_value IS NOT NULL\\nFilter target_dictionary.chembl_id = 'CHEMBL1293293'\\nFilter assays.assay_organism = 'Homo sapiens'\\nFilter target_dictionary.target_type = 'SINGLE PROTEIN'\\nFilter activities.type = 'IC50'\\nSort by molecule_chembl_id, assay_chembl_id\\nLimit 1000\"\n}",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nJoin activities on activities.activity_id = activities.activity_id\nJoin assays on assays.assay_id = activities.assay_id\nJoin target_dictionary on target_dictionary.tid = assays.tid\nJoin molecule_dictionary on molecule_dictionary.molregno = activities.molregno\nJoin compound_structures on compound_structures.molregno = activities.molregno\nFilter activities.standard_relation = '='\nFilter activities.pchembl_value IS NOT NULL\nFilter target_dictionary.chembl_id = 'CHEMBL1293293'\nFilter assays.assay_organism = 'Homo sapiens'\nFilter target_dictionary.target_type = 'SINGLE PROTEIN'\nFilter activities.type = 'IC50'\nSort by molecule_chembl_id, assay_chembl_id\nLimit 1000"
+    }
+  }
+}

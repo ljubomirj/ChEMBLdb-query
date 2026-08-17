@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all drug-indication relationships from the drug_indication table. For each record, provide the molecule ChEMBL ID (from molecule_dictionary), the molecule preferred name (pref_name), the ChEBI parent ID (if available; otherwise NULL), the MeSH identifier (mesh_id), the EFO identifier (efo_id), the indication label (mesh_heading or efo_term), and the max phase for indication (max_phase_for_ind). Do not apply any filters; return all rows. Join drug_indication with molecule_dictionary using molregno. For the ChEBI parent ID, if no direct column exists in the database, return NULL.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name, NULL AS chebi_parent_id, di.mesh_id, di.efo_id, COALESCE(di.mesh_heading, di.efo_term) AS indication_label, di.max_phase_for_ind FROM drug_indication di LEFT JOIN molecule_dictionary md ON di.molregno = md.molregno;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n6 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 59954,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "chebi_parent_id",
+      "mesh_id",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

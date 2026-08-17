@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.10.yaml",
+  "prompt_pack_version": "v5.10",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_multiple_myeloma.json",
+  "case_id": "approved_drugs_indication_multiple_myeloma",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: chembl_id, pref_name, canonical_smiles, indication_curie (efo_id), indication_label (efo_term), max_phase_for_ind. Source: molecule_dictionary, drug_indication, compound_structures. Join: molecule_dictionary.molregno = drug_indication.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_indication.efo_term = 'multiple myeloma'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, indication_curie ASC, indication_label ASC, max_phase_for_ind ASC.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: chembl_id, pref_name, canonical_smiles, indication_curie (efo_id), indication_label (efo_term), max_phase_for_ind. Source: molecule_dictionary, drug_indication, compound_structures. Join: molecule_dictionary.molregno = drug_indication.molregno; molecule_dictionary.molregno = compound_structures.molregno. Filter: molecule_dictionary.max_phase = 4; drug_indication.efo_term = 'multiple myeloma'. Sort: chembl_id ASC, pref_name ASC, canonical_smiles ASC, indication_curie ASC, indication_label ASC, max_phase_for_ind ASC."
+    }
+  }
+}

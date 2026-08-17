@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_ecf48ac1543dda83.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ecf48ac1543dda83",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activity rows for compounds tested against human target CHEMBL2292. Join molecule_dictionary to compound_records, docs, activities, assays, and target_dictionary. Require compound_structures to be present (INNER JOIN) and require docs.pubmed_id or docs.doi to be non-null. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Filter by target_dictionary.chembl_id = 'CHEMBL2292' and activities.standard_type = 'IC50'. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activity rows for compounds tested against human target CHEMBL2292. Join molecule_dictionary to compound_records, docs, activities, assays, and target_dictionary. Require compound_structures to be present (INNER JOIN) and require docs.pubmed_id or docs.doi to be non-null. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Filter by target_dictionary.chembl_id = 'CHEMBL2292' and activities.standard_type = 'IC50'. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

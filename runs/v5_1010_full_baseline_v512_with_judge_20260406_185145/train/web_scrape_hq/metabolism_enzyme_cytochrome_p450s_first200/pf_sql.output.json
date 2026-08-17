@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cytochrome_p450s_first200.json",
+  "case_id": "metabolism_enzyme_cytochrome_p450s_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT\\n  m.canonical_smiles AS canonical_smiles,\\n  s1.pref_name AS substrate_compound_name,\\n  s2.pref_name AS parent_compound_name,\\n  met.met_conversion,\\n  met.pathway_key,\\n  t.organism,\\n  e.enzyme_name\\nFROM metabolism met\\nJOIN compound_records cr_substrate ON met.substrate_record_id = cr_substrate.record_id\\nJOIN molecule_dictionary s1 ON cr_substrate.molregno = s1.molregno\\nJOIN molecule_hierarchy mh ON s1.molregno = mh.molregno\\nJOIN molecule_dictionary s2 ON mh.parent_molregno = s2.molregno\\nJOIN compound_records cr_parent ON s2.molregno = cr_parent.molregno\\nJOIN molecule_dictionary m ON cr_parent.molregno = m.molregno\\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\\nJOIN target_dictionary t ON met.tid = t.tid\\nJOIN target_components tc ON t.tid = tc.tid\\nJOIN protein_classification pc ON tc.component_id = pc.protein_class_id\\nWHERE t.organism = 'Homo sapiens'\\n  AND pc.pref_name LIKE '%Cytochrome P450%'\\nLIMIT 200;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  m.canonical_smiles AS canonical_smiles,\n  s1.pref_name AS substrate_compound_name,\n  s2.pref_name AS parent_compound_name,\n  met.met_conversion,\n  met.pathway_key,\n  t.organism,\n  e.enzyme_name\nFROM metabolism met\nJOIN compound_records cr_substrate ON met.substrate_record_id = cr_substrate.record_id\nJOIN molecule_dictionary s1 ON cr_substrate.molregno = s1.molregno\nJOIN molecule_hierarchy mh ON s1.molregno = mh.molregno\nJOIN molecule_dictionary s2 ON mh.parent_molregno = s2.molregno\nJOIN compound_records cr_parent ON s2.molregno = cr_parent.molregno\nJOIN molecule_dictionary m ON cr_parent.molregno = m.molregno\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\nJOIN target_dictionary t ON met.tid = t.tid\nJOIN target_components tc ON t.tid = tc.tid\nJOIN protein_classification pc ON tc.component_id = pc.protein_class_id\nWHERE t.organism = 'Homo sapiens'\n  AND pc.pref_name LIKE '%Cytochrome P450%'\nLIMIT 200;"
+    }
+  }
+}

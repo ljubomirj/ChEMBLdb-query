@@ -1,0 +1,70 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound structures for molecules tested against the human survival motor neuron protein (CHEMBL1293232). Return: compound CHEMBL identifier (CHEMBL_ID), preferred molecule name (PREF_NAME), and canonical SMILES (canonical_smiles). Ensure compounds have at least one activity record linked to an assay where the target chemistry is CHEMBL1293232 (target_chembl_id). Use INNER JOIN on activities, assays, target_dictionary, and compound_structures to confirm activity against the specified target. Do not filter by activity type, standard values, or other assay parameters unless specified.",
+    "sql": "WITH target_compounds AS (\n  SELECT DISTINCT a.molregno\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293232'\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS molecule_pref_name,\n  cs.canonical_smiles\nFROM target_compounds tc\nJOIN molecule_dictionary md ON tc.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE target_compounds\n10 | 2 | 256 | SCAN a USING INDEX fk_act_molregno\n13 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n20 | 2 | 0 | BLOOM FILTER ON td (tid=?)\n28 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n49 | 0 | 235 | SCAN md USING INDEX idx_moldict_chembl_id\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n63 | 0 | 0 | BLOOM FILTER ON tc (molregno=?)\n74 | 0 | 54 | SEARCH tc USING AUTOMATIC COVERING INDEX (molregno=?)",
+    "res_row_count": 33573,
+    "res_columns": [
+      "compound_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compounds that have been tested against the human survival motor neuron protein (CHEMBL1293232) and return each compound's ChEMBL identifier, preferred molecule name, and canonical SMILES. Target definition: a molecule must have at least one activity record linked to an assay where the target_chembl_id equals 'CHEMBL1293232' (human survival motor neuron protein). Output columns: compound_chembl_id (CHEMBL identifier), molecule_pref_name (preferred molecule name), canonical_smiles (canonical SMILES). No additional filters (e.g., activity type, units, year) are required. Results must be unique by compound (DISTINCT on the three output columns).",
+    "sql": "WITH target_compounds AS (\n  SELECT DISTINCT a.molregno\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293232'\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS molecule_pref_name,\n  cs.canonical_smiles\nFROM target_compounds tc\nJOIN molecule_dictionary md ON tc.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 9\n2 | 0 | 0 | CO-ROUTINE target_compounds\n10 | 2 | 256 | SCAN a USING INDEX fk_act_molregno\n13 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n20 | 2 | 0 | BLOOM FILTER ON td (tid=?)\n28 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n49 | 0 | 235 | SCAN md USING INDEX idx_moldict_chembl_id\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n63 | 0 | 0 | BLOOM FILTER ON tc (molregno=?)\n74 | 0 | 54 | SEARCH tc USING AUTOMATIC COVERING INDEX (molregno=?)",
+    "res_row_count": 33573,
+    "res_columns": [
+      "compound_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compounds that have been tested against the human survival motor neuron protein (CHEMBL1293232). Return: compound_chembl_id (CHEMBL identifier), molecule_pref_name (preferred molecule name), and canonical_smiles (canonical SMILES). Ensure each compound has at least one activity record linked to an assay where the target_dictionary.chembl_id equals 'CHEMBL1293232' (human survival motor neuron protein). Use DISTINCT on the three output columns. No additional filters are required (no activity type, units, or date restrictions).",
+    "sql": "WITH target_assays AS (\n  SELECT DISTINCT a.assay_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293232'\n),\nlinked_activities AS (\n  SELECT a.molregno\n  FROM activities a\n  JOIN target_assays ta ON a.assay_id = ta.assay_id\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS molecule_pref_name,\n  cs.canonical_smiles\nFROM linked_activities la\nJOIN molecule_dictionary md ON la.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE target_assays\n9 | 2 | 249 | SCAN a USING COVERING INDEX fk_act_assay_id\n11 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n18 | 2 | 0 | BLOOM FILTER ON td (tid=?)\n26 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n49 | 0 | 226 | SCAN md USING INDEX idx_moldict_chembl_id\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n72 | 0 | 0 | BLOOM FILTER ON ta (assay_id=?)\n83 | 0 | 54 | SEARCH ta USING AUTOMATIC COVERING INDEX (assay_id=?)",
+    "res_row_count": 33573,
+    "res_columns": [
+      "compound_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compounds that have been tested against the human survival motor neuron protein (CHEMBL1293232). Return: compound_chembl_id (CHEMBL identifier), molecule_pref_name (preferred molecule name), and canonical_smiles (canonical SMILES). Ensure each compound has at least one activity record linked to an assay where the target_dictionary.chembl_id equals 'CHEMBL1293232' (human survival motor neuron protein). Use DISTINCT on the three output columns. No additional filters are required (no activity type, units, or date restrictions).",
+    "sql": "WITH target_assays AS (\n  SELECT DISTINCT a.assay_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293232'\n),\nlinked_activities AS (\n  SELECT a.molregno\n  FROM activities a\n  JOIN target_assays ta ON a.assay_id = ta.assay_id\n)\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS molecule_pref_name,\n  cs.canonical_smiles\nFROM linked_activities la\nJOIN molecule_dictionary md ON la.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE target_assays\n9 | 2 | 249 | SCAN a USING COVERING INDEX fk_act_assay_id\n11 | 2 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n18 | 2 | 0 | BLOOM FILTER ON td (tid=?)\n26 | 2 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n49 | 0 | 226 | SCAN md USING INDEX idx_moldict_chembl_id\n52 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n61 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n72 | 0 | 0 | BLOOM FILTER ON ta (assay_id=?)\n83 | 0 | 54 | SEARCH ta USING AUTOMATIC COVERING INDEX (assay_id=?)",
+    "res_row_count": 33573,
+    "res_columns": [
+      "compound_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

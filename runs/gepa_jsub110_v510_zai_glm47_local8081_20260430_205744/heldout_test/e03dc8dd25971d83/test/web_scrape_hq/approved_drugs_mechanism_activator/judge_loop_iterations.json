@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: compound name (pref_name), structure (canonical_smiles), mechanism description (mechanism_of_action), target ChEMBL ID (target_chembl_id), target name (target_pref_name). Source: molecule_dictionary, drug_mechanism, target_dictionary. Join: molecule_dictionary to drug_mechanism on molregno; drug_mechanism to target_dictionary on tid. Filter: max_phase = 4; action_type = 'ACTIVATOR'.",
+    "sql": "SELECT DISTINCT md.pref_name, cs.canonical_smiles, dm.mechanism_of_action, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'ACTIVATOR'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 14,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_chembl_id",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs (max_phase = 4) with an 'ACTIVATOR' mechanism of action. The result set includes the requested columns: compound name, canonical SMILES, mechanism description, target ChEMBL ID, and target name. The join path through molecule_dictionary, drug_mechanism, target_dictionary, and compound_structures is correct. The use of DISTINCT is appropriate to handle potential duplicates from the joins. The returned 14 rows cover diverse activator mechanisms (e.g., antithrombin-III, soluble guanylate cyclase, Nrf2, PKLR, CFTR). The result directly answers the user's request without unnecessary columns or missing data.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound identifiers and canonical SMILES for molecules that have at least one activity record linked to assays in which the target is the human Huntingtin protein (target identifier CHEMBL5514). The compounds must be associated with assays performed in a human (organism = 'Homo sapiens') and the source of the assay should be the human (i.e., the assay target is the Huntingtin protein itself, not a homologue or other related protein). For each qualifying compound, return the ChEMBL compound identifier (pref_name) and the canonical SMILES representation. The result set should list each compound once, showing its ChEMBL ID and corresponding SMILES.",
+    "sql": "WITH human_assays AS ( SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.assay_organism = 'Homo sapiens' ) SELECT DISTINCT md.molecule_chembl_id AS chembl_id, cs.canonical_smiles FROM human_assays ha JOIN activities a ON ha.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.chembl_id = 'CHEMBL5514' AND cs.molregno IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List the ChEMBL IDs and SMILES of compounds tested against the human Huntingtin target (CHEMBL5514) in human assays. The query must identify all compounds that have at least one activity record linked to assays where the target is the human Huntingtin protein (target identifier CHEMBL5514) and the assay organism is Homo sapiens. Return each compound once, showing its ChEMBL identifier (from molecule_dictionary.chembl_id) and its canonical SMILES (from compound_structures.canonical_smiles). Do not filter on assay activity types or units, and do not limit the number of rows. Include only assays whose target is CHEMBL5514 (i.e., avoid homologues or other related proteins).",
+    "sql": "WITH human_huntingtin_assays AS ( SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.assay_organism = 'Homo sapiens' AND ass.tid = ( SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL5514' ) ) SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM human_huntingtin_assays ha JOIN activities a ON ha.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List the ChEMBL IDs (using molecule_dictionary.chembl_id) and canonical SMILES (using compound_structures.canonical_smiles) of compounds that have at least one activity record linked to assays whose target is the human Huntingtin protein (CHEMBL5514) and whose assay organism is 'Homo sapiens'. Return each compound only once, showing its ChEMBL ID and the corresponding SMILES. Do not apply any activity\u2011type, unit, or source filters beyond the target and organism constraints.",
+    "sql": "WITH human_huntingtin_assays AS (SELECT DISTINCT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE ass.assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL5514') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM human_huntingtin_assays ha JOIN activities a ON ha.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List the ChEMBL IDs (using molecule_dictionary.chembl_id) and canonical SMILES (using compound_structures.canonical_smiles) of compounds that have at least one activity record linked to assays whose target is the human Huntingtin protein (CHEMBL5514) and whose assay organism is 'Homo sapiens'. Return each compound only once, showing its ChEMBL ID and the corresponding SMILES. Do not apply any activity\u2011type, unit, or source filters beyond the target and organism constraints.",
+    "sql": "WITH human_huntingtin_assays AS (SELECT DISTINCT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE ass.assay_organism = 'Homo sapiens' AND td.chembl_id = 'CHEMBL5514') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles FROM human_huntingtin_assays ha JOIN activities a ON ha.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE human_huntingtin_assays\n8 | 2 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n13 | 2 | 224 | SCAN ass\n20 | 2 | 54 | SEARCH a USING COVERING INDEX fk_act_assay_id (assay_id=?)\n33 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n42 | 0 | 226 | SCAN md USING INDEX idx_moldict_chembl_id\n45 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n65 | 0 | 0 | BLOOM FILTER ON ha (assay_id=?)\n76 | 0 | 53 | SEARCH ha USING AUTOMATIC COVERING INDEX (assay_id=?)",
+    "res_row_count": 18783,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

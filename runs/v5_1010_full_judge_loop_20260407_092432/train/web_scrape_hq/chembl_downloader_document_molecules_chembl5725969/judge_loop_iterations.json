@@ -1,0 +1,101 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds from the specific document CHEMBL5725969 along with their ChEMBL IDs, names, and SMILES. No additional filtering or ranking is required beyond the document identifier. Return distinct compound entries only if multiple rows could appear for the same compound.",
+    "sql": "WITH doc AS (\n  SELECT doc_id\n  FROM docs\n  WHERE chembl_id = 'CHEMBL5725969'\n),\ncompounds AS (\n  SELECT md.molregno, md.pref_name, cs.canonical_smiles\n  FROM activity_records ar\n  JOIN assays a ON ar.assay_id = a.assay_id\n  JOIN activity_properties ap ON ar.record_id = ar.record_id\n  JOIN molecule_dictionary md ON ar.molecule_chembl_id = md.molecule_chembl_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE ar.doc_id = (SELECT doc_id FROM doc)\n)\nSELECT DISTINCT molregno, pref_name, canonical_smiles\nFROM compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: activity_records",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: activity_records",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL IDs, compound names (pref_name), and canonical SMILES for compounds whose activity measurements are recorded in the document CHEMBL5725969. The data must be linked to a compound record (compound_key) and a corresponding compound structure (canonical_smiles). Return distinct compound entries only, without any additional filters or ranking beyond the document identifier.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725969'), activity AS (SELECT a.molecule_chembl_id, a.doc_id, a.record_id, a.activity_id, a.activity_type, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.standard_flag, a.pchembl_value FROM activities a WHERE a.standard_type IS NOT NULL AND a.doc_id IN (SELECT doc_id FROM doc)), compound_rec AS (SELECT cr.molregno, cr.compound_key, cr.compound_name, cr.cidx FROM compound_records cr WHERE cr.doc_id IN (SELECT doc_id FROM doc)), struct AS (SELECT cs.molregno, cs.canonical_smiles, cs.standard_inchi_key FROM compound_structures cs), selected_compounds AS (SELECT md.molregno, md.pref_name, s.canonical_smiles FROM molecules_dictionary md JOIN struct s ON md.molregno = s.molregno WHERE md.molregno IN (SELECT DISTINCT molregno FROM activity))) SELECT DISTINCT pref_name AS compound_name, canonical_smiles AS smiles, molregno AS chembl_id FROM selected_compounds;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: near \")\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \")\": syntax error",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the ChEMBL IDs, compound names (pref_name), and canonical SMILES for compounds whose activity measurements are recorded in the document CHEMBL5725969. Ensure the compounds are linked to a compound record via the compound_key field and a corresponding structure via the canonical_smiles field. Return distinct compound entries only, without any additional filters or ranking beyond the document identifier.",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name, cs.canonical_smiles\nFROM docs d\nJOIN activity_records a ON d.doc_id = a.doc_id\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE d.chembl_id = 'CHEMBL5725969';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: activity_records",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: activity_records",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compounds from the document CHEMBL5725969 along with their ChEMBL IDs (molregno), compound names (pref_name), and canonical SMILES. Return distinct compound entries (each compound once) regardless of activity repetitions, without applying any additional filters such as activity type, organism, assay ID, or doc type. Provide the data as three columns: 'molecule_chembl_id' (the molregno value), 'compound_name' (pref_name), and 'canonical_smiles'. No ranking or limits are required.",
+    "sql": "SELECT DISTINCT a.molregno AS molecule_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles FROM docs d JOIN activities a ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5725969';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n45 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 696,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the distinct ChEMBL IDs, compound names (pref_name), and canonical SMILES for every compound that appears in the document CHEMBL5725969. Ensure each compound is uniquely identified (one row per molregno) and return three columns: molecule_chembl_id (the molregno number), compound_name (pref_name from molecule_dictionary), and smiles (canonical SMILES from compound_structures). Include only compounds linked to the document via any activity measurement (i.e., through the activity table). Do not add extra filters for assay type, organism, confidence score, or doc type. Do not rank or limit the results.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725969'), acts AS (SELECT molecule_chembl_id AS molregno FROM activities WHERE doc_id = (SELECT doc_id FROM doc)), md AS (SELECT molregno, pref_name FROM molecule_dictionary), cs AS (SELECT molregno, canonical_smiles FROM compound_structures) SELECT DISTINCT md.molregno AS molecule_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM doc d JOIN acts a ON d.doc_id = a.molregno JOIN md ON md.molregno = a.molregno JOIN cs ON cs.molregno = a.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve for the document with CHEMBL ID 'CHEMBL5725969' the distinct compound entries that have activity measurements recorded in this document. For each compound provide: 1) the internal numeric key (molregno) which is the molecule identifier, 2) the preferred compound name (pref_name from molecule_dictionary), and 3) the canonical SMILES string (canonical_smiles from compound_structures). The compounds must be linked to the document via at least one activity row, but no additional filtering on assay type, organism, activity relationship, standard units, or document type is required. Return exactly one row per compound (use DISTINCT) and no ranking or limits.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725969'), acts AS (SELECT molregno FROM activities WHERE doc_id = (SELECT doc_id FROM doc)), md AS (SELECT molregno, pref_name FROM molecule_dictionary), cs AS (SELECT molregno, canonical_smiles FROM compound_structures) SELECT DISTINCT md.molregno AS molecule_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM doc d JOIN acts a ON d.doc_id = a.doc_id JOIN md ON md.molregno = a.molregno JOIN cs ON cs.molregno = a.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.doc_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.doc_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the distinct ChEMBL compound identifiers, names, and canonical SMILES for every compound that has at least one activity measurement recorded in the document with chembl_id = 'CHEMBL5725969'. Return one row per compound (molregno) with the columns molecule_chembl_id (molregno), compound_name (pref_name from molecule_dictionary), and smiles (canonical_smiles from compound_structures). No additional filtering on target, assay, activity type, units, or document metadata is required.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725969'), acts AS (SELECT molregno, doc_id FROM activities WHERE doc_id IN (SELECT doc_id FROM doc)), md AS (SELECT molregno, pref_name FROM molecule_dictionary), cs AS (SELECT molregno, canonical_smiles FROM compound_structures) SELECT DISTINCT md.molregno AS molecule_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM doc d JOIN acts a ON a.doc_id = d.doc_id JOIN md ON md.molregno = a.molregno JOIN cs ON cs.molregno = a.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH activities USING INDEX fk_act_doc_id (doc_id=?)\n24 | 0 | 0 | LIST SUBQUERY 2\n28 | 24 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n37 | 24 | 0 | CREATE BLOOM FILTER\n45 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n55 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n73 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 696,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.9,
+    "judge_decision": true
+  }
+]

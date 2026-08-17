@@ -1,0 +1,7 @@
+1. Objective: Retrieve exact activity values and chemical structures for all compounds tested in the specified GSK malaria assay, restricted to rows with exact numeric measurements.
+
+2. Output: canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units
+
+3. Source: assays, activities, molecule_dictionary, compound_structures
+
+4. Logic: Filter assays where chembl_id = 'CHEMBL1054503'. Join to activities on assay_id. Join to molecule_dictionary on molregno. Join to compound_structures on molregno. Filter activities where standard_value IS NOT NULL AND standard_relation = '='. Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units.

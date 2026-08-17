@@ -1,0 +1,3596 @@
+{
+  "ts_utc": "2026-03-19T01:54:16Z",
+  "eval_label": "eval_prompt_pack_v4.11_20260319_zai",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.11.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.5_remaining_after_20260319_zai_107.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--temperature",
+    "0.3",
+    "--up-temperature",
+    "0.2",
+    "--judge-temperature",
+    "0.2"
+  ],
+  "splits": {
+    "train": {
+      "n_cases": 18,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.406654,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1785_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1785 (Endothelin receptor type B).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1785_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1785_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1785' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1230,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.496632,
+          "column_recall": 0.285714,
+          "row_ratio": 0.813008
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl258_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL258 (Tyrosine-protein kinase Lck).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL258' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 3738,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.278438,
+          "column_recall": 0.285714,
+          "row_ratio": 0.267523
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4561_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4561 (Neuropeptide Y receptor type 5).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4561_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4561_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays ass ON act.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL4561' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 787,
+          "actual_rows": 862,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.536626,
+          "column_recall": 0.285714,
+          "row_ratio": 0.912993
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1855_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1855 (Gonadotropin-releasing hormone receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1855_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1855_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, ass.chembl_id AS assay_chembl_id, ass.description AS assay_description, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name FROM activities act JOIN assays ass ON act.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1855' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2126,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "assay_chembl_id",
+            "assay_description",
+            "target_chembl_id",
+            "target_pref_name"
+          ],
+          "missing_cols": [
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "assay_description",
+            "target_chembl_id",
+            "target_pref_name"
+          ],
+          "status": "partial",
+          "score": 0.359575,
+          "column_recall": 0.285714,
+          "row_ratio": 0.470367
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4607_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4607 (Type-2 angiotensin II receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4607_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4607_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL4607' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 700,
+          "actual_rows": 1526,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.354915,
+          "column_recall": 0.285714,
+          "row_ratio": 0.458716
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1929_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1929 (Xanthine dehydrogenase/oxidase).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1929_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1929_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id AS compound_chembl_id, s.canonical_smiles, r.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism FROM molecule_dictionary m LEFT JOIN compound_structures s ON s.molregno = m.molregno JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id JOIN activities act ON r.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid WHERE t.chembl_id = 'CHEMBL1929' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 767,
+          "actual_rows": 1046,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "molecule_chembl_id",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "compound_chembl_id",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "status": "partial",
+          "score": 0.464736,
+          "column_recall": 0.285714,
+          "row_ratio": 0.73327
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4426_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4426 (Phospholipase A2).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4426_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4426_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, ass.chembl_id AS assay_chembl_id FROM activities act JOIN assays ass ON act.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL4426' AND act.standard_type = 'IC50' AND td.organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 486,
+          "actual_rows": 557,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "assay_chembl_id"
+          ],
+          "missing_cols": [
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.520441,
+          "column_recall": 0.285714,
+          "row_ratio": 0.872531
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl283_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL283 (Stromelysin-1).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl283_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl283_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.assay_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE t.chembl_id = 'CHEMBL283' AND act.standard_type = 'IC50' AND t.organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1952,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "assay_id"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "assay_id"
+          ],
+          "status": "partial",
+          "score": 0.290632,
+          "column_recall": 0.142857,
+          "row_ratio": 0.512295
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl236_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL236 (Delta-type opioid receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl236_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl236_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL236' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2443,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.335162,
+          "column_recall": 0.285714,
+          "row_ratio": 0.409333
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl3890_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL3890 (E-selectin).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl3890_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl3890_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL3890' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 198,
+          "actual_rows": 456,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.345113,
+          "column_recall": 0.285714,
+          "row_ratio": 0.434211
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2034_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL2034 (Glucocorticoid receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2034_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2034_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2034' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 4970,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.251911,
+          "column_recall": 0.285714,
+          "row_ratio": 0.201207
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1994_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1994 (Mineralocorticoid receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1994_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl1994_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1994' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1218,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.499836,
+          "column_recall": 0.285714,
+          "row_ratio": 0.821018
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl286_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL286 (Renin).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl286_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl286_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL286' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 4372,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.26292,
+          "column_recall": 0.285714,
+          "row_ratio": 0.228728
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4481_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4481 (Nitric oxide synthase, inducible).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4481_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl4481_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL4481' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 904,
+          "actual_rows": 1055,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.514177,
+          "column_recall": 0.285714,
+          "row_ratio": 0.856872
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl3568_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL3568 (Nitric oxide synthase 1).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl3568_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl3568_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 782,
+          "actual_rows": 902,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "bao_endpoint",
+            "assay_type",
+            "organism",
+            "tid"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "bao_endpoint",
+            "assay_type",
+            "organism",
+            "tid"
+          ],
+          "status": "partial",
+          "score": 0.518213,
+          "column_recall": 0.285714,
+          "row_ratio": 0.866962
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2520_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL2520 (Neutral alpha-glucosidase C).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2520_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2520_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.pref_name AS target_pref_name, td.organism AS target_organism, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2520' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 2,
+          "actual_rows": 2,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_pref_name",
+            "target_organism",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_pref_name",
+            "target_organism",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.571429,
+          "column_recall": 0.285714,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2334_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL2334 (Caspase-3).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2334_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl2334_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2334' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2423,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.336513,
+          "column_recall": 0.285714,
+          "row_ratio": 0.412712
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl287_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL287 (Sigma non-opioid intracellular receptor 1).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl287_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/train/web_scrape_hq/chembl_downloader_target_chembl287_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1895,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.38251,
+          "column_recall": 0.285714,
+          "row_ratio": 0.527704
+        }
+      ]
+    },
+    "val": {
+      "n_cases": 33,
+      "n_pass": 14,
+      "pass_rate": 0.424242,
+      "mean_score": 0.760508,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_human_cgmp_target_descriptions",
+          "uq": "List distinct human target descriptions whose description starts with cGMP. Return exactly one column only, named target_description.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/run.log",
+          "generated_sql": "SELECT DISTINCT pref_name AS target_description FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name LIKE 'cGMP%'",
+          "judge_text": null,
+          "expected_rows": 6,
+          "actual_rows": 6,
+          "expected_cols": [
+            "target_description"
+          ],
+          "actual_cols": [
+            "target_description"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_pde5_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL1827 (cGMP-specific 3',5'-cyclic phosphodiesterase). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/human_pde5_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/human_pde5_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL1827' AND ass.assay_organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 2604,
+          "actual_rows": 2604,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "target_ic50_with_pubmed_or_doi_jak2",
+          "uq": "Retrieve IC50 activities in nM against target CHEMBL2971 (Tyrosine-protein kinase JAK2) together with canonical SMILES, compound ChEMBL ID, compound key, PubMed ID or DOI, assay description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target ChEMBL ID, target name, and target organism. Keep only rows with target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', non-null canonical_smiles, and at least one of pubmed_id or doi. Return DISTINCT rows only for exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Join docs through activities.doc_id = docs.doc_id. Use LEFT JOIN compound_records on activities.record_id = compound_records.record_id for compound_key only; do not derive the document through compound_records.doc_id.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/target_ic50_with_pubmed_or_doi_jak2/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/target_ic50_with_pubmed_or_doi_jak2/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 4012,
+          "actual_rows": 4012,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "sitagliptin_dpp4_ic50_salts",
+          "uq": "Retrieve activity details for compound CHEMBL1422 (SITAGLIPTIN) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL284 (Dipeptidyl peptidase 4). Use molecule_hierarchy parent mapping from CHEMBL1422 to include the parent compound and all related salts. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/sitagliptin_dpp4_ic50_salts/run.log",
+          "generated_sql": "WITH related_chembl_ids AS (",
+          "judge_text": null,
+          "expected_rows": 70,
+          "actual_rows": 70,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "metabolism_first200_with_record_keys",
+          "uq": "Retrieve the first 200 rows from the metabolism table with canonical SMILES, substrate record ID, metabolite record ID, substrate compound key, metabolite compound key, metabolic conversion, and pathway key. Use substrate_record_id as a mandatory join to the substrate compound_records row and then to compound_structures for canonical_smiles, so canonical_smiles and substrate_compound_key come from the substrate side and must not be null because of an optional join. Use metabolite_record_id to join the metabolite compound_records row for metabolite_compound_key; that metabolite-side join may be optional if the metabolite record is absent. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/metabolism_first200_with_record_keys/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/metabolism_first200_with_record_keys/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "leelasd_approved_drugs_with_indications",
+          "uq": "Retrieve approved drugs from ChEMBL together with preferred name, canonical SMILES, max clinical phase, indication heading, and first approval year. Keep only approved drugs with max_phase = 4 and return exactly chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval, ordered by most recent first approval. Return DISTINCT rows only for those requested output columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/leelasd_approved_drugs_with_indications/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/leelasd_approved_drugs_with_indications/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 29285,
+          "actual_rows": 29285,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_herg_ic50_export",
+          "uq": "Retrieve activity_id, assay_chembl_id, standard_relation, standard_value, standard_units, standard_type, and molecule_chembl_id for activities where assay tid is 165 and standard_type is IC50.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/baoilleach_herg_ic50_export/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/baoilleach_herg_ic50_export/run.log",
+          "generated_sql": "SELECT act.activity_id, a.chembl_id AS assay_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.standard_type, m.chembl_id AS molecule_chembl_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN molecule_dictionary m ON act.molregno = m.molregno WHERE a.tid = 165 AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 18588,
+          "actual_rows": 18588,
+          "expected_cols": [
+            "activity_id",
+            "assay_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "standard_type",
+            "molecule_chembl_id"
+          ],
+          "actual_cols": [
+            "activity_id",
+            "assay_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "standard_type",
+            "molecule_chembl_id"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_egfr_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL203 (Epidermal growth factor receptor), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication, and do not substitute assays.assay_tax_id for target_dictionary.tax_id.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_egfr_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_egfr_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL203' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 18633,
+          "actual_rows": 18633,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1217644_exact",
+          "uq": "Retrieve canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, and standard_units for exact-match assay CHEMBL1217644 only. Keep only rows where standard_value is not null, standard_relation is not null, and standard_relation = '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1217644' AND a.standard_value IS NOT NULL AND a.standard_relation IS NOT NULL AND a.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 1,
+          "actual_rows": 1,
+          "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1123890",
+          "uq": "Retrieve all distinct molecules mentioned in document CHEMBL1123890, returning chembl_id, compound_name, and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1123890/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1123890/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary m ON cr.molregno = m.molregno LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123890'",
+          "judge_text": null,
+          "expected_rows": 14,
+          "actual_rows": 14,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_fgfr1_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL3650 (FGFR1 fibroblast growth factor receptor 1), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_fgfr1_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_fgfr1_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 5709,
+          "actual_rows": 5709,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_irak4_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL3778 (IRAK4 interleukin-1 receptor-associated kinase 4), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_irak4_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_irak4_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL3778' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 8569,
+          "actual_rows": 8569,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1133512",
+          "uq": "Retrieve all distinct molecules mentioned in document CHEMBL1133512, returning chembl_id, compound_name, and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1133512/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1133512/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary m ON r.molregno = m.molregno LEFT JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL1133512'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_akt1_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL4282 (RAC-alpha serine/threonine-protein kinase), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_akt1_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_akt1_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL4282' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 5855,
+          "actual_rows": 5855,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4822_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL4822 (Beta-secretase 1) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4822_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4822_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 12677,
+          "actual_rows": 12677,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL653511', expected='CHEMBL1106031'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4040_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL4040 (Mitogen-activated protein kinase 1) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4040_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 6679,
+          "actual_rows": 6679,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL729502', expected='CHEMBL1932853'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl5113_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL5113 (Orexin/Hypocretin receptor type 1) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl5113_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl5113_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 5658,
+          "actual_rows": 5658,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL758902', expected='CHEMBL1099400'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl3885862_exact",
+          "uq": "Retrieve canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units for activity rows in assay CHEMBL3885862 where standard_value is not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL3885862' AND a.standard_value IS NOT NULL AND a.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 94976,
+          "actual_rows": 65916,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=65916, expected=94976",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 0.694028
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1140357",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL1140357.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1140357/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1140357/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary m ON r.molregno = m.molregno JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL1140357'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL187382', expected='CHEMBL185650'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1145073",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL1145073.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1145073/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl1145073/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id, md.pref_name AS compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1145073';",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL126895', expected='CHEMBL125470'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl3886467",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL3886467.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl3886467/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl3886467/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary m ON r.molregno = m.molregno JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL3886467'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL3942172', expected='CHEMBL1085865'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl4433236",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL4433236.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl4433236/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_document_molecules_chembl4433236/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary m ON r.molregno = m.molregno LEFT JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL4433236'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL445813', expected='CHEMBL4434727'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1835_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1835 (Thromboxane-A synthase).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1835' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 961,
+          "actual_rows": 1964,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.367152,
+          "column_recall": 0.285714,
+          "row_ratio": 0.489308
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl234_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL234 (D(3) dopamine receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl234_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl234_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL234' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 471,
+          "actual_rows": 1311,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.315136,
+          "column_recall": 0.285714,
+          "row_ratio": 0.359268
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1944_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1944 (Neprilysin).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1944_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1944_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1944' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 452,
+          "actual_rows": 511,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.525245,
+          "column_recall": 0.285714,
+          "row_ratio": 0.88454
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4128_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4128 (Angiopoietin-1 receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4128_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4128_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_value, act.standard_units, act.standard_relation FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL4128' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1344,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_value",
+            "standard_units",
+            "standard_relation"
+          ],
+          "status": "partial",
+          "score": 0.383333,
+          "column_recall": 0.142857,
+          "row_ratio": 0.744048
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl298_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL298 (Gastrin/cholecystokinin type B receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl298_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL298' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 1464,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.444653,
+          "column_recall": 0.285714,
+          "row_ratio": 0.68306
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl4073_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL4073 (Matrilysin).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4073_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl4073_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_value, act.standard_units, act.standard_relation, act.assay_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE t.chembl_id = 'CHEMBL4073' AND act.standard_type = 'IC50' AND t.organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 497,
+          "actual_rows": 675,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "assay_id"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "assay_id"
+          ],
+          "status": "partial",
+          "score": 0.380233,
+          "column_recall": 0.142857,
+          "row_ratio": 0.736296
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl3070_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL3070 (Intercellular adhesion molecule 1).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl3070_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl3070_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_value, act.standard_units, act.standard_relation, act.activity_comment FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL3070' AND act.standard_type = 'IC50' AND td.organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 183,
+          "actual_rows": 209,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "activity_comment"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.435954,
+          "column_recall": 0.142857,
+          "row_ratio": 0.875598
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1871_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1871 (Androgen receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1871_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl1871_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id AS molecule_chembl_id, t.chembl_id AS target_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary t ON ass.tid = t.tid JOIN molecule_dictionary m ON a.molregno = m.molregno WHERE t.chembl_id = 'CHEMBL1871' AND a.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 4170,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.267352,
+          "column_recall": 0.285714,
+          "row_ratio": 0.239808
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl205_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL205 (Carbonic anhydrase 2).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl205_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl205_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL205' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2141,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.358257,
+          "column_recall": 0.285714,
+          "row_ratio": 0.467071
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2413_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL2413 (C-C chemokine receptor type 1).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl2413_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl2413_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2413' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 955,
+          "actual_rows": 1106,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.516817,
+          "column_recall": 0.285714,
+          "row_ratio": 0.863472
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl249_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL249 (Substance-P receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl249_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/val/web_scrape_hq/chembl_downloader_target_chembl249_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL249' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 3049,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.302619,
+          "column_recall": 0.285714,
+          "row_ratio": 0.327976
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 40,
+      "n_pass": 17,
+      "pass_rate": 0.425,
+      "mean_score": 0.781726,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_single_protein_targets_accession_sequence",
+          "uq": "Retrieve target ChEMBL ID, target name, target type, protein accession, and protein sequence for human single-protein targets only. Keep only targets with target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Return exactly target_chembl_id, target_name, target_type, protein_accession, and protein_sequence.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/human_single_protein_targets_accession_sequence/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/human_single_protein_targets_accession_sequence/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 5820,
+          "actual_rows": 5820,
+          "expected_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "actual_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_count_activities",
+          "uq": "Count the number of activity records.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_count_activities/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_count_activities/run.log",
+          "generated_sql": "SELECT COUNT(*) AS activity_record_count FROM activities;",
+          "judge_text": "{",
+          "expected_rows": 1,
+          "actual_rows": 1,
+          "expected_cols": [
+            "activity_count"
+          ],
+          "actual_cols": [
+            "activity_record_count"
+          ],
+          "missing_cols": [
+            "activity_count"
+          ],
+          "extra_cols": [
+            "activity_record_count"
+          ],
+          "status": "partial",
+          "score": 0.4,
+          "column_recall": 0.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "selective_egfr_over_erbb2_smiles_exact",
+          "uq": "Retrieve compounds selective for target CHEMBL203 (Epidermal growth factor receptor) over target CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Define selectivity exactly as: IC50 < 50 nM against CHEMBL203 and IC50 > 200 nM against CHEMBL1824, using only rows with standard_relation = '=' and standard_units = 'nM'. Return exactly two columns only: compound_chembl_id and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact/run.log",
+          "generated_sql": "WITH potent_egfr AS (",
+          "judge_text": null,
+          "expected_rows": 169,
+          "actual_rows": 169,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "selective_jak2_over_jak1_smiles_exact",
+          "uq": "Retrieve compounds selective for target CHEMBL2971 (Tyrosine-protein kinase JAK2) over target CHEMBL2835 (Tyrosine-protein kinase JAK1). Define selectivity exactly as: IC50 < 50 nM against CHEMBL2971 and IC50 > 200 nM against CHEMBL2835, using only rows with standard_relation = '=' and standard_units = 'nM'. Return each qualifying compound once only, using set semantics over compound identity rather than multiplicative joins between raw activity rows; intersect the JAK2 hit set and the JAK1 hit set, or deduplicate each target-specific hit set before joining. Return exactly two columns only: compound_chembl_id and canonical_smiles. The compound_chembl_id column must be the public ChEMBL compound identifier from molecule_dictionary.chembl_id, not the internal molregno numeric key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/run.log",
+          "generated_sql": "WITH jak2_hits AS (",
+          "judge_text": null,
+          "expected_rows": 192,
+          "actual_rows": 192,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_dpp4_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL284 (Dipeptidyl peptidase 4). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/human_dpp4_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/human_dpp4_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL284' AND ass.assay_organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 4293,
+          "actual_rows": 4293,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "target_ic50_with_pubmed_or_doi_dpp4",
+          "uq": "Retrieve IC50 activities in nM against target CHEMBL284 (Dipeptidyl peptidase 4) together with canonical SMILES, compound ChEMBL ID, compound key, PubMed ID or DOI, assay description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target ChEMBL ID, target name, and target organism. Keep only rows with target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', non-null canonical_smiles, and at least one of pubmed_id or doi. For pubmed_id_or_doi, prefer the PubMed ID when both pubmed_id and doi are present; otherwise use the DOI. Join docs from activities.doc_id = docs.doc_id, and left join compound_records from activities.record_id = compound_records.record_id only to obtain compound_key. The final SELECT must be DISTINCT across exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism; do not emit duplicate projected rows from many-to-many joins.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 4992,
+          "actual_rows": 4992,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "tofacitinib_jak2_ic50_salts",
+          "uq": "Retrieve activity details for compound CHEMBL221959 (TOFACITINIB) and all its salts which have an IC50 bioactivity value in nM against target CHEMBL2971 (Tyrosine-protein kinase JAK2). Use molecule_hierarchy parent mapping from CHEMBL221959 to include the parent compound and all related salts. Match the FAQ salts join semantics exactly: first filter the compound set by molecule_dictionary.chembl_id for the parent and salts, then join molecule_dictionary to compound_records on molregno, join compound_records.record_id to activities.record_id, and join docs through compound_records.doc_id. Do not use activities.molregno as the activity join key and do not use assays.doc_id for the publication join. Return exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Do not limit the number of rows.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/tofacitinib_jak2_ic50_salts/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/tofacitinib_jak2_ic50_salts/run.log",
+          "generated_sql": "WITH related_chembl_ids AS (",
+          "judge_text": null,
+          "expected_rows": 111,
+          "actual_rows": 111,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_pde5_single_protein_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for compounds with non-null pchembl_value against target CHEMBL1827 (cGMP-specific 3',5'-cyclic phosphodiesterase), restricting the target to SINGLE PROTEIN.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_pde5_single_protein_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_pde5_single_protein_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 2550,
+          "actual_rows": 2550,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_dpp4_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL284 (Dipeptidyl peptidase 4), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication, do not substitute assays.assay_tax_id for target_dictionary.tax_id, and keep compound_structures as an INNER JOIN so canonical_smiles is required.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_dpp4_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_dpp4_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL284' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 4640,
+          "actual_rows": 4640,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_kit_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL1936 (Mast/stem cell growth factor receptor Kit), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_kit_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_kit_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL1936' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 3277,
+          "actual_rows": 3277,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_met_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL3717 (Hepatocyte growth factor receptor), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_met_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_met_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL3717' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 6647,
+          "actual_rows": 6647,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl647319_exact",
+          "uq": "Retrieve canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, and standard_units for exact-match assay CHEMBL647319 only. Keep only rows where standard_value is not null, standard_relation is not null, and standard_relation = '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl647319_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl647319_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary m ON act.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL647319' AND act.standard_value IS NOT NULL AND act.standard_relation IS NOT NULL AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 13,
+          "actual_rows": 13,
+          "expected_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1123873",
+          "uq": "Retrieve all distinct molecules mentioned in document CHEMBL1123873, returning chembl_id, compound_name, and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary m ON cr.molregno = m.molregno LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123873';",
+          "judge_text": null,
+          "expected_rows": 30,
+          "actual_rows": 30,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_rock2_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL2973 (ROCK2 Rho-associated coiled-coil containing protein kinase 2), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_rock2_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_rock2_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL2973' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606 AND activities.standard_relation = '=' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 5785,
+          "actual_rows": 5785,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_mapk1_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL4040 (MAPK1 mitogen-activated protein kinase 1), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_mapk1_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_mapk1_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 6679,
+          "actual_rows": 6679,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl1794523_exact",
+          "uq": "Retrieve canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, and standard_units for exact-match assay CHEMBL1794523 only. Keep only rows where standard_value is not null, standard_relation is not null, and standard_relation = '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl1794523_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl1794523_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL1794523' AND a.standard_value IS NOT NULL AND a.standard_relation IS NOT NULL AND a.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 478,
+          "actual_rows": 478,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "chembl_id"
+          ],
+          "extra_cols": [
+            "molecule_chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl3705858_exact",
+          "uq": "Retrieve canonical_smiles, molecule_chembl_id, standard_type, standard_relation, standard_value, and standard_units for exact-match assay CHEMBL3705858 only. Keep only rows where standard_value is not null, standard_relation is not null, and standard_relation = '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM assays assy JOIN activities a ON assy.assay_id = a.assay_id JOIN molecule_dictionary m ON a.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE assy.chembl_id = 'CHEMBL3705858' AND a.standard_value IS NOT NULL AND a.standard_relation IS NOT NULL AND a.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 490,
+          "actual_rows": 490,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "chembl_id"
+          ],
+          "extra_cols": [
+            "molecule_chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.9,
+          "column_recall": 0.833333,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1126796",
+          "uq": "Retrieve all distinct molecules mentioned in document CHEMBL1126796, returning chembl_id, compound_name, and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1126796/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1126796/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary m ON r.molregno = m.molregno LEFT JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL1126796';",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1134488",
+          "uq": "Retrieve all distinct molecules mentioned in document CHEMBL1134488, returning chembl_id, compound_name, and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1134488/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1134488/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id, r.compound_name, s.canonical_smiles FROM molecule_dictionary m JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id LEFT JOIN compound_structures s ON m.molregno = s.molregno WHERE d.chembl_id = 'CHEMBL1134488'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_scn9a_ic50_human_pchembl",
+          "uq": "Retrieve assay ChEMBL ID, target_type, target_dictionary.tax_id as tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for activity rows with non-null pchembl_value against target CHEMBL4296 (Sodium channel protein type 9 subunit alpha), restricting to target_type SINGLE PROTEIN, target_dictionary.tax_id 9606, standard_relation '=', and standard_type IC50. Preserve activity rows exactly as in the source query: do not add DISTINCT or any deduplication.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_scn9a_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_scn9a_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 9643,
+          "actual_rows": 9643,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2971_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL2971 (Tyrosine-protein kinase JAK2) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl2971_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl2971_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT a.chembl_id AS assay_chembl_id, t.target_type, t.tax_id, cs.canonical_smiles, m.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid JOIN molecule_dictionary m ON act.molregno = m.molregno JOIN compound_structures cs ON m.molregno = cs.molregno WHERE t.chembl_id = 'CHEMBL2971' AND act.standard_type = 'IC50' AND act.pchembl_value IS NOT NULL AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 14071,
+          "actual_rows": 13930,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=13930, expected=14071",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 0.989979
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl5251_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL5251 (Tyrosine-protein kinase BTK) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl5251_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl5251_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 16536,
+          "actual_rows": 16536,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL648220', expected='CHEMBL1109423'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl325_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL325 (Histone deacetylase 1) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl325_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl325_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 9892,
+          "actual_rows": 9892,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL701994', expected='CHEMBL3706061'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1865_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL1865 (Histone deacetylase 6) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1865_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1865_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 8252,
+          "actual_rows": 8252,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL698975', expected='CHEMBL4808152'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl220_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL220 (Acetylcholinesterase) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl220_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl220_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 6987,
+          "actual_rows": 6987,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL643384', expected='CHEMBL1119333'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl5145_ic50_human_pchembl",
+          "uq": "Retrieve assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value for IC50 activities on human single protein target CHEMBL5145 (Serine/threonine-protein kinase B-raf) with pchembl_value not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl5145_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl5145_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 9082,
+          "actual_rows": 9082,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'assay_chembl_id' at row 0: actual='CHEMBL869911', expected='CHEMBL1220001'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_assay_chembl4689846_exact",
+          "uq": "Retrieve canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, and standard_units for activity rows in assay CHEMBL4689846 where standard_value is not null and standard_relation '='.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl4689846_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_assay_chembl4689846_exact/run.log",
+          "generated_sql": "SELECT DISTINCT cs.canonical_smiles, md.chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM assays a JOIN activities act ON a.assay_id = act.assay_id JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE a.chembl_id = 'CHEMBL4689846' AND act.standard_value IS NOT NULL AND act.standard_relation = '='",
+          "judge_text": null,
+          "expected_rows": 215965,
+          "actual_rows": 107452,
+          "expected_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=107452, expected=215965",
+          "status": "partial",
+          "score": 0.799017,
+          "column_recall": 1.0,
+          "row_ratio": 0.497544
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1139796",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL1139796.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1139796/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1139796/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1139796'",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL401642', expected='CHEMBL245997'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl1240317",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL1240317.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1240317/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl1240317/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1240317';",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL492008', expected='CHEMBL1240552'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_document_molecules_chembl4420072",
+          "uq": "Retrieve distinct chembl_id, compound_name, and canonical_smiles for molecules mentioned in document CHEMBL4420072.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl4420072/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_document_molecules_chembl4420072/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 100,
+          "actual_rows": 100,
+          "expected_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "compound_name",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'chembl_id' at row 0: actual='CHEMBL4580977', expected='CHEMBL1087322'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl3921_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL3921 (Heparanase).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl3921_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl3921_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL3921' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 460,
+          "actual_rows": 482,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.553171,
+          "column_recall": 0.285714,
+          "row_ratio": 0.954357
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl3356_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL3356 (Cytochrome P450 1A2).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl3356_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl3356_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_value, act.standard_units, act.standard_relation, act.assay_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL3356' AND act.standard_type = 'IC50' AND td.organism = 'Homo sapiens'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 5656,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "assay_id"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_value",
+            "standard_units",
+            "standard_relation",
+            "assay_id"
+          ],
+          "status": "partial",
+          "score": 0.156436,
+          "column_recall": 0.142857,
+          "row_ratio": 0.176803
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl217_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL217 (D(2) dopamine receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl217_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl217_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL217' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2363,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.340705,
+          "column_recall": 0.285714,
+          "row_ratio": 0.423191
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1902_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1902 (Peptidyl-prolyl cis-trans isomerase FKBP1A).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1902_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1902' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 222,
+          "actual_rows": 235,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.549301,
+          "column_recall": 0.285714,
+          "row_ratio": 0.944681
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl1801_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL1801 (Plasminogen).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1801_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl1801_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL1801' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 453,
+          "actual_rows": 754,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.411747,
+          "column_recall": 0.285714,
+          "row_ratio": 0.600796
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl2061_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL2061 (Retinoic acid receptor RXR-alpha).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl2061_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl2061_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL2061' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 869,
+          "actual_rows": 921,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.548844,
+          "column_recall": 0.285714,
+          "row_ratio": 0.94354
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl252_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL252 (Endothelin-1 receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl252_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT m.chembl_id AS molecule_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, a.chembl_id AS assay_chembl_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary t ON a.tid = t.tid JOIN molecule_dictionary m ON act.molregno = m.molregno WHERE t.chembl_id = 'CHEMBL252' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 2569,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "assay_chembl_id"
+          ],
+          "missing_cols": [
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "status": "partial",
+          "score": 0.327131,
+          "column_recall": 0.285714,
+          "row_ratio": 0.389257
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl233_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL233 (Mu-type opioid receptor).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl233_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, td.chembl_id AS target_chembl_id, act.standard_type, act.standard_relation, act.standard_value, act.standard_units FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL233' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 3162,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.297931,
+          "column_recall": 0.285714,
+          "row_ratio": 0.316256
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl332_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL332 (Interstitial collagenase).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl332_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl332_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, act.standard_relation, act.standard_value, act.standard_units, act.assay_id, act.doc_id FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL332' AND act.standard_type = 'IC50'",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 4250,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "assay_id",
+            "doc_id"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "assay_id",
+            "doc_id"
+          ],
+          "status": "partial",
+          "score": 0.179832,
+          "column_recall": 0.142857,
+          "row_ratio": 0.235294
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_chembl333_ic50_human_pchembl",
+          "uq": "IC50 activities for human target CHEMBL333 (72 kDa type IV collagenase).",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl333_ic50_human_pchembl/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/test/web_scrape_hq/chembl_downloader_target_chembl333_ic50_human_pchembl/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 1000,
+          "actual_rows": 4790,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "molecule_chembl_id",
+            "target_chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "target_chembl_id",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "status": "partial",
+          "score": 0.254936,
+          "column_recall": 0.285714,
+          "row_ratio": 0.208768
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 91,
+    "n_pass": 31,
+    "pass_rate": 0.340659,
+    "mean_score": 0.699842
+  }
+}

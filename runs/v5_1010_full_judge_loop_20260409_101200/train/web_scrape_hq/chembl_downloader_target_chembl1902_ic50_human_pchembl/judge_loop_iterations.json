@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows from the activities table that meet the following criteria: 1) The activity is linked to a target with the ChEMBL ID 'CHEMBL1902' (Peptidyl-prolyl cis-trans isomerase FKBP1A). 2) The target organism is 'Homo sapiens' (tax_id = 9606). 3) The target type is 'SINGLE PROTEIN'. 4) The standard_type is 'IC50'. 5) A pChEMBL value is present (not NULL). For each qualifying row, return the following information: assay ChEMBL ID, target type, target tax_id, canonical SMILES of the molecule, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID in ascending order, and then by assay ChEMBL ID in ascending order.",
+    "sql": "WITH ranked_activities AS (SELECT assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value, ROW_NUMBER() OVER (ORDER BY molecule_dictionary.chembl_id ASC, assays.chembl_id ASC) AS row_num FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN target_dictionary ON assays.tid = target_dictionary.tid JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE target_dictionary.chembl_id = 'CHEMBL1902' AND target_dictionary.tax_id = 9606 AND target_dictionary.target_type = 'SINGLE PROTEIN' AND activities.standard_type = 'IC50' AND activities.pchembl_value IS NOT NULL) SELECT assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value FROM ranked_activities WHERE row_num <= 1000 ORDER BY molecule_chembl_id ASC, assay_chembl_id ASC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n2 | 0 | 0 | CO-ROUTINE ranked_activities\n5 | 2 | 0 | CO-ROUTINE (subquery-3)\n17 | 5 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n26 | 5 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n33 | 5 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 5 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 5 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n71 | 5 | 0 | USE TEMP B-TREE FOR ORDER BY\n92 | 2 | 130 | SCAN (subquery-3)\n142 | 0 | 130 | SCAN ranked_activities\n157 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 222,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all approved drugs (max_phase = 4 in molecule_dictionary) that are indicated for infection-related diseases. Indication data comes from the drug_indication table. For each qualifying drug, output the following columns: drug ChEMBL ID (chembl_id from molecule_dictionary), drug preferred name (pref_name from molecule_dictionary), canonical SMILES (from compound_structures, using LEFT JOIN to include drugs even if SMILES is missing), and the indication details (mesh_heading and efo_term from drug_indication). Filter drug_indication to only those rows where mesh_heading or efo_term contains 'infection' (case-insensitive) to capture infection-related indications. Join molecule_dictionary with drug_indication on molregno (INNER JOIN to ensure only drugs with an infection indication are included), and with compound_structures on molregno (LEFT JOIN). Return one row per drug-indication combination, meaning a drug may appear multiple times if it has multiple infection-related indications. Do not apply any LIMIT or ordering.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%infection%' OR di.efo_term LIKE '%infection%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1512,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs (max_phase = 4 in molecule_dictionary) that are indicated for any infectious disease. For each qualifying drug, retrieve the drug ChEMBL ID (chembl_id), drug preferred name (pref_name), canonical SMILES (from compound_structures), and the associated indication details (mesh_heading and efo_term from drug_indication). Include all infection-related indications, not only those whose mesh_heading or efo_term literally contain the word 'infection'. Specifically, also include infectious diseases such as Malaria, Tuberculosis, Syphilis, HIV, Hepatitis, and any other condition that falls under infectious diseases. Use a broad filter to capture these. Join molecule_dictionary with drug_indication on molregno (INNER JOIN to ensure only drugs with an infection indication are included), and with compound_structures on molregno (LEFT JOIN to include drugs even if SMILES is missing). Return one row per drug-indication combination, meaning a drug may appear multiple times if it has multiple infection-related indications. Do not apply any LIMIT or ordering.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%infection%' OR di.mesh_heading LIKE '%infectious%' OR di.mesh_heading LIKE '%virus%' OR di.mesh_heading LIKE '%viral%' OR di.mesh_heading LIKE '%bacteria%' OR di.mesh_heading LIKE '%bacterial%' OR di.mesh_heading LIKE '%fungal%' OR di.mesh_heading LIKE '%parasite%' OR di.mesh_heading LIKE '%parasitic%' OR di.mesh_heading LIKE '%malaria%' OR di.mesh_heading LIKE '%tuberculosis%' OR di.mesh_heading LIKE '%syphilis%' OR di.mesh_heading LIKE '%hiv%' OR di.mesh_heading LIKE '%hepatitis%' OR di.efo_term LIKE '%infection%' OR di.efo_term LIKE '%infectious%' OR di.efo_term LIKE '%virus%' OR di.efo_term LIKE '%viral%' OR di.efo_term LIKE '%bacteria%' OR di.efo_term LIKE '%bacterial%' OR di.efo_term LIKE '%fungal%' OR di.efo_term LIKE '%parasite%' OR di.efo_term LIKE '%parasitic%' OR di.efo_term LIKE '%malaria%' OR di.efo_term LIKE '%tuberculosis%' OR di.efo_term LIKE '%syphilis%' OR di.efo_term LIKE '%hiv%' OR di.efo_term LIKE '%hepatitis%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n92 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n101 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 2137,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.65,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "List all approved drugs (max_phase = 4 in molecule_dictionary) that are indicated for infectious diseases. For each qualifying drug, retrieve: drug ChEMBL ID (chembl_id from molecule_dictionary), drug preferred name (pref_name from molecule_dictionary), canonical SMILES (from compound_structures, include even if missing using LEFT JOIN), and indication details (mesh_heading and efo_term from drug_indication). Join molecule_dictionary with drug_indication on molregno (INNER JOIN), and with compound_structures on molregno (LEFT JOIN). Filter drug_indication to include rows where the indication is an infectious disease. To capture all infections while avoiding non\u2011infectious conditions, apply the following logic on mesh_heading and efo_term: include rows that contain any of the keywords 'infection', 'infectious', 'virus', 'viral', 'bacteria', 'bacterial', 'fungal', 'parasite', 'parasitic', 'malaria', 'tuberculosis', 'syphilis', 'hiv', 'hepatitis', 'mycoses', 'protozoan', 'helminth', 'antiviral', 'antibacterial', 'antifungal', 'antiparasitic'; but exclude rows where mesh_heading or efo_term contains 'Alcoholic', 'Autoimmune', 'Drug-Induced', 'Lipodystrophy', 'Cirrhosis' (unless the term also includes 'viral'), 'Fatty Liver', 'Non-alcoholic', or other clearly non\u2011infectious modifiers that happen to match the inclusion keywords. This should retrieve approved drugs for all types of infections while omitting non\u2011infectious conditions like Alcoholic Hepatitis, Autoimmune Hepatitis, Drug\u2011Induced Hepatitis, HIV\u2011Associated Lipodystrophy Syndrome, etc. Return one row per drug\u2011indication combination (a drug may appear multiple times if it has multiple infection indications). Do not apply any LIMIT or ordering.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%infection%' OR di.efo_term LIKE '%infection%' OR di.mesh_heading LIKE '%infectious%' OR di.efo_term LIKE '%infectious%' OR di.mesh_heading LIKE '%virus%' OR di.efo_term LIKE '%virus%' OR di.mesh_heading LIKE '%viral%' OR di.efo_term LIKE '%viral%' OR di.mesh_heading LIKE '%bacteria%' OR di.efo_term LIKE '%bacteria%' OR di.mesh_heading LIKE '%bacterial%' OR di.efo_term LIKE '%bacterial%' OR di.mesh_heading LIKE '%fungal%' OR di.efo_term LIKE '%fungal%' OR di.mesh_heading LIKE '%parasite%' OR di.efo_term LIKE '%parasite%' OR di.mesh_heading LIKE '%parasitic%' OR di.efo_term LIKE '%parasitic%' OR di.mesh_heading LIKE '%malaria%' OR di.efo_term LIKE '%malaria%' OR di.mesh_heading LIKE '%tuberculosis%' OR di.efo_term LIKE '%tuberculosis%' OR di.mesh_heading LIKE '%syphilis%' OR di.efo_term LIKE '%syphilis%' OR di.mesh_heading LIKE '%hiv%' OR di.efo_term LIKE '%hiv%' OR di.mesh_heading LIKE '%hepatitis%' OR di.efo_term LIKE '%hepatitis%' OR di.mesh_heading LIKE '%mycoses%' OR di.efo_term LIKE '%mycoses%' OR di.mesh_heading LIKE '%protozoan%' OR di.efo_term LIKE '%protozoan%' OR di.mesh_heading LIKE '%helminth%' OR di.efo_term LIKE '%helminth%' OR di.mesh_heading LIKE '%antiviral%' OR di.efo_term LIKE '%antiviral%' OR di.mesh_heading LIKE '%antibacterial%' OR di.efo_term LIKE '%antibacterial%' OR di.mesh_heading LIKE '%antifungal%' OR di.efo_term LIKE '%antifungal%' OR di.mesh_heading LIKE '%antiparasitic%' OR di.efo_term LIKE '%antiparasitic%' OR di.mesh_heading LIKE '%mycosis%' OR di.efo_term LIKE '%mycosis%' OR di.mesh_heading LIKE '%protozoa%' OR di.efo_term LIKE '%protozoa%' OR di.mesh_heading LIKE '%helminthias%' OR di.efo_term LIKE '%helminthias%') AND NOT ((di.mesh_heading LIKE '%Alcoholic%' OR di.efo_term LIKE '%Alcoholic%') OR (di.mesh_heading LIKE '%Autoimmune%' OR di.efo_term LIKE '%Autoimmune%') OR (di.mesh_heading LIKE '%Drug-Induced%' OR di.efo_term LIKE '%Drug-Induced%') OR (di.mesh_heading LIKE '%Lipodystrophy%' OR di.efo_term LIKE '%Lipodystrophy%') OR (di.mesh_heading LIKE '%Fatty Liver%' OR di.efo_term LIKE '%Fatty Liver%') OR (di.mesh_heading LIKE '%Non-alcoholic%' OR di.efo_term LIKE '%Non-alcoholic%') OR ((di.mesh_heading LIKE '%Cirrhosis%' OR di.efo_term LIKE '%Cirrhosis%') AND (di.mesh_heading NOT LIKE '%viral%' AND di.efo_term NOT LIKE '%viral%')));",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n200 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n209 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 2146,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "List all approved drugs (molecules with max_phase = 4 in molecule_dictionary) that are indicated for any infectious disease. For each qualifying drug, retrieve: the drug's ChEMBL ID (chembl_id from molecule_dictionary), its preferred name (pref_name from molecule_dictionary), its canonical SMILES (from compound_structures, include even if missing using a LEFT JOIN), and the indication details (mesh_heading and efo_term from drug_indication). Join molecule_dictionary with drug_indication on molregno (INNER JOIN) to ensure only drugs with at least one indication are included, and with compound_structures on molregno (LEFT JOIN) to keep drugs even when SMILES is missing. Filter drug_indication to rows where the indication is an infectious disease. To capture infection-related indications while excluding non\u2011infectious conditions, use the following case\u2011insensitive keyword logic on both mesh_heading and efo_term: include a row if either field contains any of the terms 'infection', 'infectious', 'virus', 'viral', 'bacteria', 'bacterial', 'fungal', 'parasite', 'parasitic', 'malaria', 'tuberculosis', 'syphilis', 'hiv', 'hepatitis', 'mycosis', 'mycoses', 'protozoan', 'protozoa', 'helminth', 'antiviral', 'antibacterial', 'antifungal', 'antiparasitic', 'sepsis', or 'pneumonia'. However, exclude rows where either field contains any of the non\u2011infectious modifiers 'Alcoholic', 'Autoimmune', 'Drug\u2011Induced', 'Lipodystrophy', 'Fatty Liver', 'Non\u2011alcoholic', or 'Steatohepatitis'. For rows containing 'Cirrhosis', include them only if the same field also contains 'viral' (otherwise they are non\u2011infectious). This broad inclusion and targeted exclusion should retrieve all common infection indications (Bacterial Infections, HIV, Hepatitis B/C, Malaria, Tuberculosis, Syphilis, etc.) while omitting clearly non\u2011infectious conditions such as Alcoholic Hepatitis, Autoimmune Hepatitis, Drug\u2011Induced Hepatitis, HIV\u2011Associated Lipodystrophy, and Non\u2011alcoholic Fatty Liver. Return one row per drug\u2011indication combination, so a drug may appear multiple times if it has several infection\u2011related indications. Do not apply any LIMIT or ordering.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%infection%' OR di.efo_term LIKE '%infection%' OR di.mesh_heading LIKE '%infectious%' OR di.efo_term LIKE '%infectious%' OR di.mesh_heading LIKE '%virus%' OR di.efo_term LIKE '%virus%' OR di.mesh_heading LIKE '%viral%' OR di.efo_term LIKE '%viral%' OR di.mesh_heading LIKE '%bacteria%' OR di.efo_term LIKE '%bacteria%' OR di.mesh_heading LIKE '%bacterial%' OR di.efo_term LIKE '%bacterial%' OR di.mesh_heading LIKE '%fungal%' OR di.efo_term LIKE '%fungal%' OR di.mesh_heading LIKE '%parasite%' OR di.efo_term LIKE '%parasite%' OR di.mesh_heading LIKE '%parasitic%' OR di.efo_term LIKE '%parasitic%' OR di.mesh_heading LIKE '%malaria%' OR di.efo_term LIKE '%malaria%' OR di.mesh_heading LIKE '%tuberculosis%' OR di.efo_term LIKE '%tuberculosis%' OR di.mesh_heading LIKE '%syphilis%' OR di.efo_term LIKE '%syphilis%' OR di.mesh_heading LIKE '%hiv%' OR di.efo_term LIKE '%hiv%' OR di.mesh_heading LIKE '%hepatitis%' OR di.efo_term LIKE '%hepatitis%' OR di.mesh_heading LIKE '%mycosis%' OR di.efo_term LIKE '%mycosis%' OR di.mesh_heading LIKE '%mycoses%' OR di.efo_term LIKE '%mycoses%' OR di.mesh_heading LIKE '%protozoan%' OR di.efo_term LIKE '%protozoan%' OR di.mesh_heading LIKE '%protozoa%' OR di.efo_term LIKE '%protozoa%' OR di.mesh_heading LIKE '%helminth%' OR di.efo_term LIKE '%helminth%' OR di.mesh_heading LIKE '%antiviral%' OR di.efo_term LIKE '%antiviral%' OR di.mesh_heading LIKE '%antibacterial%' OR di.efo_term LIKE '%antibacterial%' OR di.mesh_heading LIKE '%antifungal%' OR di.efo_term LIKE '%antifungal%' OR di.mesh_heading LIKE '%antiparasitic%' OR di.efo_term LIKE '%antiparasitic%' OR di.mesh_heading LIKE '%sepsis%' OR di.efo_term LIKE '%sepsis%' OR di.mesh_heading LIKE '%pneumonia%' OR di.efo_term LIKE '%pneumonia%') AND NOT (di.mesh_heading LIKE '%Alcoholic%' OR di.efo_term LIKE '%Alcoholic%' OR di.mesh_heading LIKE '%Autoimmune%' OR di.efo_term LIKE '%Autoimmune%' OR di.mesh_heading LIKE '%Drug-Induced%' OR di.efo_term LIKE '%Drug-Induced%' OR di.mesh_heading LIKE '%Lipodystrophy%' OR di.efo_term LIKE '%Lipodystrophy%' OR di.mesh_heading LIKE '%Fatty Liver%' OR di.efo_term LIKE '%Fatty Liver%' OR di.mesh_heading LIKE '%Non-alcoholic%' OR di.efo_term LIKE '%Non-alcoholic%' OR di.mesh_heading LIKE '%Steatohepatitis%' OR di.efo_term LIKE '%Steatohepatitis%' OR ((di.mesh_heading LIKE '%Cirrhosis%' OR di.efo_term LIKE '%Cirrhosis%') AND (di.mesh_heading NOT LIKE '%viral%' AND di.efo_term NOT LIKE '%viral%')));",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n212 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n221 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 2407,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  }
+]

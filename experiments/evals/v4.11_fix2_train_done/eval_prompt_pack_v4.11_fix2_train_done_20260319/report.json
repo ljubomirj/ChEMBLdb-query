@@ -1,0 +1,109 @@
+{
+  "ts_utc": "2026-03-19T17:54:53Z",
+  "eval_label": "eval_prompt_pack_v4.11_fix2_train_done_20260319",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.11.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.5_fix2_train_done.json",
+  "reuse_existing": true,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [],
+  "splits": {
+    "train": {
+      "n_cases": 2,
+      "n_pass": 1,
+      "pass_rate": 0.5,
+      "mean_score": 0.5,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "metabolism_first200_parent_names",
+          "uq": "Retrieve the first 200 metabolism rows with canonical SMILES, substrate compound name, parent compound name, metabolic conversion, and pathway key. Use the substrate join path metabolism.substrate_record_id -> compound_records.record_id -> compound_structures.molregno. The substrate_compound_name must come from compound_records.compound_name. The parent_compound_name must come from molecule_dictionary.pref_name reached through molecule_hierarchy.parent_molregno. Do not substitute molecule_dictionary.pref_name for substrate_compound_name. Do not deduplicate rows; keep the first 200 rows from that join result. Return exactly canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape/metabolism_first200_parent_names/result-last.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape/metabolism_first200_parent_names/run-last.log",
+          "generated_sql": "SELECT cs.canonical_smiles, cr_sub.compound_name AS substrate_compound_name, md_par.pref_name AS parent_compound_name, m.met_conversion, m.pathway_key FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs ON cr_sub.molregno = cs.molregno JOIN molecule_hierarchy mh ON cr_sub.molregno = mh.molregno JOIN molecule_dictionary md_par ON mh.parent_molregno = md_par.molregno LIMIT 200;",
+          "judge_text": "{\"analysis\": \"The query correctly retrieves exactly 200 rows with the five requested columns: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, and pathway_key. The joins follow the specified path: metabolism \u2192 compound_records (via substrate_record_id) \u2192 compound_structures (via molregno) \u2192 molecule_hierarchy (via molregno) \u2192 molecule_dictionary (via parent_molregno). Sample rows confirm correct behavior: known drugs like Epirubicin map to parent EPIRUBICIN, Aliskiren to ALISKIREN, and metabolites without parent entries correctly show NULL for parent_compound_name. The LIMIT 200 is explicitly requested by the user ('first 200 rows'), so it is appropriate. The result is truthful and complete.\", \"score\": 1.0, \"decision\": \"YES\"}",
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "substrate_compound_name",
+            "parent_compound_name",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate_compound_name",
+            "parent_compound_name",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "chembl_downloader_target_tyk2_ic50_human_pchembl",
+          "uq": "Show only IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL3553 (TYK2 tyrosine kinase 2). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only activity rows with a non-null pChEMBL value, exact standard relation '=', tax_id 9606, and standard_type exactly 'IC50'. Exclude Ki, Kd, EC50, and all other activity types. Keep the activity rows as they are rather than deduplicating them, and order the rows by molecule ChEMBL ID and assay ChEMBL ID.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape11/chembl_downloader_target_tyk2_ic50_human_pchembl/result-last.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/tests/fixtures/web_scrape11/chembl_downloader_target_tyk2_ic50_human_pchembl/run-last.log",
+          "generated_sql": null,
+          "judge_text": null,
+          "expected_rows": 5419,
+          "actual_rows": 0,
+          "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "actual_cols": [
+            "# placeholder - will be overwritten by actual llm run"
+          ],
+          "missing_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+          ],
+          "extra_cols": [
+            "# placeholder - will be overwritten by actual llm run"
+          ],
+          "status": "fail",
+          "score": 0.0,
+          "column_recall": 0.0,
+          "row_ratio": 0.0
+        }
+      ]
+    },
+    "val": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 2,
+    "n_pass": 1,
+    "pass_rate": 0.5,
+    "mean_score": 0.5
+  }
+}

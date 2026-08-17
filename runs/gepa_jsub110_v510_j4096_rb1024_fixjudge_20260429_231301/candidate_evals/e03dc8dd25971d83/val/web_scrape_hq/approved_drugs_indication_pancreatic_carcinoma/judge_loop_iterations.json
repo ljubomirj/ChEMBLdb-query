@@ -1,0 +1,46 @@
+[
+  {
+    "n": 1,
+    "up": "Select: drug ChEMBL ID, drug name, indication MeSH heading, indication MeSH ID, EFO term, EFO ID, maximum phase for indication. Source: molecule_dictionary, drug_indication. Join: molecule_dictionary to drug_indication on molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_heading = 'Pancreatic Carcinoma'.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, di.mesh_heading AS indication_mesh_heading, di.mesh_id AS indication_mesh_id, di.efo_term, di.efo_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_heading = 'Pancreatic Carcinoma'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "indication_mesh_heading",
+      "indication_mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query returned 0 rows because the filter `di.mesh_heading = 'Pancreatic Carcinoma'` is too strict. The MeSH term in ChEMBL is likely 'Pancreatic Neoplasms' (D010190) rather than 'Pancreatic Carcinoma'. The user asked for 'approved drugs', which is correctly interpreted as `max_phase = 4`. The join between `molecule_dictionary` and `drug_indication` is correct. To fix this, we should filter by the MeSH ID 'D010190' (Pancreatic Neoplasms) or use a LIKE operator on the mesh_heading to capture variations.\",\n  \"score\": 0.4,\n  \"decision\": \"CONTINUE\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Select: drug ChEMBL ID, drug name, indication MeSH heading, indication MeSH ID, EFO term, EFO ID, maximum phase for indication. Source: molecule_dictionary, drug_indication. Join: molecule_dictionary to drug_indication on molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_id = 'D010190'.",
+    "sql": "SELECT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, di.mesh_heading AS indication_mesh_heading, di.mesh_id AS indication_mesh_id, di.efo_term, di.efo_id, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.mesh_id = 'D010190'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 257,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "indication_mesh_heading",
+      "indication_mesh_id",
+      "efo_term",
+      "efo_id",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves drugs indicated for pancreatic carcinoma using the MeSH ID 'D010190'. The result set includes 257 rows with relevant columns: drug ChEMBL ID, drug name, MeSH heading, MeSH ID, EFO term, EFO ID, and maximum phase for indication. The data shows various drugs with different phases (0.5 to 4.0), including approved drugs (phase 4) like Gemcitabine, Erlotinib, Olaparib, and others. The query correctly joins molecule_dictionary and drug_indication tables and filters by max_phase = 4 and mesh_id = 'D010190'. The sample rows confirm the data is relevant and correctly formatted.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

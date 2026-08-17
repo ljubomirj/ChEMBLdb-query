@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_gonadotropin_releasing_hormone_receptor.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_gonadotropin_releasing_hormone_receptor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity rows for compounds tested against human GnRH receptor (CHEMBL1855). Join molecule_dictionary to activities on molregno, assays on assay_id, target_dictionary on tid, compound_records on record_id, docs on doc_id, and compound_structures on molregno (INNER JOIN). Filter target chembl_id to CHEMBL1855 and standard_type to IC50. Require canonical_smiles IS NOT NULL and (pubmed_id IS NOT NULL OR doi IS NOT NULL). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep all activity rows (no DISTINCT). Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity rows for compounds tested against human GnRH receptor (CHEMBL1855). Join molecule_dictionary to activities on molregno, assays on assay_id, target_dictionary on tid, compound_records on record_id, docs on doc_id, and compound_structures on molregno (INNER JOIN). Filter target chembl_id to CHEMBL1855 and standard_type to IC50. Require canonical_smiles IS NOT NULL and (pubmed_id IS NOT NULL OR doi IS NOT NULL). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep all activity rows (no DISTINCT). Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

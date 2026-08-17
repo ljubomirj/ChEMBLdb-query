@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl5728082.json",
+  "case_id": "chembl_downloader_document_molecules_chembl5728082",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request: it returns distinct compounds from document CHEMBL5728082 that have a canonical SMILES, providing ChEMBL ID, compound name, and canonical SMILES. The join path (molecule_dictionary -> compound_records -> docs) and the INNER JOIN on compound_structures enforce the SMILES requirement. Sorting by the requested columns is present. The result set (701 rows) is plausible for a document listing many related analogs. No SQL errors or schema violations.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it returns distinct compounds from document CHEMBL5728082 that have a canonical SMILES, providing ChEMBL ID, compound name, and canonical SMILES. The join path (molecule_dictionary -> compound_records -> docs) and the INNER JOIN on compound_structures enforce the SMILES requirement. Sorting by the requested columns is present. The result set (701 rows) is plausible for a document listing many related analogs. No SQL errors or schema violations.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5728082/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5728082/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_document_molecules_chembl5728082/pf_judge.generated_artifact_record.json"
+  }
+}

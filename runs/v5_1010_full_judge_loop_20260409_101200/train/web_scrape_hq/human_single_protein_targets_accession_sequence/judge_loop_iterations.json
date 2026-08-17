@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve target ChEMBL ID, target name, target type, protein accession, and protein sequence for human single-protein targets only. Keep only targets with target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Return exactly target_chembl_id, target_name, target_type, protein_accession, and protein_sequence.",
+    "sql": "SELECT\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.target_type,\n  cs.accession AS protein_accession,\n  cs.sequence AS protein_sequence\nFROM target_dictionary td\nJOIN target_components tc ON td.tid = tc.tid\nJOIN component_sequences cs ON tc.component_id = cs.component_id\nWHERE\n  td.target_type = 'SINGLE PROTEIN'\n  AND td.organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 57 | SEARCH td USING INDEX idx_td_org (organism=?)\n13 | 0 | 42 | SEARCH tc USING COVERING INDEX sqlite_autoindex_target_components_2 (tid=?)\n18 | 0 | 42 | SEARCH cs USING INDEX sqlite_autoindex_component_sequences_1 (component_id=?)",
+    "res_row_count": 5820,
+    "res_columns": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

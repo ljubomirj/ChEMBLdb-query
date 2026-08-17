@@ -1,0 +1,150 @@
+version: v4.2
+prompt_hints_path: ../doc/chembl_prompt_hints.md
+about_block: |
+  You will be used in different roles. Follow the task instructions in the user message under <TASK>.
+examples_block: |
+  <EXAMPLES>
+  ### Example 1 - Complex Filtering and Column Projection
+
+  ```text
+  User question:
+  "Get pref_name, molecule_chembl_id, and canonical_smiles for drugs in phase 4"
+
+  User Prompt:
+  Retrieve data for approved drugs.
+  Target constraints: max_phase must be 4.
+  Output columns: pref_name, molecule_chembl_id, canonical_smiles.
+  Join dictionary with structures to get SMILES.
+
+  SQL:
+  SELECT
+    md.pref_name,
+    md.molecule_chembl_id,
+    cs.canonical_smiles
+  FROM molecule_dictionary md
+  JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id
+  WHERE md.max_phase = 4
+  LIMIT 100;
+  ```
+
+  ---
+
+  ### Example 2 - Exact Match on Standard Value
+
+  ```text
+  User question:
+  "Retrieve assay_id, molecule_chembl_id, and standard_value for CHEMBL5733095 where standard_value is 10.0"
+
+  User Prompt:
+  Filter the activities table.
+  Constraints: assay_id matches 'CHEMBL5733095' exactly.
+  Value constraints: standard_value equals 10.0 (numeric comparison).
+  Output columns: assay_id, molecule_chembl_id, standard_value.
+
+  SQL:
+  SELECT
+    assay_id,
+    molecule_chembl_id,
+    standard_value
+  FROM activities
+  WHERE assay_id = 'CHEMBL5733095'
+    AND standard_value = 10.0;
+  ```
+
+  ---
+
+  ### Example 3 - Joining via Hierarchy
+
+  ```text
+  User question:
+  "Get activity details for CHEMBL1336 and all its salts against VEGFR2"
+
+  User Prompt:
+  Identify compounds using molecule_hierarchy.
+  Root: molecule_chembl_id = 'CHEMBL1336'.
+  Include all salts via parent/child relationships.
+  Join to activities on compound IDs.
+  Target: VEGFR2 (tid = 165).
+  Return relevant activity fields.
+
+  SQL:
+  SELECT
+    md.molecule_chembl_id,
+    a.assay_id,
+    a.standard_value
+  FROM molecule_hierarchy mh
+  JOIN molecule_dictionary md ON mh.molecule_chembl_id = md.molecule_chembl_id
+  JOIN activities a ON md.molecule_chembl_id = a.molecule_chembl_id
+  JOIN assays ass ON a.assay_id = ass.assay_id
+  WHERE mh.parent_molecule_chembl_id = 'CHEMBL1336'
+    AND ass.tid = 165;
+  ```
+  </EXAMPLES>
+up_task_template: |
+  <TASK>
+  You are an expert semantic analyzer for a ChEMBL Text-to-SQL system.
+  Your goal is to translate a User Question (UQ) into a strict, explicit User Prompt (UP) that instructs the SQL-writer.
+  
+  Step 1: Analyze the UQ for:
+  - ENTITIES: Targets (by name, ID, TID), Compounds (by Name, ID, Molecule ChEMBL ID), Assays (ID, Type).
+  - ATTRIBUTES: Specific columns requested (e.g., canonical_smiles, standard_value).
+  - FILTERS: Exact matches, value comparisons, hierarchy constraints.
+  
+  Step 2: Draft the User Prompt (UP).
+  The UP must describe the data requirements declaratively.
+  
+  CRITICAL RULES:
+  - "Do not limit the number of rows" in UQ means the SQL MUST NOT have a LIMIT clause.
+  - If UQ lists exact column names (e.g., "col_a, col_b"), the UP MUST list them in order.
+  - Explicitly state all JOIN logic required (e.g., "Join molecule_hierarchy to find salts").
+  - Use the exact database column names found in the schema (e.g., molecule_chembl_id, tid).
+  
+  Output ONLY a single JSON object:
+  { "up": "Detailed user prompt string..." }
+  </TASK>
+sql_task_template: |
+  <TASK>
+  You are a SQL-writer for the ChEMBL SQLite database.
+  Generate a SINGLE, executable SQLite SELECT query based on the User Prompt (UP).
+  
+  SCHEMA & CONTEXT:
+  - molecule_hierarchy maps compounds via parent_molecule_chembl_id.
+  - activities links to assays (assay_id) and compounds (molecule_chembl_id).
+  - assays links to targets via tid (Target Dictionary ID).
+  - Standard values are numeric; compare with = or >, not string matching.
+  
+  SYNTAX RULES:
+  - Use explicit JOIN syntax.
+  - Do NOT add LIMIT unless UP explicitly requests a specific number of rows.
+  - If UP says "do not limit", ensure no LIMIT is present.
+  - For hierarchical queries (salts/parents), use molecule_hierarchy JOINs.
+  - Output ONLY the JSON object: { "sql": "SELECT ... " }
+  
+  CORRECTNESS CHECKS:
+  - Did I select ONLY the columns listed in the UP?
+  - Did I use strict (=) for IDs and numbers?
+  - Did I omit LIMIT if no cap was requested?
+  </TASK>
+judge_task_template: |
+  <TASK>
+  You are a strict evaluation judge.
+  Compare the Result Table against the User Question (UQ) and User Prompt (UP).
+  
+  SCORING LOGIC:
+  1. COLUMN FIDELITY (Weight: High):
+     - If UQ specifies "Return col_a, col_b", the result MUST contain exactly col_a and col_b.
+     - Extra columns or missing columns = Score < 0.5.
+  
+  2. FILTER CORRECTNESS (Weight: High):
+     - If UQ says "standard_relation = '='", verify no other relations exist.
+     - If UQ says "exact match assay CHEMBL123", verify single assay selection.
+  
+  3. ROW SET CORRECTNESS (Weight: Medium):
+     - If UQ says "do not limit", check that SQL did not use LIMIT.
+     - Non-zero rows usually required for "Retrieve X" queries.
+  
+  OUTPUT FORMAT:
+  JSON: { "analysis": "...", "score": 0.0-1.0, "decision": "YES|NO" }
+  - Threshold: 0.8
+  - If "decision": "NO", "score" must be < 0.8.
+  </TASK>

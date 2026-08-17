@@ -1,0 +1,28 @@
+SELECT DISTINCT a.chembl_id AS assay_chembl_id,
+       td.target_type,
+       td.tax_id,
+       cs.canonical_smiles,
+       md.chembl_id AS molecule_chembl_id,
+       a.standard_type,
+       a.pchembl_value
+FROM activities a
+JOIN assays a2 ON a.assay_id = a2.assay_id
+JOIN target_dictionary td ON a2.tid = td.tid
+JOIN molecule_dictionary md ON a.molregno = md.molregno
+JOIN compound_structures cs ON md.molregno = cs.molregno
+WHERE a.standard_relation = '='
+  AND a.pchembl_value IS NOT NULL
+  AND td.chembl_id = 'CHEMBL1938211'
+  AND td.target_type = 'SINGLE PROTEIN'
+  AND a2.assay_organism = 'Homo sapiens'
+  AND a.type = 'IC50'
+  AND a.activity_comment IS NOT NULL
+  AND a.activity_comment != ''
+  AND a.activity_comment != 'Potential duplicate'
+  AND a.standard_type = 'IC50'
+  AND a.standard_units = 'nM'
+  AND a.standard_value IS NOT NULL
+  AND a.value IS NOT NULL
+  AND a.units = 'nM'
+LIMIT 1000
+ORDER BY molecule_chembl_id, assay_chembl_id;

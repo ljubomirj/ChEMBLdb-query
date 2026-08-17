@@ -1,0 +1,1 @@
+SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_name, md.max_phase, md.molecule_type, cs.canonical_smiles FROM docs d JOIN compound_records r ON d.doc_id = r.doc_id JOIN molecule_dictionary md ON r.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL4364343' ORDER BY md.chembl_id

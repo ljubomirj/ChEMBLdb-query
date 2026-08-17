@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123558.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123558",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT m.chembl_id AS molecule_chembl_id, m.pref_name AS molecule_name, cs.canonical_smiles AS canonical_smiles FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities act ON cr.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON m.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123558' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id, molecule_name, canonical_smiles;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT m.chembl_id AS molecule_chembl_id, m.pref_name AS molecule_name, cs.canonical_smiles AS canonical_smiles FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities act ON cr.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_structures cs ON m.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1123558' AND cs.canonical_smiles IS NOT NULL ORDER BY molecule_chembl_id, molecule_name, canonical_smiles;"
+    }
+  }
+}

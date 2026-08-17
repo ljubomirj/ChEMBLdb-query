@@ -1,0 +1,16 @@
+1. Objective: Retrieve detailed bioactivity records for SORAFENIB (CHEMBL1336) and all its related salts, specifically filtering for IC50 measurements in nM against VEGFR2 (CHEMBL279). Include the parent compound and all child salts via the molecule hierarchy mapping.
+
+2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+3. Source: molecule_dictionary (parent), molecule_hierarchy, molecule_dictionary (child), compound_structures, compound_records, activities, assays, target_dictionary, docs.
+
+4. Logic:
+   - Filter parent molecule by chembl_id = 'CHEMBL1336'.
+   - Join molecule_hierarchy on parent_molregno to retrieve all child salts.
+   - Union the parent and child molregnos to form the compound set.
+   - Join compound_structures on molregno to obtain canonical_smiles.
+   - Join compound_records on molregno and docs on doc_id to retrieve provenance (compound_key, pubmed_id_or_doi).
+   - Join activities on record_id and assays on assay_id to retrieve bioactivity data.
+   - Filter activities where standard_type = 'IC50' AND standard_units = 'nM'.
+   - Join target_dictionary on tid to filter by target chembl_id = 'CHEMBL279'.
+   - Order results by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.

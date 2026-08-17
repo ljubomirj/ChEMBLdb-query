@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all activity records from the database for assay CHEMBL1613992. Return the exact activity values including the standard relation, standard value, and standard units. Include the compound ChEMBL ID and molecule type for each record.",
+    "sql": "SELECT\n  md.chembl_id AS molecule_chembl_id,\n  md.molecule_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units\nFROM activities a\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nWHERE ass.chembl_id = 'CHEMBL1613992'\n  AND a.standard_relation IS NOT NULL\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n22 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 10385,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

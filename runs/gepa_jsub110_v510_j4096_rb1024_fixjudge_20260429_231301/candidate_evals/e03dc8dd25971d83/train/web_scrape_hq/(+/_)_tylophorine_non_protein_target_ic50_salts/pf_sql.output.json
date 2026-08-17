@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_j4096_rb1024_fixjudge_20260429_231301/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/(+/_)_tylophorine_non_protein_target_ic50_salts.json",
+  "case_id": "(+/_)_tylophorine_non_protein_target_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT DISTINCT parent.chembl_id AS compound_chembl_id, parent.pref_name AS compound_name, cs.canonical_smiles, act.standard_value, act.standard_units, d.pubmed_id, d.doi FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno JOIN compound_records cr ON cr.molregno = child.molregno JOIN activities act ON act.record_id = cr.record_id JOIN assays a ON a.assay_id = act.assay_id JOIN target_dictionary td ON td.tid = a.tid JOIN docs d ON d.doc_id = act.doc_id LEFT JOIN compound_structures cs ON cs.molregno = child.molregno WHERE parent.chembl_id = 'CHEMBL493620' AND td.chembl_id = 'CHEMBL3879801' AND act.standard_type = 'IC50'"
+}

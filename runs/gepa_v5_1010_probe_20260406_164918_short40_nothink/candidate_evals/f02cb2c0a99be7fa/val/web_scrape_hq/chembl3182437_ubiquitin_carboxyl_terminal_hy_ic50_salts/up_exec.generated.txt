@@ -1,0 +1,14 @@
+Select distinct compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary m_parent on m_parent.chembl_id = 'CHEMBL3182437'
+Join molecule_hierarchy mh on mh.parent_molregno = m_parent.molregno
+Join molecule_dictionary m_child on m_child.molregno = mh.molregno
+Left Join compound_structures cs on cs.molregno = m_child.molregno
+Join compound_records cr on cr.molregno = m_child.molregno
+Join docs d on d.doc_id = cr.doc_id
+Join activities a on a.record_id = cr.record_id and a.standard_type = 'IC50' and a.standard_relation = '='
+Join assays ass on ass.assay_id = a.assay_id
+Join target_dictionary td on td.tid = a.tid
+Filter ass.assay_organism = 'Homo sapiens'
+Filter td.chembl_id = 'CHEMBL3430885'
+Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

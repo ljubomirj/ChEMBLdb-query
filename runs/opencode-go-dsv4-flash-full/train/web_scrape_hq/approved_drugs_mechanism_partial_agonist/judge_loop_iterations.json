@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4 in molecule_dictionary) that have at least one mechanism of action recorded as 'PARTIAL AGONIST' in drug_mechanism. For each such drug, return the following columns: drug_name (pref_name from molecule_dictionary), drug_chembl_id (chembl_id from molecule_dictionary), target_name (pref_name from target_dictionary), target_chembl_id (chembl_id from target_dictionary), target_organism (organism from target_dictionary), and canonical_smiles (canonical_smiles from compound_structures). Return one row per drug-target combination. Do not add any additional filters and do not limit the number of rows. Use the tables molecule_dictionary, drug_mechanism, target_dictionary, and compound_structures with the appropriate joins: drug_mechanism.molregno to molecule_dictionary.molregno, drug_mechanism.tid to target_dictionary.tid, and molecule_dictionary.molregno to compound_structures.molregno.",
+    "sql": "SELECT DISTINCT md.pref_name AS drug_name, md.chembl_id AS drug_chembl_id, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, td.organism AS target_organism, cs.canonical_smiles FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'PARTIAL AGONIST';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 24,
+    "res_columns": [
+      "drug_name",
+      "drug_chembl_id",
+      "target_name",
+      "target_chembl_id",
+      "target_organism",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs (max_phase = 4 in molecule_dictionary) that have at least one mechanism of action classified as partial agonist (action_type = 'PARTIAL AGONIST' in drug_mechanism). For each drug, return: drug name (molecule_dictionary.pref_name), drug ChEMBL ID (molecule_dictionary.chembl_id), target name (target_dictionary.pref_name), target ChEMBL ID (target_dictionary.chembl_id), target organism (target_dictionary.organism), and canonical SMILES (compound_structures.canonical_smiles). Include drugs even if they lack a SMILES structure (use LEFT JOIN for compound_structures). Return one row per distinct drug-target pair. Do not add extra filters (e.g., no confidence score, no source restrictions) and do not limit the number of rows.",
+    "sql": "SELECT DISTINCT md.pref_name AS drug_name, md.chembl_id AS drug_chembl_id, td.pref_name AS target_name, td.chembl_id AS target_chembl_id, td.organism AS target_organism, cs.canonical_smiles FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND dm.action_type = 'PARTIAL AGONIST';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n29 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 24,
+    "res_columns": [
+      "drug_name",
+      "drug_chembl_id",
+      "target_name",
+      "target_chembl_id",
+      "target_organism",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

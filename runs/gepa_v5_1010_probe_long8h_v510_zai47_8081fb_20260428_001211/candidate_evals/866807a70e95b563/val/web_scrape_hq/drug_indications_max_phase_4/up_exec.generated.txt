@@ -1,0 +1,11 @@
+Objective: Retrieve approved drug indications for drugs that have reached Phase 4 (approved), including drug identifiers and indication terminology.
+
+Output: chembl_id, pref_name, mesh_id, mesh_heading, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind.
+
+Source: molecule_dictionary, drug_indication.
+
+Logic:
+1. Join molecule_dictionary to drug_indication via molregno.
+2. Filter drug_indication.max_phase_for_ind = 4.
+3. Map indication_curie to drug_indication.efo_id and indication_label to drug_indication.efo_term.
+4. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, max_phase_for_ind.

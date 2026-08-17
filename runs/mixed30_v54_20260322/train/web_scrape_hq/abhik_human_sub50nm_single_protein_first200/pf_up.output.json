@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select the first 200 distinct activity rows ordered by activity_id ascending. Join activities to molecule_dictionary on molregno for molecule_chembl_id (use chembl_id, not molregno), join activities to assays on assay_id, join assays to target_dictionary on tid for target_chembl_id and target_name. Filter where target_dictionary.organism is 'Homo sapiens', target_type is 'SINGLE PROTEIN', standard_units is 'nM', standard_type is one of EC50, IC50, or AC50, and standard_value is below 50. Return activity_id, molecule_chembl_id, target_chembl_id, target_name, standard_type, standard_value, standard_units.\"}\n```",
+    "parsed_json": {
+      "up": "Select the first 200 distinct activity rows ordered by activity_id ascending. Join activities to molecule_dictionary on molregno for molecule_chembl_id (use chembl_id, not molregno), join activities to assays on assay_id, join assays to target_dictionary on tid for target_chembl_id and target_name. Filter where target_dictionary.organism is 'Homo sapiens', target_type is 'SINGLE PROTEIN', standard_units is 'nM', standard_type is one of EC50, IC50, or AC50, and standard_value is below 50. Return activity_id, molecule_chembl_id, target_chembl_id, target_name, standard_type, standard_value, standard_units."
+    }
+  }
+}

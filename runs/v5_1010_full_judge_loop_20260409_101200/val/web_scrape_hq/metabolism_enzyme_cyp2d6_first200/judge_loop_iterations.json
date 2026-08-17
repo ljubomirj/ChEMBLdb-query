@@ -1,0 +1,51 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for CYP2D6, including the substrate structure, compound name, parent compound, metabolic conversion, pathway, and organism.",
+    "sql": "WITH cyp2d6 AS (SELECT component_id FROM component_synonyms WHERE component_synonym = 'CYP2D6'), metabolism_base AS (SELECT m.met_id, m.drug_record_id, m.substrate_record_id, m.metabolite_record_id, m.pathway_id, m.pathway_key, m.met_conversion, m.organism, m.tax_id, m.met_comment, cs_sub.canonical_smiles AS substrate_structure, md_sub.pref_name AS substrate_name, md_sub.chembl_id AS substrate_chembl_id, md_par.pref_name AS parent_name, md_par.chembl_id AS parent_chembl_id FROM metabolism m JOIN component_synonyms csyn ON csyn.component_id = m.enzyme_tid JOIN cyp2d6 tgt ON tgt.component_id = csyn.component_id LEFT JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id LEFT JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno LEFT JOIN compound_structures cs_sub ON md_sub.molregno = cs_sub.molregno LEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id LEFT JOIN molecule_dictionary md_par ON cr_par.molregno = md_par.molregno) SELECT * FROM metabolism_base LIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n15 | 0 | 126 | SCAN m\n17 | 0 | 45 | SEARCH component_synonyms USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)\n27 | 0 | 55 | SEARCH csyn USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=?)\n36 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n45 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n54 | 0 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n63 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n72 | 0 | 47 | SEARCH md_par USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 0,
+    "res_columns": [
+      "met_id",
+      "drug_record_id",
+      "substrate_record_id",
+      "metabolite_record_id",
+      "pathway_id",
+      "pathway_key",
+      "met_conversion",
+      "organism",
+      "tax_id",
+      "met_comment",
+      "substrate_structure",
+      "substrate_name",
+      "substrate_chembl_id",
+      "parent_name",
+      "parent_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Show the first 200 metabolism records for the enzyme CYP2D6. For each record, include the substrate canonical SMILES, substrate compound name, parent compound name, metabolic conversion description, pathway key, and organism name.",
+    "sql": "SELECT DISTINCT\n  cs_sub.canonical_smiles AS substrate_structure,\n  md_sub.pref_name AS substrate_name,\n  md_par.pref_name AS parent_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism m\nLEFT JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nLEFT JOIN molecule_dictionary md_sub ON cr_sub.molregno = md_sub.molregno\nLEFT JOIN compound_structures cs_sub ON md_sub.molregno = cs_sub.molregno\nLEFT JOIN compound_records cr_par ON m.drug_record_id = cr_par.record_id\nLEFT JOIN molecule_dictionary md_par ON cr_par.molregno = md_par.molregno\nWHERE m.enzyme_name = 'CYP2D6'\nLIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 126 | SCAN m\n18 | 0 | 47 | SEARCH cr_sub USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n27 | 0 | 47 | SEARCH md_sub USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n36 | 0 | 47 | SEARCH cs_sub USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n45 | 0 | 47 | SEARCH cr_par USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n54 | 0 | 47 | SEARCH md_par USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n95 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 46,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_name",
+      "parent_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

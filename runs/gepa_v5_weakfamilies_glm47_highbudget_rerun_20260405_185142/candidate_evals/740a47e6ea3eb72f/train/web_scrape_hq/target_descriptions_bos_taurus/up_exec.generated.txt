@@ -1,0 +1,7 @@
+Select target_description
+From assays
+Join target_dictionary on assays.tid = target_dictionary.tid
+Filter assays.assay_organism = 'Bos taurus'
+Distinct
+Sort by target_description
+Return target_description

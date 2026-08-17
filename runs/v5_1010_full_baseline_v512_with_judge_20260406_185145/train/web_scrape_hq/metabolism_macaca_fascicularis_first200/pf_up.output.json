@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_macaca_fascicularis_first200.json",
+  "case_id": "metabolism_macaca_fascicularis_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"up\": \"Select activities.met_conversion, activities.pathway_key, activities.enzyme_name, assays.assay_organism, molecule_dictionary.pref_name AS substrate_compound_name, molecule_dictionary.pref_name AS parent_compound_name, compound_structures.canonical_smiles\\nFrom metabolism\\nLeft Join activities On metabolism.met_id = activities.activity_id\\nLeft Join assays On activities.assay_id = assays.assay_id\\nLeft Join compound_records On activities.record_id = compound_records.record_id\\nLeft Join molecule_dictionary On compound_records.molregno = molecule_dictionary.molregno\\nLeft Join molecule_hierarchy On molecule_dictionary.molregno = molecule_hierarchy.molregno\\nLeft Join molecule_dictionary AS parent_mol On molecule_hierarchy.parent_molregno = parent_mol.molregno\\nLeft Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno\\nFilter assays.assay_organism = 'Macaca fascicularis'\\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\\nLimit 200\"\n}",
+    "parsed_json": {
+      "up": "Select activities.met_conversion, activities.pathway_key, activities.enzyme_name, assays.assay_organism, molecule_dictionary.pref_name AS substrate_compound_name, molecule_dictionary.pref_name AS parent_compound_name, compound_structures.canonical_smiles\nFrom metabolism\nLeft Join activities On metabolism.met_id = activities.activity_id\nLeft Join assays On activities.assay_id = assays.assay_id\nLeft Join compound_records On activities.record_id = compound_records.record_id\nLeft Join molecule_dictionary On compound_records.molregno = molecule_dictionary.molregno\nLeft Join molecule_hierarchy On molecule_dictionary.molregno = molecule_hierarchy.molregno\nLeft Join molecule_dictionary AS parent_mol On molecule_hierarchy.parent_molregno = parent_mol.molregno\nLeft Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno\nFilter assays.assay_organism = 'Macaca fascicularis'\nSort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\nLimit 200"
+    }
+  }
+}

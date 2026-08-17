@@ -1,0 +1,7 @@
+1. Objective: Retrieve all approved drugs (max_phase = 4) indicated for cardiovascular disease, including their chemical structures and indication details.
+
+2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind
+
+3. Source: molecule_dictionary, drug_indication, compound_structures
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno to retrieve canonical SMILES. Filter molecule_dictionary.max_phase = 4 to restrict to approved drugs. Filter drug_indication.efo_term = 'cardiovascular disease' (case-insensitive match) to restrict to the specific indication. Sort results by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.

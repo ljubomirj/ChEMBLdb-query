@@ -1,0 +1,7 @@
+1. Objective: Retrieve exact activity values for compounds tested in the specified GSK Tres Cantos antimalarial assay (CHEMBL1054500), returning only rows with exact numeric measurements.
+
+2. Output: canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units
+
+3. Source: assays, activities, molecule_dictionary, compound_structures
+
+4. Logic: Join assays to activities on assays.assay_id = activities.assay_id. Join activities to molecule_dictionary on activities.molregno = molecule_dictionary.molregno. Join molecule_dictionary to compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Filter where assays.chembl_id = 'CHEMBL1054500'. Filter where activities.standard_value IS NOT NULL. Filter where activities.standard_relation = '='. Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units.

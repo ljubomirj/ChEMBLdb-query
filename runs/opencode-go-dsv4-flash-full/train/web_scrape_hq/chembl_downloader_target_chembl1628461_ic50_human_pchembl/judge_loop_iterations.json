@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows for the human single-protein target CHEMBL1628461 (Oxoeicosanoid receptor 1). For each row, provide the assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Only include rows with exact standard relation '=' and non-null pChEMBL values. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "SELECT\n    a.chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles,\n    md.chembl_id AS molecule_chembl_id,\n    act.standard_type,\n    act.pchembl_value\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nLEFT JOIN compound_structures cs ON act.molregno = cs.molregno\nWHERE\n    td.chembl_id = 'CHEMBL1628461'\n    AND td.target_type = 'SINGLE PROTEIN'\n    AND td.organism = 'Homo sapiens'\n    AND act.standard_type = 'IC50'\n    AND act.standard_relation = '='\n    AND act.pchembl_value IS NOT NULL\nORDER BY md.chembl_id, a.chembl_id\nLIMIT 1000;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n31 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n40 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

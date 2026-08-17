@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "List all activity measurements from the assay identified by CHEMBL1614364. Also show the molecular structure of each compound that was tested. The output should include the compound's ChEMBL ID, its canonical SMILES, and the activity details: type (standard_type), relation (standard_relation), value (standard_value), units (standard_units), and pchembl_value. Return one row per activity record, sorted by compound ChEMBL ID.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.pchembl_value FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL1614364' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n17 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n27 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n33 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n59 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 12190,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "n": 1,
+    "up": "For the target 'Metabotropic glutamate receptor 5' (CHEMBL ID: CHEMBL3227) in Homo sapiens, return the IC50 activity values in nM. For each activity, list the molecule's ChEMBL ID, canonical SMILES, compound key, and publication provenance as PubMed ID or DOI (prefer PubMed ID if both exist), along with the assay description, activity standard type, relation, value, units, activity comment, target name, and target organism. Exclude any rows where the SMILES is missing or where neither a PubMed ID nor a DOI is available.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  ass.description AS assay_description,\n  act.standard_type,\n  act.relation,\n  act.value,\n  act.units,\n  act.activity_comment,\n  td.pref_name AS target_name,\n  td.organism\nFROM activities act\nJOIN assays ass ON act.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN docs d ON cr.doc_id = d.doc_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL3227'\n  AND act.standard_type = 'IC50'\n  AND act.units = 'nM'\n  AND cs.canonical_smiles IS NOT NULL\n  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL);",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n46 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n52 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n62 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n92 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1180,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "relation",
+      "value",
+      "units",
+      "activity_comment",
+      "target_name",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

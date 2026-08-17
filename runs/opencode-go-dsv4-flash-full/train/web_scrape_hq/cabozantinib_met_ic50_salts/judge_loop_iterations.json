@@ -1,0 +1,83 @@
+[
+  {
+    "n": 3,
+    "up": "Retrieve activity details for compound CHEMBL2105717 (CABOZANTINIB) and all its salts (including the parent compound) as defined by the molecule_hierarchy table where the parent_molregno corresponds to the molregno of CHEMBL2105717. Use only IC50 activity measurements with standard units in nM against the target CHEMBL3717 (Hepatocyte growth factor receptor). Return the following columns: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id if available, fall back to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name (from target_dictionary.pref_name), and target_organism (from target_dictionary.organism). Do not limit the number of rows.",
+    "sql": "WITH parent_molregno AS (\n  SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2105717'\n),\nhierarchy_molregnos AS (\n  SELECT molregno FROM molecule_hierarchy\n  WHERE parent_molregno = (SELECT molregno FROM parent_molregno)\n),\nall_molregnos AS (\n  SELECT molregno FROM parent_molregno\n  UNION\n  SELECT molregno FROM hierarchy_molregnos\n)\nSELECT\n  md.chembl_id AS compound_chembl_id,\n  cs.canonical_smiles,\n  cr.compound_key,\n  COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi,\n  a.description AS assay_description,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units,\n  act.activity_comment,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_records cr ON act.record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON act.doc_id = d.doc_id\nWHERE act.standard_type = 'IC50'\n  AND act.standard_units = 'nM'\n  AND td.chembl_id = 'CHEMBL3717'\n  AND md.molregno IN (SELECT molregno FROM all_molregnos);",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 17\n15 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | LIST SUBQUERY 6\n26 | 24 | 0 | CO-ROUTINE all_molregnos\n27 | 26 | 0 | COMPOUND QUERY\n28 | 27 | 0 | LEFT-MOST SUBQUERY\n32 | 28 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n40 | 27 | 0 | UNION USING TEMP B-TREE\n43 | 40 | 0 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n46 | 40 | 0 | SCALAR SUBQUERY 2\n51 | 46 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n74 | 24 | 0 | SCAN all_molregnos\n88 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n97 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n106 | 0 | 0 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n116 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n123 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 44,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve activity details for compound CHEMBL2105717 (CABOZANTINIB) and all its salts (including the parent compound) as defined by the molecule_hierarchy parent mapping from CHEMBL2105717. Specifically, start from the molecule_dictionary record for CHEMBL2105717, get its molregno, then from molecule_hierarchy find all compounds with parent_molregno equal to that molregno (which includes the parent compound itself). Include all these compounds. Filter activities to only those with standard_type = 'IC50' and standard_units = 'nM' and where the target is CHEMBL3717 (Hepatocyte growth factor receptor) as identified by target_dictionary.chembl_id. Return the following columns: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles), compound_key (from compound_records.compound_key), pubmed_id_or_doi (from docs, prefer pubmed_id if present, otherwise doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Do not limit the number of rows.",
+    "sql": "WITH parent_molregno AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2105717'), all_molregnos AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno = (SELECT molregno FROM parent_molregno)) SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_records cr ON act.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON act.doc_id = d.doc_id WHERE act.standard_type = 'IC50' AND act.standard_units = 'nM' AND td.chembl_id = 'CHEMBL3717' AND md.molregno IN (SELECT molregno FROM all_molregnos);",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 11\n15 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | LIST SUBQUERY 4\n27 | 24 | 0 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n30 | 24 | 0 | SCALAR SUBQUERY 2\n35 | 30 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n59 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n77 | 0 | 0 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n87 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n94 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 44,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve activity details for the compound with ChEMBL ID CHEMBL2105717 (CABOZANTINIB) and all its salts, including the parent compound itself, as defined by the molecule_hierarchy table. Specifically, find the molregno of CHEMBL2105717 from molecule_dictionary, then from molecule_hierarchy select all compounds (including the parent) where parent_molregno equals that molregno. Filter the activities to only those with standard_type = 'IC50', standard_units = 'nM', and where the target is CHEMBL3717 (Hepatocyte growth factor receptor) as identified by target_dictionary.chembl_id. For each matching activity, return the following fields: compound_chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles), compound_key (from compound_records.compound_key), pubmed_id_or_doi (from docs; prefer pubmed_id if available, otherwise use doi), assay_description (from assays.description), standard_type, standard_relation, standard_value, standard_units, activity_comment (from activities), target_chembl_id (from target_dictionary.chembl_id), target_name (from target_dictionary.pref_name), target_organism (from target_dictionary.organism). Do not limit the number of rows returned.",
+    "sql": "WITH parent_molregno AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL2105717'), all_molregnos AS (SELECT molregno FROM molecule_hierarchy WHERE parent_molregno = (SELECT molregno FROM parent_molregno)) SELECT md.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN compound_records cr ON act.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno LEFT JOIN docs d ON act.doc_id = d.doc_id WHERE act.standard_type = 'IC50' AND act.standard_units = 'nM' AND td.chembl_id = 'CHEMBL3717' AND md.molregno IN (SELECT molregno FROM all_molregnos);",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 11\n15 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n24 | 0 | 0 | LIST SUBQUERY 4\n27 | 24 | 0 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n30 | 24 | 0 | SCALAR SUBQUERY 2\n35 | 30 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n59 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?)\n65 | 0 | 0 | SEARCH act USING INDEX fk_act_record_id (record_id=?)\n75 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n84 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n92 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 44,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

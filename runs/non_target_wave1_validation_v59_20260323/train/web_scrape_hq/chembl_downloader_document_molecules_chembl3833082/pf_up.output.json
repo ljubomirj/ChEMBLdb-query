@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl3833082.json",
+  "case_id": "chembl_downloader_document_molecules_chembl3833082",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecule ChEMBL identifier, compound name, and canonical SMILES for all compounds reported in document CHEMBL3833082. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id filtering by doc chembl_id. Require canonical SMILES via INNER JOIN to compound_structures. Sort by chembl_id, compound_name, and canonical_smiles.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecule ChEMBL identifier, compound name, and canonical SMILES for all compounds reported in document CHEMBL3833082. Join molecule_dictionary to compound_records on molregno, then to docs on doc_id filtering by doc chembl_id. Require canonical SMILES via INNER JOIN to compound_structures. Sort by chembl_id, compound_name, and canonical_smiles."
+    }
+  }
+}

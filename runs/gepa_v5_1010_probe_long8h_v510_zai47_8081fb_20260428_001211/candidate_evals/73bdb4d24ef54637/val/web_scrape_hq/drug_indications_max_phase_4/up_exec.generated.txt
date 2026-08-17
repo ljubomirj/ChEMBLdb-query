@@ -1,0 +1,7 @@
+1. Objective: Retrieve all approved drug indications, returning the drug identifier, name, and associated MeSH and EFO terms for each indication record.
+
+2. Output: chembl_id, pref_name, mesh_id, mesh_heading, efo_id AS indication_curie, efo_term AS indication_label, max_phase_for_ind
+
+3. Source: molecule_dictionary, drug_indication
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Filter for approved drugs using molecule_dictionary.max_phase = 4. Sort by chembl_id, pref_name, mesh_id, mesh_heading, indication_curie, indication_label, and max_phase_for_ind.

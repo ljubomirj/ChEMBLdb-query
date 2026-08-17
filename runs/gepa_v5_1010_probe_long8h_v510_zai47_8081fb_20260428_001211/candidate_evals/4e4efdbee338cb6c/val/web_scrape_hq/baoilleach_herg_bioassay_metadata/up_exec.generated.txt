@@ -1,0 +1,4 @@
+1. Objective: Extract binding assays for the hERG target (tid 165) with full assay metadata and document provenance.
+2. Output: Return assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, and doi.
+3. Source: Primary tables are assays, target_dictionary, and docs.
+4. Logic: Filter assays where assay_type = 'B' and tid = 165. Join target_dictionary on assays.tid to retrieve target_name and target_organism. Join docs on assays.doc_id to retrieve journal, year, volume, first_page, and doi. Sort results by assay_chembl_id, tid, journal, year, and doi.

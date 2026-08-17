@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Count the number of molecules in each development phase. Return the development phase (max_phase) and the corresponding count of molecules.",
+    "sql": "SELECT max_phase, COUNT(*) AS molecule_count FROM molecule_dictionary GROUP BY max_phase ORDER BY max_phase;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 1\n7 | 0 | 218 | SCAN molecule_dictionary USING COVERING INDEX idx_moldict_max_phase",
+    "res_row_count": 7,
+    "res_columns": [
+      "max_phase",
+      "molecule_count"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  m.chembl_id,\n  m.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary m\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\nJOIN drug_indication di ON m.molregno = di.molregno\nWHERE m.max_phase = 4\n  AND di.efo_id IS NOT NULL\n  AND di.efo_term IS NOT NULL\nORDER BY\n  m.chembl_id,\n  m.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term,\n  di.max_phase_for_ind\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  m.chembl_id,\n  m.pref_name,\n  cs.canonical_smiles,\n  di.efo_id AS indication_curie,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM molecule_dictionary m\nLEFT JOIN compound_structures cs ON m.molregno = cs.molregno\nJOIN drug_indication di ON m.molregno = di.molregno\nWHERE m.max_phase = 4\n  AND di.efo_id IS NOT NULL\n  AND di.efo_term IS NOT NULL\nORDER BY\n  m.chembl_id,\n  m.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term,\n  di.max_phase_for_ind"
+    }
+  }
+}

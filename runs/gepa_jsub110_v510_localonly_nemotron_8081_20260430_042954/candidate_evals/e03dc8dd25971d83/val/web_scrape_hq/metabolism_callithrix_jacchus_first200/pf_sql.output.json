@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_callithrix_jacchus_first200.json",
+  "case_id": "metabolism_callithrix_jacchus_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT cd_sub.pref_name AS substrate_name,\n       cs_sub.canonical_smiles AS substrate_smiles,\n       cd_met.pref_name AS parent_name,\n       cs_met.canonical_smiles AS parent_smiles,\n       m.met_conversion AS met_conversion,\n       m.pathway_key AS pathway_key,\n       m.enzyme_name AS enzyme_name\nFROM metabolism m\nLEFT JOIN molecule_dictionary cd_sub ON m.substrate_record_id = cd_sub.molregno\nLEFT JOIN compound_structures cs_sub ON cd_sub.molregno = cs_sub.molregno\nLEFT JOIN molecule_dictionary cd_met ON m.metabolite_record_id = cd_met.molregno\nLEFT JOIN compound_structures cs_met ON cd_met.molregno = cs_met.molregno\nWHERE m.organism = 'Callithrix jacchus'\nORDER BY m.met_id ASC\nLIMIT 200;"
+}

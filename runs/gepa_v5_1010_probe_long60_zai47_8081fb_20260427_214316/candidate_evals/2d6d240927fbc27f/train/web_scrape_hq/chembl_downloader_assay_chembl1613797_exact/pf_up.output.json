@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_2d6d240927fbc27f.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1613797_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1613797_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "2d6d240927fbc27f",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_structures.canonical_smiles, molecule_dictionary.chembl_id, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units. From assays. Join activities on assays via assays.assay_id = activities.assay_id. Join molecule_dictionary on activities via activities.molregno = molecule_dictionary.molregno. Join compound_structures on molecule_dictionary via molecule_dictionary.molregno = compound_structures.molregno. Filter assays.chembl_id = 'CHEMBL1613797'. Filter activities.standard_value IS NOT NULL. Filter activities.standard_relation = '='. Sort by compound_structures.canonical_smiles ASC, molecule_dictionary.chembl_id ASC, activities.standard_type ASC, activities.standard_relation ASC, activities.standard_value ASC, activities.standard_units ASC.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_structures.canonical_smiles, molecule_dictionary.chembl_id, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units. From assays. Join activities on assays via assays.assay_id = activities.assay_id. Join molecule_dictionary on activities via activities.molregno = molecule_dictionary.molregno. Join compound_structures on molecule_dictionary via molecule_dictionary.molregno = compound_structures.molregno. Filter assays.chembl_id = 'CHEMBL1613797'. Filter activities.standard_value IS NOT NULL. Filter activities.standard_relation = '='. Sort by compound_structures.canonical_smiles ASC, molecule_dictionary.chembl_id ASC, activities.standard_type ASC, activities.standard_relation ASC, activities.standard_value ASC, activities.standard_units ASC."
+    }
+  }
+}

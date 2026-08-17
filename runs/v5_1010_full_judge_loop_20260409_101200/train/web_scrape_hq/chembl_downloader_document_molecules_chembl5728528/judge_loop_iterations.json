@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1,
+    "up": "Return the CHEMBL identifier and the compound name for every compound associated with document CHEMBL5728528. Exclude any compound keys and exclude non\u2011chembl\u2011id aliases. Do not limit the number of rows. Do not add additional filters beyond the document identifier. Treat the document identifier as exact: include only records where docs.chembl_id = 'CHEMBL5728528'. Output one row per compound (molecule) without deduplication beyond the inherent mapping; if multiple compound keys map to the same molecule, each molecule should still appear only once. Return the columns: molecule_chembl_id (molecule's ChEMBL identifier) and compound_name (the compound's preferred name).",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS compound_name\nFROM docs\nJOIN compound_records cr ON cr.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5728528';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve every compound (molecule) that is explicitly linked to the published document with the CHEMBL identifier CHEMBL5728528. For each compound, return its ChEMBL identifier and the preferred name of the molecule, using only the core molecule dictionary to avoid non\u2011chembl\u2011id aliases. The result set must contain one row per distinct molecule; do not deduplicate further, because the document may list multiple compound keys that correspond to the same molecule. No additional filters, units, organism constraints, or activity data should be applied, and the document identifier must be treated as an exact equality condition. The required output columns are molecule_chembl_id (the molecule's ChEMBL identifier) and compound_name (the molecule's preferred name).",
+    "sql": "WITH doc_m AS (\n  SELECT doc_id\n  FROM docs\n  WHERE chembl_id = 'CHEMBL5728528'\n),\ncr AS (\n  SELECT molregno\n  FROM compound_records\n  WHERE doc_id IN (SELECT doc_id FROM doc_m)\n),\nmd AS (\n  SELECT molregno, chembl_id AS molecule_chembl_id, pref_name AS compound_name\n  FROM molecule_dictionary\n  WHERE molregno IN (SELECT molregno FROM cr)\n)\nSELECT DISTINCT molecule_chembl_id, compound_name\nFROM md;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n4 | 0 | 93 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n8 | 0 | 0 | LIST SUBQUERY 4\n12 | 8 | 121 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n16 | 8 | 0 | LIST SUBQUERY 2\n20 | 16 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n29 | 16 | 0 | CREATE BLOOM FILTER\n42 | 8 | 0 | CREATE BLOOM FILTER",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules that have at least one activity record linked to the document with chembl_id CHEMBL5728528. For each molecule, return its ChEMBL identifier and its preferred name, using the core molecule dictionary to ensure only ChEMBL identifiers are returned. The result must contain one row per distinct molecule; do not apply additional filters, date ranges, or activity\u2011specific criteria beyond the document link. The required output columns are molecule_chembl_id and compound_name. No deduplication beyond removing duplicate molecules that may appear multiple times in the document is allowed; each molecule should appear once only.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS compound_name\nFROM docs\nJOIN compound_records cr ON cr.doc_id = docs.doc_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nWHERE docs.chembl_id = 'CHEMBL5728528';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all distinct molecules (compound records) that are linked to the published document with chembl_id CHEMBL5728528. For each molecule return its ChEMBL identifier (using molecule_dictionary.chembl_id as molecule_chembl_id) and its preferred name (using molecule_dictionary.pref_name as compound_name). Ensure the result contains exactly one row per distinct molecule (no duplicate molecules). No other filters, organism, date, activity type, or target constraints are required. The document identifier must be treated as an exact equality condition (docs.chembl_id = 'CHEMBL5728528'). Use molecule_dictionary to avoid non\u2011chembl\u2011id aliases. The required output columns are molecule_chembl_id and compound_name.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS compound_name FROM docs JOIN compound_records cr ON cr.doc_id = docs.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5728528';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.7,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve every compound (molecule) that has at least one activity record linked to the published document with the exact CHEMBL identifier CHEMBL5728528. For each molecule return its ChEMBL identifier (as molecule_chembl_id) and its preferred name (as compound_name) from the molecule_dictionary, ensuring only core ChEMBL identifiers are used and duplicates (same molecule listed multiple times in the document) are removed. No additional filters (organism, target type, assay confidence, units, activity type, date ranges, etc.) are required beyond the exact document\u2011identifier condition. Output one row per distinct molecule, with the columns: molecule_chembl_id and compound_name.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5728528'), cr AS (SELECT molregno FROM compound_records WHERE doc_id IN (SELECT doc_id FROM doc) AND molregno IN (SELECT molregno FROM molecule_dictionary)), md AS (SELECT molregno, chembl_id AS molecule_chembl_id, pref_name AS compound_name FROM molecule_dictionary WHERE molregno IN (SELECT molregno FROM cr) AND chembl_id IS NOT NULL) SELECT DISTINCT molecule_chembl_id, compound_name FROM md;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n5 | 0 | 93 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n9 | 0 | 0 | LIST SUBQUERY 5\n13 | 9 | 95 | SEARCH compound_records USING INDEX fk_comp_rec_molregno (molregno=?)\n15 | 9 | 0 | USING INDEX sqlite_autoindex_molecule_dictionary_1 FOR IN-OPERATOR\n26 | 9 | 0 | LIST SUBQUERY 2\n30 | 26 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n39 | 26 | 0 | CREATE BLOOM FILTER\n50 | 9 | 0 | CREATE BLOOM FILTER",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all molecules linked to the document with CHEMBL identifier CHEMBL5728528. For each molecule, return its ChEMBL identifier (as molecule_chembl_id) and its preferred name (as compound_name) from the molecule_dictionary to ensure only core ChEMBL identifiers are used. Ensure exactly one row per distinct molecule (remove duplicates that may arise from multiple compound keys within the document). No additional filters on organism, target type, assay confidence, units, activity type, or date ranges are required beyond the exact document\u2011identifier condition (docs.chembl_id = 'CHEMBL5728528'). Output columns: molecule_chembl_id and compound_name.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS compound_name FROM docs JOIN compound_records cr ON cr.doc_id = docs.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5728528';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 825,
+    "res_columns": [
+      "molecule_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

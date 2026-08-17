@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/ceritinib_alk_ic50_salts.json",
+  "case_id": "ceritinib_alk_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, r.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM molecule_dictionary m LEFT JOIN compound_structures cs ON cs.molregno = m.molregno JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id JOIN activities act ON r.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE m.chembl_id IN (SELECT DISTINCT m1.chembl_id FROM molecule_dictionary m1 JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno WHERE m2.chembl_id = 'CHEMBL2403108') AND td.chembl_id = 'CHEMBL4247' AND act.standard_type = 'IC50' AND act.standard_units = 'nM' ORDER BY m.chembl_id, r.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi), a.description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, td.chembl_id, td.pref_name, td.organism\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS compound_chembl_id, cs.canonical_smiles, r.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM molecule_dictionary m LEFT JOIN compound_structures cs ON cs.molregno = m.molregno JOIN compound_records r ON m.molregno = r.molregno JOIN docs d ON r.doc_id = d.doc_id JOIN activities act ON r.record_id = act.record_id JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid WHERE m.chembl_id IN (SELECT DISTINCT m1.chembl_id FROM molecule_dictionary m1 JOIN molecule_hierarchy mh ON mh.molregno = m1.molregno JOIN molecule_dictionary m2 ON mh.parent_molregno = m2.molregno WHERE m2.chembl_id = 'CHEMBL2403108') AND td.chembl_id = 'CHEMBL4247' AND act.standard_type = 'IC50' AND act.standard_units = 'nM' ORDER BY m.chembl_id, r.compound_key, COALESCE(CAST(d.pubmed_id AS TEXT), d.doi), a.description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, td.chembl_id, td.pref_name, td.organism"
+    }
+  }
+}

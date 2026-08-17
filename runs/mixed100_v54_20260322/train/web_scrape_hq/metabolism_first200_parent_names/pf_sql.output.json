@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.4.yaml",
+  "prompt_pack_version": "v5.4",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_parent_names.json",
+  "case_id": "metabolism_first200_parent_names",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT\\n  cs.canonical_smiles,\\n  cr_sub.compound_name AS substrate_compound_name,\\n  md_parent.pref_name AS parent_compound_name,\\n  m.met_conversion,\\n  m.pathway_key\\nFROM metabolism m\\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\\nJOIN molecule_hierarchy mh ON cr_sub.molregno = mh.molregno\\nJOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno\\nLIMIT 200\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  cr_sub.compound_name AS substrate_compound_name,\n  md_parent.pref_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nJOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id\nJOIN compound_structures cs ON cr_sub.molregno = cs.molregno\nJOIN molecule_hierarchy mh ON cr_sub.molregno = mh.molregno\nJOIN molecule_dictionary md_parent ON mh.parent_molregno = md_parent.molregno\nLIMIT 200"
+    }
+  }
+}

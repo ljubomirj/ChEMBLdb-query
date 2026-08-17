@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for the organism Oryctolagus cuniculus, including the substrate structure, substrate compound name, parent compound name, metabolic conversion, pathway key, and enzyme name.",
+    "sql": "WITH substrates AS (\n  SELECT\n    met.met_id,\n    met.drug_record_id,\n    met.metabolite_record_id,\n    met.pathway_key,\n    met.enzyme_name,\n    met.met_conversion,\n    met.tax_id,\n    sub_str.standard_inchi AS substrate_inchi,\n    sub_str.canonical_smiles AS substrate_smiles,\n    sub_mol.chembl_id AS substrate_chembl_id,\n    sub_rec.compound_name AS substrate_compound_name,\n    parent_mol.chembl_id AS parent_chembl_id,\n    parent_rec.compound_name AS parent_compound_name\n  FROM metabolism met\n  LEFT JOIN compound_records sub_rec ON met.substrate_record_id = sub_rec.record_id\n  LEFT JOIN molecule_dictionary sub_mol ON sub_rec.molregno = sub_mol.molregno\n  LEFT JOIN compound_structures sub_str ON sub_mol.molregno = sub_str.molregno\n  LEFT JOIN compound_records parent_rec ON met.drug_record_id = parent_rec.record_id\n  LEFT JOIN molecule_dictionary parent_mol ON parent_rec.molregno = parent_mol.molregno\n  WHERE met.tax_id = 9986\n  ORDER BY met.met_id ASC\n  LIMIT 200\n)\nSELECT\n  substrate_inchi AS substrate_structure,\n  substrate_compound_name,\n  parent_compound_name,\n  met_conversion AS metabolic_conversion,\n  pathway_key AS pathway,\n  enzyme_name AS enzyme\nFROM substrates;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 132 | SCAN met USING INDEX sqlite_autoindex_metabolism_1\n17 | 0 | 47 | SEARCH sub_rec USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n26 | 0 | 45 | SEARCH sub_mol USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n34 | 0 | 47 | SEARCH sub_str USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n43 | 0 | 47 | SEARCH parent_rec USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN",
+    "res_row_count": 6,
+    "res_columns": [
+      "substrate_structure",
+      "substrate_compound_name",
+      "parent_compound_name",
+      "metabolic_conversion",
+      "pathway",
+      "enzyme"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

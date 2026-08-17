@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8e9665838e7ec322.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1122107.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1122107",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "8e9665838e7ec322",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles. Source: molecule_dictionary, docs, compound_records, compound_structures. Join: docs to compound_records via doc_id; compound_records to molecule_dictionary via molregno; molecule_dictionary to compound_structures via molregno. Filter: docs.chembl_id equals 'CHEMBL1122107'. Sort: molecule_chembl_id ascending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles. Source: molecule_dictionary, docs, compound_records, compound_structures. Join: docs to compound_records via doc_id; compound_records to molecule_dictionary via molregno; molecule_dictionary to compound_structures via molregno. Filter: docs.chembl_id equals 'CHEMBL1122107'. Sort: molecule_chembl_id ascending."
+    }
+  }
+}

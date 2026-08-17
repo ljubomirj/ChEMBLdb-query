@@ -1,0 +1,50 @@
+[
+  {
+    "n": 3,
+    "up": "Retrieve all IC50 activity records for the compound with ChEMBL ID CHEMBL5498743 and any of its salt forms (i.e., molecules that are direct children of CHEMBL5498743 in the molecule_hierarchy table, where parent_molregno equals the molregno of CHEMBL5498743) against the target with ChEMBL ID CHEMBL392. For each record, provide the following columns: molecule_chembl_id, molecule pref_name, canonical_smiles, standard_value, standard_units, pchembl_value, assay description, pubmed_id, doi, and doc title. Do not apply any additional filters beyond standard_type = 'IC50'; include all units and relations. Do not limit the number of rows.",
+    "sql": "WITH parent AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5498743'), compounds AS (SELECT mh.molregno FROM molecule_hierarchy mh JOIN parent p ON mh.parent_molregno = p.molregno) SELECT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_pref_name, cs.canonical_smiles, a.standard_value, a.standard_units, a.pchembl_value, ass.description AS assay_description, d.pubmed_id, d.doi, d.title AS doc_title FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.molregno IN (SELECT molregno FROM compounds) AND td.chembl_id = 'CHEMBL392' AND a.standard_type = 'IC50';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 10\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | LIST SUBQUERY 3\n27 | 22 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n32 | 22 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n49 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n56 | 0 | 0 | REUSE LIST SUBQUERY 3\n65 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n74 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n83 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 5,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "assay_description",
+      "pubmed_id",
+      "doi",
+      "doc_title"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all IC50 activity records for the compound with ChEMBL ID CHEMBL5498743 itself and any of its salt forms (i.e., molecules that are direct children in the molecule_hierarchy table where parent_molregno equals the molregno of CHEMBL5498743) against the target with ChEMBL ID CHEMBL392. For each record, provide the following columns: molecule_chembl_id, molecule pref_name, canonical_smiles, standard_value, standard_units, pchembl_value, assay description, pubmed_id, doi, and doc title. Include all IC50 records regardless of units or relation type. Do not limit the number of rows.",
+    "sql": "WITH parent AS (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL5498743'), compounds AS (SELECT molregno FROM parent UNION SELECT mh.molregno FROM molecule_hierarchy mh INNER JOIN parent p ON mh.parent_molregno = p.molregno) SELECT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_pref_name, cs.canonical_smiles, a.standard_value, a.standard_units, a.pchembl_value, ass.description AS assay_description, d.pubmed_id, d.doi, d.title AS doc_title FROM activities a INNER JOIN assays ass ON a.assay_id = ass.assay_id INNER JOIN target_dictionary td ON ass.tid = td.tid INNER JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno LEFT JOIN docs d ON a.doc_id = d.doc_id WHERE a.molregno IN (SELECT molregno FROM compounds) AND td.chembl_id = 'CHEMBL392' AND a.standard_type = 'IC50'",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 16\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | LIST SUBQUERY 4\n24 | 22 | 0 | CO-ROUTINE compounds\n25 | 24 | 0 | COMPOUND QUERY\n26 | 25 | 0 | LEFT-MOST SUBQUERY\n30 | 26 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n38 | 25 | 0 | UNION USING TEMP B-TREE\n43 | 38 | 0 | SEARCH molecule_dictionary USING INDEX idx_moldict_chembl_id (chembl_id=?)\n48 | 38 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n64 | 22 | 0 | SCAN compounds\n78 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n85 | 0 | 0 | REUSE LIST SUBQUERY 4\n94 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n103 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n112 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 5,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles",
+      "standard_value",
+      "standard_units",
+      "pchembl_value",
+      "assay_description",
+      "pubmed_id",
+      "doi",
+      "doc_title"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

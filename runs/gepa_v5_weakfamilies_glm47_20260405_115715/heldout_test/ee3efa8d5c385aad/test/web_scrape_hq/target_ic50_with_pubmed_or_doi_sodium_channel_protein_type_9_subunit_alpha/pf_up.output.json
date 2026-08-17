@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_20260405_115715/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_sodium_channel_protein_type_9_subunit_alpha",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activity rows for compounds tested against human sodium channel protein type 9 subunit alpha (CHEMBL4296). Join molecule_dictionary to activities, assays, and target_dictionary. Join compound_structures as an INNER JOIN to enforce presence of canonical SMILES. Join docs to require at least one PubMed ID or DOI. Join compound_records to retrieve compound_key. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Filter by target CHEMBL4296 and standard_type IC50. Require canonical_smiles to be present and require pubmed_id or doi to be present. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activity rows for compounds tested against human sodium channel protein type 9 subunit alpha (CHEMBL4296). Join molecule_dictionary to activities, assays, and target_dictionary. Join compound_structures as an INNER JOIN to enforce presence of canonical SMILES. Join docs to require at least one PubMed ID or DOI. Join compound_records to retrieve compound_key. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Filter by target CHEMBL4296 and standard_type IC50. Require canonical_smiles to be present and require pubmed_id or doi to be present. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

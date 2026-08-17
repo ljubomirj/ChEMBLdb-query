@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_b_raf.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_b_raf",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query returned 0 rows because the target filter `td.pref_name = 'B-raf'` is too strict. The ChEMBL target dictionary uses 'BRAF' as the preferred name for human B-raf kinase, not 'B-raf'. This is a common naming mismatch where the user's biological term doesn't exactly match the database's controlled vocabulary. The query structure is otherwise sound, joining through the correct provenance path (molecule_dictionary -> compound_structures -> compound_records -> docs -> activities -> assays -> target_dictionary) and requesting all specified columns. The fix is to change the target name filter to 'BRAF'.\",\n  \"score\": 0.6,\n  \"decision\": \"iterate\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query returned 0 rows because the target filter `td.pref_name = 'B-raf'` is too strict. The ChEMBL target dictionary uses 'BRAF' as the preferred name for human B-raf kinase, not 'B-raf'. This is a common naming mismatch where the user's biological term doesn't exactly match the database's controlled vocabulary. The query structure is otherwise sound, joining through the correct provenance path (molecule_dictionary -> compound_structures -> compound_records -> docs -> activities -> assays -> target_dictionary) and requesting all specified columns. The fix is to change the target name filter to 'BRAF'.",
+      "score": 0.6,
+      "decision": "iterate"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_b_raf/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_b_raf/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_serine_threonine_protein_kinase_b_raf/pf_judge.generated_artifact_record.json"
+  }
+}

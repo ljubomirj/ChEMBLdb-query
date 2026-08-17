@@ -1,0 +1,90 @@
+{
+  "mode": "forward_chain",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "family": "other",
+  "realism_level": "templated_surface",
+  "provider": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic"
+  },
+  "run_root": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322",
+  "written_paths": {
+    "pf_up": {
+      "step_output_json": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_up.output.json",
+      "up_exec": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/up_exec.generated.txt",
+      "generated_case_manifest": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_up.generated_artifact_record.json"
+    },
+    "pf_sql": {
+      "step_output_json": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_sql.output.json",
+      "sql": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/sql.generated.sql",
+      "generated_case_manifest": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_sql.generated_artifact_record.json"
+    },
+    "pf_res": {
+      "step_output_json": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_res.output.json",
+      "generated_case_manifest": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_res.generated_artifact_record.json",
+      "result_path": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/result.generated.csv"
+    },
+    "pf_judge": {
+      "step_output_json": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_judge.output.json",
+      "generated_case_manifest": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+      "generated_artifact_record": "experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/pf_judge.generated_artifact_record.json"
+    },
+    "result_csv": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/result.generated.csv"
+  },
+  "res_result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/approved_drugs_with_indications_and_efo_v58_retry_20260322/approved_drugs_with_indications_and_efo/result.generated.csv",
+    "row_count": 31760,
+    "column_names": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 31760,
+    "actual_rows": 31760,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "missing_cols": [],
+    "extra_cols": [],
+    "status": "pass",
+    "score": 1.0
+  },
+  "judge_execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements the user request: it filters for approved drugs (max_phase = 4), joins molecule_dictionary to drug_indication and compound_structures, enforces non-null EFO identifier and label, and returns DISTINCT rows for exactly the requested columns. The sample output confirms the schema matches the specification (chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind). The row count (31,760) is plausible for this join. No extra columns were added, and DISTINCT is preserved as required.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements the user request: it filters for approved drugs (max_phase = 4), joins molecule_dictionary to drug_indication and compound_structures, enforces non-null EFO identifier and label, and returns DISTINCT rows for exactly the requested columns. The sample output confirms the schema matches the specification (chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind). The row count (31,760) is plausible for this join. No extra columns were added, and DISTINCT is preserved as required.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  }
+}

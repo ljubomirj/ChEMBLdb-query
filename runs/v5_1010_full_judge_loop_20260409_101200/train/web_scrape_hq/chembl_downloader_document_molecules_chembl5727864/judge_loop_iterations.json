@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct compound identifiers (CHEMBL IDs) and any available compound names from the specified document CHEMBL5727864. Ensure to join activities with docs to restrict to the correct doc_id and to compound_records to keep provenance of compound keys when provided. Return each compound once only.",
+    "sql": "SELECT DISTINCT\n  a.molecule_chembl_id AS compound_chembl_id,\n  cr.compound_name\nFROM activities a\nLEFT JOIN assay ON a.assay_id = assay.assay_id\nLEFT JOIN target_dictionary ON assay.tid = target_dictionary.tid\nLEFT JOIN docs ON a.doc_id = docs.doc_id\nLEFT JOIN compound_records cr ON a.record_id = cr.record_id\nWHERE docs.chembl_id = 'CHEMBL5727864' AND cr.molregno = a.molregno\nORDER BY cr.compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: assay",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: assay",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the distinct compound identifiers (CHEMBL IDs) and any available compound names from the specified document CHEMBL5727864. Ensure to join activities with docs to restrict to the correct doc_id and to compound_records to keep provenance of compound keys when provided. Return each compound once only.",
+    "sql": "WITH act AS (SELECT a.activity_id, a.molecule_chembl_id, a.molregno, a.doc_id, a.record_id\n    FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE docs.chembl_id = 'CHEMBL5727864')),\nmd AS (SELECT md.molregno, md.pref_name\n    FROM molecule_dictionary md),\ncr AS (SELECT cr.molregno, cr.compound_name\n    FROM compound_records cr)\nSELECT DISTINCT act.molecule_chembl_id AS compound_chembl_id, cr.compound_name\nFROM act\nJOIN md ON act.molregno = md.molregno\nLEFT JOIN cr ON act.molregno = cr.molregno\nORDER BY cr.compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all distinct molecules (CHEMBL IDs and corresponding compound names) that are reported in document CHEMBL5727864. The query must return one row per molecule regardless of how many activities it has in the document. Use the activities table filtered by document, join to molecule_dictionary to get the public CHEMBL identifier and preferred name, and join to compound_records to retrieve any compound_key or compound_name fields when available. Preserve DISTINCT on the combination of molecule CHEMBL ID and compound name to avoid duplicate rows caused by multiple activity records for the same molecule.",
+    "sql": "WITH act AS (SELECT a.activity_id, a.molregno, a.doc_id, a.record_id\n    FROM activities a WHERE a.doc_id = (SELECT doc_id FROM docs WHERE docs.chembl_id = 'CHEMBL5727864'))\nSELECT DISTINCT\n  md.chembl_id AS compound_chembl_id,\n  cr.compound_name\nFROM act\nJOIN molecule_dictionary md ON act.molregno = md.molregno\nLEFT JOIN compound_records cr ON act.molregno = cr.molregno\nORDER BY cr.compound_name;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n9 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n12 | 0 | 0 | SCALAR SUBQUERY 1\n17 | 12 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n30 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?) LEFT-JOIN\n60 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n61 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 878,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

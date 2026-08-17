@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl3974_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl3974_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve IC50 activity rows for human single-protein target CHEMBL3974 (Proteinase-activated receptor 1) with pChEMBL values. The SQL appears correct: it joins activities to assays, target_dictionary, compound_structures, and molecule_dictionary, filters for tid=3974, assay_type='SINGLE PROTEIN', assay_organism='Homo sapiens', standard_relation='=', standard_type='IC50', and non-null pchembl_value. However, the result set is empty (row_count: 0). This could be due to:\\n\\n1. No activities meeting all criteria exist in the database (e.g., no IC50 activities for this target with pChEMBL values).\\n2. The target tid=3974 may not have any SINGLE PROTEIN assays with human organism and IC50 standard_type.\\n3. The assay_type filter 'SINGLE PROTEIN' may not match the actual assay_type values (e.g., the target might be classified differently).\\n4. The assay_organism filter 'Homo sapiens' may not match the actual organism string (e.g., 'Human' vs 'Homo sapiens').\\n5. The standard_type 'IC50' may not be the exact string used (e.g., case sensitivity or alternative naming).\\n\\nGiven the empty result, the query logic is likely correct but the data may not satisfy the constraints. The SQL is well-formed and follows the required joins and filters. No obvious syntax or logical errors are present.\",\n  \"score\": 90,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve IC50 activity rows for human single-protein target CHEMBL3974 (Proteinase-activated receptor 1) with pChEMBL values. The SQL appears correct: it joins activities to assays, target_dictionary, compound_structures, and molecule_dictionary, filters for tid=3974, assay_type='SINGLE PROTEIN', assay_organism='Homo sapiens', standard_relation='=', standard_type='IC50', and non-null pchembl_value. However, the result set is empty (row_count: 0). This could be due to:\n\n1. No activities meeting all criteria exist in the database (e.g., no IC50 activities for this target with pChEMBL values).\n2. The target tid=3974 may not have any SINGLE PROTEIN assays with human organism and IC50 standard_type.\n3. The assay_type filter 'SINGLE PROTEIN' may not match the actual assay_type values (e.g., the target might be classified differently).\n4. The assay_organism filter 'Homo sapiens' may not match the actual organism string (e.g., 'Human' vs 'Homo sapiens').\n5. The standard_type 'IC50' may not be the exact string used (e.g., case sensitivity or alternative naming).\n\nGiven the empty result, the query logic is likely correct but the data may not satisfy the constraints. The SQL is well-formed and follows the required joins and filters. No obvious syntax or logical errors are present.",
+      "score": 90,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3974_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3974_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl3974_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

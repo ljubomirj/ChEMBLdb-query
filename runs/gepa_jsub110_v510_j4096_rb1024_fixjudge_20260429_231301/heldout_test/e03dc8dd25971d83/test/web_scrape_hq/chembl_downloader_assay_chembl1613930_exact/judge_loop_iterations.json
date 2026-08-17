@@ -1,0 +1,25 @@
+[
+  {
+    "n": 1,
+    "up": "Select: activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, compound_structures.standard_inchi, compound_structures.standard_inchi_key. Source: activities, assays, compound_structures. Join: activities.assay_id = assays.assay_id AND activities.molregno = compound_structures.molregno. Filter: assays.chembl_id = 'CHEMBL1613930'.",
+    "sql": "SELECT activities.activity_id, activities.standard_value, activities.standard_units, activities.standard_relation, activities.standard_type, compound_structures.canonical_smiles, compound_structures.standard_inchi, compound_structures.standard_inchi_key FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN compound_structures ON activities.molregno = compound_structures.molregno WHERE assays.chembl_id = 'CHEMBL1613930'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 4970,
+    "res_columns": [
+      "activity_id",
+      "standard_value",
+      "standard_units",
+      "standard_relation",
+      "standard_type",
+      "canonical_smiles",
+      "standard_inchi",
+      "standard_inchi_key"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieved activity values and structures for compounds tested in assay CHEMBL1613930. The result includes all requested columns: activity_id, standard_value, standard_units, standard_relation, standard_type, canonical_smiles, standard_inchi, and standard_inchi_key. The sample shows 150 rows out of 4970 total rows, with data distributed across the result set. All columns contain valid data, and the structures (SMILES, InChI, InChI Key) are present for each activity record. The query execution plan shows efficient index usage on assays, activities, and compound_structures tables.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

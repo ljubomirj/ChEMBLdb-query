@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 MANIFEST_DIR = Path("tests/v5_manifests/web_scrape_hq")
-REGISTRY_PATH = Path("tests/cases/web_scrape_hq_cases.json")
+REGISTRY_PATH = Path("cases/registries/archive/web_scrape_hq_cases.json")
 
 BAD_CHARS = ["[", "]", ","]
 

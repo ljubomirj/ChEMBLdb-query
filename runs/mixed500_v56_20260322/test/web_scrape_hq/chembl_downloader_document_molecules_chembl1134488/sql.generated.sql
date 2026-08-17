@@ -1,0 +1,11 @@
+SELECT DISTINCT
+    md.chembl_id,
+    cr.compound_name,
+    cs.canonical_smiles
+FROM docs d
+JOIN compound_records cr ON d.doc_id = cr.doc_id
+JOIN molecule_dictionary md ON cr.molregno = md.molregno
+JOIN compound_structures cs ON cs.molregno = md.molregno
+WHERE d.chembl_id = 'CHEMBL1134488'
+  AND cs.canonical_smiles IS NOT NULL
+ORDER BY md.chembl_id, cr.compound_name, cs.canonical_smiles

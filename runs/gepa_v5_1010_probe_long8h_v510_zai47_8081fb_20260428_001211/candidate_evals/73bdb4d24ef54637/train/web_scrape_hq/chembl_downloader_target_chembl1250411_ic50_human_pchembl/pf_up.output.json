@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1250411_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1250411_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1250411 (Short transient receptor potential channel 5), restricted to exact standard relation '=' rows with non-null pChEMBL values.\n\n2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\n3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures\n\n4. Logic: Filter activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Join to assays on assay_id, to target_dictionary on tid, to molecule_dictionary on molregno, and to compound_structures on molregno. Restrict to target_dictionary.chembl_id = 'CHEMBL1250411'. Order by molecule_chembl_id, assay_chembl_id. Limit to 1000 rows.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1250411 (Short transient receptor potential channel 5), restricted to exact standard relation '=' rows with non-null pChEMBL values.\n\n2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\n\n3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures\n\n4. Logic: Filter activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Join to assays on assay_id, to target_dictionary on tid, to molecule_dictionary on molregno, and to compound_structures on molregno. Restrict to target_dictionary.chembl_id = 'CHEMBL1250411'. Order by molecule_chembl_id, assay_chembl_id. Limit to 1000 rows."
+    }
+  }
+}

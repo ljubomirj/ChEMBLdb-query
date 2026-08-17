@@ -1,0 +1,13 @@
+SELECT
+  cs_sub.canonical_smiles,
+  met.substrate_record_id,
+  met.metabolite_record_id,
+  cr_sub.compound_key AS substrate_compound_key,
+  cr_met.compound_key AS metabolite_compound_key,
+  met.met_conversion,
+  met.pathway_key
+FROM metabolism met
+JOIN compound_records cr_sub ON met.substrate_record_id = cr_sub.record_id
+JOIN compound_structures cs_sub ON cr_sub.molregno = cs_sub.molregno
+LEFT JOIN compound_records cr_met ON met.metabolite_record_id = cr_met.record_id
+LIMIT 200

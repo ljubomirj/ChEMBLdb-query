@@ -1,0 +1,7 @@
+Select molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+From molecule_dictionary
+Left Join compound_records on molecule_dictionary.molregno = compound_records.molregno
+Left Join docs on compound_records.doc_id = docs.doc_id
+Where docs.chembl_id = 'CHEMBL1136837'
+Left Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno
+Order By molecule_chembl_id

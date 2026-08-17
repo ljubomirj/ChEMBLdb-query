@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the ChEMBL ID, preferred name, and maximum phase for all approved drugs (max_phase = 4). Include the mechanism of action description, the action type, and the target ChEMBL ID and preferred name. The mechanism of action must be a positive modulator (action_type parent_type = 'POSITIVE MODULATOR'). Join drug_mechanism to molecule_dictionary, action_type, and target_dictionary.",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_pref_name, md.max_phase, dmmech.mechanism_of_action, dmmech.action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_pref_name FROM drug_mechanism dmmech JOIN molecule_dictionary md ON dmmech.molregno = md.molregno JOIN action_type atype ON dmmech.action_type = atype.action_type JOIN target_dictionary td ON dmmech.tid = td.tid WHERE atype.parent_type = 'POSITIVE MODULATOR' AND md.max_phase = 4",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n9 | 0 | 144 | SCAN dmmech\n12 | 0 | 0 | BLOOM FILTER ON atype (action_type=?)\n20 | 0 | 33 | SEARCH atype USING INDEX sqlite_autoindex_action_type_1 (action_type=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n57 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 773,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_pref_name",
+      "max_phase",
+      "mechanism_of_action",
+      "action_type",
+      "target_chembl_id",
+      "target_pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

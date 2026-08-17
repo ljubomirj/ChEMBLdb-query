@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs that have an indication for neoplasm (mesh_heading or efo_term containing 'neoplasm'). For each, return the drug's ChEMBL ID, preferred name, canonical SMILES, indication ID (drugind_id), the indication label (mesh_heading and efo_term), and the max phase for that specific indication.",
+    "sql": "WITH neoplasm_indications AS (\n  SELECT\n    di.drugind_id,\n    di.mesh_id,\n    di.mesh_heading,\n    di.efo_id,\n    di.efo_term,\n    di.max_phase_for_ind,\n    cr.molregno\n  FROM drug_indication di\n  JOIN compound_records cr ON di.record_id = cr.record_id\n  WHERE (di.mesh_heading LIKE '%neoplasm%' OR di.efo_term LIKE '%neoplasm%')\n), approved_drugs AS (\n  SELECT DISTINCT\n    ni.molregno,\n    ni.drugind_id,\n    ni.mesh_id,\n    ni.mesh_heading,\n    ni.efo_id,\n    ni.efo_term,\n    ni.max_phase_for_ind\n  FROM neoplasm_indications ni\n  JOIN molecule_dictionary md ON ni.molregno = md.molregno\n  WHERE md.max_phase = 4\n)\nSELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  ad.drugind_id,\n  ad.mesh_heading,\n  ad.efo_term,\n  ad.max_phase_for_ind\nFROM approved_drugs ad\nJOIN molecule_dictionary md ON ad.molregno = md.molregno\nLEFT JOIN compound_structures cs ON ad.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n2 | 0 | 0 | CO-ROUTINE approved_drugs\n10 | 2 | 180 | SCAN di USING INDEX drug_indication_pk\n19 | 2 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n25 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n56 | 0 | 142 | SCAN ad\n59 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n66 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 6839,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

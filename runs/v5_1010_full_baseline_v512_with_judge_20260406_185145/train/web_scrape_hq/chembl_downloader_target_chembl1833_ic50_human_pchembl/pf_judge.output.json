@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1833_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1833_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve IC50 activity rows with pChEMBL values for the human target CHEMBL1833 (5-hydroxytryptamine receptor 2B). The SQL appears correct: it filters for exact standard relation '=', non-null pChEMBL values, human organism, and target tid=1833. However, the result set is empty (row_count: 0). This could indicate either no matching data exists in the current snapshot or the target tid=1833 does not correspond to the described target (5-hydroxytryptamine receptor 2B). The schema shows target_dictionary.tid=1833 is a valid target, but the specific activity type (IC50) and standard relation '=' may not have entries for this target in the current dataset. The query logic is sound, but the result suggests either no data matches or a potential mismatch in target identification.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve IC50 activity rows with pChEMBL values for the human target CHEMBL1833 (5-hydroxytryptamine receptor 2B). The SQL appears correct: it filters for exact standard relation '=', non-null pChEMBL values, human organism, and target tid=1833. However, the result set is empty (row_count: 0). This could indicate either no matching data exists in the current snapshot or the target tid=1833 does not correspond to the described target (5-hydroxytryptamine receptor 2B). The schema shows target_dictionary.tid=1833 is a valid target, but the specific activity type (IC50) and standard relation '=' may not have entries for this target in the current dataset. The query logic is sound, but the result suggests either no data matches or a potential mismatch in target identification.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1833_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1833_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1833_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

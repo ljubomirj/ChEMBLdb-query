@@ -1,0 +1,67 @@
+{
+  "case_id": "all_single_protein_targets_accession_sequence",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/8e9665838e7ec322/train/web_scrape_hq/all_single_protein_targets_accession_sequence/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/8e9665838e7ec322/train/web_scrape_hq/all_single_protein_targets_accession_sequence/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/8e9665838e7ec322/train/web_scrape_hq/all_single_protein_targets_accession_sequence/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "templated_from_faq_case",
+    "source_title": "Templated from FAQ protein target metadata example",
+    "source_url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples",
+    "realism_level": "templated_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "sort_keys": [
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "protein_accession",
+      "protein_sequence"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "target_chembl_id": "target_chembl_id",
+      "chembl_id": "target_chembl_id",
+      "target_name": "target_name",
+      "pref_name": "target_name",
+      "target_type": "target_type",
+      "protein_accession": "protein_accession",
+      "accession": "protein_accession",
+      "protein_sequence": "protein_sequence",
+      "sequence": "protein_sequence"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

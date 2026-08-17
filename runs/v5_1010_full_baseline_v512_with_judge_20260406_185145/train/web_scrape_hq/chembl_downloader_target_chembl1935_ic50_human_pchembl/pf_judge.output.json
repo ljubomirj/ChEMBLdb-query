@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1935_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1935_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result shows 161 rows of IC50 activities for the human target CHEMBL1935 (Aldehyde dehydrogenase, mitochondrial). The query correctly filters for exact standard relations '=', non-null pChEMBL values, human single-protein target, and includes the required columns. The sample rows display canonical SMILES and pChEMBL values as expected. The row count (161) is less than the requested limit of 1000, indicating the query is correctly bounded. The output columns match the requested schema, and the ordering by molecule_chembl_id and assay_chembl_id is correct. No deduplication was applied, preserving row multiplicity as per the instructions. The result appears to be accurate and complete for the given task.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current result shows 161 rows of IC50 activities for the human target CHEMBL1935 (Aldehyde dehydrogenase, mitochondrial). The query correctly filters for exact standard relations '=', non-null pChEMBL values, human single-protein target, and includes the required columns. The sample rows display canonical SMILES and pChEMBL values as expected. The row count (161) is less than the requested limit of 1000, indicating the query is correctly bounded. The output columns match the requested schema, and the ordering by molecule_chembl_id and assay_chembl_id is correct. No deduplication was applied, preserving row multiplicity as per the instructions. The result appears to be accurate and complete for the given task.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1935_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1935_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1935_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

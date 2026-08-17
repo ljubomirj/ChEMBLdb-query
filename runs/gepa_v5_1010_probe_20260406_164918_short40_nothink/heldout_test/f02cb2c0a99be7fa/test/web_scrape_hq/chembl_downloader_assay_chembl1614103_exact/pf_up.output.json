@@ -1,0 +1,32 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_f02cb2c0a99be7fa.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1614103_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1614103_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "f02cb2c0a99be7fa",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": [\n    \"Select molecule_chembl_id, canonical_smiles, standard_type, standard_relation, standard_value, standard_units\",\n    \"From activities\",\n    \"Join compound_structures on activities.molregno = compound_structures.molregno\",\n    \"Join assays on activities.assay_id = assays.assay_id\",\n    \"Join target_dictionary on assays.tid = target_dictionary.tid\",\n    \"Filter assays.chembl_id = 'CHEMBL1614103'\",\n    \"Filter activities.standard_value IS NOT NULL\",\n    \"Filter activities.standard_relation = '='\",\n    \"Return\",\n    \"Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units\",\n    \"Limit 1000\"\n  ]\n}",
+    "parsed_json": {
+      "up": [
+        "Select molecule_chembl_id, canonical_smiles, standard_type, standard_relation, standard_value, standard_units",
+        "From activities",
+        "Join compound_structures on activities.molregno = compound_structures.molregno",
+        "Join assays on activities.assay_id = assays.assay_id",
+        "Join target_dictionary on assays.tid = target_dictionary.tid",
+        "Filter assays.chembl_id = 'CHEMBL1614103'",
+        "Filter activities.standard_value IS NOT NULL",
+        "Filter activities.standard_relation = '='",
+        "Return",
+        "Sort by canonical_smiles, chembl_id, standard_type, standard_relation, standard_value, standard_units",
+        "Limit 1000"
+      ]
+    }
+  }
+}

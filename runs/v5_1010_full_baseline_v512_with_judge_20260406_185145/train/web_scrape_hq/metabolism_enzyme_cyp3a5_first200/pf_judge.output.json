@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp3a5_first200.json",
+  "case_id": "metabolism_enzyme_cyp3a5_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query successfully joins the metabolism table with compound_records, molecule_dictionary (for substrate and parent compounds), compound_structures, and target_dictionary to filter for CYP3A5. However, the result set is empty (row_count: 0), which suggests that either:\\n1. There are no metabolism records where the enzyme target is CYP3A5 with the specified joins.\\n2. The join conditions may be too restrictive (e.g., enzyme_tid may not match pref_name directly, or the target_dictionary may not have a pref_name 'CYP3A5' for the enzyme).\\n3. The substrate_record_id may not be correctly linked to compound_records, or the parent compound join may be incorrect (using met_id = parent.molregno may not be the intended relationship).\\n\\nGiven the empty result, the current SQL does not produce the expected output. The logic for joining parent compounds and filtering by enzyme target may need adjustment. However, the query structure is correct in terms of table joins and column selection, and the limit is applied as requested. The issue likely lies in the data or the specific join conditions rather than the query syntax.\",\n  \"score\": 0.7,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query successfully joins the metabolism table with compound_records, molecule_dictionary (for substrate and parent compounds), compound_structures, and target_dictionary to filter for CYP3A5. However, the result set is empty (row_count: 0), which suggests that either:\n1. There are no metabolism records where the enzyme target is CYP3A5 with the specified joins.\n2. The join conditions may be too restrictive (e.g., enzyme_tid may not match pref_name directly, or the target_dictionary may not have a pref_name 'CYP3A5' for the enzyme).\n3. The substrate_record_id may not be correctly linked to compound_records, or the parent compound join may be incorrect (using met_id = parent.molregno may not be the intended relationship).\n\nGiven the empty result, the current SQL does not produce the expected output. The logic for joining parent compounds and filtering by enzyme target may need adjustment. However, the query structure is correct in terms of table joins and column selection, and the limit is applied as requested. The issue likely lies in the data or the specific join conditions rather than the query syntax.",
+      "score": 0.7,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a5_first200/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a5_first200/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/metabolism_enzyme_cyp3a5_first200/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "case_id": "chembl_downloader_document_molecules_chembl1123860",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "/Users/ljubomir/ChEMBLdb-query/database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_evals/b048b558075d1dc8/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123860/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_evals/b048b558075d1dc8/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123860/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_evals/b048b558075d1dc8/train/web_scrape_hq/chembl_downloader_document_molecules_chembl1123860/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/documentation.txt"
+  },
+  "metadata": {
+    "family": "document",
+    "origin": "promoted_from_web_scrape",
+    "source_title": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "source_url": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "tags": [
+      "document",
+      "v4_promoted",
+      "local_llm_surface_repair"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "chembl_id",
+      "compound_name": "compound_name",
+      "canonical_smiles": "canonical_smiles"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Auto-generated v5 manifest from v4 registry entry.\nv5.1010 LocalLLM repair: generated up_exec via PB_SQL."
+  }
+}

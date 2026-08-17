@@ -1,0 +1,37 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 15,108 rows of IC50 activities for CHEMBL2292 with standard units in nM, but the sample rows show duplicate compound_chembl_id entries (e.g., CHEMBL189657 appears 5 times with different compound_keys and PubMed IDs). The query correctly filters for IC50, nM units, exact relation '=', non-null standard_value, target CHEMBL2292, and requires PubMed ID. However, the presence of multiple rows per compound indicates the result is not deduplicated per compound as implied by the task's requirement to list each compound's ChEMBL ID, SMILES, compound key, PubMed ID or DOI, assay description, and target name and organism. The task expects one row per compound (with its associated data), but the current query returns multiple rows per compound due to multiple activity records (different assays, compound_keys, or PubMed IDs). The query does not enforce uniqueness at the compound level, violating the requirement for a clean per-compound listing. Additionally, the sample rows show empty activity_comment fields, but the query includes it, which is acceptable as it's part of the requested columns. The PubMed ID filter is correctly applied (d.pubmed_id IS NOT NULL), and SMILES is present via cs.canonical_smiles. The target filters are correct. However, the row multiplicity is a critical flaw.\",\n  \"score\": 0.65,\n  \"decision\": \"continue_iterating\",\n  \"reason\": \"The result contains duplicate compound entries (multiple rows per compound) instead of a single row per compound with aggregated or distinct data. The query must be adjusted to ensure one row per compound (e.g., by using DISTINCT on compound-level columns or aggregating activity records). The current output does not meet the requirement for a clean per-compound listing with all requested metadata.\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 15,108 rows of IC50 activities for CHEMBL2292 with standard units in nM, but the sample rows show duplicate compound_chembl_id entries (e.g., CHEMBL189657 appears 5 times with different compound_keys and PubMed IDs). The query correctly filters for IC50, nM units, exact relation '=', non-null standard_value, target CHEMBL2292, and requires PubMed ID. However, the presence of multiple rows per compound indicates the result is not deduplicated per compound as implied by the task's requirement to list each compound's ChEMBL ID, SMILES, compound key, PubMed ID or DOI, assay description, and target name and organism. The task expects one row per compound (with its associated data), but the current query returns multiple rows per compound due to multiple activity records (different assays, compound_keys, or PubMed IDs). The query does not enforce uniqueness at the compound level, violating the requirement for a clean per-compound listing. Additionally, the sample rows show empty activity_comment fields, but the query includes it, which is acceptable as it's part of the requested columns. The PubMed ID filter is correctly applied (d.pubmed_id IS NOT NULL), and SMILES is present via cs.canonical_smiles. The target filters are correct. However, the row multiplicity is a critical flaw.",
+      "score": 0.65,
+      "decision": "continue_iterating",
+      "reason": "The result contains duplicate compound entries (multiple rows per compound) instead of a single row per compound with aggregated or distinct data. The query must be adjusted to ensure one row per compound (e.g., by using DISTINCT on compound-level columns or aggregating activity records). The current output does not meet the requirement for a clean per-compound listing with all requested metadata."
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_dual_specificity_tyrosine_phosphorylation_regulate/pf_judge.generated_artifact_record.json"
+  }
+}

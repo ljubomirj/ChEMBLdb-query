@@ -1,0 +1,58 @@
+{
+  "case_id": "iwatobipen_ki_target_tid_pref_name",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b4877c25b1214c34/train/web_scrape_hq/iwatobipen_ki_target_tid_pref_name/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b4877c25b1214c34/train/web_scrape_hq/iwatobipen_ki_target_tid_pref_name/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b4877c25b1214c34/train/web_scrape_hq/iwatobipen_ki_target_tid_pref_name/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "explicit_from_source_description",
+    "source_title": "GET TID and PREF_NAME from CHEMBL",
+    "source_url": "https://iwatobipen.wordpress.com/2017/06/22/get-tid-and-pref_name-from-chembl/",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "target_tid",
+      "target_name"
+    ],
+    "sort_keys": [
+      "target_tid",
+      "target_name"
+    ],
+    "tags": [
+      "other",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "tid": "target_tid",
+      "target_tid": "target_tid",
+      "pref_name": "target_name",
+      "target_name": "target_name"
+    },
+    "float_cols": [],
+    "int_cols": [
+      "target_tid"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

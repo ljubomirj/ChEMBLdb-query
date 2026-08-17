@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2c19_first200.json",
+  "case_id": "metabolism_enzyme_cyp2c19_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:8081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "raw_text": "Objective: Retrieve the first 200 metabolism records for enzyme CYP2C19, showing substrate structures, compound names, metabolism conversion, pathway, and organism.\n\nOutput: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\n\nSource: metabolism, compound_dictionary, compound_structures\n\nLogic: \n- Join metabolism to compound_dictionary on metabolism.substrate_record_id = compound_dictionary.record_id for substrate compound names.\n- Join metabolism to compound_dictionary on metabolism.parent_record_id = compound_dictionary.record_id for parent compound names.\n- Join metabolism to compound_structures on metabolism.substrate_record_id = compound_structures.record_id for substrate canonical_smiles.\n- Filter where metabolism.enzyme_name = 'CYP2C19'.\n- Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name.\n- Limit to 200 rows.",
+    "parsed_json": {
+      "up": "Objective: Retrieve the first 200 metabolism records for enzyme CYP2C19, showing substrate structures, compound names, metabolism conversion, pathway, and organism.\n\nOutput: canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name\n\nSource: metabolism, compound_dictionary, compound_structures\n\nLogic: \n- Join metabolism to compound_dictionary on metabolism.substrate_record_id = compound_dictionary.record_id for substrate compound names.\n- Join metabolism to compound_dictionary on metabolism.parent_record_id = compound_dictionary.record_id for parent compound names.\n- Join metabolism to compound_structures on metabolism.substrate_record_id = compound_structures.record_id for substrate canonical_smiles.\n- Filter where metabolism.enzyme_name = 'CYP2C19'.\n- Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name.\n- Limit to 200 rows."
+    }
+  }
+}

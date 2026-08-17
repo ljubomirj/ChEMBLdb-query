@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/human_sub100nm_ec50_first500.json",
+  "case_id": "human_sub100nm_ec50_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query is intended to retrieve the first 500 compounds with EC50 activity below 100 nM against human single-protein targets, including structures and activity details. The SQL query correctly joins the necessary tables (activities, assays, target_dictionary, molecule_dictionary, compound_structures) and applies all required filters: target_type = 'SINGLE PROTEIN', assay_organism = 'Homo sapiens', bao_endpoint = 'EC50', standard_type = 'EC50', standard_value < 100, standard_units = 'nM', standard_relation = '=', and non-null standard_value/standard_units. The query also orders by molecule_chembl_id, canonical_smiles, standard_type, standard_value, and standard_units, and limits to 500 rows. However, the result set is empty (row_count: 0), which suggests either no data matches all criteria or there is an issue with the query logic. Given the strict filters (especially standard_relation = '=' and standard_value < 100 for EC50), it is possible that the data does not contain EC50 values exactly equal to a numeric value below 100 nM, or the units might not be strictly 'nM' (e.g., some EC50 values might be in pM or other units). The query also uses DISTINCT, which is appropriate to avoid duplicates. The sample output shows no rows, but this could be due to the data not meeting the exact criteria rather than a query error. The query structure aligns with the task requirements, but the result is empty, indicating either no qualifying compounds exist in the dataset or the filters are too restrictive. The user might need to relax the standard_relation or units filter, but the query as written is logically correct for the given task.\",\n  \"score\": 0.85,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The query is intended to retrieve the first 500 compounds with EC50 activity below 100 nM against human single-protein targets, including structures and activity details. The SQL query correctly joins the necessary tables (activities, assays, target_dictionary, molecule_dictionary, compound_structures) and applies all required filters: target_type = 'SINGLE PROTEIN', assay_organism = 'Homo sapiens', bao_endpoint = 'EC50', standard_type = 'EC50', standard_value < 100, standard_units = 'nM', standard_relation = '=', and non-null standard_value/standard_units. The query also orders by molecule_chembl_id, canonical_smiles, standard_type, standard_value, and standard_units, and limits to 500 rows. However, the result set is empty (row_count: 0), which suggests either no data matches all criteria or there is an issue with the query logic. Given the strict filters (especially standard_relation = '=' and standard_value < 100 for EC50), it is possible that the data does not contain EC50 values exactly equal to a numeric value below 100 nM, or the units might not be strictly 'nM' (e.g., some EC50 values might be in pM or other units). The query also uses DISTINCT, which is appropriate to avoid duplicates. The sample output shows no rows, but this could be due to the data not meeting the exact criteria rather than a query error. The query structure aligns with the task requirements, but the result is empty, indicating either no qualifying compounds exist in the dataset or the filters are too restrictive. The user might need to relax the standard_relation or units filter, but the query as written is logically correct for the given task.",
+      "score": 0.85,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_sub100nm_ec50_first500/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_sub100nm_ec50_first500/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/human_sub100nm_ec50_first500/pf_judge.generated_artifact_record.json"
+  }
+}

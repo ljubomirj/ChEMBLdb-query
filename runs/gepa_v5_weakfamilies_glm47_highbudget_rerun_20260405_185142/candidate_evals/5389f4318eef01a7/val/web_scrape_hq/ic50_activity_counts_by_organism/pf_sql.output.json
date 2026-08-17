@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_5389f4318eef01a7.yaml",
+  "prompt_pack_version": "v5.11",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/ic50_activity_counts_by_organism.json",
+  "case_id": "ic50_activity_counts_by_organism",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "5389f4318eef01a7",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT assays.assay_organism AS organism, COUNT(*) AS ic50_count FROM activities JOIN assays ON activities.assay_id = assays.assay_id WHERE activities.standard_type = 'IC50' GROUP BY assays.assay_organism ORDER BY assays.assay_organism, ic50_count\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT assays.assay_organism AS organism, COUNT(*) AS ic50_count FROM activities JOIN assays ON activities.assay_id = assays.assay_id WHERE activities.standard_type = 'IC50' GROUP BY assays.assay_organism ORDER BY assays.assay_organism, ic50_count"
+    }
+  }
+}

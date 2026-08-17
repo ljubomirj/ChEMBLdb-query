@@ -1,0 +1,25 @@
+{
+  "mode": "forward_chain",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_mapk14_ic50_human_pchembl",
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "provider": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4"
+  },
+  "run_root": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain_b",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\"up\": \"Select molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value from activity rows against target CHEMBL260. Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures. Filter: target_type = 'SINGLE PROTEIN', tax_id = 9606, standard_type = 'IC50', standard_relation = '=', pchembl_value IS NOT NULL. Do not deduplicate\u2014preserve raw activity row multiplicity. Sort by molecule_chembl_id then assay_chembl_id.\"}\n```",
+    "parsed_json": {
+      "up": "Select molecule_chembl_id, assay_chembl_id, canonical_smiles, target_type, tax_id, standard_type, pchembl_value from activity rows against target CHEMBL260. Join activities to assays, target_dictionary, molecule_dictionary, and compound_structures. Filter: target_type = 'SINGLE PROTEIN', tax_id = 9606, standard_type = 'IC50', standard_relation = '=', pchembl_value IS NOT NULL. Do not deduplicate\u2014preserve raw activity row multiplicity. Sort by molecule_chembl_id then assay_chembl_id."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct compounds that are reported in the document with ChEMBL ID CHEMBL5725513. For each compound, provide its ChEMBL identifier (from molecule_dictionary.chembl_id), its preferred name (molecule_dictionary.pref_name), and its canonical SMILES (from compound_structures.canonical_smiles) if available. The document is identified via the docs table using chembl_id = 'CHEMBL5725513'. Compounds are linked to documents through the activities table (via doc_id) or through compound_records (via doc_id). Return each compound only once.",
+    "sql": "WITH doc AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725513'), compounds AS (SELECT molregno FROM compound_records WHERE doc_id = (SELECT doc_id FROM doc) AND molregno IS NOT NULL UNION SELECT molregno FROM activities WHERE doc_id = (SELECT doc_id FROM doc) AND molregno IS NOT NULL) SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM compounds c JOIN molecule_dictionary md ON c.molregno = md.molregno LEFT JOIN compound_structures cs ON c.molregno = cs.molregno ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 15\n3 | 0 | 0 | MATERIALIZE compounds\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n13 | 6 | 0 | SCALAR SUBQUERY 2\n18 | 13 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n37 | 5 | 0 | UNION USING TEMP B-TREE\n40 | 37 | 0 | SEARCH activities USING INDEX fk_act_doc_id (doc_id=?)\n43 | 37 | 0 | SCALAR SUBQUERY 4\n48 | 43 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n81 | 0 | 0 | SCAN c\n83 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n90 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n113 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n114 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 818,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

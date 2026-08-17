@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649951_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649951_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the UP_EXEC specification: it joins molecule_dictionary, compound_structures, activities, and assays; filters by assay CHEMBL4649951, non-null standard_value, and exact equality relation; and returns the requested columns. The result set (67,937 rows) is substantial and includes diverse standard_type values (e.g., Percent Effect) with units, which aligns with the user's request for exact activity values. The sample rows show valid data with proper sorting. No deduplication was applied, preserving row multiplicity as required. The execution matches the task constraints and output schema.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the UP_EXEC specification: it joins molecule_dictionary, compound_structures, activities, and assays; filters by assay CHEMBL4649951, non-null standard_value, and exact equality relation; and returns the requested columns. The result set (67,937 rows) is substantial and includes diverse standard_type values (e.g., Percent Effect) with units, which aligns with the user's request for exact activity values. The sample rows show valid data with proper sorting. No deduplication was applied, preserving row multiplicity as required. The execution matches the task constraints and output schema.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649951_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649951_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4649951_exact/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl4649955_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649955_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nWHERE a.chembl_id = 'CHEMBL4649955'\n  AND act.standard_value IS NOT NULL\n  AND act.standard_relation = '='\nORDER BY md.chembl_id, cs.canonical_smiles, act.standard_type, act.standard_relation, act.standard_value, act.standard_units\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  cs.canonical_smiles,\n  md.chembl_id,\n  act.standard_type,\n  act.standard_relation,\n  act.standard_value,\n  act.standard_units\nFROM molecule_dictionary md\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN activities act ON md.molregno = act.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nWHERE a.chembl_id = 'CHEMBL4649955'\n  AND act.standard_value IS NOT NULL\n  AND act.standard_relation = '='\nORDER BY md.chembl_id, cs.canonical_smiles, act.standard_type, act.standard_relation, act.standard_value, act.standard_units"
+    }
+  }
+}

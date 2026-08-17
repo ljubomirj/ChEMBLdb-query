@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_b6f0acef0eabd009.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+  "case_id": "abhik_human_sub50nm_single_protein_first200",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "b6f0acef0eabd009",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT DISTINCT\\n  activities.activity_id,\\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\\n  target_dictionary.chembl_id AS target_chembl_id,\\n  target_dictionary.pref_name AS target_name,\\n  activities.standard_type,\\n  activities.standard_value,\\n  activities.standard_units\\nFROM activities\\nINNER JOIN assays ON activities.assay_id = assays.assay_id\\nINNER JOIN target_dictionary ON assays.tid = target_dictionary.tid\\nINNER JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\\nWHERE target_dictionary.organism = 'Homo sapiens'\\n  AND target_dictionary.target_type = 'SINGLE PROTEIN'\\n  AND activities.standard_units = 'nM'\\n  AND activities.standard_type IN ('EC50', 'IC50', 'AC50')\\n  AND activities.standard_value < 50\\nORDER BY activities.activity_id\\nLIMIT 200;\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  activities.activity_id,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name,\n  activities.standard_type,\n  activities.standard_value,\n  activities.standard_units\nFROM activities\nINNER JOIN assays ON activities.assay_id = assays.assay_id\nINNER JOIN target_dictionary ON assays.tid = target_dictionary.tid\nINNER JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nWHERE target_dictionary.organism = 'Homo sapiens'\n  AND target_dictionary.target_type = 'SINGLE PROTEIN'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_type IN ('EC50', 'IC50', 'AC50')\n  AND activities.standard_value < 50\nORDER BY activities.activity_id\nLIMIT 200;"
+    }
+  }
+}

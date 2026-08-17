@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_2f5854235c27002f.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/metabolism_enzyme_cyp2b6_first200.json",
+  "case_id": "metabolism_enzyme_cyp2b6_first200",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "candidate_hash": "2f5854235c27002f",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```sql\nSELECT\n  substr_struct.canonical_smiles,\n  substr_cr.compound_name AS substrate_compound_name,\n  parent_cr.compound_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nFROM metabolism m\nJOIN compound_records substr_cr ON m.substrate_record_id = substr_cr.record_id\nJOIN molecule_dictionary substr_md ON substr_cr.molregno = substr_md.molregno\nJOIN compound_structures substr_struct ON substr_md.molregno = substr_struct.molregno\nLEFT JOIN compound_records parent_cr ON m.drug_record_id = parent_cr.record_id\nWHERE m.enzyme_name = 'CYP2B6'\nORDER BY\n  substr_struct.canonical_smiles,\n  substr_cr.compound_name,\n  parent_cr.compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nLIMIT 200\n```",
+    "parsed_json": {
+      "sql": "SELECT\n  substr_struct.canonical_smiles,\n  substr_cr.compound_name AS substrate_compound_name,\n  parent_cr.compound_name AS parent_compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nFROM metabolism m\nJOIN compound_records substr_cr ON m.substrate_record_id = substr_cr.record_id\nJOIN molecule_dictionary substr_md ON substr_cr.molregno = substr_md.molregno\nJOIN compound_structures substr_struct ON substr_md.molregno = substr_struct.molregno\nLEFT JOIN compound_records parent_cr ON m.drug_record_id = parent_cr.record_id\nWHERE m.enzyme_name = 'CYP2B6'\nORDER BY\n  substr_struct.canonical_smiles,\n  substr_cr.compound_name,\n  parent_cr.compound_name,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism,\n  m.enzyme_name\nLIMIT 200"
+    }
+  }
+}

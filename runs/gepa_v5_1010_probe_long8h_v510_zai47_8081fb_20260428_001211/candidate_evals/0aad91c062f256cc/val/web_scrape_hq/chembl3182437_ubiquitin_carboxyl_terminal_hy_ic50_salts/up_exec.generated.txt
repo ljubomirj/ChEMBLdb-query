@@ -1,0 +1,5 @@
+Select: m.chembl_id AS compound_chembl_id, cs.canonical_smiles, r.compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, a.description AS assay_description, act.standard_type, act.standard_relation, act.standard_value, act.standard_units, act.activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism
+Source: molecule_dictionary m, molecule_hierarchy mh, compound_structures cs, compound_records r, activities act, assays a, docs d, target_dictionary t
+Join: m.molregno = mh.molregno, mh.parent_molregno = parent.molregno, parent.chembl_id = 'CHEMBL3182437', m.molregno = r.molregno, r.record_id = act.record_id, act.assay_id = a.assay_id, a.tid = t.tid, r.doc_id = d.doc_id, m.molregno = cs.molregno
+Filter: t.chembl_id IS 'CHEMBL3430885', act.standard_type IS 'IC50'
+Sort: compound_chembl_id ASC, canonical_smiles ASC, compound_key ASC, pubmed_id_or_doi ASC, assay_description ASC, standard_type ASC, standard_relation ASC, standard_value ASC, standard_units ASC, activity_comment ASC, target_chembl_id ASC, target_name ASC, target_organism ASC

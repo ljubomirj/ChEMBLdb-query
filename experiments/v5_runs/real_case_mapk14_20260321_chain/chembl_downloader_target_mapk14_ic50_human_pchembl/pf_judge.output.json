@@ -1,0 +1,30 @@
+{
+  "mode": "forward_chain",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_mapk14_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_mapk14_ic50_human_pchembl",
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "provider": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4"
+  },
+  "run_root": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain",
+  "selected_step": "judge",
+  "up_exec_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain/chembl_downloader_target_mapk14_ic50_human_pchembl/up_exec.generated.txt",
+  "sql_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain/chembl_downloader_target_mapk14_ic50_human_pchembl/sql.generated.sql",
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321_chain/chembl_downloader_target_mapk14_ic50_human_pchembl/result.generated.csv",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements all requirements: joins activities to assays, target_dictionary, molecule_dictionary, and compound_structures; filters on CHEMBL260, SINGLE PROTEIN, tax_id 9606, IC50, exact relation '=', and non-null pChEMBL; preserves row multiplicity (no DISTINCT); orders by molecule_chembl_id then assay_chembl_id; and returns exactly the seven requested columns. The 6269 rows and sample data are consistent with expectations for a well-studied kinase target like MAPK14.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements all requirements: joins activities to assays, target_dictionary, molecule_dictionary, and compound_structures; filters on CHEMBL260, SINGLE PROTEIN, tax_id 9606, IC50, exact relation '=', and non-null pChEMBL; preserves row multiplicity (no DISTINCT); orders by molecule_chembl_id then assay_chembl_id; and returns exactly the seven requested columns. The 6269 rows and sample data are consistent with expectations for a well-studied kinase target like MAPK14.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  }
+}

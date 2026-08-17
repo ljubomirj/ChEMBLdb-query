@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for leukemia. Return the following columns for each drug-indication pair: the molecule's ChEMBL ID (from molecule_dictionary.chembl_id), the drug name (from molecule_dictionary.pref_name), the canonical SMILES (from compound_structures.canonical_smiles), the EFO term ID for the indication (from drug_indication.efo_id), the indication label (from drug_indication.mesh_heading or efo_term), and the maximum phase for that indication (from drug_indication.max_phase_for_ind). Include all drugs with an approved indication for leukemia, regardless of the phase reached in other contexts. Do not limit the number of rows returned.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, COALESCE(di.efo_term, di.mesh_heading) AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading LIKE '%Leukemia%' ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 174 | SCAN di\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n45 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1514,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List approved drugs (molecule_dictionary.max_phase = 4) that have an indication for leukemia. For each drug-indication pair, return the molecule's ChEMBL ID (molecule_dictionary.chembl_id), the drug name (molecule_dictionary.pref_name), the canonical SMILES (compound_structures.canonical_smiles), the EFO term ID for the indication (drug_indication.efo_id), the indication label (drug_indication.mesh_heading or efo_term), and the maximum phase for that specific indication (drug_indication.max_phase_for_ind). Filter for indications where the MeSH heading contains 'Leukemia'.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, COALESCE(di.efo_term, di.mesh_heading) AS indication_label, di.max_phase_for_ind FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND di.mesh_heading LIKE '%Leukemia%' ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 174 | SCAN di\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n47 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1068,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

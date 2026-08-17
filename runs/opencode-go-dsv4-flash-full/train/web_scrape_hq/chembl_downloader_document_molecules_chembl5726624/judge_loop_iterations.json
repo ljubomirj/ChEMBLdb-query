@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "I need a list of distinct molecules that are reported in the document with ChEMBL ID CHEMBL5726624. Return the molecule ChEMBL ID (as molecule_chembl_id), the molecule preferred name (as molecule_name), and the compound record key (as compound_key) if available. Do not sort or limit the results.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.pref_name AS molecule_name, MIN(cr.compound_key) AS compound_key FROM molecule_dictionary md INNER JOIN compound_records cr ON md.molregno = cr.molregno INNER JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5726624' GROUP BY md.chembl_id, md.pref_name;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n16 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n22 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | USE TEMP B-TREE FOR GROUP BY",
+    "res_row_count": 774,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molecule_name",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

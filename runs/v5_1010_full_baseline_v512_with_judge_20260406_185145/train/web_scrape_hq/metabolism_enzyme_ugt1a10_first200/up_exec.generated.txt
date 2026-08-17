@@ -1,0 +1,11 @@
+Select canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Join metabolism on metabolism.met_id = substrate.met_id
+Join compound_records as substrate_records on metabolism.substrate_record_id = substrate_records.record_id
+Join molecule_dictionary as substrate on substrate_records.molregno = substrate.molregno
+Left Join compound_structures as substrate_structures on substrate.molregno = substrate_structures.molregno
+Join molecule_dictionary as parent on metabolism.drug_record_id = parent.molregno
+Left Join compound_structures as parent_structures on parent.molregno = parent_structures.molregno
+Join target_dictionary as enzyme on enzyme.tid = substrate.tid
+Filter enzyme.pref_name = 'UGT1A10'
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Limit 200

@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ces2_multi_type_activities_first500.json",
+  "case_id": "target_ces2_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT m.chembl_id AS molecule_chembl_id, cs.canonical_smiles, act.standard_type, act.standard_value, act.standard_units\\nFROM activities act\\nJOIN assays a ON act.assay_id = a.assay_id\\nJOIN target_dictionary td ON a.tid = td.tid\\nJOIN molecule_dictionary m ON act.molregno = m.molregno\\nJOIN compound_structures cs ON m.molregno = cs.molregno\\nWHERE td.chembl_id = 'CHEMBL206'\\n  AND act.standard_type = 'IC50'\\n  AND act.standard_value IS NOT NULL\\n  AND act.standard_relation = '='\\nORDER BY act.standard_value\\nLIMIT 500;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT m.chembl_id AS molecule_chembl_id, cs.canonical_smiles, act.standard_type, act.standard_value, act.standard_units\nFROM activities act\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN molecule_dictionary m ON act.molregno = m.molregno\nJOIN compound_structures cs ON m.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL206'\n  AND act.standard_type = 'IC50'\n  AND act.standard_value IS NOT NULL\n  AND act.standard_relation = '='\nORDER BY act.standard_value\nLIMIT 500;"
+    }
+  }
+}

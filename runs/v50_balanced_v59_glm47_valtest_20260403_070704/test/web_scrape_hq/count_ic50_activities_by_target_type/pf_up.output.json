@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/count_ic50_activities_by_target_type.json",
+  "case_id": "count_ic50_activities_by_target_type",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select target_type from target_dictionary. Join activities on assays.assay_id = activities.assay_id and target_dictionary.tid = assays.tid. Filter activities where standard_type is IC50. Aggregate activity count per target type. Return target_type and activity_count. Sort by target_type ascending then activity_count ascending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select target_type from target_dictionary. Join activities on assays.assay_id = activities.assay_id and target_dictionary.tid = assays.tid. Filter activities where standard_type is IC50. Aggregate activity count per target type. Return target_type and activity_count. Sort by target_type ascending then activity_count ascending."
+    }
+  }
+}

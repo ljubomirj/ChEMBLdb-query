@@ -1,0 +1,14 @@
+Select molecule_chembl_id as compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join activities on activities.record_id = compound_records.record_id
+Join compound_records on compound_records.molregno = activities.molregno
+Join compound_structures on compound_structures.molregno = compound_records.molregno
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Filter target_dictionary.pref_name = 'Estrogen Receptor'
+Filter activities.standard_type = 'IC50'
+Filter activities.standard_relation = '='
+Filter activities.standard_units = 'nM'
+Filter target_dictionary.target_type = 'SINGLE PROTEIN'
+Filter target_dictionary.organism = 'Homo sapiens'
+Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

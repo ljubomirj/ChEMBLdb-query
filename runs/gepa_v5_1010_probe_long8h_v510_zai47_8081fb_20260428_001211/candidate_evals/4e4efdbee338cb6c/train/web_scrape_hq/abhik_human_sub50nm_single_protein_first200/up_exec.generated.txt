@@ -1,0 +1,7 @@
+1. Objective: Extract the first 200 distinct high-potency activity rows for human single-protein targets, ordered by activity_id.
+
+2. Output: activity_id, molecule_chembl_id (from molecule_dictionary.chembl_id), target_chembl_id, target_name, standard_type, standard_value, standard_units.
+
+3. Source: activities, assays, target_dictionary, molecule_dictionary.
+
+4. Logic: Join activities to assays on assay_id, assays to target_dictionary on tid, and activities to molecule_dictionary on molregno. Filter where target_dictionary.organism = 'Homo sapiens', target_dictionary.target_type = 'SINGLE PROTEIN', activities.standard_units = 'nM', activities.standard_type IN ('EC50', 'IC50', 'AC50'), and activities.standard_value < 50. Apply DISTINCT to the projection and order by activity_id ascending with a limit of 200.

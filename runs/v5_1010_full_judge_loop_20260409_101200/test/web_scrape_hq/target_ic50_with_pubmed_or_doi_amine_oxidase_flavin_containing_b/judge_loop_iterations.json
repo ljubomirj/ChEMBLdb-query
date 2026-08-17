@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of activity rows for compounds tested against the target with ChEMBL ID CHEMBL2039 (human amine oxidase [flavin-containing] B). For each result, provide the IC50 value in nM, the compound's ChEMBL ID, the canonical SMILES, the compound key, and the PubMed ID or DOI if available. Use the standard IC50 values and standard units.",
+    "sql": "SELECT DISTINCT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS compound_chembl_id,\n  compound_structures.canonical_smiles,\n  compound_records.compound_key,\n  COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nLEFT JOIN compound_records ON activities.record_id = compound_records.record_id\nLEFT JOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  target_dictionary.chembl_id = 'CHEMBL2039'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_relation = '=';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n30 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n39 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 47 | SEARCH compound_records USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n63 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?) LEFT-JOIN\n94 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 5460,
+    "res_columns": [
+      "ic50_nM",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

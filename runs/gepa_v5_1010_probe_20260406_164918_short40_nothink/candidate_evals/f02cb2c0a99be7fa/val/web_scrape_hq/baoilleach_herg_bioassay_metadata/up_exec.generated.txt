@@ -1,0 +1,7 @@
+Select assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi
+Join activities ON activities.assay_id = assays.assay_id
+Join assays ON assays.assay_id = activities.assay_id
+Join target_dictionary ON activities.tid = target_dictionary.tid
+Filter assays.assay_type = 'B' AND target_dictionary.tid = 165
+Return assay_chembl_id, tid, assay_description, target_name, target_organism, journal, year, volume, first_page, doi
+Sort by assay_chembl_id, tid, journal, year, doi

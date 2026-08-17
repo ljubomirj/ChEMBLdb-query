@@ -1,0 +1,41 @@
+[
+  {
+    "n": 1,
+    "up": "Show the exact activity values for compounds tested in assay CHEMBL1741324. Return the ChEMBL ID of the compound, the standard activity type, the standard relation, the standard value, and the standard units.",
+    "sql": "SELECT activities.molregno, molecule_dictionary.chembl_id, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units FROM activities JOIN assays ON activities.assay_id = assays.assay_id JOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno WHERE assays.chembl_id = 'CHEMBL1741324' ORDER BY activities.activity_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH assays USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH activities USING INDEX fk_act_assay_id (assay_id=?)\n19 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 17143,
+    "res_columns": [
+      "molregno",
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Show the exact activity values for compounds tested in assay CHEMBL1741324. Exact values are defined as rows where standard_relation is '='. Return the compound ChEMBL ID, standard type, standard relation, standard value, and standard units.",
+    "sql": "SELECT md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1741324' AND a.standard_relation = '='",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 8826,
+    "res_columns": [
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

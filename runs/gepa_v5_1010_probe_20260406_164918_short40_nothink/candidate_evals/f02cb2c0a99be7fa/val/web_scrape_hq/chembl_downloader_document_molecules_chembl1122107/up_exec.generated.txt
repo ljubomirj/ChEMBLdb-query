@@ -1,0 +1,7 @@
+Select molecule_chembl_id, molecule_name, max_phase, molecule_type, canonical_smiles
+Join molecule_dictionary m on m.molregno = r.molregno
+Join compound_records r on r.molregno = m.molregno
+Join docs d on r.doc_id = d.doc_id
+Filter d.chembl_id = 'CHEMBL1122107'
+Left Join compound_structures s on s.molregno = m.molregno
+Order by molecule_chembl_id

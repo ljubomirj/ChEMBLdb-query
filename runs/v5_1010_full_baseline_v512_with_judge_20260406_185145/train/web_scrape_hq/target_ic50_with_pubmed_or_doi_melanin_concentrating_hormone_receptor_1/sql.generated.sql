@@ -1,0 +1,31 @@
+SELECT DISTINCT
+  m.chembl_id AS compound_chembl_id,
+  cs.canonical_smiles,
+  cr.compound_key,
+  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,
+  a.description AS assay_description,
+  act.standard_type,
+  act.standard_relation,
+  act.standard_value,
+  act.standard_units,
+  act.activity_comment,
+  td.chembl_id AS target_chembl_id,
+  td.pref_name AS target_name,
+  td.organism AS target_organism
+FROM molecule_dictionary m
+JOIN activities act ON m.molregno = act.molregno
+JOIN assays a ON act.assay_id = a.assay_id
+JOIN target_dictionary td ON a.tid = td.tid
+JOIN compound_structures cs ON m.molregno = cs.molregno
+JOIN compound_records cr ON m.molregno = cr.molregno
+JOIN docs d ON cr.doc_id = d.doc_id
+WHERE m.chembl_id = 'CHEMBL344'
+  AND a.assay_type = 'B'
+  AND a.assay_organism = 'Homo sapiens'
+  AND act.bao_endpoint = 'BAO_0000006'
+  AND act.standard_type = 'IC50'
+  AND act.standard_relation = '='
+  AND act.standard_value IS NOT NULL
+  AND act.standard_units = 'nM'
+  AND (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)
+  AND cs.canonical_smiles IS NOT NULL;

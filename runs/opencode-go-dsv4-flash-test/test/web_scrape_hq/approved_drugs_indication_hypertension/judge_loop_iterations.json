@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs that have an indication for hypertension. For each drug, provide the following: the ChEMBL identifier (from molecule_dictionary.chembl_id), the preferred name (molecule_dictionary.pref_name), the canonical SMILES representation of the drug's structure (compound_structures.canonical_smiles), the indication identifier (drug_indication.drugind_id), the indication label (drug_indication.mesh_heading), and the maximum development phase for that specific indication (drug_indication.max_phase_for_ind). Only include records where the indication label is exactly 'Hypertension' and the max_phase_for_ind is 4 (meaning the drug is approved for that indication). If a drug lacks a chemical structure (e.g., it is a biologic), still include the drug but leave the structure column empty. Do not limit the number of rows; return all qualifying records.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.drugind_id, di.mesh_heading, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.mesh_heading = 'Hypertension' AND di.max_phase_for_ind = 4;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 99,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return exact activity values for all compounds tested in assay CHEMBL1054504. Include the compound ChEMBL ID, the standard activity type, the standard relation, the standard value, the standard units, the assay ChEMBL ID, and the target ChEMBL ID. Filter to include only rows where the standard relation is '=' and the standard value is not null.",
+    "sql": "SELECT\n  md.chembl_id AS compound_chembl_id,\n  a.standard_type,\n  a.standard_relation,\n  a.standard_value,\n  a.standard_units,\n  ass.chembl_id AS assay_chembl_id,\n  td.chembl_id AS target_chembl_id\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nLEFT JOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE\n  ass.chembl_id = 'CHEMBL1054504'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n24 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?) LEFT-JOIN",
+    "res_row_count": 13327,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "assay_chembl_id",
+      "target_chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

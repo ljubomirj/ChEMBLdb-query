@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.efo_term. Source: molecule_dictionary, compound_structures, drug_indication. Join: molecule_dictionary to compound_structures on molecule_dictionary.molregno = compound_structures.molregno. molecule_dictionary to drug_indication on molecule_dictionary.molregno = drug_indication.molregno. Filter: molecule_dictionary.max_phase = 4. drug_indication.mesh_heading = 'Prostatic Neoplasms' OR drug_indication.efo_term LIKE '%prostate cancer%'.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.efo_term FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND (drug_indication.mesh_heading = 'Prostatic Neoplasms' OR drug_indication.efo_term LIKE '%prostate cancer%')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n13 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 500,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly identifies approved drugs (max_phase = 4) indicated for prostate cancer using both MeSH and EFO terms. The output includes all requested columns: ChEMBL ID, name, SMILES, and indication details (mesh_heading and efo_term). The joins are correct and the filter logic properly captures prostate cancer indications. The result set contains 500 rows with valid data.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

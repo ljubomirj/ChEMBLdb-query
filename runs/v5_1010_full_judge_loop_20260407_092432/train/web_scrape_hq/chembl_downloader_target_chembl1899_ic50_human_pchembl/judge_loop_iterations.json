@@ -1,0 +1,130 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1899 (5-hydroxytryptamine receptor 3A). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values. Order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+    "sql": "SELECT a.standard_type, a.pchembl_value, ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE a.molecule_chembl_id IN (SELECT chembl_id FROM molecule_dictionary WHERE chembl_id = 'CHEMBL1899')\n  AND td.pref_name = '5-hydroxytryptamine receptor 3A'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Include only rows where the activity relation is exactly '=', the pChEMBL value is not null, and the molecule is a human target. Return the results ordered by molecule ChEMBL ID (ascending) and assay ChEMBL ID (ascending).",
+    "sql": "WITH target AS (\n    SELECT tid\n    FROM target_dictionary\n    WHERE chembl_id = 'CHEMBL1899'\n), assay AS (\n    SELECT a.assay_id,\n           a.standard_type,\n           a.pchembl_value,\n           ass.chembl_id AS assay_chembl_id,\n           ass.tid\n    FROM activities a\n    JOIN assays ass ON a.assay_id = ass.assay_id\n    WHERE ass.tid IN (SELECT tid FROM target)\n      AND a.standard_relation = '='\n      AND a.pchembl_value IS NOT NULL\n), act AS (\n    SELECT a.activity_id,\n           a.assay_id,\n           a.standard_type,\n           a.pchembl_value,\n           ass.chembl_id AS assay_chembl_id,\n           a.molecule_chembl_id\n    FROM activities a\n    JOIN assay ON a.assay_id = assay.assay_id\n)\nSELECT DISTINCT md.chembl_id AS molecule_chembl_id,\n                act.assay_chembl_id,\n                td.target_type,\n                td.tax_id,\n                cs.canonical_smiles,\n                act.standard_type,\n                act.pchembl_value\nFROM act\nJOIN target_dictionary td ON act.tid = td.tid\nJOIN molecule_dictionary md ON act.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.pref_name = '5-hydroxytryptamine receptor 3A'\nORDER BY molecule_chembl_id ASC,\n         assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ass.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ass.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Include only rows where the activity relation is exactly '=', the pChEMBL value is not null, and the molecule is a human target. Return the results ordered by molecule ChEMBL ID (ascending) and assay ChEMBL ID (ascending). Do not add or remove any additional rows beyond the natural set of matching activities; the LIMIT is only to cap the output for the prompt (not part of the logical requirement). No further filters (e.g., on assay confidence, organism, or activity standard type) are required beyond the specified conditions.",
+    "sql": "WITH target AS (\n    SELECT tid\n    FROM target_dictionary\n    WHERE chembl_id = 'CHEMBL1899'\n),\nassay AS (\n    SELECT a.activity_id,\n           a.standard_type,\n           a.pchembl_value,\n           ass.chembl_id AS assay_chembl_id,\n           ass.tid,\n           ass.assay_type,\n           ass.assay_organism\n    FROM activities a\n    JOIN assays ass ON a.assay_id = ass.assay_id\n    WHERE ass.tid IN (SELECT tid FROM target)\n      AND a.standard_relation = '='\n      AND a.pchembl_value IS NOT NULL\n    LIMIT 1000\n),\nact AS (\n    SELECT a.activity_id,\n           a.assay_id,\n           a.standard_type,\n           a.pchembl_value,\n           a.molecule_chembl_id\n    FROM activities a\n    JOIN assay ON a.assay_id = assay.assay_id\n)\nSELECT DISTINCT\n    act.assay_chembl_id AS assay_chembl_id,\n    td.target_type,\n    td.tax_id,\n    cs.canonical_smiles,\n    act.molecule_chembl_id AS molecule_chembl_id,\n    act.standard_type,\n    act.pchembl_value\nFROM act\nJOIN target_dictionary td ON act.tid = td.tid\nJOIN molecule_dictionary md ON act.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.pref_name = '5-hydroxytryptamine receptor 3A'\nORDER BY molecule_chembl_id ASC,\n         assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 IC50 activity rows with pChEMBL values for the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Include only rows where the activity relation is exactly '=', the pChEMBL value is not null, and the molecule is a human target. Return the results ordered by molecule ChEMBL ID (ascending) and assay ChEMBL ID (ascending). Do not add or remove any additional rows beyond the natural set of matching activities; the LIMIT is only to cap the output for the prompt (not part of the logical requirement). No further filters (e.g., on assay confidence, organism, or activity standard type) are required beyond the specified conditions.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1899')\nSELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1899'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND td.tid IN (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1899')\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve up to 1000 activity rows where the activity type is IC50, the standard relation is '=' and the pChEMBL value is not null for the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), taxonomy ID (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type) and pChEMBL value (activities.pchembl_value). Join the tables via activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures. Filter by target_dictionary.chembl_id = 'CHEMBL1899' to ensure the correct target and by activities.standard_relation = '=' and activities.pchembl_value IS NOT NULL. Order the rows by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. No other filters (organism, assay confidence, doc type, etc.) are required.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1899'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve up to 1000 activity rows where the activity relation is exactly '=', the pChEMBL value is not null, and the target is the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), taxonomy ID (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type) and pChEMBL value (activities.pchembl_value). Join activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures. Filter by target_dictionary.chembl_id = 'CHEMBL1899', activities.standard_relation = '=' and activities.pchembl_value IS NOT NULL. Order by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. No other filters (organism, assay confidence, doc type, etc.) are required.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1899'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 236 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n73 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve up to 1000 activity rows where the activity relation is exactly '=', the pChEMBL value is not null, and the target is the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), taxonomy ID (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type) and pChEMBL value (activities.pchembl_value). Join activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures. Filter by target_dictionary.chembl_id = 'CHEMBL1899', activities.standard_relation = '=' and activities.pchembl_value IS NOT NULL. Order by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. No other filters (organism, assay confidence, doc type, etc.) are required.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1899'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 236 | SEARCH a USING INDEX idx_acc_relation (standard_relation=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n35 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n72 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n73 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve up to 1000 activity rows where the activity relation is exactly '=', the pChEMBL value is not null, and the target is the human single\u2011protein target CHEMBL1899 (5\u2011hydroxytryptamine receptor 3A). Return the following columns: assay ChEMBL ID (assays.chembl_id), target type (target_dictionary.target_type), taxonomy ID (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (molecule_dictionary.chembl_id), standard type (activities.standard_type) and pChEMBL value (activities.pchembl_value). Join activities \u2192 assays \u2192 target_dictionary \u2192 molecule_dictionary \u2192 compound_structures. Filter by target_dictionary.chembl_id = 'CHEMBL1899', activities.standard_relation = '=' and activities.pchembl_value IS NOT NULL. Order by molecule ChEMBL ID ascending and assay ChEMBL ID ascending. Do not filter on activity type (IC50) beyond the relation and pChEMBL, because the user specifically requested the first 1000 IC50 activity rows with pChEMBL values, but the exact activity type is not required as the sample rows show IC50 activities are present; however, to be precise, include a filter on activities.standard_type = 'IC50' to ensure only IC50 activities are returned, as the request explicitly says 'IC50 activity rows'. Return the results ordered by molecule ChEMBL ID and assay ChEMBL ID, limiting to 1000 rows if more exist.",
+    "sql": "SELECT DISTINCT ass.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1899'\n  AND a.standard_relation = '='\n  AND a.pchembl_value IS NOT NULL\n  AND a.standard_type = 'IC50'\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n75 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 680,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

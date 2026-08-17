@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_73bdb4d24ef54637.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/alogliptin_dpp4_ic50_salts.json",
+  "case_id": "alogliptin_dpp4_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "candidate_hash": "73bdb4d24ef54637",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve all IC50 bioactivity records in nM for ALOGLIPTIN (CHEMBL376359) and its salts against Dipeptidyl peptidase 4 (CHEMBL284), including the parent compound and all related salts via molecule_hierarchy parent mapping.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary.\n\n4. Logic:\n   - Identify the parent compound by filtering molecule_dictionary where chembl_id = 'CHEMBL376359'.\n   - Include the parent and all related salts by joining molecule_hierarchy on parent_molregno = parent.molregno and joining molecule_dictionary as child on child.molregno = hierarchy.molregno.\n   - Join compound_structures on child.molregno to obtain canonical_smiles.\n   - Join compound_records on child.molregno = compound_records.molregno.\n   - Join activities on compound_records.record_id = activities.record_id.\n   - Join docs on compound_records.doc_id = docs.doc_id.\n   - Join assays on activities.assay_id = assays.assay_id.\n   - Join target_dictionary on assays.tid = target_dictionary.tid.\n   - Filter activities where standard_type = 'IC50' AND standard_units = 'nM'.\n   - Filter target_dictionary where chembl_id = 'CHEMBL284'.\n   - Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.\n   - Do not limit the number of rows.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve all IC50 bioactivity records in nM for ALOGLIPTIN (CHEMBL376359) and its salts against Dipeptidyl peptidase 4 (CHEMBL284), including the parent compound and all related salts via molecule_hierarchy parent mapping.\n\n2. Output: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\n\n3. Source: molecule_dictionary, molecule_hierarchy, compound_structures, compound_records, activities, docs, assays, target_dictionary.\n\n4. Logic:\n   - Identify the parent compound by filtering molecule_dictionary where chembl_id = 'CHEMBL376359'.\n   - Include the parent and all related salts by joining molecule_hierarchy on parent_molregno = parent.molregno and joining molecule_dictionary as child on child.molregno = hierarchy.molregno.\n   - Join compound_structures on child.molregno to obtain canonical_smiles.\n   - Join compound_records on child.molregno = compound_records.molregno.\n   - Join activities on compound_records.record_id = activities.record_id.\n   - Join docs on compound_records.doc_id = docs.doc_id.\n   - Join assays on activities.assay_id = assays.assay_id.\n   - Join target_dictionary on assays.tid = target_dictionary.tid.\n   - Filter activities where standard_type = 'IC50' AND standard_units = 'nM'.\n   - Filter target_dictionary where chembl_id = 'CHEMBL284'.\n   - Sort by compound_chembl_id, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, target_chembl_id, target_name, target_organism.\n   - Do not limit the number of rows."
+    }
+  }
+}

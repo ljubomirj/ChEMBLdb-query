@@ -1,0 +1,58 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compounds tested against the human mitochondrial glutaminase kidney isoform (CHEMBL2146302) in Homo sapiens assays, returning the compound's canonical SMILES. The target is explicitly defined as the protein identified by its ChEMBL ID CHEMBL2146302, which is a human mitochondrial glutaminase kidney isoform (target type: protein). The query should join the target_dictionary, assays, activities, compound_records, and compound_structures tables to find activities where the target's chembl_id equals 'CHEMBL2146302' and the organism is 'Homo sapiens' (tax_id 9606). Output the compound's canonical_smiles and ensure results are not limited by the number of rows, as no top-N or row count is requested. Return only the SMILES string for each qualifying compound, preserving potential duplicates if they exist across different assays.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens' AND a.standard_type = 'IC50' AND a.standard_units = 'nM' AND cr.cidx = 'CLD0'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n17 | 0 | 52 | SEARCH cr USING INDEX idx_comp_rec_cidx (cidx=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n29 | 0 | 58 | SEARCH a USING INDEX fk_act_record_id (record_id=?)\n39 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n58 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 85,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds (with SMILES) that have been tested in Homo sapiens assays for the human mitochondrial glutaminase kidney isoform with ChEMBL ID CHEMBL2146302. The target is a protein (target type: PROTEIN). The query should find activities where the associated target's chembl_id matches CHEMBL2146302 and the assay organism is Homo sapiens (tax_id 9606). Output each qualifying compound's canonical SMILES string. No filters on activity type, units, or dataset are required; include all activity records. Ensure results are not limited by number of rows; if duplicate SMILES exist across assays, they should be preserved. No additional metadata (e.g., assay descriptions, activity values) is requested.",
+    "sql": "WITH activities_for_target AS (\n  SELECT a.molecule_chembl_id AS molregno\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON ass.assay_id = a.assay_id\n  WHERE td.chembl_id = 'CHEMBL2146302'\n    AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT cs.canonical_smiles\nFROM activities_for_target aft\nJOIN compound_structures cs ON aft.molregno = cs.molregno\nJOIN compound_records cr ON aft.molregno = cr.molregno\nWHERE cr.cidx = 'CLD0';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compounds (with SMILES) that have been tested in Homo sapiens assays for the human mitochondrial glutaminase kidney isoform identified by ChEMBL ID CHEMBL2146302. Target is a protein (type PROTEIN). Find activities where the associated target\u2019s chembl_id matches CHEMBL2146302 and the assay organism is Homo sapiens (tax_id 9606). Return each qualifying compound\u2019s canonical SMILES string. No restrictions on activity type, standard units, dataset, or activity value. Do not filter by assay test type, assay category, or assay description. Ensure the query retrieves all matching molecules, preserving duplicate SMILES if a compound appears in multiple assays. Return only the SMILES and exclude any additional metadata (e.g., assay identifiers, activity values, journal information). No ranking or top\u2011N limit is requested.",
+    "sql": "WITH act AS (\n  SELECT a.molregno AS molregno,\n         a.standard_value,\n         a.standard_units,\n         cr.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  LEFT JOIN compound_records cr ON a.record_id = cr.record_id\n  LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n  UNION ALL\n  SELECT a.molregno,\n         a.standard_value,\n         a.standard_units,\n         cs.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  JOIN compound_structures cs ON a.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n  UNION ALL\n  SELECT a.molregno,\n         a.standard_value,\n         a.standard_units,\n         cs.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  LEFT JOIN compound_records cr ON a.record_id = cr.record_id\n  LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n  UNION ALL\n  SELECT DISTINCT a.molregno,\n         a.standard_value,\n         a.standard_units,\n         cs.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  LEFT JOIN compound_records cr ON a.record_id = cr.record_id\n  LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT canonical_smiles\nFROM act\nWHERE canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cr.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cr.canonical_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all compounds (with SMILES) that have been tested in Homo sapiens assays for the human mitochondrial glutaminase kidney isoform with ChEMBL ID CHEMBL2146302. Target is a protein (type PROTEIN). Find activities where the associated target\u2019s chembl_id matches CHEMBL2146302 and the assay organism is Homo sapiens (tax_id 9606). Return each qualifying compound\u2019s canonical SMILES string. No restrictions on activity type, standard units, dataset, or activity value. Do not filter by assay test type, assay category, or assay description. Ensure the query retrieves all matching molecules, preserving duplicate SMILES if a compound appears in multiple assays. Return only the SMILES and exclude any additional metadata (e.g., assay identifiers, activity values, journal information). No ranking or top\u2011N limit is requested.",
+    "sql": "WITH act AS (\n  SELECT a.molregno,\n         cs.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  LEFT JOIN compound_records cr ON a.record_id = cr.record_id\n  LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n  UNION ALL\n  SELECT a.molregno,\n         cs.canonical_smiles\n  FROM target_dictionary td\n  JOIN assays ass ON td.tid = ass.tid\n  JOIN activities a ON a.assay_id = ass.assay_id\n  LEFT JOIN compound_records cr ON a.record_id = cr.record_id\n  LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno\n  WHERE td.chembl_id = 'CHEMBL2146302' AND ass.assay_organism = 'Homo sapiens'\n)\nSELECT DISTINCT canonical_smiles\nFROM act\nWHERE canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 16\n2 | 0 | 0 | CO-ROUTINE act\n3 | 2 | 0 | COMPOUND QUERY\n4 | 3 | 0 | LEFT-MOST SUBQUERY\n14 | 4 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 4 | 224 | SCAN ass\n26 | 4 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n32 | 4 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n40 | 4 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n65 | 3 | 0 | UNION ALL\n75 | 65 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n80 | 65 | 224 | SCAN ass\n87 | 65 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n93 | 65 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n101 | 65 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n128 | 0 | 250 | SCAN act\n139 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 17472,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

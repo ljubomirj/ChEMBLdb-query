@@ -1,0 +1,12 @@
+Objective: Retrieve approved drugs indicated for infectious conditions with their structures and indication metadata.
+
+Output: chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind
+
+Source: molecule_dictionary, compound_structures, drug_indication
+
+Logic:
+1. Join molecule_dictionary to compound_structures via molregno.
+2. Join molecule_dictionary to drug_indication via molregno.
+3. Filter molecule_dictionary.max_phase = 4.
+4. Filter drug_indication.mesh_heading LIKE '%infection%'.
+5. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, max_phase_for_ind.

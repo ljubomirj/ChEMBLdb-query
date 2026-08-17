@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve exact activity values for all compounds tested in assay CHEMBL4296190. Return the compound's canonical SMILES, the activity's standard value, and the activity's standard relation.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles, a.standard_value, a.standard_relation FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4296190' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n24 | 0 | 45 | SEARCH md USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n47 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6170,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_value",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

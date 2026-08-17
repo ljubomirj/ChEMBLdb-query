@@ -1,0 +1,79 @@
+{
+  "case_id": "chembl_downloader_drug_indications",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/uq.txt",
+    "up_exec": null,
+    "sql_gold": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/sqlite.sql",
+    "res_gold": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/source.sql",
+    "sqlite_sql": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/sqlite.sql",
+    "documentation": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "explicit_from_source_description",
+    "source_title": "chembl_downloader DRUG_INDICATIONS_SQL",
+    "source_url": "https://chembl-downloader.readthedocs.io/en/stable/api/chembl_downloader.queries.DRUG_INDICATIONS_SQL.html",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "chembl_id",
+      "pref_name",
+      "mesh_id",
+      "mesh_heading",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "sort_keys": [
+      "chembl_id",
+      "pref_name",
+      "mesh_id",
+      "mesh_heading",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": [
+        "mesh_id",
+        "indication_curie"
+      ]
+    },
+    "column_rename_map": {
+      "chembl_id": "chembl_id",
+      "compound_chembl_id": "chembl_id",
+      "molecule_chembl_id": "chembl_id",
+      "pref_name": "pref_name",
+      "molecule_name": "pref_name",
+      "compound_name": "pref_name",
+      "mesh_id": "mesh_id",
+      "mesh_heading": "mesh_heading",
+      "efo_id": "indication_curie",
+      "indication_curie": "indication_curie",
+      "efo_term": "indication_label",
+      "indication_label": "indication_label",
+      "max_phase_for_ind": "max_phase_for_ind"
+    },
+    "float_cols": [
+      "max_phase_for_ind"
+    ],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

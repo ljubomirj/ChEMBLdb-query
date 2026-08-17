@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all activity records from the assay with ChEMBL ID 'CHEMBL1614052'. For each record, provide the compound ChEMBL ID (from molecule_dictionary), the standard activity type (standard_type), the exact measured value (standard_value), units (standard_units), and the standard relation (standard_relation). Only include rows where standard_relation is '=' (exact values) and standard_value is not null. Order the results by compound identifier and activity type.",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, a.standard_type, a.standard_value, a.standard_units, a.standard_relation FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE ass.chembl_id = 'CHEMBL1614052' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL ORDER BY md.chembl_id, a.standard_type;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 14887,
+    "res_columns": [
+      "compound_chembl_id",
+      "standard_type",
+      "standard_value",
+      "standard_units",
+      "standard_relation"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

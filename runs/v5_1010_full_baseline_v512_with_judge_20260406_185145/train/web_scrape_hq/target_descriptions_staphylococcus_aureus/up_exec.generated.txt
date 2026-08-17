@@ -1,0 +1,6 @@
+Select distinct target_dictionary.pref_name as target_description
+Join activities on activities.activity_id = activity_id
+Join assays on assays.assay_id = activities.assay_id
+Join target_dictionary on target_dictionary.tid = assays.tid
+Filter assays.assay_organism = 'Staphylococcus aureus'
+Sort by target_description

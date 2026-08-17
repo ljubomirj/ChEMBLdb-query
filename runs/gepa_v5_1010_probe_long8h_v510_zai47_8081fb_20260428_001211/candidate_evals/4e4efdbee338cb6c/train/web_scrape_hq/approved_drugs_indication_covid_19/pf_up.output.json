@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_4e4efdbee338cb6c.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_covid_19.json",
+  "case_id": "approved_drugs_indication_covid_19",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "4e4efdbee338cb6c",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "1. Objective: Retrieve approved drugs (max_phase = 4) that have a specific indication for COVID-19, returning their identifiers, names, structures, and indication details.\n\n2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (as efo_id), indication_label (as efo_term), max_phase_for_ind\n\n3. Source: molecule_dictionary, drug_indication, compound_structures\n\n4. Logic: Join molecule_dictionary to drug_indication using molregno. Join compound_structures to molecule_dictionary using molregno. Filter drug_indication where efo_term equals 'COVID-19'. Filter molecule_dictionary where max_phase equals 4. Sort by chembl_id.",
+    "parsed_json": {
+      "up": "1. Objective: Retrieve approved drugs (max_phase = 4) that have a specific indication for COVID-19, returning their identifiers, names, structures, and indication details.\n\n2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (as efo_id), indication_label (as efo_term), max_phase_for_ind\n\n3. Source: molecule_dictionary, drug_indication, compound_structures\n\n4. Logic: Join molecule_dictionary to drug_indication using molregno. Join compound_structures to molecule_dictionary using molregno. Filter drug_indication where efo_term equals 'COVID-19'. Filter molecule_dictionary where max_phase equals 4. Sort by chembl_id."
+    }
+  }
+}

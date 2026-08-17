@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/tofacitinib_jak2_ic50_salts.json",
+  "case_id": "tofacitinib_jak2_ic50_salts",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Define the compound set by joining molecule_hierarchy from parent CHEMBL221959 to include the parent and all salts. Join molecule_dictionary to compound_records on molregno, then compound_records.record_id to activities.record_id, and compound_records.doc_id to docs.doc_id. Join assays via activities.assay_id and target_dictionary via assays.tid. Join compound_structures on molecule_dictionary.molregno for canonical_smiles. Filter for target CHEMBL2971 and activities with standard_type IC50 and standard_units nM. Return all rows without deduplication and without a row limit.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Define the compound set by joining molecule_hierarchy from parent CHEMBL221959 to include the parent and all salts. Join molecule_dictionary to compound_records on molregno, then compound_records.record_id to activities.record_id, and compound_records.doc_id to docs.doc_id. Join assays via activities.assay_id and target_dictionary via assays.tid. Join compound_structures on molecule_dictionary.molregno for canonical_smiles. Filter for target CHEMBL2971 and activities with standard_type IC50 and standard_units nM. Return all rows without deduplication and without a row limit."
+    }
+  }
+}

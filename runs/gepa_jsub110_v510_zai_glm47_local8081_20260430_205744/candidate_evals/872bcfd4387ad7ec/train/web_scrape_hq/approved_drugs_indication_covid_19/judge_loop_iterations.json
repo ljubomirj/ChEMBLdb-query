@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Identify approved drugs indicated for COVID-19. Return the drug ChEMBL ID, preferred name, and the indication details (mesh ID, mesh heading, EFO ID, and EFO term). Source data from the drug_indication table joined with molecule_dictionary. Filter for mesh_heading equal to 'COVID-19'.",
+    "sql": "SELECT md.chembl_id, md.pref_name, di.mesh_id, di.mesh_heading, di.efo_id, di.efo_term FROM drug_indication di JOIN molecule_dictionary md ON di.molregno = md.molregno WHERE di.mesh_heading = 'COVID-19'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 66,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "mesh_id",
+      "mesh_heading",
+      "efo_id",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The SQL query correctly joins drug_indication with molecule_dictionary and filters for mesh_heading = 'COVID-19'. The result set includes all requested columns: chembl_id, pref_name, mesh_id, mesh_heading, efo_id, and efo_term. The data appears accurate and comprehensive for the user's question about approved drugs with a COVID-19 indication.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound records from document CHEMBL5726716. Document CHEMBL5726716 is a publication in ChEMBL. The desired output includes each compound's internal identifier (molregno) and its public ChEMBL identifier (pref_name). Filter the results to include only rows where docs.chembl_id equals 'CHEMBL5726716'. Join the activities table to the docs table using activities.doc_id = docs.doc_id, and join the compound records table to activities using activities.record_id = compound_records.record_id. Ensure that the query returns a row for each compound found in the document, preserving all such compounds even if additional activity data exists. Do not apply any additional filters, limits, or sorting beyond what is explicitly requested. The query should output two columns: the internal molecule key and the public molecule identifier.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id AS molregno, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN compound_records ON a.record_id = compound_records.record_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno WHERE docs.chembl_id = 'CHEMBL5726716';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return all compounds documented in the publication CHEMBL5726716. For each compound, output its internal numeric identifier (molregno) and its public ChEMBL identifier (pref_name). Ensure that the result includes every compound appearing in that document, regardless of its activity type or any other optional data. Do not add any filters beyond confirming the publication identifier, and do not impose any limits or sorting beyond what the user explicitly requested.",
+    "sql": "SELECT DISTINCT a.record_id AS molregno, md.pref_name FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5726716';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.5,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all compounds (internal molregno and public ChEMBL pref_name) that appear in the publication with CHEMBL ID 'CHEMBL5726716'. Each compound should be returned once, using the document identifier to restrict the search. No additional filters, units, activity types, organism constraints, or sorting are required. The output must contain exactly two columns: the internal molecule identifier (molregno) and the public molecule identifier (pref_name).",
+    "sql": "WITH target_docs AS (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5726716') SELECT DISTINCT md.molregno AS molregno, md.pref_name AS pref_name FROM activities a JOIN target_docs td ON a.doc_id = td.doc_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "molregno",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

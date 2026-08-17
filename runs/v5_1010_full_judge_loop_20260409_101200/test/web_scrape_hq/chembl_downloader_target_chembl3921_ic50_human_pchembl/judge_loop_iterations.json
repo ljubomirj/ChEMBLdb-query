@@ -1,0 +1,36 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows from the ChEMBL database that meet the following criteria: (1) The target must be the single-protein target with ChEMBL ID 'CHEMBL3921' (Heparanase) from the target_dictionary table; (2) The standard_type must be 'IC50' and the pchembl_value must not be null; (3) The activities must be from assays with assay_tax_id = 9606 (Homo sapiens). For each matching row, return the following columns: assay ChEMBL ID (chembl_id from assays), target type (target_type from target_dictionary), tax_id, canonical SMILES (from compound_structures), molecule ChEMBL ID (chembl_id from molecule_dictionary), standard type (standard_type from activities), and pChEMBL value (pchembl_value from activities). Order the results by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH target_filter AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL3921'), assay_filter AS (SELECT assay_id, chembl_id, assay_tax_id FROM assays WHERE tid IN (SELECT tid FROM target_filter) AND assay_tax_id = 9606) SELECT DISTINCT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM assay_filter a JOIN activities act ON a.assay_id = act.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE act.standard_type = 'IC50' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, a.chembl_id LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 activity rows from the ChEMBL database meeting the following criteria: (1) The target must be the single-protein target with ChEMBL ID 'CHEMBL3921' (Heparanase) from the target_dictionary table; (2) The activities must be from assays with assay_tax_id = 9606 (Homo sapiens); (3) The standard_type must be 'IC50' and the pchembl_value must not be null. For each matching row, return the following columns: assay ChEMBL ID (chembl_id from the assays table), target type (target_type from target_dictionary), tax_id (from target_dictionary), canonical SMILES (from compound_structures), molecule ChEMBL ID (chembl_id from molecule_dictionary), standard type (standard_type from activities), and pChEMBL value (pchembl_value from activities). Order the results by molecule ChEMBL ID and then by assay ChEMBL ID.",
+    "sql": "WITH target_info AS (SELECT tid, target_type, tax_id FROM target_dictionary WHERE chembl_id = 'CHEMBL3921'), assay_info AS (SELECT a.assay_id, a.chembl_id, ti.tid FROM assays a JOIN target_info ti ON a.tid = ti.tid WHERE a.assay_tax_id = 9606) SELECT DISTINCT ai.chembl_id AS assay_chembl_id, ti.target_type, ti.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM assay_info ai JOIN activities act ON ai.assay_id = act.assay_id JOIN target_info ti ON ai.tid = ti.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE act.standard_type = 'IC50' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, ai.chembl_id LIMIT 1000",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n16 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n21 | 0 | 42 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n32 | 0 | 142 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n39 | 0 | 47 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n57 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n87 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n88 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 318,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL identifier (chembl_id) and preferred name (pref_name) for all molecules that have a chemical structure defined and have a non-null preferred name.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.pref_name IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n5 | 0 | 236 | SCAN md USING INDEX idx_moldict_chembl_id\n10 | 0 | 45 | SEARCH cs USING COVERING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 42299,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

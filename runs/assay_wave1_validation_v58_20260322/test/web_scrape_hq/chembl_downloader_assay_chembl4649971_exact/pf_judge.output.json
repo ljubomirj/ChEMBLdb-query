@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.8.yaml",
+  "prompt_pack_version": "v5.8",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4649971_exact",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the UP_EXEC specification: it selects the exact activity values (standard_type, standard_relation, standard_value, standard_units) for compounds tested in assay CHEMBL4649971, includes structures (canonical_smiles), and filters for exact values (standard_relation = '=' and standard_value IS NOT NULL). The join path (molecule_dictionary -> activities -> assays -> compound_structures) is correct, and the sorting matches the requested order. The result set (68,784 rows) is substantial, which is expected for a large assay, and the sample rows confirm the data is present and correctly formatted. No deduplication was applied, preserving row multiplicity as required.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the UP_EXEC specification: it selects the exact activity values (standard_type, standard_relation, standard_value, standard_units) for compounds tested in assay CHEMBL4649971, includes structures (canonical_smiles), and filters for exact values (standard_relation = '=' and standard_value IS NOT NULL). The join path (molecule_dictionary -> activities -> assays -> compound_structures) is correct, and the sorting matches the requested order. The result set (68,784 rows) is substantial, which is expected for a large assay, and the sample rows confirm the data is present and correctly formatted. No deduplication was applied, preserving row multiplicity as required.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v58_20260322/test/web_scrape_hq/chembl_downloader_assay_chembl4649971_exact/pf_judge.generated_artifact_record.json"
+  }
+}

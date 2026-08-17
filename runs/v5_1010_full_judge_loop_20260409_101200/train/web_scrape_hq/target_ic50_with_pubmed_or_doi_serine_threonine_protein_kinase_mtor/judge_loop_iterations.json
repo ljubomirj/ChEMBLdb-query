@@ -1,0 +1,48 @@
+[
+  {
+    "n": 1,
+    "up": "Return exact IC50 values in nM for compounds tested against human mTOR kinase. For each result, provide the ChEMBL ID, canonical SMILES, PubMed ID or DOI (preferring PubMed ID when both exist), assay description, target ChEMBL ID, target preferred name, target organism, and target type.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS chembl_id,\n  cs.canonical_smiles,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name,\n  td.organism AS target_organism,\n  td.target_type\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name = 'mTOR kinase'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n42 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n49 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n58 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n81 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "ic50_nM",
+      "assay_description",
+      "target_chembl_id",
+      "target_pref_name",
+      "target_organism",
+      "target_type"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Return exact IC50 values in nM for compounds tested against the human mTOR kinase target. For each activity record, include the ChEMBL ID, canonical SMILES, PubMed ID or DOI, assay description, and target details (ChEMBL ID, preferred name, organism, and type). Match the target using the preferred name containing 'mTOR' (e.g., 'Serine/threonine-protein kinase mTOR') and filter for Homo sapiens.",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS chembl_id,\n  cs.canonical_smiles,\n  COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi,\n  a.standard_value AS ic50_nM,\n  ass.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name,\n  td.organism AS target_organism,\n  td.target_type\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs d ON a.doc_id = d.doc_id\nWHERE\n  td.pref_name LIKE '%mTOR%'\n  AND td.organism = 'Homo sapiens'\n  AND a.standard_type = 'IC50'\n  AND a.standard_units = 'nM'\n  AND a.standard_value IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n23 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n29 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n57 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n80 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6741,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "ic50_nM",
+      "assay_description",
+      "target_chembl_id",
+      "target_pref_name",
+      "target_organism",
+      "target_type"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

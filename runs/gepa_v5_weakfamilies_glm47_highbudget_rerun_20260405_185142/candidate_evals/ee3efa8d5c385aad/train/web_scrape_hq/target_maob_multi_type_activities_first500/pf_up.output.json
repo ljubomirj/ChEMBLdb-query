@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_ee3efa8d5c385aad.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_maob_multi_type_activities_first500.json",
+  "case_id": "target_maob_multi_type_activities_first500",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "ee3efa8d5c385aad",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select the first 500 activity measurements for monoamine oxidase B (CHEMBL221). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter by target chembl_id CHEMBL221. Join compound_structures as an INNER JOIN on molregno to enforce structure availability. Return chembl_id, canonical_smiles, standard_type, standard_value, and standard_units. Rank rows by potency (ascending standard_value where available) and limit to 500.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select the first 500 activity measurements for monoamine oxidase B (CHEMBL221). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Filter by target chembl_id CHEMBL221. Join compound_structures as an INNER JOIN on molregno to enforce structure availability. Return chembl_id, canonical_smiles, standard_type, standard_value, and standard_units. Rank rows by potency (ascending standard_value where available) and limit to 500."
+    }
+  }
+}

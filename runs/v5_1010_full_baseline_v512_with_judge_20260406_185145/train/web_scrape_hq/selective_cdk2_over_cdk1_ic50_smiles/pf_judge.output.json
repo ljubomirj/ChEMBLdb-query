@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles.json",
+  "case_id": "selective_cdk2_over_cdk1_ic50_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result set is empty (row_count: 0). The query attempts to find compounds selective for CDK2 over CDK1 with IC50 < 1000 nM against CDK2 and > 10000 nM against CDK1. However, the SQL has several critical flaws:\\n\\n1. **Ambiguous column references**: The WHERE clause references `a1_standard_value1` and `a2_standard_value2` which do not exist in the SELECT or any table. These appear to be typos for `a1.standard_value` and `a2.standard_value`.\\n\\n2. **Incorrect target filtering**: The query joins `target_dictionary` twice for the same assay (`a1_assay` and `a2_assay`) but uses the same `tid` for both CDK2 and CDK1. This would require the same assay to have both targets, which is impossible. The correct approach should use separate assay IDs for CDK2 and CDK1 activities.\\n\\n3. **Missing assay distinction**: The query joins `a1` and `a2` to the same `a1_assay` and `a2_assay` without ensuring they are different assays. This would incorrectly require a single assay to have both CDK2 and CDK1 measurements.\\n\\n4. **No selectivity logic**: The query attempts to filter on `a1.standard_value > 1000` (CDK2 IC50 > 1000 nM) and `a2.standard_value < 10000` (CDK1 IC50 < 10000 nM), but the UQ requires CDK2 IC50 < 1000 nM and CDK1 IC50 > 10000 nM. The inequalities are reversed.\\n\\n5. **No DISTINCT on correct columns**: The SELECT uses `DISTINCT` but the join pattern may produce duplicates. However, the main issue is the logical errors above.\\n\\nThe empty result is expected due to these errors, but the query would not produce correct results even if rows existed. The core problem is the flawed join strategy that conflates two different assays into one.\",\n  \"score\": 2,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The current result set is empty (row_count: 0). The query attempts to find compounds selective for CDK2 over CDK1 with IC50 < 1000 nM against CDK2 and > 10000 nM against CDK1. However, the SQL has several critical flaws:\n\n1. **Ambiguous column references**: The WHERE clause references `a1_standard_value1` and `a2_standard_value2` which do not exist in the SELECT or any table. These appear to be typos for `a1.standard_value` and `a2.standard_value`.\n\n2. **Incorrect target filtering**: The query joins `target_dictionary` twice for the same assay (`a1_assay` and `a2_assay`) but uses the same `tid` for both CDK2 and CDK1. This would require the same assay to have both targets, which is impossible. The correct approach should use separate assay IDs for CDK2 and CDK1 activities.\n\n3. **Missing assay distinction**: The query joins `a1` and `a2` to the same `a1_assay` and `a2_assay` without ensuring they are different assays. This would incorrectly require a single assay to have both CDK2 and CDK1 measurements.\n\n4. **No selectivity logic**: The query attempts to filter on `a1.standard_value > 1000` (CDK2 IC50 > 1000 nM) and `a2.standard_value < 10000` (CDK1 IC50 < 10000 nM), but the UQ requires CDK2 IC50 < 1000 nM and CDK1 IC50 > 10000 nM. The inequalities are reversed.\n\n5. **No DISTINCT on correct columns**: The SELECT uses `DISTINCT` but the join pattern may produce duplicates. However, the main issue is the logical errors above.\n\nThe empty result is expected due to these errors, but the query would not produce correct results even if rows existed. The core problem is the flawed join strategy that conflates two different assays into one.",
+      "score": 2,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/selective_cdk2_over_cdk1_ic50_smiles/pf_judge.generated_artifact_record.json"
+  }
+}

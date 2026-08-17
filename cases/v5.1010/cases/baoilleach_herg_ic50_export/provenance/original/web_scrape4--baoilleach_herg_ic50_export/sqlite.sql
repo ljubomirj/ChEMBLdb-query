@@ -1,0 +1,12 @@
+SELECT a.activity_id,
+       ass.chembl_id AS assay_chembl_id,
+       a.standard_relation,
+       a.standard_value,
+       a.standard_units,
+       a.standard_type,
+       md.chembl_id AS molecule_chembl_id
+FROM activities AS a
+JOIN assays AS ass ON a.assay_id = ass.assay_id
+JOIN molecule_dictionary AS md ON a.molregno = md.molregno
+WHERE ass.tid = 165
+  AND a.standard_type = 'IC50';

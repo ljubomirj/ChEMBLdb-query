@@ -1,0 +1,58 @@
+{
+  "case_id": "human_pde5_molecule_smiles",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "/Users/ljubomir/ChEMBLdb-query/database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/uq.txt",
+    "up_exec": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/up_exec.txt",
+    "sql_gold": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/sqlite.sql",
+    "res_gold": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/source.sql",
+    "sqlite_sql": null,
+    "documentation": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "promoted_from_web_scrape",
+    "source_title": "https://gist.github.com/1056279",
+    "source_url": "https://gist.github.com/1056279",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "sort_keys": [
+      "compound_chembl_id",
+      "canonical_smiles"
+    ],
+    "tags": [
+      "other",
+      "v4_promoted"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "compound_chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Auto-generated v5 manifest from v4 registry entry."
+  }
+}

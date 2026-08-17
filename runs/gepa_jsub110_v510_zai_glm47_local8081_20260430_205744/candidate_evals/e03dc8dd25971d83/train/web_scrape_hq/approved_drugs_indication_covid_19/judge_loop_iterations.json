@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Identify approved drugs with a COVID-19 indication. Return the drug ChEMBL ID, preferred name, and the indication details (MeSH heading and EFO term).",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE di.mesh_heading LIKE '%COVID-19%' OR di.efo_term LIKE '%COVID-19%'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 612,
+    "res_columns": [
+      "drug_chembl_id",
+      "pref_name",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully identifies drugs with COVID-19 indications by filtering the `drug_indication` table for 'COVID-19' in either the MeSH heading or EFO term. The result set (612 rows) includes relevant drugs like REMDESIVIR, MOLNUPIRAVIR, NIRMATRELVIR, DEXAMETHASONE, and TOFACITINIB, confirming the query's effectiveness. The output columns (drug_chembl_id, pref_name, mesh_heading, efo_term) match the user's request for drug identifiers and indication details. The query plan shows efficient index usage on `molecule_dictionary` and a scan of `drug_indication`, which is appropriate for this filter. The result set is comprehensive and directly answers the user's question.\",\n  \"score\": 5,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

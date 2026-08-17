@@ -1,0 +1,22 @@
+[
+  {
+    "n": 2,
+    "up": "List all approved drugs indicated for neoplasm. For each drug, return the following information: the ChEMBL ID of the drug molecule, the preferred name of the drug, the canonical SMILES structure, the indication ID (mesh_id), the indication label (mesh_heading), and the maximum phase for that specific indication (max_phase_for_ind). Include all drugs associated with the specified disease indication.",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.mesh_id,\n  di.mesh_heading,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading LIKE '%neoplasm%';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN",
+    "res_row_count": 12049,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_id",
+      "mesh_heading",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

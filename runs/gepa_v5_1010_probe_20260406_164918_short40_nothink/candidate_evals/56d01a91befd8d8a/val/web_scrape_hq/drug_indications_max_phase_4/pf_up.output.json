@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/drug_indications_max_phase_4.json",
+  "case_id": "drug_indications_max_phase_4",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "up",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"up\": \"Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, drug_indication.mesh_id AS mesh_id, drug_indication.mesh_heading AS mesh_heading, drug_indication.efo_id AS indication_curie, drug_indication.efo_term AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind\\nFrom molecule_dictionary\\nJoin drug_indication On molecule_dictionary.molregno = drug_indication.molregno\\nWhere drug_indication.max_phase_for_ind = 4\\nSort By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_indication.mesh_id, drug_indication.mesh_heading, drug_indication.efo_id, drug_indication.efo_term, drug_indication.max_phase_for_ind\"\n}",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id AS chembl_id, molecule_dictionary.pref_name AS pref_name, drug_indication.mesh_id AS mesh_id, drug_indication.mesh_heading AS mesh_heading, drug_indication.efo_id AS indication_curie, drug_indication.efo_term AS indication_label, drug_indication.max_phase_for_ind AS max_phase_for_ind\nFrom molecule_dictionary\nJoin drug_indication On molecule_dictionary.molregno = drug_indication.molregno\nWhere drug_indication.max_phase_for_ind = 4\nSort By molecule_dictionary.chembl_id, molecule_dictionary.pref_name, drug_indication.mesh_id, drug_indication.mesh_heading, drug_indication.efo_id, drug_indication.efo_term, drug_indication.max_phase_for_ind"
+    }
+  }
+}

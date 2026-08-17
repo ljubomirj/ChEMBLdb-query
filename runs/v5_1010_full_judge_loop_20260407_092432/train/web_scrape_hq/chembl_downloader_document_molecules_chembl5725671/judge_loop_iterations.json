@@ -1,0 +1,32 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound identifiers, compound names, and doc_id for all molecules that have at least one activity entry in the document with chembl_id CHEMBL5725671. The result should list each compound once per distinct compound identifier, including its public ChEMBL identifier (chembl_id), molecule name (pref_name), the document identifier (doc_id), and the type of activity standard_type recorded in the activity row. Ensure that the query returns distinct compound records and does not include any additional columns or row limits. The query must filter activities to only those linked to the specified document and return the required fields. Do not apply any further filtering on assay confidence, activity units, or activity relations. Include all compounds, regardless of activity type or value, as long as they are associated with the specified document. Distinct compound identifiers are required in the output.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id AS chembl_id, md.pref_name, a.doc_id, a.type AS standard_type FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725671');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all molecules that have at least one activity entry in the document with chembl_id CHEMBL5725671. Return each molecule's public ChEMBL identifier (chembl_id), molecule name (pref_name), and the document identifier (doc_id). Ensure each molecule is listed only once (distinct rows) and include no other columns or limits. Do not filter by assay confidence, activity units, activity relations, or other constraints unless explicitly requested. The query must only filter activities to those linked to the specified document and return the required fields for those compounds.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, a.doc_id FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.doc_id IN (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL5725671');",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n6 | 0 | 147 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n10 | 0 | 0 | LIST SUBQUERY 1\n14 | 10 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n23 | 10 | 0 | CREATE BLOOM FILTER\n32 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 774,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "doc_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

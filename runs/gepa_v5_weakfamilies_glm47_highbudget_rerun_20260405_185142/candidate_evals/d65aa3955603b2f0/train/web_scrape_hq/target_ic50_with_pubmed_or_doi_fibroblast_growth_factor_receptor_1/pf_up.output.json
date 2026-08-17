@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_highbudget_rerun_20260405_185142/candidate_cache/candidate_d65aa3955603b2f0.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_fibroblast_growth_factor_receptor_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_fibroblast_growth_factor_receptor_1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "d65aa3955603b2f0",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select exact IC50 activity rows for human Fibroblast Growth Factor Receptor 1 (CHEMBL3650). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Require canonical_smiles to be present and at least one of pubmed_id or doi to be available. Join molecule_dictionary to activities, then to assays and target_dictionary. Join docs on activities.doc_id for provenance. Join compound_structures as an inner join to enforce SMILES presence. Filter by target CHEMBL3650 and standard_type IC50. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select exact IC50 activity rows for human Fibroblast Growth Factor Receptor 1 (CHEMBL3650). Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Require canonical_smiles to be present and at least one of pubmed_id or doi to be available. Join molecule_dictionary to activities, then to assays and target_dictionary. Join docs on activities.doc_id for provenance. Join compound_structures as an inner join to enforce SMILES presence. Filter by target CHEMBL3650 and standard_type IC50. Keep all qualifying activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

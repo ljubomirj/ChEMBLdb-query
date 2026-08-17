@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl258_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query targets IC50 activities (standard_relation='=') for the human single-protein target CHEMBL258 (tid=258, tax_id=9606, target_type='SINGLE PROTEIN') with assay_type='B' (Binding). The result set is empty (row_count: 0). This suggests either:\\n1. No IC50 activities exist for this target in the Binding assay type with pChEMBL values.\\n2. The target may not have any Binding assay data in ChEMBL 36.\\n3. The standard_relation filter may be too strict (IC50 is often reported as 'IC50' but standard_relation='=' may not capture all IC50 entries, as some use 'IC50' with 'standard_relation'='=' but others may use different relations).\\n4. The target CHEMBL258 (Lck) might not have Binding assay data in the database, or the assay_type filter may be incorrect (assay_type='B' is Binding, but the target may have assays of other types).\\n\\nThe query correctly filters for the target, assay type, standard relation, and pChEMBL values. However, the empty result indicates a data gap or misalignment with the expected output. The sample rows show no data, so the query is not returning any rows despite the filters being logically sound. This suggests the data may not exist in the current ChEMBL version (36) for this specific target and assay type combination.\",\n  \"score\": 0.7,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query targets IC50 activities (standard_relation='=') for the human single-protein target CHEMBL258 (tid=258, tax_id=9606, target_type='SINGLE PROTEIN') with assay_type='B' (Binding). The result set is empty (row_count: 0). This suggests either:\n1. No IC50 activities exist for this target in the Binding assay type with pChEMBL values.\n2. The target may not have any Binding assay data in ChEMBL 36.\n3. The standard_relation filter may be too strict (IC50 is often reported as 'IC50' but standard_relation='=' may not capture all IC50 entries, as some use 'IC50' with 'standard_relation'='=' but others may use different relations).\n4. The target CHEMBL258 (Lck) might not have Binding assay data in the database, or the assay_type filter may be incorrect (assay_type='B' is Binding, but the target may have assays of other types).\n\nThe query correctly filters for the target, assay type, standard relation, and pChEMBL values. However, the empty result indicates a data gap or misalignment with the expected output. The sample rows show no data, so the query is not returning any rows despite the filters being logically sound. This suggests the data may not exist in the current ChEMBL version (36) for this specific target and assay type combination.",
+      "score": 0.7,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl258_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

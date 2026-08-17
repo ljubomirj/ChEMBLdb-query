@@ -1,0 +1,17 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.
+
+Join path (strict provenance): molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary.
+INNER JOIN compound_structures on molregno to guarantee canonical_smiles exists.
+
+Filter:
+- target_dictionary.chembl_id = 'CHEMBL4296'
+- activities.standard_type = 'IC50'
+- activities.standard_units = 'nM'
+- activities.standard_relation = '='
+- activities.standard_value IS NOT NULL
+- docs.pubmed_id IS NOT NULL OR docs.doi IS NOT NULL
+
+Compute pubmed_id_or_doi as COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi).
+
+Return all qualifying activity rows without DISTINCT (preserve row multiplicity).
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_mechanism_agonist.json",
+  "case_id": "approved_drugs_mechanism_agonist",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT \n  md.chembl_id, \n  md.pref_name, \n  cs.canonical_smiles, \n  md.max_phase, \n  dm.mechanism_of_action, \n  dm.action_type, \n  td.chembl_id AS target_chembl_id, \n  td.pref_name AS target_name \nFROM molecule_dictionary md \nJOIN drug_mechanism dm ON md.molregno = dm.molregno \nJOIN target_dictionary td ON dm.tid = td.tid \nJOIN compound_structures cs ON md.molregno = cs.molregno \nWHERE md.max_phase = 4 \n  AND dm.action_type = 'AGONIST' \nORDER BY \n  md.chembl_id, \n  md.pref_name, \n  cs.canonical_smiles, \n  md.max_phase, \n  dm.mechanism_of_action, \n  dm.action_type, \n  td.chembl_id, \n  td.pref_name\n```",
+    "parsed_json": {
+      "sql": "SELECT \n  md.chembl_id, \n  md.pref_name, \n  cs.canonical_smiles, \n  md.max_phase, \n  dm.mechanism_of_action, \n  dm.action_type, \n  td.chembl_id AS target_chembl_id, \n  td.pref_name AS target_name \nFROM molecule_dictionary md \nJOIN drug_mechanism dm ON md.molregno = dm.molregno \nJOIN target_dictionary td ON dm.tid = td.tid \nJOIN compound_structures cs ON md.molregno = cs.molregno \nWHERE md.max_phase = 4 \n  AND dm.action_type = 'AGONIST' \nORDER BY \n  md.chembl_id, \n  md.pref_name, \n  cs.canonical_smiles, \n  md.max_phase, \n  dm.mechanism_of_action, \n  dm.action_type, \n  td.chembl_id, \n  td.pref_name"
+    }
+  }
+}

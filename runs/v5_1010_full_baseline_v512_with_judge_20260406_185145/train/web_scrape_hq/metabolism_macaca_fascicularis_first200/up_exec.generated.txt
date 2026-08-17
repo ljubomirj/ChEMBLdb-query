@@ -1,0 +1,12 @@
+Select activities.met_conversion, activities.pathway_key, activities.enzyme_name, assays.assay_organism, molecule_dictionary.pref_name AS substrate_compound_name, molecule_dictionary.pref_name AS parent_compound_name, compound_structures.canonical_smiles
+From metabolism
+Left Join activities On metabolism.met_id = activities.activity_id
+Left Join assays On activities.assay_id = assays.assay_id
+Left Join compound_records On activities.record_id = compound_records.record_id
+Left Join molecule_dictionary On compound_records.molregno = molecule_dictionary.molregno
+Left Join molecule_hierarchy On molecule_dictionary.molregno = molecule_hierarchy.molregno
+Left Join molecule_dictionary AS parent_mol On molecule_hierarchy.parent_molregno = parent_mol.molregno
+Left Join compound_structures On molecule_dictionary.molregno = compound_structures.molregno
+Filter assays.assay_organism = 'Macaca fascicularis'
+Sort by canonical_smiles, substrate_compound_name, parent_compound_name, met_conversion, pathway_key, organism, enzyme_name
+Limit 200

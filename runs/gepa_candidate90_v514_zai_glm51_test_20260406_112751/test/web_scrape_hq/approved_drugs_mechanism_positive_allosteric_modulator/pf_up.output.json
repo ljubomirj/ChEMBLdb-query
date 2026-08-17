@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_mechanism_positive_allosteric_modulator.json",
+  "case_id": "approved_drugs_mechanism_positive_allosteric_modulator",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id aliased as target_chembl_id, target_dictionary.pref_name aliased as target_name. Join molecule_dictionary to drug_mechanism on molregno, drug_mechanism to target_dictionary on tid, and molecule_dictionary to compound_structures on molregno (INNER JOIN). Filter where molecule_dictionary.max_phase = 4 and drug_mechanism.action_type = 'POSITIVE ALLOSTERIC MODULATOR'. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, molecule_dictionary.max_phase, drug_mechanism.mechanism_of_action, drug_mechanism.action_type, target_dictionary.chembl_id aliased as target_chembl_id, target_dictionary.pref_name aliased as target_name. Join molecule_dictionary to drug_mechanism on molregno, drug_mechanism to target_dictionary on tid, and molecule_dictionary to compound_structures on molregno (INNER JOIN). Filter where molecule_dictionary.max_phase = 4 and drug_mechanism.action_type = 'POSITIVE ALLOSTERIC MODULATOR'. Sort by chembl_id, pref_name, canonical_smiles, max_phase, mechanism_of_action, action_type, target_chembl_id, target_name."
+    }
+  }
+}

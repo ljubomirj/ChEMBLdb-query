@@ -1,0 +1,36 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve a list of compounds that have been tested against the human adenosine A1 receptor in assays where the assay organism is Homo sapiens. For each compound, return its ChEMBL ID, preferred name, and canonical SMILES string. Ensure that only compounds with available canonical SMILES are included in the results.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM molecule_dictionary md JOIN activities a ON md.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'Adenosine A1 receptor' AND ass.assay_organism = 'Homo sapiens' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n24 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n34 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n40 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n48 | 0 | 0 | BLOOM FILTER ON cs (molregno=?)\n56 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n77 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Identify all unique molecules tested against the adenosine A1 receptor in Homo sapiens. For each molecule, return the ChEMBL ID, the preferred name, and the canonical SMILES. Ensure that only molecules with an available canonical SMILES structure are included.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.pref_name = 'Adenosine receptor A1' AND td.organism = 'Homo sapiens' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n26 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n35 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n42 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n52 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 11207,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

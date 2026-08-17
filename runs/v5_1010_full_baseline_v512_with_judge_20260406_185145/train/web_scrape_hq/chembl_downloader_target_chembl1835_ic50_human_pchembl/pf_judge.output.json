@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1835_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The query was designed to retrieve IC50 activities for human TXA2 synthase (CHEMBL1835) with pChEMBL values, but returned 0 rows. The schema shows that activities.standard_type = 'IC50' and standard_relation = '=' are correct for exact IC50 values. The target filter uses tid = 1835 and tax_id = 9606, which matches the human single-protein target. However, the sample rows in the schema show that activities.standard_type is stored as 'IC50' (uppercase), and the query uses the correct case. The issue may be that the target_dictionary.tid for CHEMBL1835 is not 1835, or the tax_id is not 9606, or the assay_organism is not human. The query also requires canonical_smiles, which may not exist for all molecules, but the LEFT JOIN ensures it is optional. The sample rows show that activities.pchembl_value is present for some IC50 entries. The zero row count suggests a mismatch in the target identifier or the activity type. The query should be adjusted to use the correct target ChEMBL ID (CHEMBL1835) and verify the target_dictionary.tid value. The current query uses tid = 1835, but the target_dictionary.tid is a numeric identifier, not the ChEMBL ID. The correct filter should be target_dictionary.chembl_id = 'CHEMBL1835' instead of tid = 1835. This would correctly link to the human TXA2 synthase target.\",\n  \"score\": 0.85,\n  \"decision\": \"continue\"\n}",
+    "parsed_json": {
+      "analysis": "The query was designed to retrieve IC50 activities for human TXA2 synthase (CHEMBL1835) with pChEMBL values, but returned 0 rows. The schema shows that activities.standard_type = 'IC50' and standard_relation = '=' are correct for exact IC50 values. The target filter uses tid = 1835 and tax_id = 9606, which matches the human single-protein target. However, the sample rows in the schema show that activities.standard_type is stored as 'IC50' (uppercase), and the query uses the correct case. The issue may be that the target_dictionary.tid for CHEMBL1835 is not 1835, or the tax_id is not 9606, or the assay_organism is not human. The query also requires canonical_smiles, which may not exist for all molecules, but the LEFT JOIN ensures it is optional. The sample rows show that activities.pchembl_value is present for some IC50 entries. The zero row count suggests a mismatch in the target identifier or the activity type. The query should be adjusted to use the correct target ChEMBL ID (CHEMBL1835) and verify the target_dictionary.tid value. The current query uses tid = 1835, but the target_dictionary.tid is a numeric identifier, not the ChEMBL ID. The correct filter should be target_dictionary.chembl_id = 'CHEMBL1835' instead of tid = 1835. This would correctly link to the human TXA2 synthase target.",
+      "score": 0.85,
+      "decision": "continue"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_target_chembl1835_ic50_human_pchembl/pf_judge.generated_artifact_record.json"
+  }
+}

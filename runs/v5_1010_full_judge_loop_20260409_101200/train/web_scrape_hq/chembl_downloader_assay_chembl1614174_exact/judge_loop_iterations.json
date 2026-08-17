@@ -1,0 +1,21 @@
+[
+  {
+    "n": 2,
+    "up": "Show the exact activity values, with their units and type, and the canonical SMILES structures for all compounds tested in the assay with the identifier CHEMBL1614174. Include the standard relation, standard value, and standard units.",
+    "sql": "SELECT DISTINCT a.standard_relation, a.standard_value, a.standard_units, a.standard_type, cs.canonical_smiles FROM activities a JOIN compound_structures cs ON a.molregno = cs.molregno JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.chembl_id = 'CHEMBL1614174' AND a.standard_relation = '=' AND a.standard_value IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n13 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n23 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 24232,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "standard_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

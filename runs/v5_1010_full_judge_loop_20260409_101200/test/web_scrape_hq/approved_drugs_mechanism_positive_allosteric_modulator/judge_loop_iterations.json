@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs whose mechanism of action is a positive allosteric modulator. For each drug, include the target identifier, the preferred name of the target, the ChEMBL ID of the target, the drug's ChEMBL ID, the drug's preferred name, and the canonical SMILES.",
+    "sql": "SELECT DISTINCT\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_pref_name,\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name AS molecule_pref_name,\n  cs.canonical_smiles\nFROM drug_mechanism dm\nJOIN target_dictionary td ON dm.tid = td.tid\nJOIN molecule_dictionary md ON dm.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE\n  dm.action_type = 'POSITIVE ALLOSTERIC MODULATOR'\n  AND md.max_phase = 4;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n13 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 51,
+    "res_columns": [
+      "target_chembl_id",
+      "target_pref_name",
+      "molecule_chembl_id",
+      "molecule_pref_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,94 @@
+{
+  "case_id": "target_ic50_with_pubmed_or_doi_egfr",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval_smoke/mixed12_20260322/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_egfr/up_exec.generated.txt",
+    "sql_gold": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/sqlite.sql",
+    "res_gold": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/ground-truth.csv",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/source.sql",
+    "sqlite_sql": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/sqlite.sql",
+    "documentation": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "templated_from_faq_case",
+    "source_title": "Templated from FAQ provenance-rich activity example",
+    "source_url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples",
+    "realism_level": "templated_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "sort_keys": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "['target_chembl_id']"
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "compound_chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "canonical_smiles": "canonical_smiles",
+      "smiles": "canonical_smiles",
+      "compound_key": "compound_key",
+      "pubmed_id_or_doi": "pubmed_id_or_doi",
+      "assay_description": "assay_description",
+      "description": "assay_description",
+      "standard_type": "standard_type",
+      "standard_relation": "standard_relation",
+      "standard_value": "standard_value",
+      "standard_units": "standard_units",
+      "activity_comment": "activity_comment",
+      "target_chembl_id": "target_chembl_id",
+      "target_name": "target_name",
+      "target_pref_name": "target_name",
+      "target_organism": "target_organism",
+      "organism": "target_organism"
+    },
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "mode": "forward",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "selected_step": "judge",
+  "pf_sections": [
+    "up",
+    "sql",
+    "judge"
+  ],
+  "pb_sections_present": [
+    "sql_to_up",
+    "up_to_uq",
+    "res_sql_to_intent"
+  ],
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321/chembl_downloader_target_mapk14_ic50_human_pchembl/generated_case_manifest.json",
+  "case_id": "chembl_downloader_target_mapk14_ic50_human_pchembl",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "family": "target_pchembl",
+  "realism_level": "realistic_surface",
+  "up_exec_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321/chembl_downloader_target_mapk14_ic50_human_pchembl/up_exec.generated.txt",
+  "sql_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321/chembl_downloader_target_mapk14_ic50_human_pchembl/sql.generated.sql",
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/v5_runs/real_case_mapk14_20260321/chembl_downloader_target_mapk14_ic50_human_pchembl/result.generated.csv",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"analysis\": \"The SQL correctly implements all requirements from the user question: it filters to target CHEMBL260 with SINGLE PROTEIN type and human tax_id 9606, restricts to IC50 with exact relation '=' and non-null pChEMBL values, joins to compound_structures for canonical SMILES, preserves raw activity row multiplicity (no DISTINCT), and orders by molecule ChEMBL ID then assay ChEMBL ID. All seven requested columns are present with appropriate aliases. The 6269-row result set is plausible for MAPK14, a heavily studied kinase target. Sample rows show consistent data.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The SQL correctly implements all requirements from the user question: it filters to target CHEMBL260 with SINGLE PROTEIN type and human tax_id 9606, restricts to IC50 with exact relation '=' and non-null pChEMBL values, joins to compound_structures for canonical SMILES, preserves raw activity row multiplicity (no DISTINCT), and orders by molecule ChEMBL ID then assay ChEMBL ID. All seven requested columns are present with appropriate aliases. The 6269-row result set is plausible for MAPK14, a heavily studied kinase target. Sample rows show consistent data.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  }
+}

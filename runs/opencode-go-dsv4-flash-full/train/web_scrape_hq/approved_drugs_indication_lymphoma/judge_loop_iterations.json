@@ -1,0 +1,82 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) indicated for lymphoma, returning their ChEMBL ID, preferred name, canonical SMILES, and indication details (mesh_heading, efo_term, max_phase_for_ind). Use LEFT JOIN for compound_structures to include drugs without a structure. Filter drug_indication for indications whose mesh_heading or efo_term contains 'lymphoma' (case-insensitive). Return one row per drug-indication pair. Do not limit rows.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%lymphoma%' OR di.efo_term LIKE '%lymphoma%')",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n14 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n23 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 1673,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all drugs that are approved (max_phase_for_ind = 4) for lymphoma. For each drug, return the ChEMBL ID, preferred name, canonical SMILES (if available), and indication details (mesh_heading, efo_term, max_phase_for_ind). Use a LEFT JOIN to compound_structures so that drugs without a structure are still included. Filter drug_indication for indications whose mesh_heading or efo_term contains 'lymphoma' (case-insensitive), and additionally require that the indication approval phase (max_phase_for_ind) equals 4. Return one row per drug\u2013indication pair. Do not limit the number of rows.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (LOWER(di.mesh_heading) LIKE '%lymphoma%' OR LOWER(di.efo_term) LIKE '%lymphoma%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 172,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List all drugs that are approved for lymphoma, where approval means the indication has a maximum development phase of 4 (max_phase_for_ind = 4). For each such drug, return the ChEMBL ID (chembl_id), preferred name (pref_name), canonical SMILES (canonical_smiles, if available) from compound_structures, and the indication details (mesh_heading, efo_term, max_phase_for_ind). Join molecule_dictionary to drug_indication on molregno, and LEFT JOIN molecule_dictionary to compound_structures on molregno to include drugs even if they lack a structure. Filter drug_indication to rows where the indication is lymphoma: the mesh_heading or efo_term contains 'lymphoma' (case-insensitive) and max_phase_for_ind equals 4. Return one row per drug\u2013indication pair. Do not limit the number of rows.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (LOWER(di.mesh_heading) LIKE '%lymphoma%' OR LOWER(di.efo_term) LIKE '%lymphoma%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 172,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all drugs that have an approved indication for lymphoma. Approval is defined by the indication having a maximum phase of 4 (max_phase_for_ind = 4) in the drug_indication table. The lymphoma indications are identified by performing a case-insensitive search for the substring 'lymphoma' in either the mesh_heading or efo_term columns of drug_indication. For each qualifying drug\u2013indication pair, return the following columns: the ChEMBL identifier (chembl_id from molecule_dictionary), the preferred name (pref_name from molecule_dictionary), the canonical SMILES representation of the drug's chemical structure (canonical_smiles from compound_structures; if the structure is not available, still include the drug by using a LEFT JOIN), and the indication details (mesh_heading, efo_term, and max_phase_for_ind from drug_indication). Produce one output row per drug\u2013indication pair. Do not limit the number of rows returned.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.mesh_heading, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.max_phase_for_ind = 4 AND (COALESCE(di.mesh_heading, '') LIKE '%lymphoma%' OR COALESCE(di.efo_term, '') LIKE '%lymphoma%') ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n21 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 172,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

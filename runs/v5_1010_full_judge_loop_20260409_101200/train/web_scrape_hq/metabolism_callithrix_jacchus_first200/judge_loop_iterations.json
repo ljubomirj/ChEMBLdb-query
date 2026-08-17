@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Show the first 200 metabolism records for Callithrix jacchus, including substrate and parent compound names, SMILES, conversion details, pathway, and enzyme.",
+    "sql": "SELECT\n  met.met_id,\n  COALESCE(substrate_cr.compound_name, substr_md.pref_name) AS substrate_name,\n  COALESCE(parent_cr.compound_name, parent_md.pref_name) AS parent_name,\n  substr_cs.canonical_smiles,\n  met.met_conversion,\n  met.pathway_key,\n  met.enzyme_name\nFROM metabolism met\nLEFT JOIN compound_records substrate_cr ON met.substrate_record_id = substrate_cr.record_id\nLEFT JOIN molecule_dictionary substr_md ON substrate_cr.molregno = substr_md.molregno\nLEFT JOIN compound_structures substr_cs ON substr_md.molregno = substr_cs.molregno\nLEFT JOIN compound_records parent_cr ON met.drug_record_id = parent_cr.record_id\nLEFT JOIN molecule_dictionary parent_md ON parent_cr.molregno = parent_md.molregno\nWHERE met.organism = 'Callithrix jacchus'\nORDER BY met.met_id\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n15 | 0 | 132 | SCAN met USING INDEX sqlite_autoindex_metabolism_1\n20 | 0 | 47 | SEARCH substrate_cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n29 | 0 | 47 | SEARCH substr_md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN\n38 | 0 | 47 | SEARCH substr_cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n47 | 0 | 47 | SEARCH parent_cr USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n56 | 0 | 47 | SEARCH parent_md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?) LEFT-JOIN",
+    "res_row_count": 14,
+    "res_columns": [
+      "met_id",
+      "substrate_name",
+      "parent_name",
+      "canonical_smiles",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

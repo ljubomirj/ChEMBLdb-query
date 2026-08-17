@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_phosphatidylinositol_4,5_bisphosphate_3_.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_phosphatidylinositol_4,5_bisphosphate_3_",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity records for the target CHEMBL3130 (Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit delta isoform). Join activities to assays on assay_id, then to target_dictionary on assays.tid. Join activities to compound_records on record_id, then to molecule_dictionary on molregno, then to compound_structures on molregno (INNER JOIN, require non-null canonical_smiles). Join activities to docs on doc_id for provenance. Filter: target_dictionary.chembl_id = 'CHEMBL3130', activities.standard_type = 'IC50', canonical_smiles IS NOT NULL, and at least one of docs.pubmed_id or docs.doi is non-null. Return columns: molecule_dictionary.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles, compound_records.compound_key, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism. Do not deduplicate; preserve every qualifying activity row. Sort by all output columns in listed order.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity records for the target CHEMBL3130 (Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit delta isoform). Join activities to assays on assay_id, then to target_dictionary on assays.tid. Join activities to compound_records on record_id, then to molecule_dictionary on molregno, then to compound_structures on molregno (INNER JOIN, require non-null canonical_smiles). Join activities to docs on doc_id for provenance. Filter: target_dictionary.chembl_id = 'CHEMBL3130', activities.standard_type = 'IC50', canonical_smiles IS NOT NULL, and at least one of docs.pubmed_id or docs.doi is non-null. Return columns: molecule_dictionary.chembl_id AS compound_chembl_id, compound_structures.canonical_smiles, compound_records.compound_key, COALESCE(CAST(docs.pubmed_id AS TEXT), docs.doi) AS pubmed_id_or_doi, assays.description AS assay_description, activities.standard_type, activities.standard_relation, activities.standard_value, activities.standard_units, activities.activity_comment, target_dictionary.chembl_id AS target_chembl_id, target_dictionary.pref_name AS target_name, target_dictionary.organism AS target_organism. Do not deduplicate; preserve every qualifying activity row. Sort by all output columns in listed order."
+    }
+  }
+}

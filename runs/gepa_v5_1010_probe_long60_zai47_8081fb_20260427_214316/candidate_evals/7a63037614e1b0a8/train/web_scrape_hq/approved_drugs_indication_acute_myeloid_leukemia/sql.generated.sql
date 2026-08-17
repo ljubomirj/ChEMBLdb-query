@@ -1,0 +1,19 @@
+SELECT
+  md.chembl_id,
+  md.pref_name,
+  cs.canonical_smiles,
+  di.efo_id AS indication_curie,
+  di.mesh_heading AS indication_label,
+  di.max_phase_for_ind
+FROM drug_indication di
+JOIN molecule_dictionary md ON di.molregno = md.molregno
+JOIN compound_structures cs ON md.molregno = cs.molregno
+WHERE di.max_phase_for_ind = 4
+  AND LOWER(di.mesh_heading) = 'acute myeloid leukemia'
+ORDER BY
+  md.chembl_id,
+  md.pref_name,
+  cs.canonical_smiles,
+  di.efo_id,
+  di.mesh_heading,
+  di.max_phase_for_ind

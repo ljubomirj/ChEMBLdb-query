@@ -1,0 +1,31 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds that have at least one activity record in a Cytochrome P450 2C9 assay performed on human (tax_id = 9606) and return their ChEMBL identifiers (pref_name) together with the canonical SMILES. The result set must be deduplicated so that each molecule appears only once.",
+    "sql": "WITH human_cyp2c9_assays AS (\n  SELECT a.molecule_chembl_id\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\n  WHERE td.pref_name LIKE '%Cytochrome P450 2C9%'\n    AND ass.assay_organism = 'Homo sapiens'\n    AND ass.assay_tax_id = 9606\n    AND a.standard_value IS NOT NULL\n    AND a.standard_units = 'nM'\n  GROUP BY a.molecule_chembl_id\n  HAVING COUNT(DISTINCT a.activity_id) >= 1\n), human_cyp2c9_mols AS (\n  SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS pref_name, cs.canonical_smiles\n  FROM human_cyp2c9_assays hca\n  JOIN molecule_dictionary md ON hca.molecule_chembl_id = md.molecule_chembl_id\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n)\nSELECT DISTINCT pref_name AS molecule_chembl_id, canonical_smiles AS SMILES\nFROM human_cyp2c9_mols;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the ChEMBL identifier (CHEMBL ID) and the canonical SMILES for every molecule that has at least one activity measurement in a Cytochrome P450 2C9 assay performed on human (tax_id = 9606). The output should list each qualifying compound only once (deduplicate by ChEMBL ID) and include exactly two columns: molecule_chembl_id and SMILES.",
+    "sql": "WITH human_cyp2c9_assays AS (\n  SELECT a.molregno\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.pref_name LIKE '%Cytochrome P450 2C9%'\n    AND ass.assay_organism = 'Homo sapiens'\n    AND ass.assay_tax_id = 9606\n    AND a.standard_value IS NOT NULL\n  GROUP BY a.molregno\n), molecule_with_smile AS (\n  SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name AS pref_name, cs.canonical_smiles\n  FROM human_cyp2c9_assays hca\n  JOIN molecule_dictionary md ON hca.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n)\nSELECT DISTINCT molecule_chembl_id AS molecule_chembl_id, canonical_smiles AS SMILES\nFROM molecule_with_smile;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n2 | 0 | 0 | CO-ROUTINE molecule_with_smile\n4 | 2 | 0 | CO-ROUTINE human_cyp2c9_assays\n14 | 4 | 224 | SCAN ass\n21 | 4 | 0 | BLOOM FILTER ON td (tid=?)\n30 | 4 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n41 | 4 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n49 | 4 | 0 | USE TEMP B-TREE FOR GROUP BY\n87 | 2 | 82 | SCAN hca\n90 | 2 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n97 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n114 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n117 | 0 | 51 | SCAN molecule_with_smile\n127 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9488,
+    "res_columns": [
+      "molecule_chembl_id",
+      "SMILES"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

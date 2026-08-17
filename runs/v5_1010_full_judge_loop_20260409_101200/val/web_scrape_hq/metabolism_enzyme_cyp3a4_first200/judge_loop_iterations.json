@@ -1,0 +1,23 @@
+[
+  {
+    "n": 2,
+    "up": "Show the first 200 metabolism records for CYP3A4, including the substrate structure, substrate and parent compound names, metabolic conversion, pathway, and organism.",
+    "sql": "WITH target AS (SELECT tid FROM target_dictionary WHERE pref_name = 'Cytochrome P450 3A4'), metabolism_data AS (SELECT m.met_id, m.drug_record_id, m.substrate_record_id, m.met_conversion, m.organism, m.pathway_key FROM metabolism m JOIN target ON m.enzyme_tid = target.tid WHERE m.enzyme_tid IS NOT NULL LIMIT 200) SELECT md.met_id, s.canonical_smiles, sub.compound_name AS substrate_name, p.compound_name AS parent_compound_name, md.met_conversion, md.pathway_key, md.organism FROM metabolism_data md LEFT JOIN compound_records sub ON md.substrate_record_id = sub.record_id LEFT JOIN compound_structures s ON sub.molregno = s.molregno LEFT JOIN compound_records p ON md.drug_record_id = p.record_id ORDER BY md.met_id",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 8\n2 | 0 | 0 | CO-ROUTINE metabolism_data\n7 | 2 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n12 | 2 | 126 | SCAN m\n37 | 0 | 92 | SCAN md\n40 | 0 | 47 | SEARCH sub USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n49 | 0 | 47 | SEARCH s USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n58 | 0 | 47 | SEARCH p USING INDEX pk_comp_rec_recid (record_id=?) LEFT-JOIN\n89 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 156,
+    "res_columns": [
+      "met_id",
+      "canonical_smiles",
+      "substrate_name",
+      "parent_compound_name",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

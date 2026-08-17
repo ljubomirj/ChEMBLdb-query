@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Find the document with ChEMBL ID 'CHEMBL2163249' and retrieve all compounds that are associated with it via the compound_records table. For each compound, return the following fields: compound ChEMBL ID, compound name (pref_name from molecule_dictionary), maximum phase (max_phase), molecule type (molecule_type), and canonical SMILES. Order the results by compound ChEMBL ID in ascending order. Include all compounds, even if some fields are missing (use left joins where necessary).",
+    "sql": "SELECT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, md.max_phase, md.molecule_type, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id LEFT JOIN molecule_dictionary md ON cr.molregno = md.molregno LEFT JOIN compound_structures cs ON cr.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL2163249' ORDER BY md.chembl_id ASC;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n21 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n30 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n55 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 509,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

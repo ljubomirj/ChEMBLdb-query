@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of compounds tested against the target 'histone deacetylase 1' from the organism 'Homo sapiens'. Include the canonical SMILES for each compound. The assays used for testing must also be from 'Homo sapiens'. Return the results as a distinct list of compounds.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN activities a ON md.molregno = a.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.pref_name LIKE '%histone deacetylase 1%' AND td.organism = 'Homo sapiens' AND ass.assay_organism = 'Homo sapiens';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n11 | 0 | 224 | SCAN ass\n16 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n27 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n40 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n46 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n53 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 10512,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_jak3.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_tyrosine_protein_kinase_jak3",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select IC50 activity rows for compounds tested against human JAK3 (CHEMBL2148). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno to retrieve canonical_smiles. Join docs on doc_id to retrieve pubmed_id or doi. Join compound_records on record_id to retrieve compound_key. Filter where target_dictionary.chembl_id is 'CHEMBL2148' and activities.standard_type is 'IC50'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Keep all activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select IC50 activity rows for compounds tested against human JAK3 (CHEMBL2148). Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno to retrieve canonical_smiles. Join docs on doc_id to retrieve pubmed_id or doi. Join compound_records on record_id to retrieve compound_key. Filter where target_dictionary.chembl_id is 'CHEMBL2148' and activities.standard_type is 'IC50'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Keep all activity rows without deduplication. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism."
+    }
+  }
+}

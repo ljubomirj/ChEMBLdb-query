@@ -1,0 +1,42 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve a list of all approved drugs (maximum development phase = 4) that have at least one indication related to pain. For each such drug\u2013indication pair, return the following columns: the ChEMBL identifier of the drug (molecule_dictionary.chembl_id), the preferred name of the drug (molecule_dictionary.pref_name), the canonical SMILES of the drug (compound_structures.canonical_smiles), the indication identifier (drug_indication.drugind_id), the indication label (drug_indication.mesh_heading), and the maximum development phase (molecule_dictionary.max_phase). Filter drug_indication records so that only those whose mesh_heading (or efo_term) contains the word 'Pain' (case\u2011insensitive) are included. Join molecule_dictionary with drug_indication on molregno and with compound_structures on molregno. Do not apply any other filters or row limits. Return one row per qualifying drug\u2013indication combination.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.drugind_id, di.mesh_heading, md.max_phase FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (LOWER(di.mesh_heading) LIKE '%pain%' OR LOWER(di.efo_term) LIKE '%pain%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n16 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 590,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all approved drugs (where molecule_dictionary.max_phase = 4) that have an indication related to pain. An indication is considered pain-related if drug_indication.mesh_heading or drug_indication.efo_term contains the word 'Pain' (case-insensitive). For each such drug\u2013indication pair, return the following columns: drug ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), canonical SMILES (compound_structures.canonical_smiles), indication ID (drug_indication.drugind_id), indication label (drug_indication.mesh_heading), and max phase (molecule_dictionary.max_phase). Use a LEFT JOIN to compound_structures on molregno so that drugs without a SMILES entry are still included. Do not apply any other filters or row limits. Return one row per qualifying drug\u2013indication combination.",
+    "sql": "SELECT md.chembl_id, md.pref_name, cs.canonical_smiles, di.drugind_id, di.mesh_heading, md.max_phase FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.max_phase = 4 AND (LOWER(di.mesh_heading) LIKE '%pain%' OR LOWER(di.efo_term) LIKE '%pain%');",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n16 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n25 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 622,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "drugind_id",
+      "mesh_heading",
+      "max_phase"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

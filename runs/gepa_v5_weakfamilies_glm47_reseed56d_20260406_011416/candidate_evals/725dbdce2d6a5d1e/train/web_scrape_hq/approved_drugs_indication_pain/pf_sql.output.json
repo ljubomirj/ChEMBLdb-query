@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_725dbdce2d6a5d1e.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_indication_pain.json",
+  "case_id": "approved_drugs_indication_pain",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "725dbdce2d6a5d1e",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"sql\": \"SELECT m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary m LEFT JOIN compound_structures cs ON m.molregno = cs.molregno JOIN drug_indication di ON m.molregno = di.molregno WHERE di.max_phase_for_ind = 4 AND di.efo_term = 'Pain' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind\"\n}\n```",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id AS indication_curie, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary m LEFT JOIN compound_structures cs ON m.molregno = cs.molregno JOIN drug_indication di ON m.molregno = di.molregno WHERE di.max_phase_for_ind = 4 AND di.efo_term = 'Pain' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+[
+  {
+    "n": 1,
+    "up": "{\"Select\": [\"chembl_id\", \"name\", \"smiles\", \"efo_id\", \"indication_label\", \"max_phase_for_ind\"], \"Source\": [\"molecule_dictionary\", \"drug_indication\"], \"Join\": \"molecule_dictionary.molregno = drug_indication.molregno\", \"Filter\": \"drug_indication.efo_term = 'Schizophrenia' AND molecule_dictionary.therapeutic_flag = 1\", \"Sort\": \"\", \"Limit\": \"\"}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, md.canonical_smiles AS smiles, di.efo_id AS efo_id, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno WHERE di.efo_term = 'Schizophrenia' AND md.therapeutic_flag = 1;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "ERROR: no such column: md.canonical_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.canonical_smiles",
+    "judge_text": "{\n  \"analysis\": \"The current query fails because `molecule_dictionary` does not contain a `canonical_smiles` column. SMILES data are stored in the `compound_structures` table. To satisfy the user request we must join `compound_structures` (or another structure table) to obtain the SMILES, while keeping the existing joins to `drug_indication` for indication filtering and `molecule_dictionary` for ChEMBL ID, name, therapeutic flag, etc. The filter for schizophrenia indication and approved drugs (therapeutic_flag = 1) is correct, but the column selection must be adjusted. Since the query produced an error, we need to iterate to produce a correct SQL statement.\",\n  \"score\": 0.2,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\n  \"Select\": [\"chembl_id\", \"name\", \"smiles\", \"efo_id\", \"indication_label\", \"max_phase_for_ind\"],\n  \"Source\": [\"molecule_dictionary\", \"drug_indication\", \"compound_structures\"],\n  \"Join\": \"molecule_dictionary.molregno = drug_indication.molregno AND molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"drug_indication.efo_term = 'Schizophrenia' AND molecule_dictionary.therapeutic_flag = 1\",\n  \"Sort\": \"\",\n  \"Limit\": \"\"\n}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS smiles, di.efo_id AS efo_id, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno INNER JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.efo_term = 'Schizophrenia' AND md.therapeutic_flag = 1;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n10 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query returned 0 rows, which indicates that the current filter criteria are too restrictive or mismatched. The requirement is to list approved (therapeutic_flag = 1) drugs indicated for schizophrenia. The join logic is correct, but the filter `di.efo_term = 'Schizophrenia'` may not match because the efo_term column could store the EFO ID (e.g., 'EFO:0000404') or have a different case/format. Additionally, using an INNER JOIN on `compound_structures` may exclude molecules that lack a structure entry, even though SMILES are required. The result set should contain several approved antipsychotic drugs (e.g., clozapine, olanzapine, risperidone). The empty result suggests the query needs refinement: verify the exact value stored in `efo_term`, possibly filter on `efo_id` instead, and consider using a LEFT JOIN for structures while still selecting SMILES. The current output does not meet the user's request, so further iteration is required.\",\n  \"score\": 0.2,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "{\n  \"Select\": [\"chembl_id\", \"name\", \"smiles\", \"efo_id\", \"indication_label\", \"max_phase_for_ind\"],\n  \"Source\": [\"molecule_dictionary\", \"drug_indication\", \"compound_structures\"],\n  \"Join\": \"molecule_dictionary.molregno = drug_indication.molregno AND molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"drug_indication.efo_term = 'Schizophrenia' AND molecule_dictionary.therapeutic_flag = 1\",\n  \"Sort\": \"\",\n  \"Limit\": \"\"\n}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS smiles, di.efo_id AS efo_id, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.efo_id = 'EFO:0000404' AND md.therapeutic_flag = 1;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n10 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 10,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query returned 10 compounds filtered by efo_id = 'EFO:0000404' and therapeutic_flag = 1. However, the indication label shown is 'diffuse scleroderma', not schizophrenia. The EFO ID used corresponds to diffuse scleroderma, indicating a mismatch. The user explicitly requested schizophrenia (EFO:0000404 is not schizophrenia; the correct EFO ID for schizophrenia is EFO:0000404? Actually schizophrenia EFO ID is EFO:0000404? The correct EFO ID for schizophrenia is EFO:0000404? The result shows the wrong indication, so the query does not satisfy the user's request. Therefore, the current result is not good enough to stop iterating; we need to adjust the filter to the correct EFO ID for schizophrenia and ensure only approved drugs (therapeutic_flag = 1) are returned.\",\n  \"score\": 0.2,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "{\n  \"Select\": [\"chembl_id\", \"name\", \"smiles\", \"efo_id\", \"indication_label\", \"max_phase_for_ind\"],\n  \"Source\": [\"molecule_dictionary\", \"drug_indication\", \"compound_structures\"],\n  \"Join\": \"molecule_dictionary.molregno = drug_indication.molregno AND molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"drug_indication.efo_term = 'Schizophrenia' AND molecule_dictionary.therapeutic_flag = 1\",\n  \"Sort\": \"\",\n  \"Limit\": \"\"\n}",
+    "sql": "SELECT md.chembl_id AS chembl_id, md.pref_name AS name, cs.canonical_smiles AS smiles, di.efo_id AS efo_id, di.efo_term AS indication_label, di.max_phase_for_ind AS max_phase_for_ind FROM molecule_dictionary md INNER JOIN drug_indication di ON md.molregno = di.molregno LEFT JOIN compound_structures cs ON md.molregno = cs.molregno WHERE di.efo_term = 'Schizophrenia' AND md.therapeutic_flag = 1;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n10 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n19 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 0,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query returned 0 rows, indicating that the current join and filter criteria did not retrieve any approved drugs indicated for schizophrenia. Possible issues: (1) The efo_term filter may be too strict (e.g., case sensitivity, extra whitespace, or the indication may be stored under a different EFO term). (2) The therapeutic_flag filter may be excluding drugs that are approved but have therapeutic_flag = 0 due to data inconsistencies. (3) The LEFT JOIN to compound_structures may be dropping rows if a structure is missing, but we used LEFT JOIN so that should not be the cause. The next iteration should relax the efo_term filter (e.g., use efo_id or LIKE) and verify that therapeutic_flag = 1 correctly captures approved drugs. Additionally, we should confirm that the drug_indication table contains the expected indication for schizophrenia.\",\n  \"score\": 0.2,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "{\n  \"Select\": [\"chembl_id\", \"name\", \"smiles\", \"efo_id\", \"indication_label\", \"max_phase_for_ind\"],\n  \"Source\": [\"molecule_dictionary\", \"drug_indication\", \"compound_structures\"],\n  \"Join\": \"molecule_dictionary.molregno = drug_indication.molregno AND molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"drug_indication.efo_id = 'EFO:0000404' AND molecule_dictionary.therapeutic_flag = 1\",\n  \"Sort\": \"\",\n  \"Limit\": \"\"\n}",
+    "sql": "SELECT md.chembl_id AS chembl_id,\n       md.pref_name AS name,\n       cs.canonical_smiles AS smiles,\n       di.efo_id AS efo_id,\n       di.efo_term AS indication_label,\n       di.max_phase_for_ind AS max_phase_for_ind\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON md.molregno = di.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE LOWER(di.efo_term) = 'schizophrenia'\n  AND md.therapeutic_flag = 1;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN di\n11 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 191,
+    "res_columns": [
+      "chembl_id",
+      "name",
+      "smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters for approved drugs (therapeutic_flag = 1) indicated for schizophrenia (efo_term = 'schizophrenia') and returns the requested columns: chembl_id, name, smiles, efo_id, indication_label, max_phase_for_ind. The result includes 191 rows with the required fields, and the joins (molecule_dictionary \u2192 drug_indication \u2192 compound_structures) are appropriate. Minor nuance: the efo_id column shows MONDO IDs (e.g., MONDO:0005090) rather than the EFO ID (EFO:0000404) because the drug_indication table stores MONDO identifiers for indications. However, the indication label (efo_term) correctly shows 'schizophrenia', and the user asked for an EFO ID column \u2013 the column present is the indication identifier from the drug_indication table, which is acceptable given the schema. No rows are missing that would be expected for approved schizophrenia drugs, and the query respects LEFT JOIN for structures (allowing NULL smiles for biologics). Overall, the result satisfies the user request.\",\n  \"score\": 0.92,\n  \"decision\": \"YES\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 0.92,
+    "judge_decision": true
+  }
+]

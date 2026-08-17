@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, substrate.compound_name AS substrate_name, parent.compound_name AS parent_name, substrate_struct.canonical_smiles. Source: metabolism. Join: Join compound_records substrate ON metabolism.substrate_record_id = substrate.record_id. Join compound_structures substrate_struct ON substrate.molregno = substrate_struct.molregno. Left Join compound_records parent ON metabolism.drug_record_id = parent.record_id. Filter: metabolism.tax_id = 9483 (Callithrix jacchus). Sort: metabolism.met_id ascending. Limit: 200.",
+    "sql": "SELECT metabolism.met_id, metabolism.met_conversion, metabolism.pathway_key, metabolism.enzyme_name, substrate.compound_name AS substrate_name, parent.compound_name AS parent_name, substrate_struct.canonical_smiles FROM metabolism JOIN compound_records substrate ON metabolism.substrate_record_id = substrate.record_id JOIN compound_structures substrate_struct ON substrate.molregno = substrate_struct.molregno LEFT JOIN compound_records parent ON metabolism.drug_record_id = parent.record_id WHERE metabolism.tax_id = 9483 ORDER BY metabolism.met_id ASC LIMIT 200",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n11 | 0 | 0 | SCAN metabolism USING INDEX sqlite_autoindex_metabolism_1\n16 | 0 | 0 | SEARCH substrate USING INDEX pk_comp_rec_recid (record_id=?)\n23 | 0 | 0 | SEARCH substrate_struct USING INDEX compound_structures_pk (molregno=?)\n30 | 0 | 0 | SEARCH parent USING INDEX pk_comp_rec_recid (record_id=?)",
+    "res_row_count": 14,
+    "res_columns": [
+      "met_id",
+      "met_conversion",
+      "pathway_key",
+      "enzyme_name",
+      "substrate_name",
+      "parent_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query executed successfully and returned 14 rows for Callithrix jacchus (tax_id 9483). The result includes all requested fields: metabolism ID, conversion details, pathway key, enzyme name, substrate and parent compound names, and canonical SMILES. The data covers Aliskiren and Debrisoquine metabolism pathways with specific transformations like O-demethylation, hydrolysis, and hydroxylation. The row count is less than the requested 200 because only 14 records exist for this organism in the database. The execution plan shows efficient index usage on all joins.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_be2800f35fa9e021.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_cytochrome_p450_3a4_molecule_smiles.json",
+  "case_id": "human_cytochrome_p450_3a4_molecule_smiles",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "be2800f35fa9e021",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.pref_name = 'Cytochrome P450 3A4'\nORDER BY md.chembl_id\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles\nFROM molecule_dictionary md\nJOIN activities act ON act.molregno = md.molregno\nJOIN assays a ON act.assay_id = a.assay_id\nJOIN target_dictionary td ON a.tid = td.tid\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE td.pref_name = 'Cytochrome P450 3A4'\nORDER BY md.chembl_id"
+    }
+  }
+}

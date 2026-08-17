@@ -1,0 +1,56 @@
+{
+  "case_id": "baoilleach_herg_ic50_export",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/mixed30_v52_20260322/val/web_scrape_hq/baoilleach_herg_ic50_export/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/mixed30_v52_20260322/val/web_scrape_hq/baoilleach_herg_ic50_export/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/ground-truth.csv",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/mixed30_v52_20260322/val/web_scrape_hq/baoilleach_herg_ic50_export/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "inferred_from_public_sql",
+    "source_title": "chembl_mysql gist: hERG IC50 export",
+    "source_url": "https://gist.github.com/baoilleach/4953366",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "activity_id",
+      "assay_chembl_id",
+      "molecule_chembl_id"
+    ],
+    "sort_keys": [
+      "activity_id",
+      "assay_chembl_id",
+      "molecule_chembl_id"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {},
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "activity_id"
+    ],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

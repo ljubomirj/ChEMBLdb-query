@@ -1,0 +1,30 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all IC50 activity records where the tested compound is Chloroquine (ChEMBL ID CHEMBL76) or any of its salt forms, and the target is Plasmodium falciparum (target_dictionary chembl_id = 'CHEMBL364'). For each record, provide the following fields: activity_id, compound ChEMBL ID (from molecule_dictionary.chembl_id), compound name (molecule_dictionary.pref_name), canonical SMILES, assay description, assay type, IC50 numeric value, IC50 units, relation (e.g., '=', '<', '>'), pChEMBL value, PubMed ID, DOI, journal name, and publication year. To include both Chloroquine and its salts, first locate the parent molecule using molecule_dictionary.chembl_id = 'CHEMBL76', then obtain all molecules in molecule_hierarchy where parent_molregno equals that parent's molregno (this includes the parent itself). Connect these molecules to the activities table via the molregno field. Restrict to activities where standard_type = 'IC50'. Do not impose any additional filters; return all matching rows without a row limit.",
+    "sql": "SELECT\n  a.activity_id,\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS compound_name,\n  cs.canonical_smiles,\n  ass.description AS assay_description,\n  ass.assay_type,\n  a.standard_value AS ic50_value,\n  a.standard_units AS ic50_units,\n  a.standard_relation AS relation,\n  a.pchembl_value,\n  d.pubmed_id,\n  d.doi,\n  d.journal,\n  d.year AS publication_year\nFROM molecule_dictionary parent_md\nJOIN molecule_hierarchy mh ON mh.parent_molregno = parent_md.molregno\nJOIN activities a ON a.molregno = mh.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid AND td.chembl_id = 'CHEMBL364'\nLEFT JOIN molecule_dictionary md ON a.molregno = md.molregno\nLEFT JOIN compound_structures cs ON a.molregno = cs.molregno\nLEFT JOIN docs d ON ass.doc_id = d.doc_id\nWHERE parent_md.chembl_id = 'CHEMBL76'\n  AND a.standard_type = 'IC50';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 8\n17 | 0 | 0 | SEARCH parent_md USING INDEX idx_moldict_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n27 | 0 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n33 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n41 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n59 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n68 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 2139,
+    "res_columns": [
+      "activity_id",
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles",
+      "assay_description",
+      "assay_type",
+      "ic50_value",
+      "ic50_units",
+      "relation",
+      "pchembl_value",
+      "pubmed_id",
+      "doi",
+      "journal",
+      "publication_year"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.99,
+    "judge_decision": true
+  }
+]

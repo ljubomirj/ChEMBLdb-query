@@ -1,0 +1,6 @@
+Select: assays.chembl_id AS assay_chembl_id, target_dictionary.target_type, target_dictionary.tax_id, compound_structures.canonical_smiles, molecule_dictionary.chembl_id AS molecule_chembl_id, activities.standard_type, activities.pchembl_value
+Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures
+Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno
+Filter: target_dictionary.chembl_id IS 'CHEMBL1293289', activities.standard_type IS 'IC50', activities.standard_relation IS '=', activities.pchembl_value IS NOT NULL
+Sort: molecule_chembl_id ASC, assay_chembl_id ASC
+Limit: 1000

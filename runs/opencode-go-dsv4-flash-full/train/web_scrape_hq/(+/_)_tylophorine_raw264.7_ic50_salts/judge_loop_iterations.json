@@ -1,0 +1,22 @@
+[
+  {
+    "n": 5,
+    "up": "Please retrieve the IC50 activity data for the compound tylophorine and all its salt forms tested against the RAW264.7 cell line. First, identify the molecule entry for tylophorine (using its preferred name or synonyms in molecule_dictionary or molecule_synonyms). Then, using molecule_hierarchy, find all molecules that are either tylophorine itself or salts/derivatives where parent_molregno equals the molregno of tylophorine (i.e., children including the parent). Next, retrieve activity records for these molecules with standard_type = 'IC50' from assays that use RAW264.7 cells. The assays should be filtered by either assay_cell_type = 'RAW264.7' or by joining cell_dictionary on cell_id where cell_name matches 'RAW264.7'. The output should include the compound name (pref_name) and/or compound ChEMBL ID, the IC50 value (standard_value), units (standard_units), relation (standard_relation), and the assay cell type (assay_cell_type) to confirm the cell line. Include all matching rows without any row limit. Do not add extra filters (e.g., do not restrict by relation or units unless explicitly needed).",
+    "sql": "WITH base AS (\n    SELECT molregno FROM molecule_dictionary WHERE LOWER(pref_name) = 'tylophorine'\n    UNION\n    SELECT molregno FROM molecule_synonyms WHERE LOWER(synonyms) = 'tylophorine'\n),\nall_mol AS (\n    SELECT molregno FROM molecule_hierarchy WHERE parent_molregno IN (SELECT molregno FROM base)\n    UNION\n    SELECT molregno FROM base\n)\nSELECT\n    md.chembl_id AS compound_chembl_id,\n    md.pref_name AS compound_name,\n    a.standard_value AS ic50_value,\n    a.standard_units AS ic50_units,\n    a.standard_relation AS ic50_relation,\n    ass.assay_cell_type AS cell_line\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE a.molregno IN (SELECT molregno FROM all_mol)\n  AND a.standard_type = 'IC50'\n  AND (ass.assay_cell_type = 'RAW264.7'\n       OR ass.cell_id IN (SELECT cell_id FROM cell_dictionary WHERE cell_name = 'RAW264.7'))\nORDER BY a.standard_value;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 23\n8 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n12 | 0 | 0 | LIST SUBQUERY 6\n14 | 12 | 0 | CO-ROUTINE all_mol\n15 | 14 | 0 | COMPOUND QUERY\n16 | 15 | 0 | LEFT-MOST SUBQUERY\n20 | 16 | 0 | SEARCH molecule_hierarchy USING INDEX idx_molhier_parent (parent_molregno=?)\n24 | 16 | 0 | LIST SUBQUERY 3\n27 | 24 | 0 | MATERIALIZE base\n29 | 27 | 0 | COMPOUND QUERY\n30 | 29 | 0 | LEFT-MOST SUBQUERY\n33 | 30 | 0 | SCAN molecule_dictionary\n42 | 29 | 0 | UNION USING TEMP B-TREE\n44 | 42 | 0 | SCAN molecule_synonyms\n61 | 24 | 0 | SCAN base\n79 | 15 | 0 | UNION USING TEMP B-TREE\n82 | 79 | 0 | SCAN base\n94 | 12 | 0 | SCAN all_mol\n108 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n115 | 0 | 0 | REUSE LIST SUBQUERY 6\n124 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n135 | 0 | 0 | LIST SUBQUERY 7\n138 | 135 | 0 | SEARCH cell_dictionary USING INDEX sqlite_autoindex_cell_dictionary_2 (cell_name=?)\n163 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "ic50_value",
+      "ic50_units",
+      "ic50_relation",
+      "cell_line"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

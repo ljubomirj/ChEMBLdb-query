@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve IC50 bioactivity data for compounds tested against the human ALK tyrosine kinase receptor (ChEMBL ID: CHEMBL4247). Return the standard IC50 value in nM, the compound's ChEMBL ID, the compound's canonical SMILES, and the PubMed ID (or DOI if PubMed ID is not available) of the source document.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS compound_chembl_id,\n  compound_structures.canonical_smiles,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nJOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  target_dictionary.chembl_id = 'CHEMBL4247'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 3757,
+    "res_columns": [
+      "ic50_nM",
+      "compound_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

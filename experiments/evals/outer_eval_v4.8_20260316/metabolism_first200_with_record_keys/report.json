@@ -1,0 +1,74 @@
+{
+  "ts_utc": "2026-03-16T19:54:30Z",
+  "eval_label": "metabolism_first200_with_record_keys",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.8.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 1,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.85,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "metabolism_first200_with_record_keys",
+          "uq": "Retrieve the first 200 rows from the metabolism table with canonical SMILES, substrate record ID, metabolite record ID, substrate compound key, metabolite compound key, metabolic conversion, and pathway key. Use substrate_record_id as a mandatory join to the substrate compound_records row and then to compound_structures for canonical_smiles, so canonical_smiles and substrate_compound_key come from the substrate side and must not be null because of an optional join. Use metabolite_record_id to join the metabolite compound_records row for metabolite_compound_key; that metabolite-side join may be optional if the metabolite record is absent. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/metabolism_first200_with_record_keys/val/web_scrape_hq/metabolism_first200_with_record_keys/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/outer_eval_v4.8_20260316/metabolism_first200_with_record_keys/val/web_scrape_hq/metabolism_first200_with_record_keys/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'canonical_smiles' at row 0: actual='C=C1C(C)=C2C(=O)[C@](C)(CO)[C@H](O)C2=CC1C', expected='C=C1C[C@@H]2[C@H](CC[C@]3(C)C(=O)CC[C@@H]23)[C@@]2(C)C=CC(=O)C=C12'",
+          "status": "partial",
+          "score": 0.85,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 0,
+      "n_pass": 0,
+      "pass_rate": 0.0,
+      "mean_score": 0.0,
+      "cases": []
+    }
+  },
+  "summary": {
+    "n_cases": 1,
+    "n_pass": 0,
+    "pass_rate": 0.0,
+    "mean_score": 0.85
+  }
+}

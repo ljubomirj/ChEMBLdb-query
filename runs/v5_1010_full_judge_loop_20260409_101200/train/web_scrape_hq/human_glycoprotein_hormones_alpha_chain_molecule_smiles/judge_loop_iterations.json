@@ -1,0 +1,56 @@
+[
+  {
+    "n": 1,
+    "up": "Find the compound structures (canonical SMILES) for molecules tested against the human Glycoprotein hormones alpha chain target (CHEMBL2146305).",
+    "sql": "WITH target AS (SELECT DISTINCT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2146305'), compounds AS (SELECT a.molecule_chembl_id AS molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target ON a.tid = target.tid WHERE a.standard_type = 'IC50' OR a.standard_type IS NULL) SELECT DISTINCT cs.canonical_smiles AS canonical_smiles FROM compounds c JOIN compound_structures cs ON c.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the canonical SMILES for molecules that have at least one activity measurement recorded against the human Glycoprotein hormones alpha chain target with the internal target identifier CHEMBL2146305. The query should join the activities table to the assays table and the target_dictionary table to identify the correct target. For each molecule with activity data, return the canonical SMILES from the compound_structures table. Preserve any activity rows (including rows with standard_type 'IC50', 'EC50', etc.) and do not restrict the standard_units, standard_relation, or other activity attributes unless explicitly requested. The output should include one SMILES per compound, but multiple SMILES from the same compound should be allowed if the compound_structures table contains multiple entries (e.g., salts or stereoisomers). The canonical SMILES must come from the compound_structures table and not be derived from any other source.",
+    "sql": "WITH target AS (SELECT DISTINCT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL2146305'), assay_tid AS (SELECT DISTINCT ass.tid FROM assays ass JOIN target ON ass.tid = target.tid), activities_for_target AS (SELECT a.molregno FROM activities a WHERE a.tid IN (SELECT tid FROM assay_tid)) SELECT DISTINCT cs.canonical_smiles AS canonical_smiles FROM activities_for_target aft JOIN compound_structures cs ON aft.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "For molecules that have been tested against the human Glycoprotein hormones alpha chain target with ChEMBL identifier CHEMBL2146305, retrieve their canonical SMILES strings from the compound_structures table. Join activities to assays via assay_id, then to target_dictionary via assays.tid to confirm the target, and finally to compound_structures on molregno. Do not filter by standard_type, standard_units, standard_relation, or any other activity attribute unless explicitly requested. Output each distinct SMILES value, including salts or stereoisomers as separate entries if present.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL2146305' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the canonical SMILES strings for compounds that have been tested against the human Glycoprotein hormones alpha chain target (CHEMBL2146305). Join activities to assays via assay_id, then to target_dictionary via tid to ensure the target is the human Glycoprotein hormones alpha chain (tid with chembl_id = 'CHEMBL2146305'). Return one row per distinct SMILES value from the compound_structures table, preserving all salts and stereoisomers. Do not filter by activity type, units, or any other activity attribute unless explicitly requested.",
+    "sql": "SELECT DISTINCT cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN compound_structures cs ON a.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL2146305' AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n10 | 0 | 227 | SEARCH cs USING INDEX idx_cmpdstr_smiles (canonical_smiles>?)\n15 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n20 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n26 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 29263,
+    "res_columns": [
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.gepa_probe_long60_fix_act_tid.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl3716726_mus_musculus_ic50_salts.json",
+  "case_id": "chembl3716726_mus_musculus_ic50_salts",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source: molecule_dictionary (parent CHEMBL3716726), molecule_hierarchy (all related forms), compound_structures, compound_records, activities, assays, docs, target_dictionary. Join: molecule_hierarchy on parent_molregno to find salts; compound_structures on molregno; compound_records on molregno; activities on record_id; assays on assay_id; docs on doc_id; target_dictionary on tid. Filter: parent chembl_id = 'CHEMBL3716726'; target chembl_id = 'CHEMBL375'; standard_type = 'IC50'. Sort: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Source: molecule_dictionary (parent CHEMBL3716726), molecule_hierarchy (all related forms), compound_structures, compound_records, activities, assays, docs, target_dictionary. Join: molecule_hierarchy on parent_molregno to find salts; compound_structures on molregno; compound_records on molregno; activities on record_id; assays on assay_id; docs on doc_id; target_dictionary on tid. Filter: parent chembl_id = 'CHEMBL3716726'; target chembl_id = 'CHEMBL375'; standard_type = 'IC50'. Sort: compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

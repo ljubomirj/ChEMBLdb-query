@@ -1,0 +1,29 @@
+[
+  {
+    "n": 2,
+    "up": "Retrieve all activity rows for the compound CHEMBL1173655 (AFATINIB) and all its salts (parent and related salts via molecule_hierarchy). For each qualifying activity record, retrieve the following fields: compound_chembl_id (molecule chembl id), canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism. Apply the following filters: target CHEMBL203 (Epidermal growth factor receptor) and standard_type IC50. Do not limit the number of rows.",
+    "sql": "WITH hierarchy AS (SELECT parent.molregno, parent.chembl_id AS chembl_id, parent.molregno AS query_molregno FROM molecule_dictionary parent WHERE parent.chembl_id = 'CHEMBL1173655' UNION SELECT child.molregno, child.chembl_id AS chembl_id, parent.molregno AS query_molregno FROM molecule_dictionary parent JOIN molecule_hierarchy mh ON mh.parent_molregno = parent.molregno JOIN molecule_dictionary child ON child.molregno = mh.molregno WHERE parent.chembl_id = 'CHEMBL1173655'), target_ids AS (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL203') SELECT DISTINCT h.chembl_id AS compound_chembl_id, cs.canonical_smiles, cr.compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.organism AS target_organism FROM hierarchy h JOIN activities a ON a.molregno = h.molregno JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_ids t ON ass.tid = t.tid JOIN target_dictionary td ON td.tid = ass.tid LEFT JOIN compound_structures cs ON cs.molregno = h.molregno LEFT JOIN compound_records cr ON cr.record_id = a.record_id LEFT JOIN docs d ON d.doc_id = a.doc_id WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM';",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 17\n3 | 0 | 0 | MATERIALIZE hierarchy\n5 | 3 | 0 | COMPOUND QUERY\n6 | 5 | 0 | LEFT-MOST SUBQUERY\n10 | 6 | 0 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n20 | 5 | 0 | UNION USING TEMP B-TREE\n27 | 20 | 0 | SEARCH parent USING INDEX idx_moldict_chembl_id (chembl_id=?)\n32 | 20 | 0 | SEARCH mh USING INDEX idx_molhier_parent (parent_molregno=?)\n38 | 20 | 0 | SEARCH child USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n75 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n80 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n89 | 0 | 0 | SCAN h\n91 | 0 | 0 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n102 | 0 | 0 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n111 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n120 | 0 | 0 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n128 | 0 | 0 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n171 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 117,
+    "res_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

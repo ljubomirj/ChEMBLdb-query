@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Return a listing of IC50 activity values (in nM) for compounds tested against the target with ChEMBL ID CHEMBL1980 (human sodium channel protein type 5 subunit alpha). For each qualifying activity, include the compound's ChEMBL ID, canonical SMILES, and the PubMed ID or DOI from the document, plus the assay description and the target's ChEMBL ID, preferred name, and organism.",
+    "sql": "SELECT\n  activities.standard_value AS ic50_value,\n  md.chembl_id AS molecule_chembl_id,\n  cs.canonical_smiles,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  td.chembl_id AS target_chembl_id,\n  td.pref_name AS target_name,\n  td.organism AS target_organism\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary td ON assays.tid = td.tid\nJOIN molecule_dictionary md ON activities.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nJOIN docs ON activities.doc_id = docs.doc_id\nWHERE\n  td.chembl_id = 'CHEMBL1980'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n27 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n52 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)",
+    "res_row_count": 1650,
+    "res_columns": [
+      "ic50_value",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

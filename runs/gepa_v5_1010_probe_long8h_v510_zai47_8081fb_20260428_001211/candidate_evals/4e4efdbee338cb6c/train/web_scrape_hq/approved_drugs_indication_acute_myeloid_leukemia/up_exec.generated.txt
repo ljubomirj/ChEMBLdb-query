@@ -1,0 +1,7 @@
+1. Objective: Retrieve approved drugs indicated for acute myeloid leukemia, returning their identifiers, names, structures, indication details, and maximum phase for the indication.
+
+2. Output: chembl_id, pref_name, canonical_smiles, indication_curie (EFO ID), indication_label (EFO term), max_phase_for_ind
+
+3. Source: molecule_dictionary, drug_indication, compound_structures
+
+4. Logic: Join molecule_dictionary to drug_indication on molregno. Join compound_structures on molregno. Filter drug_indication where efo_term equals 'acute myeloid leukemia' and max_phase_for_ind equals 4. Sort by chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.

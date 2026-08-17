@@ -1,0 +1,14 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary m ON m.molregno = a.molregno
+Join activities a ON a.molregno = m.molregno AND a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.standard_units = 'nM' AND a.standard_value IS NOT NULL
+Join assays ass ON a.assay_id = ass.assay_id
+Join target_dictionary t ON ass.tid = t.tid
+Join compound_structures cs ON cs.molregno = m.molregno
+Join docs d ON a.doc_id = d.doc_id
+Filter m.chembl_id = 'CHEMBL1936'
+Filter t.target_type = 'SINGLE PROTEIN'
+Filter t.organism = 'Homo sapiens'
+Filter cs.canonical_smiles IS NOT NULL
+Filter (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)
+Return DISTINCT compound_chembl_id, canonical_smiles, compound_key, COALESCE(d.pubmed_id, d.doi) AS pubmed_id_or_doi, ass.description AS assay_description, a.standard_type, a.standard_relation, a.standard_value, a.standard_units, a.activity_comment, t.chembl_id AS target_chembl_id, t.pref_name AS target_name, t.organism AS target_organism
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

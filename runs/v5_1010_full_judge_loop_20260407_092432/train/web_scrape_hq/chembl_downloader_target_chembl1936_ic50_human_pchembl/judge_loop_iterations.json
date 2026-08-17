@@ -1,0 +1,101 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve activity records for the human protein target CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=' and a non-null pChEMBL value, using the IC50 standard type. For each matching activity, return the assay's ChEMBL ID (assay_chembl_id), the target's type (target_type), the target's tax_id, the compound's canonical SMILES (canonical_smiles), the molecule's ChEMBL ID (molecule_chembl_id), the activity's standard type (standard_type), and the pChEMBL value (pchembl_value). Include only rows where the standard relation is exactly '=' and pchembl_value is not null. Do not filter on assay confidence, organism, or target type. Order the final result set by molecule_chembl_id in ascending order, then by assay_chembl_id in ascending order, and return up to the first 1000 rows.",
+    "sql": "WITH filtered_activities AS (\n  SELECT\n    a.activity_id,\n    a.standard_relation,\n    a.pchembl_value,\n    a.molregno,\n    a.assay_id,\n    a.type AS activity_type,\n    a.standard_type\n  FROM activities a\n  WHERE\n    a.standard_type = 'IC50' AND\n    a.standard_relation = '=' AND\n    a.pchembl_value IS NOT NULL\n), joined_target AS (\n  SELECT\n    fa.activity_id,\n    fa.molregno,\n    fa.assay_id,\n    fa.pchembl_value,\n    fa.standard_type,\n    fa.standard_relation,\n    a.assay_id AS assay_id,\n    t.pref_name AS target_pref_name,\n    t.tid AS target_tid,\n    a.type AS target_type,\n    t.tax_id AS tax_id,\n    a.assay_id AS assay_id,\n    a.assay_id AS assay_id\n  FROM filtered_activities fa\n  JOIN activities a ON fa.activity_id = a.activity_id\n  JOIN target_dictionary t ON a.tid = t.tid\n  WHERE t.chembl_id = 'CHEMBL1936'\n),\njoined_structures AS (\n  SELECT\n    js.molregno,\n    js.canonical_smiles,\n    js.molregno AS molregno_struct,\n    js.standard_inchi_key\n  FROM compound_structures js\n  WHERE js.molregno IN (SELECT DISTINCT molregno FROM joined_target)\n)\nSELECT\n  a.assay_id AS assay_chembl_id,\n  t.target_type,\n  t.tax_id,\n  s.canonical_smiles,\n  t.molregno AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM joined_target a\nLEFT JOIN joined_structures s ON a.molregno = s.molregno\nWHERE s.canonical_smiles IS NOT NULL\nORDER BY molecule_chembl_id ASC, assay_chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve activity records for the human protein target with CHEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=', a standard type of IC50, and a non\u2011null pChEMBL value. Return the assay\u2019s ChEMBL ID, the target\u2019s type, the target\u2019s tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity\u2019s standard type, and the pChEMBL value. Include only exact IC50 relations, do not filter on assay confidence, organism, or target type. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Return up to the first 1000 rows.",
+    "sql": "WITH filtered_activities AS (\n  SELECT\n    a.activity_id,\n    a.molregno,\n    a.assay_id,\n    a.pchembl_value,\n    a.standard_type\n  FROM activities a\n  WHERE\n    a.standard_type = 'IC50' AND\n    a.standard_relation = '=' AND\n    a.pchembl_value IS NOT NULL\n),\nselected_activities AS (\n  SELECT DISTINCT\n    fa.molregno,\n    fa.assay_id,\n    a.pchembl_value,\n    fa.standard_type\n  FROM filtered_activities fa\n  JOIN assays ass ON fa.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1936'\n),\nstructures AS (\n  SELECT\n    cs.molregno,\n    cs.canonical_smiles\n  FROM compound_structures cs\n  WHERE cs.molregno IN (SELECT molregno FROM selected_activities)\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  s.canonical_smiles,\n  td.molregno AS molecule_chembl_id,\n  selected_activities.standard_type,\n  selected_activities.pchembl_value\nFROM selected_activities td\nJOIN assays ass ON td.assay_id = ass.assay_id\nJOIN structures s ON td.molregno = s.molregno\nORDER BY td.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.pchembl_value",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.pchembl_value",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve activity records for the human protein target with CHEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=', a standard type of IC50, and a non\u2011null pChEMBL value. Return the assay\u2019s ChEMBL ID, the target\u2019s type, the target\u2019s tax_id, the compound\u2019s canonical SMILES, the molecule\u2019s ChEMBL ID, the activity\u2019s standard type, and the pChEMBL value. Include only exact IC50 relations, do not filter on assay confidence, organism, or target type. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Return up to the first 1000 rows.",
+    "sql": "WITH filtered_activities AS (\n  SELECT a.activity_id, a.molregno, a.assay_id, a.pchembl_value, a.standard_type, a.standard_relation, a.type AS activity_type, a.standard_type AS standard_type, a.value, a.units\n  FROM activities a\n  WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL\n), target_activities AS (\n  SELECT fa.molregno, fa.assay_id, fa.pchembl_value, fa.standard_type, fa.activity_type\n  FROM filtered_activities fa\n  JOIN assays ass ON fa.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1936'\n), structures AS (\n  SELECT cs.molregno, cs.canonical_smiles\n  FROM compound_structures cs\n  WHERE cs.molregno IN (SELECT DISTINCT molregno FROM target_activities)\n)\nSELECT \n  a.assay_id AS assay_chembl_id,\n  a.target_type,\n  a.tax_id,\n  s.canonical_smiles,\n  a.molregno AS molecule_chembl_id,\n  a.standard_type,\n  a.pchembl_value\nFROM target_activities a\nJOIN structures s ON a.molregno = s.molregno\nORDER BY a.molregno ASC, a.assay_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.target_type",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.target_type",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve activity records for the human protein target with CHEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=', a standard type of IC50, and a non\u2011null pChEMBL value. Return the assay\u2019s ChEMBL ID (assay_chembl_id), the target\u2019s type (target_type), the target\u2019s tax_id, the compound\u2019s canonical SMILES (canonical_smiles), the molecule\u2019s ChEMBL ID (molecule_chembl_id), the activity\u2019s standard type (standard_type), and the pChEMBL value (pchembl_value). Include only exact IC50 relations, do not filter on assay confidence, organism, or target type. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Return up to the first 1000 rows.",
+    "sql": "WITH filtered_activities AS (\n  SELECT a.activity_id, a.molregno, a.assay_id, a.pchembl_value, a.standard_type, a.standard_relation, a.type AS activity_type, a.standard_type AS standard_type, a.value, a.units\n  FROM activities a\n  WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL\n), target_activities AS (\n  SELECT fa.molregno, fa.assay_id, fa.pchembl_value, fa.standard_type, fa.activity_type\n  FROM filtered_activities fa\n  JOIN assays ass ON fa.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1936'\n), structures AS (\n  SELECT cs.molregno, cs.canonical_smiles\n  FROM compound_structures cs\n  WHERE cs.molregno IN (SELECT DISTINCT molregno FROM target_activities)\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  s.canonical_smiles,\n  td.molregno AS molecule_chembl_id,\n  ta.standard_type,\n  ta.pchembl_value\nFROM target_activities ta\nJOIN assays ass ON ta.assay_id = ass.assay_id\nJOIN target_dictionary td ON ta.tid = td.tid\nJOIN structures s ON ta.molregno = s.molregno\nORDER BY ta.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: td.molregno",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: td.molregno",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve activity records for the human protein target with CHEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=', a standard type of IC50, and a non\u2011null pChEMBL value. Return the assay\u2019s ChEMBL ID (assay_chembl_id), the target\u2019s type (target_type), the target\u2019s tax_id, the compound\u2019s canonical SMILES (canonical_smiles), the molecule\u2019s ChEMBL ID (molecule_chembl_id), the activity\u2019s standard type (standard_type), and the pChEMBL value (pchembl_value). Include only exact IC50 relations, do not filter on assay confidence, organism, or target type. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Return up to the first 1000 rows.",
+    "sql": "WITH filtered_activities AS (\n  SELECT a.activity_id, a.molregno, a.assay_id, a.pchembl_value, a.standard_type, a.standard_relation\n  FROM activities a\n  WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL\n), target_activities AS (\n  SELECT fa.molregno, fa.assay_id, fa.pchembl_value, fa.standard_type, fa.activity_id\n  FROM filtered_activities fa\n  JOIN assays ass ON fa.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1936'\n), structures AS (\n  SELECT cs.molregno, cs.canonical_smiles\n  FROM compound_structures cs\n  WHERE cs.molregno IN (SELECT DISTINCT molregno FROM target_activities)\n)\nSELECT\n  ass.chembl_id AS assay_chembl_id,\n  td.target_type,\n  td.tax_id,\n  s.canonical_smiles,\n  ta.molregno AS molecule_chembl_id,\n  ta.standard_type,\n  ta.pchembl_value\nFROM target_activities ta\nJOIN assays ass ON ta.assay_id = ass.assay_id\nJOIN target_dictionary td ON ta.tid = td.tid\nJOIN structures s ON ta.molregno = s.molregno\nORDER BY ta.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: ta.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: ta.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve activity records for the human single\u2011protein target with ChEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=' and a standard type of IC50, and pChEMBL values are not null. Return assay ChEMBL ID (assay_chembl_id), target type (target_type), target tax_id, compound canonical SMILES (canonical_smiles), molecule ChEMBL ID (molecule_chembl_id), activity standard type (standard_type), and pChEMBL value (pchembl_value). Filter activities to those with exact IC50 relations (standard_relation = '=') and non\u2011null pChEMBL values. Order the final result set by molecule_chembl_id ascending, then assay_chembl_id ascending. Return up to 1000 rows.",
+    "sql": "WITH filtered_activities AS (SELECT a.activity_id,a.molregno,a.assay_id,a.pchembl_value,a.standard_type,a.standard_relation,a.type AS activity_type,a.standard_type AS standard_type,a.value,a.units FROM activities a WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL),target_activities AS (SELECT fa.molregno,fa.assay_id,fa.pchembl_value,fa.standard_type,a.assay_id AS assay_id,td.tid AS tid,td.target_type,td.tax_id,td.pref_name AS target_pref_name FROM filtered_activities fa JOIN assays ass ON fa.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1936'),structures AS (SELECT cs.molregno,cs.canonical_smiles FROM compound_structures cs WHERE cs.molregno IN (SELECT DISTINCT molregno FROM target_activities)) SELECT a.assay_id AS assay_chembl_id,a.target_type,a.tax_id,s.canonical_smiles,a.molregno AS molecule_chembl_id,a.standard_type,a.pchembl_value FROM target_activities a JOIN structures s ON a.molregno = s.molregno ORDER BY a.molregno ASC,a.assay_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.assay_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.assay_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve activity records for the human single\u2011protein target with ChEMBL ID CHEMBL1936 (Mast/stem cell growth factor receptor Kit) where activities have a standard relation '=' and a standard type of IC50, and pChEMBL values are not null. Return assay ChEMBL ID (assay_chembl_id), target type (target_type), target tax_id, compound canonical SMILES (canonical_smiles), molecule ChEMBL ID (molecule_chembl_id), activity standard type (standard_type), and pChEMBL value (pchembl_value). Filter activities to those with exact IC50 relations (standard_relation = '=') and non\u2011null pChEMBL values. Order the final result set by molecule_chembl_id ascending, then assay_chembl_id ascending. Return up to 1000 rows.",
+    "sql": "WITH filtered_activities AS (SELECT a.activity_id, a.molregno, a.assay_id, a.pchembl_value, a.standard_type, a.standard_relation, a.type AS activity_type FROM activities a WHERE a.standard_type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL), target_activities AS (SELECT fa.molregno, fa.assay_id, fa.pchembl_value, fa.standard_type, fa.activity_id, td.tid, td.target_type, td.tax_id, td.pref_name AS target_pref_name FROM filtered_activities fa JOIN assays ass ON fa.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL1936'), structures AS (SELECT cs.molregno, cs.canonical_smiles FROM compound_structures cs WHERE cs.molregno IN (SELECT DISTINCT molregno FROM target_activities)) SELECT t.assay_id AS assay_chembl_id, t.target_type, t.tax_id, s.canonical_smiles, t.molregno AS molecule_chembl_id, t.standard_type, t.pchembl_value FROM target_activities t JOIN structures s ON t.molregno = s.molregno ORDER BY t.molregno ASC, t.assay_id ASC LIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 11\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 93 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n20 | 0 | 0 | LIST SUBQUERY 3\n29 | 20 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n34 | 20 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n43 | 20 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n59 | 20 | 0 | CREATE BLOOM FILTER\n62 | 20 | 0 | USE TEMP B-TREE FOR DISTINCT\n71 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n83 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n109 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 1000,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

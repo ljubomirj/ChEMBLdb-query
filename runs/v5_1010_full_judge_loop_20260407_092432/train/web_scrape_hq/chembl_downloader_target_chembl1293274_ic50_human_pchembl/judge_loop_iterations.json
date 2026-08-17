@@ -1,0 +1,138 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve assay information for assays targeting human single-protein CHEMBL1293274 (Eukaryotic translation initiation factor 4H) with IC50 activities measured in nM. Include assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value for each activity row where the standard relation equals '=' and pChEMBL value is present. Return at most the first 1000 rows. Order the results by molecule ChEMBL ID and assay ChEMBL ID in ascending order.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.standard_value, a.standard_units, a.pchembl_value, a.molecule_chembl_id, a.assay_id, a.relation\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n),\ncanon_smiles AS (\n  SELECT a.activity_id, cs.canonical_smiles\n  FROM target_activities a\n  LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n)\nSELECT td.pref_name AS assay_target_type,\n       ass.chembl_id AS assay_chembl_id,\n       cs.canonical_smiles,\n       a.molecule_chembl_id AS molecule_chembl_id,\n       a.pchembl_value,\n       a.standard_type\nFROM target_activities a\nLEFT JOIN cano_smiles cs ON a.activity_id = cs.activity_id\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nORDER BY a.molecule_chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: cano_smiles",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: cano_smiles",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single-protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Output assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type (must be 'IC50'), and pChEMBL value. Use only activity rows where pChEMBL value is present, order by molecule ChEMBL ID and assay ChEMBL ID ascending. Include the target type (pref_name) from target_dictionary and tax_id from target_dictionary. The assay ChEMBL ID comes from assays.chembl_id. Ensure results are limited to 1000 rows without additional limits.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molecule_chembl_id, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n),\ncanonical_smiles AS (\n  SELECT a.activity_id, cs.canonical_smiles\n  FROM target_activities a\n  LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       a.molecule_chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM target_activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON a.activity_id = cs.activity_id\nORDER BY a.molecule_chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the first 1000 IC50 activity rows with exact standard relation and non\u2011null pChEMBL values for assays targeting the human single\u2011protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, and order the final result set by molecule ChEMBL ID (ascending) and assay ChEMBL ID (ascending). No additional limits or filters are required.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molecule_chembl_id, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n),\ncanonical_smiles AS (\n  SELECT a.activity_id, cs.canonical_smiles\n  FROM target_activities a\n  LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       a.molecule_chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM target_activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON a.activity_id = cs.activity_id\nORDER BY a.molecule_chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single\u2011protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, order by molecule ChEMBL ID and assay ChEMBL ID ascending, and limit to 1000 rows. No other filters are applied.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molecule_chembl_id, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n    AND a.standard_units = 'nM'\n),\ncanonical_smiles AS (\n  SELECT a.activity_id, cs.canonical_smiles\n  FROM target_activities a\n  LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       a.molecule_chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM target_activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON a.activity_id = cs.activity_id\nORDER BY a.molecule_chembl_id, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single\u2011protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, order the results by molecule ChEMBL ID and assay ChEMBL ID ascending, and limit to 1000 rows. No additional filters or extra columns are required.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molregno, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n    AND a.standard_units = 'nM'\n),\ncanonical_smiles AS (\n  SELECT a.activity_id, cs.canonical_smiles\n  FROM target_activities a\n  LEFT JOIN compound_structures cs ON a.molregno = cs.molregno\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       a.molregno AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM target_activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON a.activity_id = cs.activity_id\nORDER BY a.molregno, ass.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE canonical_smiles\n13 | 3 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 3 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 3 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 3 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n71 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n76 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n87 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n96 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n103 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n119 | 0 | 0 | BLOOM FILTER ON cs (activity_id=?)\n129 | 0 | 50 | SEARCH cs USING AUTOMATIC COVERING INDEX (activity_id=?) LEFT-JOIN\n157 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 115,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.78,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single-protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, order by molecule ChEMBL ID and assay ChEMBL ID ascending, and limit to 1000 rows. No additional filters or extra columns are required.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molregno, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n),\ncanonical_smiles AS (\n  SELECT t.activity_id, cs.canonical_smiles\n  FROM target_activities t\n  LEFT JOIN compound_structures cs ON t.molregno = cs.molregno\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       t.molregno AS molecule_chembl_id,\n       t.standard_type,\n       t.pchembl_value\nFROM target_activities t\nJOIN assays ass ON t.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON t.activity_id = cs.activity_id\nORDER BY t.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE canonical_smiles\n13 | 3 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 3 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 3 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 3 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n69 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n74 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n83 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n92 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n99 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n115 | 0 | 0 | BLOOM FILTER ON cs (activity_id=?)\n125 | 0 | 50 | SEARCH cs USING AUTOMATIC COVERING INDEX (activity_id=?) LEFT-JOIN\n153 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 115,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single\u2011protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, order by molecule ChEMBL ID and assay ChEMBL ID ascending, and limit to 1000 rows. No additional filters or extra columns are required.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molregno, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n),\ncanonical_smiles AS (\n  SELECT t.activity_id, cs.canonical_smiles\n  FROM target_activities t\n  LEFT JOIN compound_structures cs ON t.molregno = cs.molregno\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       t.molregno AS molecule_chembl_id,\n       t.standard_type,\n       t.pchembl_value\nFROM target_activities t\nJOIN assays ass ON t.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON t.activity_id = cs.activity_id\nORDER BY t.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE canonical_smiles\n13 | 3 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 3 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n27 | 3 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n36 | 3 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n69 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n74 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n83 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n92 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n99 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n115 | 0 | 0 | BLOOM FILTER ON cs (activity_id=?)\n125 | 0 | 50 | SEARCH cs USING AUTOMATIC COVERING INDEX (activity_id=?) LEFT-JOIN\n153 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 115,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve the first 1000 IC50 activity rows (standard relation '=') with pChEMBL values for assays targeting the human single-protein target CHEMBL1293274 (Eukaryotic translation initiation factor 4H). Return assay ChEMBL ID (from assays.chembl_id), target type (target_dictionary.pref_name), tax_id (target_dictionary.tax_id), canonical SMILES (compound_structures.canonical_smiles), molecule ChEMBL ID (activities.molecule_chembl_id), standard type (activities.standard_type \u2013 must be 'IC50'), and pChEMBL value (activities.pchembl_value). Use only rows where pChEMBL value is present, order by molecule ChEMBL ID and assay ChEMBL ID ascending, and limit to 1000 rows. No additional filters or extra columns are required.",
+    "sql": "WITH target_activities AS (\n  SELECT a.activity_id, a.pchembl_value, a.molregno, a.assay_id, a.standard_type\n  FROM activities a\n  JOIN assays ass ON a.assay_id = ass.assay_id\n  JOIN target_dictionary td ON ass.tid = td.tid\n  WHERE td.chembl_id = 'CHEMBL1293274'\n    AND a.standard_type = 'IC50'\n    AND a.standard_relation = '='\n    AND a.pchembl_value IS NOT NULL\n    AND a.standard_units = 'nM'\n),\ncanonical_smiles AS (\n  SELECT t.activity_id, cs.canonical_smiles\n  FROM target_activities t\n  LEFT JOIN compound_structures cs ON t.molregno = cs.molregno\n)\nSELECT ass.chembl_id AS assay_chembl_id,\n       td.pref_name AS target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       t.molregno AS molecule_chembl_id,\n       t.standard_type,\n       t.pchembl_value\nFROM target_activities t\nJOIN assays ass ON t.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nLEFT JOIN canonical_smiles cs ON t.activity_id = cs.activity_id\nORDER BY t.molregno ASC, ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 13\n3 | 0 | 0 | MATERIALIZE canonical_smiles\n13 | 3 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 3 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n29 | 3 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 3 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n71 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n76 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n87 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n96 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n103 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n119 | 0 | 0 | BLOOM FILTER ON cs (activity_id=?)\n129 | 0 | 50 | SEARCH cs USING AUTOMATIC COVERING INDEX (activity_id=?) LEFT-JOIN\n157 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 115,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

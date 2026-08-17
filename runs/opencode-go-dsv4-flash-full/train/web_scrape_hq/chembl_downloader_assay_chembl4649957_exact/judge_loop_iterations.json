@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "For the assay with ChEMBL identifier 'CHEMBL4649957', retrieve the canonical SMILES of each compound tested along with its exact activity values. Include the activity standard type (e.g., IC50, Ki), the relation (e.g., '=', '>', '<'), the numeric value, and the units. Do not restrict to any particular relation or units; include all registered activity records for that assay.",
+    "sql": "SELECT cs.canonical_smiles, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN compound_structures cs ON a.molregno = cs.molregno WHERE ass.chembl_id = 'CHEMBL4649957';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 0 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n12 | 0 | 0 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n18 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 65645,
+    "res_columns": [
+      "canonical_smiles",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

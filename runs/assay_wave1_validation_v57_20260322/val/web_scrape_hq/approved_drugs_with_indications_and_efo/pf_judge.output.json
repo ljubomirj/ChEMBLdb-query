@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.7.yaml",
+  "prompt_pack_version": "v5.7",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+  "case_id": "approved_drugs_with_indications_and_efo",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request: it filters for approved drugs (max_phase = 4), requires non-null EFO identifier and label, joins compound_structures as an INNER JOIN to ensure canonical SMILES are present, and returns DISTINCT rows for exactly the requested columns. The sample output shows the expected schema and valid data. The row count (31,760) is reasonable for this join across approved drugs with indications and structures. No deviations from the specification are present.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it filters for approved drugs (max_phase = 4), requires non-null EFO identifier and label, joins compound_structures as an INNER JOIN to ensure canonical SMILES are present, and returns DISTINCT rows for exactly the requested columns. The sample output shows the expected schema and valid data. The row count (31,760) is reasonable for this join across approved drugs with indications and structures. No deviations from the specification are present.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/val/web_scrape_hq/approved_drugs_with_indications_and_efo/pf_judge.generated_artifact_record.json"
+  }
+}

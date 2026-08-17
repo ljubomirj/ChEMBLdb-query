@@ -1,0 +1,62 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve ChEMBL identifiers (chembl_id) and preferred names (pref_name) for molecules that have at least one record (i.e., a compound key) and a non-null structure (canonical SMILES). Exclude any molecule lacking these. The result should include exactly the ChEMBL identifier and the preferred name, and may include the internal numeric key (molregno) for linking, but no additional provenance, activity values, assay details, or counts.",
+    "sql": "SELECT DISTINCT a.chembl_id, d.pref_name, d.molregno\nFROM activities a\nJOIN compound_structures cs ON a.molregno = cs.molregno AND cs.canonical_smiles IS NOT NULL\nLEFT JOIN molecule_dictionary d ON a.molecule_chembl_id = d.chembl_id\nWHERE d.pref_name IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve ChEMBL identifiers (chembl_id) and preferred names (pref_name) for molecules that have at least one record (compound_key) in the compound_records table and have a non-null canonical SMILES in the compound_structures table. Return exactly the ChEMBL identifier, the preferred name, and the internal molregno for linking. Exclude any molecule lacking these. No additional activity values, assay details, or other data.",
+    "sql": "WITH mol_with_structure AS (SELECT DISTINCT d.molregno, d.chembl_id, d.pref_name FROM molecule_dictionary d JOIN molecule_structures cs ON d.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL) SELECT d.chembl_id, d.pref_name, d.molregno FROM mol_with_structure d JOIN compound_records cr ON d.molregno = cr.molregno WHERE d.pref_name IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such table: molecule_structures",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such table: molecule_structures",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the ChEMBL identifier (chembl_id) and preferred name (pref_name) for each molecule that has at least one record in the compound_records table and a non\u2011null canonical SMILES in the compound_structures table. Ensure both fields are present and exclude any molecules missing either. Return exactly those two columns together with the internal molregno for reference. No additional activity, assay, or provenance information is required.",
+    "sql": "WITH mol_with_structure AS (SELECT d.molregno, d.chembl_id, d.pref_name FROM molecule_dictionary d JOIN compound_structures cs ON d.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL) SELECT d.chembl_id, d.pref_name, d.molregno FROM mol_with_structure d JOIN compound_records cr ON d.molregno = cr.molregno WHERE d.pref_name IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 229 | SCAN d\n9 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n20 | 0 | 46 | SEARCH cr USING COVERING INDEX fk_comp_rec_molregno (molregno=?)",
+    "res_row_count": 314075,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "molregno"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct ChEMBL identifiers (chembl_id) and preferred names (pref_name) for molecules that have at least one compound_record (i.e., a compound_key) and a non\u2011null canonical SMILES, ensuring each molecule appears only once. Return exactly these three columns: chembl_id, pref_name, molregno (the internal numeric key). Do not filter further or include any activity, assay, or additional provenance fields.",
+    "sql": "SELECT DISTINCT d.chembl_id, d.pref_name, d.molregno FROM molecule_dictionary d JOIN compound_structures cs ON d.molregno = cs.molregno WHERE cs.canonical_smiles IS NOT NULL AND EXISTS (SELECT 1 FROM compound_records cr WHERE cr.molregno = d.molregno) AND d.pref_name IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n6 | 0 | 236 | SCAN d USING INDEX sqlite_autoindex_molecule_dictionary_1\n12 | 0 | 0 | CORRELATED SCALAR SUBQUERY 1\n16 | 12 | 46 | SEARCH cr USING COVERING INDEX fk_comp_rec_molregno (molregno=?)\n26 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 41956,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "molregno"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

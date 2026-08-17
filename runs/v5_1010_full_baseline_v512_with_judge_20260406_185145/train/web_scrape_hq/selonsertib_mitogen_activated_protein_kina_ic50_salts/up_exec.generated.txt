@@ -1,0 +1,12 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary parent on parent.chembl_id = 'CHEMBL3916717'
+Join molecule_hierarchy mh on mh.parent_molregno = parent.molregno
+Join molecule_dictionary child on child.molregno = mh.molregno
+Join compound_records r on r.molregno = child.molregno
+Join docs d on d.doc_id = r.doc_id
+Join activities a on a.record_id = r.record_id and a.standard_type = 'IC50' and a.standard_relation = '=' and a.standard_value IS NOT NULL and a.standard_units = 'nM'
+Join assays on a.assay_id = assays.assay_id
+Join target_dictionary t on a.tid = t.tid and t.chembl_id = 'CHEMBL5285'
+Join compound_structures cs on cs.molregno = child.molregno
+Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

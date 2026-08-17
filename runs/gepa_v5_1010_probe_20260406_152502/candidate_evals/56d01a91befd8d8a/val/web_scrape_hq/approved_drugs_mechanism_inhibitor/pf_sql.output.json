@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_152502/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_mechanism_inhibitor.json",
+  "case_id": "approved_drugs_mechanism_inhibitor",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT m.chembl_id AS chembl_id, m.pref_name AS pref_name, cs.canonical_smiles AS canonical_smiles, m.max_phase AS max_phase, dm.mechanism_of_action AS mechanism_of_action, dm.action_type AS action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary m JOIN drug_mechanism dm ON m.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase = 4 AND dm.action_type = 'INHIBITOR' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id, td.pref_name;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT m.chembl_id AS chembl_id, m.pref_name AS pref_name, cs.canonical_smiles AS canonical_smiles, m.max_phase AS max_phase, dm.mechanism_of_action AS mechanism_of_action, dm.action_type AS action_type, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM molecule_dictionary m JOIN drug_mechanism dm ON m.molregno = dm.molregno JOIN target_dictionary td ON dm.tid = td.tid LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase = 4 AND dm.action_type = 'INHIBITOR' ORDER BY m.chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, dm.mechanism_of_action, dm.action_type, td.chembl_id, td.pref_name;"
+    }
+  }
+}

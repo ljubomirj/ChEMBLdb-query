@@ -1,0 +1,52 @@
+[
+    1.0,
+    {
+        "current_candidate": "<TASK>\nYou are a prompt writer that crafts a single improved User Prompt (UP) for a Text-to-SQL model.\nThe user gave you a User Question UQ thas is listed below. For that user question UQ, we are to retrieve data from the ChEMBLdb chemistry database.\nWe will do it in two steps.\nStep 1 (this one): Write a User Prompt (UP), given the User Question (UQ) passed below, and the database schema and other relevant information passed in the System Prompt (SP).\nStep 2 (next one): Write an Sql Query (SQL), given the User Prompt (UP) from step 1, the User Question (UQ), and the System Prompt (SP) with the database schema etc.\nNow in this turn we are doing step 1. It's best if we do it now. But if we fail, we will retry in later iterations.\nRules:\n- Output ONLY a single JSON object on one line (no markdown, no code fences).\n- Required key: \"up\" (string). This is the user prompt that will be passed to the SQL-writer.\n- Optional keys (use when helpful): \"targets\", \"output_columns\", \"filters\", \"ranking\", \"notes\".\n- The \"up\" string must be explicit about:\n  + target definitions (e.g., target types, organism, protein family constraints)\n  + required output columns and their required aliases (if UQ specifies column names, they MUST be preserved in SELECT output)\n  + filters, units, and date ranges\n  + whether results should be ranked and any top-N; but do not add limits to the number of rows yourself, if the UQ does not request itself; do not mistake any number in the UQ as a number of rows to be returned\n- Do NOT ask for SQL or mention SQL output; describe the desired data/results only.\n- Follow FILTER_PROFILE guidance when provided.\n- Use prior judge advice from the latest history block when present.\n- STRICT COLUMN PROJECTION: If the User Question specifies exact column names (e.g., \"return col_a, col_b\"), the User Prompt MUST explicitly instruct the SQL-writer to select ONLY those columns with EXACTLY those names in the final output. Do not add extra columns, rename columns, or omit requested columns.\n</TASK>"
+    },
+    {
+        "case_id": "chembl_downloader_target_chembl1075102_ic50_human_pchembl",
+        "corpus": "web_scrape_hq",
+        "uq": "Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1075102 (Phosphatidylinositol 4-phosphate 3-kinase C2 domain-containing subunit alpha). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.",
+        "run_exit_code": 0,
+        "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl1075102_ic50_human_pchembl/result.csv",
+        "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl1075102_ic50_human_pchembl/run.log",
+        "candidate_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml",
+        "up_template_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt",
+        "generated_sql": "SELECT",
+        "judge_text": null,
+        "expected_rows": 80,
+        "actual_rows": 80,
+        "expected_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+        ],
+        "actual_cols": [
+            "assay_chembl_id",
+            "target_type",
+            "tax_id",
+            "canonical_smiles",
+            "molecule_chembl_id",
+            "standard_type",
+            "pchembl_value"
+        ],
+        "missing_cols": [],
+        "extra_cols": [],
+        "status": "pass",
+        "score": 1.0,
+        "generated_up": "Retrieve the first 1000 rows of IC50 bioactivity data for the human single-protein target CHEMBL1075102 (Phosphatidylinositol 4-phosphate 3-kinase C2 domain-containing subunit alpha). Return only rows where the standard relation is '=' and the pChEMBL value is not null. The output must contain the following columns with exact names: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. Order the results by molecule_chembl_id and then by assay_chembl_id.",
+        "base_score": 1.0,
+        "up_echo_ratio": 0.513089,
+        "up_echo_penalty": 0.0,
+        "adjusted_score": 1.0,
+        "scores": {
+            "result_score": 1.0,
+            "up_non_echo_score": 1.0
+        },
+        "log": "{\"case_id\": \"chembl_downloader_target_chembl1075102_ic50_human_pchembl\", \"corpus\": \"web_scrape_hq\", \"uq\": \"Show the first 1000 IC50 activity rows with pChEMBL values for the human single-protein target CHEMBL1075102 (Phosphatidylinositol 4-phosphate 3-kinase C2 domain-containing subunit alpha). Return assay ChEMBL ID, target type, tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Use only exact standard relation '=' rows with non-null pChEMBL values, and order the results by molecule ChEMBL ID and assay ChEMBL ID.\", \"run_exit_code\": 0, \"result_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl1075102_ic50_human_pchembl/result.csv\", \"log_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/gepa_up_only_train_val/web_scrape_hq/chembl_downloader_target_chembl1075102_ic50_human_pchembl/run.log\", \"candidate_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/candidate_a149ebf01eefb233.yaml\", \"up_template_path\": \"/Users/ljubomir/ChEMBLdb-query/experiments/evals/gepa_v4_up_only_20260320_160046/candidate_cache/up_task_template_a149ebf01eefb233.txt\", \"generated_sql\": \"SELECT\", \"judge_text\": null, \"expected_rows\": 80, \"actual_rows\": 80, \"expected_cols\": [\"assay_chembl_id\", \"target_type\", \"tax_id\", \"canonical_smiles\", \"molecule_chembl_id\", \"standard_type\", \"pchembl_value\"], \"actual_cols\": [\"assay_chembl_id\", \"target_type\", \"tax_id\", \"canonical_smiles\", \"molecule_chembl_id\", \"standard_type\", \"pchembl_value\"], \"missing_cols\": [], \"extra_cols\": [], \"status\": \"pass\", \"score\": 1.0, \"generated_up\": \"Retrieve the first 1000 rows of IC50 bioactivity data for the human single-protein target CHEMBL1075102 (Phosphatidylinositol 4-phosphate 3-kinase C2 domain-containing subunit alpha). Return only rows where the standard relation is '=' and the pChEMBL value is not null. The output must contain the following columns with exact names: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, and pchembl_value. Order the results by molecule_chembl_id and then by assay_chembl_id.\", \"base_score\": 1.0, \"up_echo_ratio\": 0.513089, \"up_echo_penalty\": 0.0, \"adjusted_score\": 1.0, \"scores\": {\"result_score\": 1.0, \"up_non_echo_score\": 1.0}}\n"
+    }
+]

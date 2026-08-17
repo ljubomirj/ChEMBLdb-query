@@ -1,0 +1,86 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound identifiers and canonical SMILES for molecules tested in human assays targeting the human Orexin/Hypocretin receptor type 1 (CHEMBL5113). Include compounds with a chembl_id and canonical SMILES from compound_structures. Ensure assays are on the human organism and target the specific receptor CHEMBL5113. No additional filters (e.g., standard units, activity types, or date ranges).",
+    "sql": "WITH target_assays AS (SELECT a.assay_id FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT cs.canonical_smiles, md.chembl_id FROM activities a JOIN target_assays ta ON a.assay_id = ta.assay_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id WHERE md.chembl_id IS NOT NULL AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the human Orexin/Hypocretin receptor type\u202f1 (CHEMBL5113) target in human assays. For each compound tested in such assays, return its ChEMBL identifier (chembl_id) and its canonical SMILES. Target definition: the target must have the ChEMBL identifier CHEMBL5113 and the assay must be performed in the organism 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles). No additional filters on activity type, units, or dates are required. The query must join activities \u2192 molecule_dictionary via molregno, join molecule_dictionary \u2192 assays through the assay_id in activities, and filter on target_dictionary.chembl_id = 'CHEMBL5113' and assays.assay_organism = 'Homo sapiens'. The result set should list each qualifying compound once, even if it appears in multiple assay rows.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molecule_chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve distinct ChEMBL identifiers and canonical SMILES for compounds that were tested in human assays targeting the human Orexin/Hypocretin receptor type\u202f1 (CHEMBL5113). Target definition: the assay must be linked to the target with chembl_id = 'CHEMBL5113' in the target_dictionary, and the assay must be performed in the organism 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles). The result should list each qualifying compound once, even if it appears in multiple assay rows. No additional filters on activity type, standard units, activity relations, or dates are required.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.chembl_id = cs.molecule_chembl_id WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve distinct compound records for the human Orexin/Hypocretin receptor type 1 (CHEMBL5113) in human assays, returning each compound's ChEMBL identifier and its canonical SMILES. Target definition: the assay must be linked to the target with chembl_id = 'CHEMBL5113' in the target_dictionary and the assay must be performed in the organism 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles). The result set should list each qualifying compound once, even if it appears in multiple assay rows. No additional filters on activity type, standard units, activity relations, or dates are required.",
+    "sql": "WITH t AS (SELECT ass.assay_id FROM assays ass JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN t ON a.assay_id = t.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.chembl_id = cs.molecule_chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve distinct compound identifiers (chembl_id) and canonical SMILES for compounds that were tested in human assays targeting the human Orexin/Hypocretin receptor type\u202f1 (target chembl_id = 'CHEMBL5113'). Target definition: the assay must be linked to the target with chembl_id = 'CHEMBL5113' in the target_dictionary, and the assay must be performed in the organism 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles). The result should list each qualifying compound once, even if it appears in multiple assay rows. No additional filters on activity type, standard units, activity relations, or dates are required.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n11 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n16 | 0 | 224 | SCAN ass\n23 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n29 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n36 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7915,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve distinct compound identifiers (chembl_id) and canonical SMILES for compounds tested in assays that target the human Orexin/Hypocretin receptor type\u202f1 (CHEMBL5113). The assay must be performed in a human assay (assay_organism = 'Homo sapiens') and linked to the target CHEMBL5113 in the target_dictionary. Output columns: chembl_id (from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles). Each compound should appear once. No additional filters (e.g., activity type, units, dates) are required.",
+    "sql": "WITH target_assays AS (SELECT ass.assay_id FROM assays ass JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL5113' AND ass.assay_organism = 'Homo sapiens') SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN target_assays ta ON a.assay_id = ta.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.chembl_id IS NOT NULL AND cs.canonical_smiles IS NOT NULL",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n16 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n27 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n32 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n42 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n51 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 7915,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "case_id": "chembl_downloader_assay_chembl3988443_exact",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape66/chembl_downloader_assay_chembl3988443_exact/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_assay_chembl3988443_exact/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_assay_chembl3988443_exact/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape66/chembl_downloader_assay_chembl3988443_exact/ground-truth.csv.zst",
+    "uq_benchmark_spec": "tests/fixtures/web_scrape66/chembl_downloader_assay_chembl3988443_exact/benchmark_spec_uq.txt",
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape66/chembl_downloader_assay_chembl3988443_exact/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/train/web_scrape_hq/chembl_downloader_assay_chembl3988443_exact/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape66/chembl_downloader_assay_chembl3988443_exact/documentation.txt"
+  },
+  "metadata": {
+    "family": "assay_exact",
+    "origin": "templated_from_sql",
+    "source_title": "chembl_downloader get_assay_sql instantiated for CHEMBL3988443",
+    "source_url": "https://github.com/cthoyt/chembl-downloader/blob/main/src/chembl_downloader/queries.py",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "canonical_smiles",
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "chembl_id",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units"
+    ],
+    "tags": [
+      "assay_exact",
+      "medium",
+      "wave1"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": false,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {},
+    "float_cols": [],
+    "int_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Staged assay_exact wave-1 case generated from grounded SQL. Leishmania donovani Methionine tRNA synthetase (LdMetRS):v6. Primary screen assay"
+  }
+}

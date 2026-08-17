@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "For assay CHEMBL4888487, return the exact activity values and structures for all tested compounds. The output should include the following columns: activity_id, standard_relation, standard_value, standard_units, and canonical_smiles. Use activities.record_id to join compound_records, then join compound_structures on molregno to get canonical_smiles. Do not apply any filters on standard_relation or standard_value; include all rows for the specified assay.",
+    "sql": "SELECT a.activity_id, a.standard_relation, a.standard_value, a.standard_units, cs.canonical_smiles FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN compound_structures cs ON cr.molregno = cs.molregno JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.chembl_id = 'CHEMBL4888487'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 47 | SEARCH ass USING INDEX idx_assays_chembl_id (chembl_id=?)\n14 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n20 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n26 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 4815,
+    "res_columns": [
+      "activity_id",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

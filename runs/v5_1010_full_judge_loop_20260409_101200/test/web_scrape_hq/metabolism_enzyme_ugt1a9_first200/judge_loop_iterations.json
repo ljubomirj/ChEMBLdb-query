@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 metabolism records where the enzyme is UGT1A9. For each record, return the substrate structure (canonical SMILES), the substrate compound name, the metabolic conversion description, and the pathway key.",
+    "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  COALESCE(cr.compound_name, md.pref_name) AS substrate_name,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nJOIN component_synonyms csyn ON csyn.component_synonym = 'UGT1A9'\nJOIN component_sequences cseq ON csyn.component_id = cseq.component_id\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE m.enzyme_tid = csyn.component_id\nLIMIT 200;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n12 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n37 | 0 | 39 | SEARCH cseq USING COVERING INDEX sqlite_autoindex_component_sequences_1 (component_id=?)\n43 | 0 | 45 | SEARCH csyn USING COVERING INDEX sqlite_autoindex_component_synonyms_2 (component_id=? AND component_synonym=?)\n65 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve metabolism records where the enzyme name is UGT1A9. For each record, return the canonical SMILES of the substrate compound, the substrate compound name, the metabolic conversion description, and the pathway key. Return the first 200 matching records.",
+    "sql": "SELECT DISTINCT\n  cs.canonical_smiles,\n  COALESCE(cr.compound_name, md.pref_name) AS substrate_name,\n  m.met_conversion,\n  m.pathway_key\nFROM metabolism m\nJOIN compound_records cr ON m.substrate_record_id = cr.record_id\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE m.enzyme_name = 'UGT1A9'\nLIMIT 200;",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 13,
+    "res_columns": [
+      "canonical_smiles",
+      "substrate_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

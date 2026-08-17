@@ -1,0 +1,185 @@
+[
+  {
+    "n": 1,
+    "up": "Find compounds (molecules) where the activity data originates from the publication with the identifier CHEMBL5727821. For each such compound, return its ChEMBL identifier and its documented name (pref_name), together with the standard relationship and standard value of the activity that links the compound to the publication.",
+    "sql": "SELECT DISTINCT a.standard_relation, a.standard_value, md.pref_name, a.molecule_chembl_id FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.activity_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find compounds (molecules) where activity data originates from the publication with identifier CHEMBL5727821. Return the ChEMBL identifier of each molecule, its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the compound to the publication, and the standard value of that activity. Ensure the standard units are also captured as standard_units (no unit restriction). Include only compounds that have a standard value and standard relation defined for the activity. Return rows for each activity record that meets these criteria, preserving any duplicates if multiple activities from the same publication exist for the same molecule.",
+    "sql": "SELECT DISTINCT a.standard_relation, a.standard_value, md.pref_name, md.chembl_id FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n24 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n43 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2531,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.05,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find compounds where the activity data originates from the document with chembl_id CHEMBL5727821. Return the molecule\u2019s ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity that links the molecule to the publication, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve any duplicate activity records if a molecule has multiple activities from this document. Do not filter on assay types, target types, or units beyond the requested fields. Return the standard relation, standard value, pref_name, molecule.chembl_id, and standard units as separate columns.",
+    "sql": "WITH md AS (SELECT pref_name, chembl_id, molregno FROM molecule_dictionary WHERE pref_name IS NOT NULL), doc_acts AS (SELECT a.molregno, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL), final AS (SELECT DISTINCT d.standard_relation, d.standard_value, md.pref_name, md.chembl_id, d.standard_units FROM doc_acts d JOIN md ON d.molregno = md.molregno) SELECT standard_relation, standard_value, pref_name, chembl_id, standard_units FROM final ORDER BY chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n2 | 0 | 0 | CO-ROUTINE final\n10 | 2 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 2 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n25 | 2 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n47 | 0 | 62 | SCAN final\n58 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, md.pref_name AS pref_name, md.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, md.pref_name AS pref_name, md.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, md.pref_name AS pref_name, md.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, md.pref_name AS pref_name, md.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n23 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n38 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.2,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, md.pref_name AS pref_name, md.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY md.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n25 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n31 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.65,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, m.pref_name AS pref_name, m.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary m ON cr.molregno = m.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY m.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n25 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n31 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Find compounds where activity data originates from the document with identifier CHEMBL5727821. Return the molecule's ChEMBL identifier (chembl_id), its reported name (pref_name), the standard relation (e.g., '=', '>', '<') of the activity linking the molecule to the document, the standard value, and the standard units of that activity. Include only activity rows that have both a standard relation and a standard value defined. Preserve all qualifying activity records (no deduplication beyond the requested columns). Do not filter on assay type, target type, or additional constraints. Return exactly these columns: standard_relation, standard_value, pref_name, molecule.chembl_id, standard_units.",
+    "sql": "SELECT a.standard_relation AS standard_relation, a.standard_value AS standard_value, m.pref_name AS pref_name, m.chembl_id AS chembl_id, a.standard_units AS standard_units FROM activities a JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary m ON cr.molregno = m.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5727821' AND a.standard_relation IS NOT NULL AND a.standard_value IS NOT NULL ORDER BY m.chembl_id",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n25 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n31 | 0 | 47 | SEARCH m USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n46 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 2614,
+    "res_columns": [
+      "standard_relation",
+      "standard_value",
+      "pref_name",
+      "chembl_id",
+      "standard_units"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.93,
+    "judge_decision": true
+  }
+]

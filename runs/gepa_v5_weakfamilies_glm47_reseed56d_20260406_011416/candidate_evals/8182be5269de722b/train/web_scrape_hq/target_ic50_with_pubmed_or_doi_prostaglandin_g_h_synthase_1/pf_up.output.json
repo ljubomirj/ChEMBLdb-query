@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_8182be5269de722b.yaml",
+  "prompt_pack_version": "v5.15",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_prostaglandin_g_h_synthase_1.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_prostaglandin_g_h_synthase_1",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "8182be5269de722b",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compounds tested against human Prostaglandin G/H synthase 1 with exact IC50 values. Join molecule_dictionary to activities, then assays, then docs, then target_dictionary. Filter by target name 'Prostaglandin G/H synthase 1' and target organism Homo sapiens. Filter for standard_type IC50 and exact measurements (standard_relation = '='). Include raw activity columns standard_type, standard_relation, standard_value, standard_units. Cast activity_comment to NULL if it contains non-integer strings like 'Not Active'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compounds tested against human Prostaglandin G/H synthase 1 with exact IC50 values. Join molecule_dictionary to activities, then assays, then docs, then target_dictionary. Filter by target name 'Prostaglandin G/H synthase 1' and target organism Homo sapiens. Filter for standard_type IC50 and exact measurements (standard_relation = '='). Include raw activity columns standard_type, standard_relation, standard_value, standard_units. Cast activity_comment to NULL if it contains non-integer strings like 'Not Active'. Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi (prefer pubmed_id, fallback to doi), assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism. Keep all qualifying activity rows; do not deduplicate. Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism."
+    }
+  }
+}

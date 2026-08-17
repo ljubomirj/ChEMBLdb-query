@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 200 records from the metabolism table associated with the enzyme CYP2E1. For each record, return the metabolism conversion description, pathway key, and organism. Additionally, for each substrate involved in these records, provide the compound name and the canonical SMILES structure from the compound_structures table. Join the metabolism table with compound_records using the substrate_record_id to link to the molecule structures.",
+    "sql": "SELECT DISTINCT\n  md.pref_name,\n  cs.canonical_smiles,\n  m.met_conversion,\n  m.pathway_key,\n  m.organism\nFROM metabolism m\nJOIN compound_records cr_substrate ON m.substrate_record_id = cr_substrate.record_id\nJOIN molecule_dictionary md ON cr_substrate.molregno = md.molregno\nLEFT JOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE m.enzyme_name = 'CYP2E1'\nLIMIT 200;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 126 | SCAN m\n14 | 0 | 47 | SEARCH cr_substrate USING INDEX pk_comp_rec_recid (record_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 10,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "met_conversion",
+      "pathway_key",
+      "organism"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of all approved drugs where the mechanism of action is classified as an activator. For each drug, include the following information: the compound preferred name, the canonical SMILES structure, the mechanism of action description, the target ChEMBL ID, and the target preferred name. A drug is considered approved if its maximum phase is 4. The activator classification is based on the action type.",
+    "sql": "SELECT DISTINCT md.pref_name AS compound_name, cs.canonical_smiles, dm.mechanism_of_action, td.chembl_id AS target_chembl_id, td.pref_name AS target_name FROM drug_mechanism dm JOIN molecule_dictionary md ON dm.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND dm.action_type = 'ACTIVATOR'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 144 | SCAN dm\n13 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n22 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n48 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 14,
+    "res_columns": [
+      "compound_name",
+      "canonical_smiles",
+      "mechanism_of_action",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

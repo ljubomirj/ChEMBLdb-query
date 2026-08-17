@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.7.yaml",
+  "prompt_pack_version": "v5.7",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4513219_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request: it filters to assay CHEMBL4513219, enforces non-null standard_value and standard_relation = '=', joins activities to assays, molecule_dictionary, and compound_structures, and returns the requested columns. The sort order matches the specification. The row count (68,570) is plausible for a large assay, and the sample rows show valid data with the expected schema. No deduplication was requested, so preserving all activity rows is correct. The execution plan and SQL are aligned with the task requirements.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request: it filters to assay CHEMBL4513219, enforces non-null standard_value and standard_relation = '=', joins activities to assays, molecule_dictionary, and compound_structures, and returns the requested columns. The sort order matches the specification. The row count (68,570) is plausible for a large assay, and the sample rows show valid data with the expected schema. No deduplication was requested, so preserving all activity rows is correct. The execution plan and SQL are aligned with the task requirements.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/assay_wave1_validation_v57_20260322/train/web_scrape_hq/chembl_downloader_assay_chembl4513219_exact/pf_judge.generated_artifact_record.json"
+  }
+}

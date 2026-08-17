@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_90b70d5a632eff22.yaml",
+  "prompt_pack_version": "v5.14",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_thr_multi_type_activities_first500.json",
+  "case_id": "target_thr_multi_type_activities_first500",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-5.1",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\"up\": \"Select molecule chembl_id (aliased as chembl_id), canonical_smiles, standard_type, standard_value, standard_units from molecule_dictionary joined to activities on molregno, joined to assays on assay_id, joined to target_dictionary on tid, joined to compound_structures on molregno (INNER JOIN). Filter where target_dictionary.chembl_id = 'CHEMBL1862' and activities.standard_relation = '=' and activities.standard_value IS NOT NULL. Sort by standard_value ascending. Limit to 500 rows. Do not deduplicate; keep every qualifying activity row.\"}\n```",
+    "parsed_json": {
+      "up": "Select molecule chembl_id (aliased as chembl_id), canonical_smiles, standard_type, standard_value, standard_units from molecule_dictionary joined to activities on molregno, joined to assays on assay_id, joined to target_dictionary on tid, joined to compound_structures on molregno (INNER JOIN). Filter where target_dictionary.chembl_id = 'CHEMBL1862' and activities.standard_relation = '=' and activities.standard_value IS NOT NULL. Sort by standard_value ascending. Limit to 500 rows. Do not deduplicate; keep every qualifying activity row."
+    }
+  }
+}

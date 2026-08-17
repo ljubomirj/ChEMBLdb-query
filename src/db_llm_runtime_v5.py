@@ -293,7 +293,7 @@ LOCAL_ENDPOINT_PROBE_TIMEOUT_SECONDS = 3.0
 SHARED_FALLBACK_RETRY_SECONDS = 3600.0
 
 DEFAULT_PROMPT_PACK_PATH = str(
-    (Path(__file__).resolve().parent.parent / "experiments" / "prompt_pack_v4.0.yaml").resolve()
+    (Path(__file__).resolve().parent.parent / "configs" / "prompt_packs" / "prompt_pack_v4.0.yaml").resolve()
 )
 
 DEFAULT_PROMPT_PACK: Dict[str, str] = {

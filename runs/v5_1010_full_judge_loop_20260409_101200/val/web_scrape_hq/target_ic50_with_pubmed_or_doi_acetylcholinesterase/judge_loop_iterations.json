@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the IC50 values, compound structures (canonical SMILES), and publication references (PubMed ID and DOI) for all compounds tested against the human acetylcholinesterase target with ChEMBL ID CHEMBL220. For each activity, provide the standard IC50 value with its units. Use the docs table to retrieve the PubMed ID (pubmed_id) and DOI (doi) associated with the assay's document. Join the necessary tables to link the target CHEMBL220 to the activities, molecules, structures, and documents. Include the compound's ChEMBL ID and preferred name in the output.",
+    "sql": "SELECT DISTINCT md.chembl_id AS compound_chembl_id, md.pref_name AS compound_name, cs.canonical_smiles, a.standard_value AS ic50_value, a.standard_units AS ic50_units, d.pubmed_id, d.doi FROM target_dictionary td JOIN assays ass ON td.tid = ass.tid JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno JOIN docs d ON a.doc_id = d.doc_id WHERE td.chembl_id = 'CHEMBL220' AND a.standard_type = 'IC50'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n24 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n33 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n49 | 0 | 43 | SEARCH d USING INDEX pk_doc_doc_id (doc_id=?)\n69 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 9650,
+    "res_columns": [
+      "compound_chembl_id",
+      "compound_name",
+      "canonical_smiles",
+      "ic50_value",
+      "ic50_units",
+      "pubmed_id",
+      "doi"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

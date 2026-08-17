@@ -1,0 +1,96 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compound ChEMBL IDs and SMILES for molecules that have activity data recorded in ChEMBL against the human serine/threonine-protein kinase PLK1 (CHEMBL3024). The query should consider assays that involve PLK1 as a target and return the compound identifiers (CHEMBL molecule IDs and SMILES) for each tested molecule, without additional filtering such as assay confidence scores, organism restrictions, or document types.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE td.chembl_id = 'CHEMBL3024';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compound ChEMBL IDs and canonical SMILES for molecules that have at least one activity assay recorded against the human serine/threonine-protein kinase PLK1 (target chembl_id CHEMBL3024). Return one row per molecule (distinct molecule identifiers) with the columns molecule_chembl_id and canonical_smiles.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE td.chembl_id = 'CHEMBL3024';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve compound ChEMBL IDs and canonical SMILES for molecules that have at least one activity assay recorded against the human serine/threonine-protein kinase PLK1 (target chembl_id CHEMBL3024). Return one row per molecule (distinct molecule identifiers) with the columns molecule_chembl_id and canonical_smiles. The query should include all activity assays involving PLK1 regardless of assay type, and should not restrict by organism, assay confidence, or document type.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL3024';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve compound ChEMBL IDs and canonical SMILES for molecules that have at least one activity assay recorded against the human serine/threonine-protein kinase PLK1 (target chembl_id CHEMBL3024). Return one row per molecule (distinct molecule identifiers) with the columns molecule_chembl_id and canonical_smiles. The query should include all activity assays involving PLK1 regardless of assay type, and should not restrict by organism, assay confidence, or document type.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON cs.molregno = md.molregno WHERE td.chembl_id = 'CHEMBL3024';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the compound ChEMBL IDs (md.chembl_id) and canonical SMILES (cs.canonical_smiles) for molecules that have at least one activity assay recorded against the human serine/threonine\u2011protein kinase PLK1 (target chembl_id CHEMBL3024). Return one row per molecule (distinct md.chembl_id, cs.canonical_smiles). The query must join activities \u2192 assays \u2192 target_dictionary on target chembl_id = 'CHEMBL3024', then join molecule_dictionary via activities.molregno = md.molregno, and finally join compound_structures on md.molregno = cs.molregno. No filters on assay confidence, organism, document type, or specific assay format are required; include all assay types.",
+    "sql": "WITH plk1_tids AS (\n  SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL3024'\n),\nactivity_assays AS (\n  SELECT DISTINCT a.molregno\n  FROM activities a\n  JOIN plk1_tids t ON a.tid = t.tid\n)\nSELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles\nFROM activity_assays aa\nJOIN activities a ON aa.molregno = a.molregno\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE t.tid IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve the compound ChEMBL IDs (md.chembl_id) and canonical SMILES (cs.canonical_smiles) for molecules that have at least one activity assay recorded against the human serine/threonine\u2011protein kinase PLK1 (target chembl_id CHEMBL3024). Return one row per molecule (distinct md.chembl_id, cs.canonical_smiles). The query must join activities \u2192 assays \u2192 target_dictionary on target chembl_id = 'CHEMBL3024', then join molecule_dictionary via activities.molregno = md.molregno, and finally join compound_structures on md.molregno = cs.molregno. No filters on assay confidence, organism, document type, or specific assay format are required; include all assay types.",
+    "sql": "WITH plk1_tids AS (\n  SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL3024'\n),\n  activity_assays AS (\n    SELECT DISTINCT a.molregno\n    FROM activities a\n    JOIN plk1_tids t ON a.tid = t.tid\n  )\n  SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles\n  FROM activity_assays aa\n  JOIN activities a ON aa.molregno = a.molregno\n  JOIN molecule_dictionary md ON a.molregno = md.molregno\n  JOIN compound_structures cs ON md.molregno = cs.molregno\n  WHERE t.tid IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.tid",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.tid",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve the ChEMBL IDs (md.chembl_id) and canonical SMILES (cs.canonical_smiles) of distinct molecules that have at least one activity assay recorded in ChEMBL where the target is the human serine/threonine\u2011protein kinase PLK1 identified by target chembl_id 'CHEMBL3024'. Return one row per molecule. No filters on assay confidence, organism, document type, or specific assay format are required; include all assay types.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL3024';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n12 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n15 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n24 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n29 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)",
+    "res_row_count": 27341,
+    "res_columns": [
+      "molecule_chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

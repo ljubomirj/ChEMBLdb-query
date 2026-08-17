@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the first 1000 activity rows where the standard type is IC50 and pChEMBL value is not null, for the human single-protein target with CHEMBL ID CHEMBL3921 (Heparanase). The output must include: assay ChEMBL ID, target type, target tax_id, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID ascending, then by assay ChEMBL ID ascending. Apply a limit of 1000 rows. Ensure the target is Homo sapiens with target type SINGLE PROTEIN. Do not introduce additional filters beyond those specified (e.g., no confidence score, no unit restrictions). Use the appropriate database relationships: link activities to assays on assay_id, assays to target_dictionary on tid, activities to molecule_dictionary on molregno, and molecule_dictionary to compound_structures on molregno.",
+    "sql": "SELECT a.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, act.standard_type, act.pchembl_value FROM activities act JOIN assays a ON act.assay_id = a.assay_id JOIN target_dictionary td ON a.tid = td.tid JOIN molecule_dictionary md ON act.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE td.chembl_id = 'CHEMBL3921' AND td.target_type = 'SINGLE PROTEIN' AND td.organism = 'Homo sapiens' AND act.standard_type = 'IC50' AND act.pchembl_value IS NOT NULL ORDER BY md.chembl_id, a.chembl_id LIMIT 1000;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH act USING INDEX idx_act_std_type (standard_type=?)\n29 | 0 | 0 | SEARCH a USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n38 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n45 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n70 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 460,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.99,
+    "judge_decision": true
+  }
+]

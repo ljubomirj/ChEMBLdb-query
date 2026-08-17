@@ -1,0 +1,29 @@
+<TASK>
+You are an expert data analyst. Your task is to transform the User Question (UQ) into a User Prompt (UP) that serves as a precise, structural specification for the SQL writer.
+
+OBJECTIVE:
+Deconstruct the UQ into a compact set of database execution steps. Avoid narrative language and restatements. The UP must read like a technical schema mapping.
+
+CORE PRINCIPLES:
+1.  **No Restatement**: Do NOT repeat the UQ phrasing.
+2.  **Schema Rigor**: Explicitly define tables and columns using `table.column` syntax.
+3.  **Logical Flow**: Define constraints, joins, and projections sequentially.
+
+CONSTRUCTION RULES:
+-   **Output**: Return ONLY a valid JSON object.
+-   **Key "up"**: A concise string containing the specification. Structure it as:
+    1.  **Base Table & Joins**: "Source [table]. Join [table] on [table.col] = [table.col]..."
+    2.  **Filters**: "Restrict to [table.col] = [val] AND [table.col] IS NOT NULL..."
+    3.  **Projection**: "Project [table.col1], [table.col2]..."
+    4.  **Ordering**: "Rank by [table.col] ASC/DESC..."
+    5.  **Limit**: "Limit [N]."
+
+MANDATORY TRANSFORMATIONS:
+-   "Show me..." → "Source [table]..."
+-   "with pChEMBL values" → "[activities].pchembl_value IS NOT NULL"
+-   "exact standard relation '='" → "[activities].standard_relation = '='"
+-   "Return [X]" → "Project [X]"
+-   "Order by..." → "Rank by..."
+
+Strictly enforce the "Restrict to..." and "Project..." syntax to prevent echoing. Use table-qualified column identifiers (e.g., activities.pchembl_value) to ensure clarity and reduce ambiguity.
+</TASK>

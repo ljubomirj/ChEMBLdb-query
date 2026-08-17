@@ -1,0 +1,67 @@
+{
+  "version": "v4.1",
+  "description": "Expanded v4 optimization splits over the larger executable corpus. Count-style queries stay auxiliary. Large and massive cases stay out of the GEPA inner loop.",
+  "splits": {
+    "train": [
+      {"corpus": "web_scrape_hq", "id": "baoilleach_celegans_target_descriptions"},
+      {"corpus": "web_scrape_hq", "id": "baoilleach_human_hsp90_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "human_egfr_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "human_jak2_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "human_erbb2_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "human_kit_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "all_single_protein_targets_accession_sequence"},
+      {"corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_egfr"},
+      {"corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_erbb2"},
+      {"corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_kit"},
+      {"corpus": "web_scrape_hq", "id": "imatinib_kit_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "tacrine_acetylcholinesterase_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "ceritinib_alk_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "afatinib_egfr_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "sorafenib_vegfr2_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "rofecoxib_ptgs2_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "alogliptin_dpp4_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "cabozantinib_met_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "iwatobipen_ki_target_tid_pref_name"},
+      {"corpus": "web_scrape_hq", "id": "iwatobipen_metabolism_example"},
+      {"corpus": "web_scrape_hq", "id": "metabolism_first200_parent_names"},
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_id_name_pairs"},
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_drug_indications"},
+      {"corpus": "web_scrape_hq", "id": "approved_drugs_with_mechanisms"},
+      {"corpus": "web_scrape_hq", "id": "approved_drugs_with_indications_and_efo"},
+      {"corpus": "web_scrape_hq", "id": "selective_cdk2_over_cdk5_smiles_exact"},
+      {"corpus": "faq_hq", "id": "faq_cdk2_selective_over_cdk5"}
+    ],
+    "val": [
+      {"corpus": "web_scrape_hq", "id": "baoilleach_human_cgmp_target_descriptions"},
+      {"corpus": "web_scrape_hq", "id": "human_pde5_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_jak2"},
+      {"corpus": "web_scrape_hq", "id": "sitagliptin_dpp4_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "metabolism_first200_with_record_keys"},
+      {"corpus": "web_scrape_hq", "id": "leelasd_approved_drugs_with_indications"},
+      {"corpus": "faq_hq", "id": "faq_sildenafil_pde5_ic50_salts"}
+    ],
+    "test": [
+      {"corpus": "web_scrape_hq", "id": "human_single_protein_targets_accession_sequence"},
+      {"corpus": "web_scrape_hq", "id": "human_dpp4_molecule_smiles"},
+      {"corpus": "web_scrape_hq", "id": "target_ic50_with_pubmed_or_doi_dpp4"},
+      {"corpus": "web_scrape_hq", "id": "tofacitinib_jak2_ic50_salts"},
+      {"corpus": "web_scrape_hq", "id": "selective_egfr_over_erbb2_smiles_exact"},
+      {"corpus": "web_scrape_hq", "id": "selective_jak2_over_jak1_smiles_exact"},
+      {"corpus": "faq_hq", "id": "faq_levofloxacin_pk"}
+    ],
+    "auxiliary": [
+      {"corpus": "web_scrape_hq", "id": "chembl_downloader_count_activities"}
+    ],
+    "large_eval": [
+      {"corpus": "faq_hq", "id": "faq_all_protein_targets"},
+      {"corpus": "faq_hq", "id": "faq_bacterial_targets"},
+      {"corpus": "faq_hq", "id": "faq_m2_muscarinic_targets"},
+      {"corpus": "faq_hq", "id": "faq_pde5_target_activity"},
+      {"corpus": "web_scrape_large", "id": "chembl_downloader_all_ic50_activities"},
+      {"corpus": "web_scrape_large", "id": "chembl_multitask_single_protein_nM_bioactivities"}
+    ],
+    "massive_holdout": [
+      {"corpus": "faq_hq", "id": "faq_pubchem_only"}
+    ]
+  }
+}

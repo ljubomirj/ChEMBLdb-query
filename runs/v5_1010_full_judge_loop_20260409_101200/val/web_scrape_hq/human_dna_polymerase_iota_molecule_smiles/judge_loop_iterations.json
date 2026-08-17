@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID and canonical SMILES for all compounds that have been tested against the target with ChEMBL ID CHEMBL5391 (human DNA polymerase iota).",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN activities a ON md.molregno = a.molregno JOIN assays ass ON a.assay_id = ass.assay_id WHERE ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL5391')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n10 | 0 | 226 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n22 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n32 | 0 | 0 | BLOOM FILTER ON ass (assay_id=?)\n38 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n48 | 0 | 0 | SCALAR SUBQUERY 1\n53 | 48 | 39 | SEARCH target_dictionary USING INDEX sqlite_autoindex_target_dictionary_2 (chembl_id=?)",
+    "res_row_count": 115014,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

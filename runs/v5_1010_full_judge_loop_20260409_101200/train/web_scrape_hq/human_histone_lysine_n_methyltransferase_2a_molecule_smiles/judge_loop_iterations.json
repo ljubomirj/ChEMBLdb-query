@@ -1,0 +1,70 @@
+[
+  {
+    "n": 1,
+    "up": "Find all human compounds that have been tested against Histone\u2011lysine N\u2011methyltransferase 2A (KMT2A) in any assay type, and return their ChEMBL identifiers and canonical SMILES. The target must be a human protein target named exactly 'Histone\u2011lysine N\u2011methyltransferase 2A' in the ChEMBL target dictionary. The SMILES should be retrieved from the compound structures table. The results must include each qualifying compound only once (no duplicate SMILES).",
+    "sql": "SELECT DISTINCT\n  md.chembl_id AS chembl_id,\n  cs.canonical_smiles AS smiles\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno\nWHERE\ntd.pref_name = 'Histone-lysine N-methyltransferase 2A'\n-- ensure the assay is performed in a human system\nAND ass.assay_organism IS NOT NULL\nAND td.tax_id = (SELECT tax_id FROM target_dictionary WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens')\n-- optional: ensure target is human\nAND (td.organism = 'Homo sapiens' OR td.tax_id = (SELECT tax_id FROM target_dictionary WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens'))\nORDER BY chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all human compounds that have been tested against Histone\u2011lysine N\u2011methyltransferase 2A (KMT2A) in assays performed in a human system. For each compound return its ChEMBL ID (using the public chembl_id column) and its canonical SMILES. The result set must include each qualifying compound exactly once (no duplicate SMILES). No additional filters on assay type, activity relation, units, or confidence scores are required.\nTarget: Histone\u2011lysine N\u2011methyltransferase 2A (pref_name in target_dictionary exactly 'Histone\u2011lysine N\u2011methyltransferase 2A', tax_id corresponding to organism = 'Homo sapiens').\nOutput columns: chembl_id (public ChEMBL identifier), canonical_smiles (SMILES).\nNo ranking or limits are requested.",
+    "sql": "WITH human_kmt2a_tid AS (\n    SELECT DISTINCT tid\n    FROM target_dictionary\n    WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND tax_id = (\n        SELECT tax_id\n        FROM target_dictionary\n        WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens'\n    )\n),\nactive_assays AS (\n    SELECT DISTINCT ass.assay_id, ass.tid\n    FROM assays ass\n    JOIN human_kmt2a_tid hk ON ass.tid = hk.tid\n    WHERE ass.assay_organism = 'Homo sapiens'\n),\ncompounds_in_assays AS (\n    SELECT DISTINCT a.molecule_chembl_id\n    FROM activities a\n    JOIN active_assays aa ON a.assay_id = aa.assay_id\n)\nSELECT DISTINCT md.chembl_id AS chembl_id,\n       cs.canonical_smiles AS canonical_smiles\nFROM compounds_in_assays cia\nJOIN molecule_dictionary md ON cia.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all human compounds that have been tested against Histone\u2011lysine N\u2011methyltransferase 2A (KMT2A) in assays performed in a human system. For each compound return its public ChEMBL ID and its canonical SMILES. The target must be the protein entry in target_dictionary with pref_name exactly 'Histone\u2011lysine N\u2011methyltransferase 2A' and a tax_id that corresponds to organism = 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles). No further filters on assay type, activity relation, units, or confidence scores are requested. Each qualifying compound must appear only once (no duplicate SMILES). No ranking or limits are specified in the user question.",
+    "sql": "WITH target_tid AS (\n    SELECT DISTINCT tid\n    FROM target_dictionary\n    WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND tax_id = (SELECT tax_id FROM target_dictionary WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens')\n),\nassays_human AS (\n    SELECT DISTINCT assay_id, tid\n    FROM assays\n    WHERE assay_organism = 'Homo sapiens' AND tid IN (SELECT tid FROM target_tid)\n),\ncompounds AS (\n    SELECT DISTINCT a.molecule_chembl_id\n    FROM activities a\n    JOIN assays_human ah ON a.assay_id = ah.assay_id\n)\nSELECT DISTINCT md.chembl_id AS chembl_id,\n       cs.canonical_smiles AS canonical_smiles\nFROM compounds c\nJOIN molecule_dictionary md ON c.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve all human compounds that have been tested against Histone\u2011lysine N\u2011methyltransferase 2A (KMT2A) in assays performed in a human system. For each compound return its public ChEMBL ID and its canonical SMILES. The target must be the protein entry in target_dictionary with pref_name exactly 'Histone\u2011lysine N\u2011methyltransferase 2A' and a tax_id that corresponds to organism = 'Homo sapiens'. Output columns: chembl_id (from molecule_dictionary.chembl_id), canonical_smiles (from compound_structures.canonical_smiles). No further filters on assay type, activity relation, units, or confidence scores are requested. Each qualifying compound must appear only once (no duplicate SMILES). No ranking or limits are specified in the user question.",
+    "sql": "WITH target_tid AS (\n    SELECT tid\n    FROM target_dictionary\n    WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND tax_id = (\n        SELECT tax_id\n        FROM target_dictionary\n        WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens'\n    )\n), assays_human AS (\n    SELECT DISTINCT assay_id, tid\n    FROM assays\n    WHERE assay_organism = 'Homo sapiens' AND tid IN (SELECT tid FROM target_tid)\n), compounds AS (\n    SELECT DISTINCT a.molecule_chembl_id\n    FROM activities a\n    JOIN assays_human ah ON a.assay_id = ah.assay_id\n)\nSELECT DISTINCT md.chembl_id AS chembl_id,\n       cs.canonical_smiles AS canonical_smiles\nFROM compounds c\nJOIN molecule_dictionary md ON c.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON md.molregno = cs.molregno\nORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve all compounds that have been tested against Histone\u2011lysine N\u2011methyltransferase 2A (KMT2A) in assays performed in a human system. The target must be the entry in target_dictionary with pref_name exactly 'Histone\u2011lysine N\u2011methyltransferase 2A' and a tax_id that corresponds to organism = 'Homo sapiens'. Return two columns: chembl_id (from molecule_dictionary.chembl_id) and canonical_smiles (from compound_structures.canonical_smiles). Ensure each compound appears only once (no duplicate SMILES). No filters on assay type, activity relation, units, confidence scores, or date ranges are required. No ranking or limits are requested.",
+    "sql": "WITH target_tid AS ( SELECT DISTINCT tid FROM target_dictionary WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND tax_id = ( SELECT tax_id FROM target_dictionary WHERE pref_name = 'Histone-lysine N-methyltransferase 2A' AND organism = 'Homo sapiens' ) ), assays_human AS ( SELECT DISTINCT assay_id, tid FROM assays WHERE assay_organism = 'Homo sapiens' AND tid IN ( SELECT tid FROM target_tid ) ), compounds AS ( SELECT DISTINCT a.record_id AS molregno FROM activities a JOIN assays_human ah ON a.assay_id = ah.assay_id ) SELECT DISTINCT md.chembl_id AS chembl_id, cs.canonical_smiles AS canonical_smiles FROM compounds c JOIN molecule_dictionary md ON c.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 18\n2 | 0 | 0 | CO-ROUTINE compounds\n4 | 2 | 0 | CO-ROUTINE assays_human\n7 | 4 | 224 | SCAN assays\n14 | 4 | 0 | LIST SUBQUERY 3\n18 | 14 | 0 | MATERIALIZE target_tid\n23 | 18 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n31 | 18 | 0 | SCALAR SUBQUERY 1\n36 | 31 | 46 | SEARCH target_dictionary USING INDEX idx_td_pname (pref_name=?)\n56 | 14 | 43 | SCAN target_tid\n62 | 14 | 0 | CREATE BLOOM FILTER\n79 | 2 | 174 | SCAN ah\n82 | 2 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n96 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n104 | 0 | 181 | SCAN c\n107 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n114 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n132 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n133 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 14470,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.93,
+    "judge_decision": true
+  }
+]

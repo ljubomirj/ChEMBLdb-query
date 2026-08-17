@@ -1,0 +1,20 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the ChEMBL ID, preferred name, and canonical SMILES for all compounds reported in document CHEMBL3639086. Return the document identifier, compound ChEMBL ID, compound preferred name, and the canonical SMILES string. Do not limit the number of rows returned.",
+    "sql": "SELECT\n  'CHEMBL3639086' AS document_identifier,\n  md.chembl_id AS compound_chembl_id,\n  md.pref_name AS compound_preferred_name,\n  cs.canonical_smiles\nFROM compound_records cr\nJOIN molecule_dictionary md ON cr.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE cr.doc_id = (SELECT doc_id FROM docs WHERE chembl_id = 'CHEMBL3639086')",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n7 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n10 | 0 | 0 | SCALAR SUBQUERY 1\n15 | 10 | 39 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n28 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 665,
+    "res_columns": [
+      "document_identifier",
+      "compound_chembl_id",
+      "compound_preferred_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

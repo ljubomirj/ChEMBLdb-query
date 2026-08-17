@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.mesh_id, drug_indication.efo_term, drug_indication.efo_id. Source: molecule_dictionary. Join: compound_structures ON molecule_dictionary.molregno = compound_structures.molregno. Join: drug_indication ON molecule_dictionary.molregno = drug_indication.molregno. Filter: molecule_dictionary.max_phase = 4 AND drug_indication.mesh_id LIKE 'D%'. Sort: None. Limit: None.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.mesh_heading, drug_indication.mesh_id, drug_indication.efo_term, drug_indication.efo_id FROM molecule_dictionary JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno JOIN drug_indication ON molecule_dictionary.molregno = drug_indication.molregno WHERE molecule_dictionary.max_phase = 4 AND drug_indication.mesh_id LIKE 'D%'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 0 | SCAN drug_indication\n11 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 32016,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "mesh_id",
+      "efo_term",
+      "efo_id"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully retrieves approved drugs (max_phase = 4) with their ChEMBL ID, name, SMILES, and indication details. The filter `drug_indication.mesh_id LIKE 'D%'` correctly identifies MeSH headings, which predominantly cover diseases and infections. The sample results confirm the presence of infection-related drugs (e.g., Tazobactam Sodium for 'Infections', Meropenem for 'Bacterial Infections', Amantadine for 'Influenza', etc.) alongside other therapeutic areas. The result set is comprehensive, returning 32,016 rows, which aligns with the broad scope of 'approved drugs' and their various indications. The query structure is sound, using appropriate INNER JOINs to ensure all requested data fields are present.\",\n  \"score\": 5,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

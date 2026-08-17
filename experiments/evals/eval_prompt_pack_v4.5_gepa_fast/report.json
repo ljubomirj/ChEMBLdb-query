@@ -1,0 +1,408 @@
+{
+  "ts_utc": "2026-03-16T12:37:55Z",
+  "eval_label": "eval_prompt_pack_v4.5_gepa_fast",
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v4.5.yaml",
+  "split_file": "/Users/ljubomir/ChEMBLdb-query/experiments/case_splits_v4.1_gepa_fast.json",
+  "reuse_existing": false,
+  "db_llm_script": "/Users/ljubomir/ChEMBLdb-query/src/db_llm_query_v4.py",
+  "db_llm_args": [
+    "--multi-endpoint-profile",
+    "zai-glm-4.7-anthropic",
+    "--max-retries",
+    "3"
+  ],
+  "splits": {
+    "val": {
+      "n_cases": 6,
+      "n_pass": 3,
+      "pass_rate": 0.5,
+      "mean_score": 0.859024,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "baoilleach_human_cgmp_target_descriptions",
+          "uq": "List distinct human target descriptions whose description starts with cGMP.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/baoilleach_human_cgmp_target_descriptions/run.log",
+          "generated_sql": "SELECT DISTINCT td.pref_name FROM target_dictionary td WHERE td.pref_name LIKE 'cGMP%' AND td.organism = 'Homo sapiens';",
+          "judge_text": "{",
+          "expected_rows": 6,
+          "actual_rows": 6,
+          "expected_cols": [
+            "target_description"
+          ],
+          "actual_cols": [
+            "target_description"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_pde5_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL1827 (cGMP-specific 3',5'-cyclic phosphodiesterase). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/human_pde5_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/human_pde5_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, cs.canonical_smiles FROM assays ass JOIN activities a ON ass.assay_id = a.assay_id JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE ass.assay_organism = 'Homo sapiens' AND ass.tid = (SELECT tid FROM target_dictionary WHERE chembl_id = 'CHEMBL1827')",
+          "judge_text": "{\"analysis\":\"The SQL correctly joins assays, activities, molecule_dictionary, and compound_structures, filters by assay_organism='Homo sapiens' and target CHEMBL1827, and returns distinct molecule_chembl_id and canonical_smiles. The result contains 2604 rows with the two requested columns. The query matches the user question precisely and returns a full result set. No issues found.\",\"score\":1.0,\"decision\":\"YES\"}",
+          "expected_rows": 2604,
+          "actual_rows": 2604,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "metabolism_first200_with_record_keys",
+          "uq": "Retrieve the first 200 rows from the metabolism table with canonical SMILES, substrate record ID, metabolite record ID, substrate compound key, metabolite compound key, metabolic conversion, and pathway key. Use substrate_record_id as a mandatory join to the substrate compound_records row and then to compound_structures for canonical_smiles, so canonical_smiles and substrate_compound_key come from the substrate side and must not be null because of an optional join. Use metabolite_record_id to join the metabolite compound_records row for metabolite_compound_key; that metabolite-side join may be optional if the metabolite record is absent. Return exactly canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, and pathway_key.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/metabolism_first200_with_record_keys/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/metabolism_first200_with_record_keys/run.log",
+          "generated_sql": "SELECT DISTINCT cs_sub.canonical_smiles, m.substrate_record_id, m.metabolite_record_id, cr_sub.compound_key AS substrate_compound_key, cr_met.compound_key AS metabolite_compound_key, m.met_conversion AS met_conversion, m.pathway_key AS pathway_key FROM metabolism m JOIN compound_records cr_sub ON m.substrate_record_id = cr_sub.record_id JOIN compound_structures cs_sub ON cr_sub.molregno = cs_sub.molregno LEFT JOIN compound_records cr_met ON m.metabolite_record_id = cr_met.record_id LIMIT 200",
+          "judge_text": null,
+          "expected_rows": 200,
+          "actual_rows": 200,
+          "expected_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "actual_cols": [
+            "canonical_smiles",
+            "substrate_record_id",
+            "metabolite_record_id",
+            "substrate_compound_key",
+            "metabolite_compound_key",
+            "met_conversion",
+            "pathway_key"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Value mismatch in 'canonical_smiles' at row 0: actual='C=C1C(C)=C2C(=O)[C@](C)(CO)[C@H](O)C2=CC1C', expected='C=C1C[C@@H]2[C@H](CC[C@]3(C)C(=O)CC[C@@H]23)[C@@]2(C)C=CC(=O)C=C12'",
+          "status": "partial",
+          "score": 1.0,
+          "column_recall": 1.0,
+          "row_ratio": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "leelasd_approved_drugs_with_indications",
+          "uq": "Retrieve approved drugs from ChEMBL together with preferred name, canonical SMILES, max clinical phase, indication heading, and first approval year. Keep only approved drugs with max_phase = 4 and return exactly chembl_id, pref_name, canonical_smiles, max_phase, mesh_heading, and first_approval, ordered by most recent first approval. Return DISTINCT rows only for those requested output columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/leelasd_approved_drugs_with_indications/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/leelasd_approved_drugs_with_indications/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 29285,
+          "actual_rows": 29876,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "max_phase",
+            "mesh_heading",
+            "first_approval"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "compare_error": "Row count mismatch: actual=29876, expected=29285",
+          "status": "partial",
+          "score": 0.992087,
+          "column_recall": 1.0,
+          "row_ratio": 0.980218
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "selective_egfr_over_erbb2_smiles_exact",
+          "uq": "Retrieve compounds selective for target CHEMBL203 (Epidermal growth factor receptor) over target CHEMBL1824 (Receptor tyrosine-protein kinase erbB-2). Define selectivity exactly as: IC50 < 50 nM against CHEMBL203 and IC50 > 200 nM against CHEMBL1824, using only rows with standard_relation = '=' and standard_units = 'nM'. Return exactly two columns only: compound_chembl_id and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 169,
+          "actual_rows": 169,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "faq_hq",
+          "id": "faq_levofloxacin_pk",
+          "uq": "Retrieve PK data from 'Curated Drug Pharmacokinetic Data' source in ChEMBL for drug:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/faq_hq/faq_levofloxacin_pk/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/val/faq_hq/faq_levofloxacin_pk/run.log",
+          "generated_sql": "SELECT md.pref_name, md.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN source s ON a.src_id = s.src_id WHERE s.src_short_name = 'DRUG_PK'",
+          "judge_text": null,
+          "expected_rows": 154,
+          "actual_rows": 1163,
+          "expected_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment"
+          ],
+          "actual_cols": [
+            "pref_name",
+            "chembl_id",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units"
+          ],
+          "missing_cols": [
+            "title",
+            "dataset",
+            "assay_id",
+            "description",
+            "dosed_compound_name",
+            "dose",
+            "dosage_form",
+            "regimen",
+            "route",
+            "gender",
+            "age_range",
+            "health_status",
+            "tissue",
+            "molregno",
+            "compound_name",
+            "activity_id",
+            "toid",
+            "activity_comment"
+          ],
+          "extra_cols": [
+            "pref_name",
+            "chembl_id"
+          ],
+          "status": "partial",
+          "score": 0.162057,
+          "column_recall": 0.181818,
+          "row_ratio": 0.132416
+        }
+      ]
+    },
+    "test": {
+      "n_cases": 6,
+      "n_pass": 4,
+      "pass_rate": 0.666667,
+      "mean_score": 0.666667,
+      "cases": [
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_single_protein_targets_accession_sequence",
+          "uq": "Retrieve target ChEMBL ID, target name, target type, protein accession, and protein sequence for human single-protein targets only. Keep only targets with target_type = 'SINGLE PROTEIN' and organism = 'Homo sapiens'. Return exactly target_chembl_id, target_name, target_type, protein_accession, and protein_sequence.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/human_single_protein_targets_accession_sequence/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/human_single_protein_targets_accession_sequence/run.log",
+          "generated_sql": "SELECT",
+          "judge_text": null,
+          "expected_rows": 5820,
+          "actual_rows": 5820,
+          "expected_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "actual_cols": [
+            "target_chembl_id",
+            "target_name",
+            "target_type",
+            "protein_accession",
+            "protein_sequence"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "human_dpp4_molecule_smiles",
+          "uq": "Retrieve distinct molecule ChEMBL IDs and canonical SMILES for compounds tested in Homo sapiens assays against target CHEMBL284 (Dipeptidyl peptidase 4). Filter on assays.assay_organism = 'Homo sapiens' and return only the distinct molecule_chembl_id and canonical_smiles columns.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/human_dpp4_molecule_smiles/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/human_dpp4_molecule_smiles/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": "{\"analysis\": \"Judge failed.\", \"score\": 0.0, \"decision\": \"NO\"}",
+          "status": "run_failed",
+          "score": 0.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "target_ic50_with_pubmed_or_doi_dpp4",
+          "uq": "Retrieve IC50 activities in nM against target CHEMBL284 (Dipeptidyl peptidase 4) together with canonical SMILES, compound ChEMBL ID, compound key, PubMed ID or DOI, assay description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target ChEMBL ID, target name, and target organism. Keep only rows with target_type = 'SINGLE PROTEIN', organism = 'Homo sapiens', non-null canonical_smiles, and at least one of pubmed_id or doi. For pubmed_id_or_doi, prefer the PubMed ID when both pubmed_id and doi are present; otherwise use the DOI. Return DISTINCT rows only for exactly compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, and target_organism.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4/run.log",
+          "generated_sql": "SELECT DISTINCT",
+          "judge_text": null,
+          "expected_rows": 4992,
+          "actual_rows": 4992,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles",
+            "compound_key",
+            "pubmed_id_or_doi",
+            "assay_description",
+            "standard_type",
+            "standard_relation",
+            "standard_value",
+            "standard_units",
+            "activity_comment",
+            "target_chembl_id",
+            "target_name",
+            "target_organism"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "approved_drugs_with_indications_and_efo",
+          "uq": "Retrieve approved drugs from ChEMBL together with preferred name, canonical SMILES, EFO identifier, EFO indication label, and max phase for indication. Keep only approved drugs with max_phase = 4, require non-null EFO identifier and non-null EFO indication label, and return DISTINCT rows only for exactly chembl_id, pref_name, canonical_smiles, indication_curie, indication_label, and max_phase_for_ind.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/approved_drugs_with_indications_and_efo/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/approved_drugs_with_indications_and_efo/run.log",
+          "generated_sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND di.efo_id IS NOT NULL AND di.efo_term IS NOT NULL",
+          "judge_text": null,
+          "expected_rows": 31760,
+          "actual_rows": 31760,
+          "expected_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "indication_curie",
+            "indication_label",
+            "max_phase_for_ind"
+          ],
+          "actual_cols": [
+            "chembl_id",
+            "pref_name",
+            "canonical_smiles",
+            "indication_curie",
+            "indication_label",
+            "max_phase_for_ind"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "web_scrape_hq",
+          "id": "selective_jak2_over_jak1_smiles_exact",
+          "uq": "Retrieve compounds selective for target CHEMBL2971 (Tyrosine-protein kinase JAK2) over target CHEMBL2835 (Tyrosine-protein kinase JAK1). Define selectivity exactly as: IC50 < 50 nM against CHEMBL2971 and IC50 > 200 nM against CHEMBL2835, using only rows with standard_relation = '=' and standard_units = 'nM'. Return exactly two columns only: compound_chembl_id and canonical_smiles.",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/web_scrape_hq/selective_jak2_over_jak1_smiles_exact/run.log",
+          "generated_sql": "WITH jak2_active AS (",
+          "judge_text": "{",
+          "expected_rows": 192,
+          "actual_rows": 192,
+          "expected_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "actual_cols": [
+            "compound_chembl_id",
+            "canonical_smiles"
+          ],
+          "missing_cols": [],
+          "extra_cols": [],
+          "status": "pass",
+          "score": 1.0
+        },
+        {
+          "corpus": "faq_hq",
+          "id": "faq_sildenafil_pde5_ic50_salts",
+          "uq": "Retrieve activity details for compound and all its salts which have an IC50 bioactivity value in nM against a target of interest:",
+          "run_exit_code": 0,
+          "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/faq_hq/faq_sildenafil_pde5_ic50_salts/result.csv",
+          "log_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/eval_prompt_pack_v4.5_gepa_fast/test/faq_hq/faq_sildenafil_pde5_ic50_salts/run.log",
+          "generated_sql": "SELECT DISTINCT a.activity_id, a.standard_relation, a.standard_value, a.standard_units FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_hierarchy mh ON a.molregno = mh.active_molregno WHERE a.standard_type = 'IC50' AND a.standard_units = 'nM' AND mh.parent_molregno = (SELECT molregno FROM molecule_dictionary WHERE chembl_id = 'CHEMBL25') AND td.chembl_id = 'CHEMBL240'",
+          "judge_text": null,
+          "status": "run_failed",
+          "score": 0.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "n_cases": 12,
+    "n_pass": 7,
+    "pass_rate": 0.583333,
+    "mean_score": 0.762845
+  }
+}

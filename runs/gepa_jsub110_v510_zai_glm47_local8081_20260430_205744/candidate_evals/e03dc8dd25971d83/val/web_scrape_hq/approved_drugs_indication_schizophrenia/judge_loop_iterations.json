@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return all approved drugs with an indication for schizophrenia. For each drug, provide the ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label (EFO term), and the maximum phase for that indication. Join molecule_dictionary to compound_structures for SMILES and to drug_indication for indication details. Filter by max_phase equal to 4 and mesh_heading equal to 'Schizophrenia'.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name, cs.canonical_smiles, di.efo_id, di.efo_term AS indication_label, di.max_phase_for_ind FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno JOIN drug_indication di ON md.molregno = di.molregno WHERE di.mesh_heading = 'Schizophrenia' AND di.max_phase_for_ind = 4",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 0 | SCAN di\n13 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n20 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 29,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly identifies approved drugs for schizophrenia by filtering on mesh_heading='Schizophrenia' and max_phase_for_ind=4. It returns all requested columns: ChEMBL ID, preferred name, canonical SMILES, EFO ID, indication label (EFO term), and max phase for indication. The result set includes 29 distinct drugs, which aligns with known antipsychotics and their formulations. The execution plan is efficient, using indexed scans on molregno. The output matches the user's specification exactly.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

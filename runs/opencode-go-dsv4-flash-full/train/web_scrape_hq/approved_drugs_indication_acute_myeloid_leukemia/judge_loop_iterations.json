@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "List all drugs that are approved for acute myeloid leukemia. For each drug, return the drug name (pref_name) and ChEMBL identifier (chembl_id). Use the drug_indication table to identify drugs indicated for acute myeloid leukemia, filtering for approved indications (max_phase_for_ind = 4). Match the indication using the mesh_heading or efo_term field that corresponds to acute myeloid leukemia (e.g., 'Leukemia, Myeloid, Acute' in MeSH). Join with molecule_dictionary on molregno to obtain the drug name and chembl_id.",
+    "sql": "SELECT DISTINCT\n    md.pref_name,\n    md.chembl_id\nFROM molecule_dictionary md\nINNER JOIN drug_indication di ON di.molregno = md.molregno\nWHERE di.max_phase_for_ind = 4\n  AND (di.mesh_heading = 'Leukemia, Myeloid, Acute'\n       OR di.efo_term LIKE '%acute myeloid leukemia%'\n       OR di.efo_term LIKE '%acute myeloid leukaemia%')\nORDER BY md.pref_name;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 4\n6 | 0 | 0 | SCAN di\n18 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n34 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n35 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 16,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

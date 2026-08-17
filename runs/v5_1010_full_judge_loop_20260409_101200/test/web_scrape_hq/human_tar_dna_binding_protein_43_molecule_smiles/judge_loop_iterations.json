@@ -1,0 +1,18 @@
+[
+  {
+    "n": 1,
+    "up": "Return a list of distinct compounds that have been tested against the human protein TAR DNA-binding protein 43 (TDP-43). For each compound, provide its ChEMBL identifier and preferred name. The target is the single protein Homo sapiens TAR DNA-binding protein 43.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE td.pref_name = 'TAR DNA-binding protein 43' AND td.organism = 'Homo sapiens'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 220 | SCAN md USING INDEX idx_moldict_chembl_id\n13 | 0 | 60 | SEARCH a USING INDEX fk_act_molregno (molregno=?)\n19 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n26 | 0 | 0 | BLOOM FILTER ON td (tid=?)\n36 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)",
+    "res_row_count": 39978,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

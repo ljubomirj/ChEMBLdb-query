@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long60_zai47_8081fb_20260427_214316/candidate_cache/candidate_62bfc62aa037fe37.yaml",
+  "prompt_pack_version": "v5.1",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_depressive_disorder.json",
+  "case_id": "approved_drugs_indication_depressive_disorder",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "62bfc62aa037fe37",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind. Join molecule_dictionary with drug_indication on molecule_dictionary.molregno = drug_indication.molregno. Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Filter molecule_dictionary.max_phase equal to 4 and drug_indication.mesh_heading containing 'depressive disorder'. Sort by molecule_dictionary.chembl_id ascending, molecule_dictionary.pref_name ascending, compound_structures.canonical_smiles ascending, drug_indication.efo_id ascending, drug_indication.mesh_heading ascending, drug_indication.max_phase_for_ind ascending.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select molecule_dictionary.chembl_id, molecule_dictionary.pref_name, compound_structures.canonical_smiles, drug_indication.efo_id AS indication_curie, drug_indication.mesh_heading AS indication_label, drug_indication.max_phase_for_ind. Join molecule_dictionary with drug_indication on molecule_dictionary.molregno = drug_indication.molregno. Join compound_structures on molecule_dictionary.molregno = compound_structures.molregno. Filter molecule_dictionary.max_phase equal to 4 and drug_indication.mesh_heading containing 'depressive disorder'. Sort by molecule_dictionary.chembl_id ascending, molecule_dictionary.pref_name ascending, compound_structures.canonical_smiles ascending, drug_indication.efo_id ascending, drug_indication.mesh_heading ascending, drug_indication.max_phase_for_ind ascending."
+    }
+  }
+}

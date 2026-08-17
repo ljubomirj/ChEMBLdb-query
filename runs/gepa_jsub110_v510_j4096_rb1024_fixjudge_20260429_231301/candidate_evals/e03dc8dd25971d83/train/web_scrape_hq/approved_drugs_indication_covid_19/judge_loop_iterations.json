@@ -1,0 +1,21 @@
+[
+  {
+    "n": 1,
+    "up": "Return approved drugs with a COVID-19 indication. Select the drug ChEMBL ID, preferred name, and indication details. Source from molecule_dictionary and drug_indication. Join on molecule_dictionary.molregno = drug_indication.molregno. Filter for approved drugs (molecule_dictionary.max_phase = 4) and COVID-19 indications (drug_indication.mesh_heading LIKE '%COVID-19%' OR drug_indication.efo_term LIKE '%COVID-19%'). Return all matching rows.",
+    "sql": "SELECT md.chembl_id, md.pref_name, di.mesh_heading, di.efo_term FROM molecule_dictionary md JOIN drug_indication di ON md.molregno = di.molregno WHERE md.max_phase = 4 AND (di.mesh_heading LIKE '%COVID-19%' OR di.efo_term LIKE '%COVID-19%')",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SCAN di\n12 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 298,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "mesh_heading",
+      "efo_term"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query successfully returns approved drugs with COVID-19 indications. The SQL correctly joins molecule_dictionary and drug_indication, filters for max_phase = 4 (approved drugs), and uses LIKE '%COVID-19%' on both mesh_heading and efo_term columns. The result set contains 298 rows including relevant drugs like REMDESIVIR, TOCILIZUMAB, BARICITINIB, and vaccines like TOZINAMERAN. The output columns match the user request (chembl_id, pref_name, mesh_heading, efo_term). The query is efficient with a good execution plan using index on molregno.\",\n  \"score\": 10,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

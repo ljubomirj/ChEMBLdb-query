@@ -1,0 +1,56 @@
+[
+  {
+    "n": 1,
+    "up": "Find all compound records that have a document with the CHEMBL ID 'CHEMBL5729049'. Return the molecule's public ChEMBL identifier, the internal numeric molregno, the compound's preferred name (pref_name), and the document's title (title). Use the molecule_dictionary, compound_records, and docs tables to retrieve these items. Include all qualifying compound records; do not filter out any rows based on assay or activity information because the user only asked for compounds associated with the specified document. Ensure results preserve any duplicate entries if a molecule appears multiple times in that document.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.molregno, md.pref_name, d.title\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5729049'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n35 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 775,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molregno",
+      "pref_name",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.45,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Find all compound records linked to the document with CHEMBL ID 'CHEMBL5729049'. Return the molecule's public ChEMBL identifier, the internal numeric molregno, the molecule's preferred name (pref_name) and the document's title. Include every qualifying compound record (do not drop rows, keep duplicates if a molecule appears multiple times in that document). Use molecule_dictionary (md), compound_records (cr) and docs (d) in a LEFT JOIN from md to cr on md.molregno = cr.molregno, then from cr to d on cr.doc_id = d.doc_id. Do not filter on any other criteria (e.g., assay data, activity type, molecule type, publication year, confidence score, etc.). The result must list each matching molecule record with its corresponding ChEMBL ID, molregno, pref_name and title from the specified document.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.molregno, md.pref_name, d.title\nFROM molecule_dictionary md\nLEFT JOIN compound_records cr ON md.molregno = cr.molregno\nLEFT JOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5729049'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n6 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n11 | 0 | 229 | SCAN md\n13 | 0 | 49 | SEARCH cr USING INDEX fk_comp_rec_molregno (molregno=?) LEFT-JOIN",
+    "res_row_count": 781,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molregno",
+      "pref_name",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Find all molecules reported in the document with CHEMBL identifier 'CHEMBL5729049'. Return the molecule's public ChEMBL identifier, the internal numeric molregno, the molecule's preferred name (pref_name), and the document's title. Include every compound record linked to that document (do not drop duplicates if a molecule appears multiple times in the document). Use molecule_dictionary (md) joined to compound_records (cr) on md.molregno = cr.molregno, then to docs (d) on cr.doc_id = d.doc_id. Return molecule_chembl_id, molregno, pref_name, and d.title. Do not filter on any additional criteria (e.g., assay data, activity type, publication year, confidence score, target type, etc.). The results must list each qualifying molecule with its ChEMBL ID, molregno, name, and the full title of the document 'CHEMBL5729049'.",
+    "sql": "SELECT md.chembl_id AS molecule_chembl_id, md.molregno, md.pref_name, d.title FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729049'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n12 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 781,
+    "res_columns": [
+      "molecule_chembl_id",
+      "molregno",
+      "pref_name",
+      "title"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

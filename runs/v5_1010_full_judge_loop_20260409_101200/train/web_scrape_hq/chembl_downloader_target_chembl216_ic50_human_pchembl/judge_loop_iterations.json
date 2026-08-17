@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Return the first 1000 activity rows for the human single-protein target CHEMBL216 (Muscarinic acetylcholine receptor M1) where the standard_type is 'IC50' and the pChEMBL value is present. Include only rows where the standard_relation is '='. For each row, provide the assay ChEMBL ID, target type, target tax_id, molecule ChEMBL ID, canonical SMILES, standard type, and pChEMBL value. Order the results by molecule ChEMBL ID followed by assay ChEMBL ID.",
+    "sql": "SELECT DISTINCT\n  assays.chembl_id AS assay_chembl_id,\n  target_dictionary.target_type,\n  target_dictionary.tax_id,\n  compound_structures.canonical_smiles,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  activities.standard_type,\n  activities.pchembl_value\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nWHERE target_dictionary.chembl_id = 'CHEMBL216'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_relation = '='\n  AND activities.pchembl_value IS NOT NULL\nORDER BY molecule_dictionary.chembl_id, assays.chembl_id\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n74 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n75 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 901,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

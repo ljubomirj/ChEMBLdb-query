@@ -1,0 +1,19 @@
+[
+  {
+    "n": 1,
+    "up": "From the ChEMBL database, identify the document whose ChEMBL identifier is CHEMBL1125325. Retrieve all distinct molecules that are associated with that document (via the compound records). For each such molecule, return its ChEMBL identifier (chembl_id), its compound name (compound_name), and its canonical SMILES (canonical_smiles). Exclude any molecule for which the canonical SMILES is missing. Order the results first by chembl_id, then by compound_name, and finally by canonical_smiles, all in ascending order.",
+    "sql": "SELECT DISTINCT md.chembl_id, cr.compound_name, cs.canonical_smiles FROM docs d JOIN compound_records cr ON d.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno JOIN compound_structures cs ON md.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL1125325' ORDER BY md.chembl_id, cr.compound_name, cs.canonical_smiles;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n14 | 0 | 0 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n19 | 0 | 0 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n25 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n32 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 100,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

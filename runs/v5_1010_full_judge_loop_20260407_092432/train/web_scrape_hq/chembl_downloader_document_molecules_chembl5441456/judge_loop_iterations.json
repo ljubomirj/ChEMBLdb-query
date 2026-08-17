@@ -1,0 +1,75 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve compounds from document CHEMBL5441456, including their ChEMBL IDs, preferred names, and canonical SMILES, without any additional filtering or limits.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id AS cmid, md.pref_name AS name, cs.canonical_smiles AS smiles\nFROM activities a\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nLEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE d.chembl_id = 'CHEMBL5441456'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve compounds from the document CHEMBL5441456, returning each compound's ChEMBL identifier, preferred name, and canonical SMILES. No filtering, ranking, or additional attributes are required; include all compounds that appear in the document regardless of source type, activity type, or document publication date. Use molecule_dictionary for chembl_id, pref_name, and compound_structures for canonical_smiles. Join activities to docs via a.doc_id = d.doc_id, then to molecule_dictionary via a.molecule_chembl_id = md.chembl_id, and left join compound_structures on a.molecule_chembl_id = cs.molecule_chembl_id. Ensure that the doc identifier matches the requested CHEMBL5441456.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE d.chembl_id = 'CHEMBL5441456';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List compounds from document CHEMBL5441456, returning each compound's ChEMBL identifier, preferred name, and canonical SMILES. Use molecule_dictionary to get chembl_id, pref_name, and compound_structures for canonical_smiles. Join activities to docs via a.doc_id = d.doc_id, then to molecule_dictionary via a.molecule_chembl_id = md.chembl_id, and left join compound_structures on a.molecule_chembl_id = cs.molregno. Document identifier must be CHEMBL5441456. No additional filters, ranking, or output limits.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id LEFT JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE d.chembl_id = 'CHEMBL5441456';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "List compounds from document CHEMBL5441456, returning each compound's ChEMBL identifier, preferred name, and canonical SMILES. Use molecule_dictionary for chembl_id, pref_name, and compound_structures for canonical_smiles. Join activities to docs via a.doc_id = d.doc_id, then to molecule_dictionary via a.molregno = md.molregno, and left join compound_structures on a.molregno = cs.molregno. Ensure the document identifier is CHEMBL5441456. No additional filters, ranking, or output limits beyond the requested columns.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5441456';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 765,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.45,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "List compounds from document CHEMBL5441456, returning each compound's ChEMBL identifier, preferred name, and canonical SMILES. Use molecule_dictionary for chembl_id, pref_name, and compound_structures for canonical_smiles. Join activities to docs via a.doc_id = d.doc_id, then to molecule_dictionary via a.molregno = md.molregno, and left join compound_structures on a.molregno = cs.molregno. Ensure the document identifier is CHEMBL5441456. No additional filters, ranking, or output limits beyond the requested columns.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS compound_name, cs.canonical_smiles AS smiles FROM activities a JOIN docs d ON a.doc_id = d.doc_id JOIN molecule_dictionary md ON a.molregno = md.molregno LEFT JOIN compound_structures cs ON a.molregno = cs.molregno WHERE d.chembl_id = 'CHEMBL5441456';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?) LEFT-JOIN\n49 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 765,
+    "res_columns": [
+      "chembl_id",
+      "compound_name",
+      "smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

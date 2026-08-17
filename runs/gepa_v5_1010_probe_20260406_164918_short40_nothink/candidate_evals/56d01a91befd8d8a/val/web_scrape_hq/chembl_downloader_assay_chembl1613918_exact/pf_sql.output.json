@@ -1,0 +1,20 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_20260406_164918_short40_nothink/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1613918_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1613918_exact",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "56d01a91befd8d8a",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "raw_text": "{\n  \"sql\": \"SELECT DISTINCT cs.canonical_smiles AS canonical_smiles, m.chembl_id AS chembl_id, a.standard_type AS standard_type, a.standard_relation AS standard_relation, a.standard_value AS standard_value, a.standard_units AS standard_units\\nFROM activities a\\nJOIN compound_structures cs ON a.molregno = cs.molregno\\nJOIN molecule_dictionary m ON a.molregno = m.molregno\\nJOIN assays ass ON a.assay_id = ass.assay_id\\nWHERE ass.chembl_id = 'CHEMBL1613918'\\n  AND a.standard_relation = '='\\n  AND a.standard_value IS NOT NULL\\nORDER BY cs.canonical_smiles, m.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units;\"\n}",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT cs.canonical_smiles AS canonical_smiles, m.chembl_id AS chembl_id, a.standard_type AS standard_type, a.standard_relation AS standard_relation, a.standard_value AS standard_value, a.standard_units AS standard_units\nFROM activities a\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN molecule_dictionary m ON a.molregno = m.molregno\nJOIN assays ass ON a.assay_id = ass.assay_id\nWHERE ass.chembl_id = 'CHEMBL1613918'\n  AND a.standard_relation = '='\n  AND a.standard_value IS NOT NULL\nORDER BY cs.canonical_smiles, m.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units;"
+    }
+  }
+}

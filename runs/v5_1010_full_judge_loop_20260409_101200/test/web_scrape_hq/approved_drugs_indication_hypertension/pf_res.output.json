@@ -1,0 +1,72 @@
+{
+  "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/test/web_scrape_hq/approved_drugs_indication_hypertension/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/v5_1010_full_judge_loop_20260409_101200/test/web_scrape_hq/approved_drugs_indication_hypertension/result.generated.csv",
+    "row_count": 191,
+    "column_names": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind",
+      "max_phase"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 191,
+    "actual_rows": 191,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "mesh_heading",
+      "efo_term",
+      "max_phase_for_ind",
+      "max_phase"
+    ],
+    "missing_cols": [
+      "chembl_id",
+      "indication_curie",
+      "indication_label"
+    ],
+    "extra_cols": [
+      "molecule_chembl_id",
+      "mesh_heading",
+      "efo_term",
+      "max_phase"
+    ],
+    "status": "partial",
+    "score": 0.7,
+    "column_recall": 0.5,
+    "row_ratio": 1.0
+  },
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_hypertension",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "judge_provider": {
+      "provider": "zai-anthropic",
+      "model": "glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    }
+  }
+}

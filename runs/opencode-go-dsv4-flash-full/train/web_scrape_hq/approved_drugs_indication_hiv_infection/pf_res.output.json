@@ -1,0 +1,65 @@
+{
+  "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_hiv_infection/result.generated.csv",
+  "result": {
+    "success": true,
+    "result_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/opencode-go-dsv4-flash-full/train/web_scrape_hq/approved_drugs_indication_hiv_infection/result.generated.csv",
+    "row_count": 80,
+    "column_names": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "error": null
+  },
+  "deterministic_score": {
+    "expected_rows": 218,
+    "actual_rows": 80,
+    "expected_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "indication_curie",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "actual_cols": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "missing_cols": [
+      "indication_curie"
+    ],
+    "extra_cols": [
+      "efo_id"
+    ],
+    "status": "partial",
+    "score": 0.646789,
+    "column_recall": 0.833333,
+    "row_ratio": 0.366972
+  },
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.0.yaml",
+  "prompt_pack_version": "v5.0",
+  "case_id": "approved_drugs_indication_hiv_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "selected_step": "res",
+  "llm_provenance": {
+    "sql_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    },
+    "judge_provider": {
+      "provider": "openai",
+      "model": "deepseek-v4-flash",
+      "base_url": "https://opencode.ai/zen/go/v1"
+    }
+  }
+}

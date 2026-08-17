@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all distinct target names from assays that use Rattus norvegicus as the assay organism. Join the assays table with the target_dictionary table on the target ID (tid). Filter the results where assay_organism is 'Rattus norvegicus'. Return only the distinct target names (pref_name).",
+    "sql": "SELECT DISTINCT td.pref_name FROM assays a JOIN target_dictionary td ON a.tid = td.tid WHERE a.assay_organism = 'Rattus norvegicus'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n5 | 0 | 224 | SCAN a\n9 | 0 | 42 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n22 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1339,
+    "res_columns": [
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

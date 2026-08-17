@@ -1,0 +1,30 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_d50c51dec522d0b9.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_target_chembl1293289_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1293289_ic50_human_pchembl",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "candidate_hash": "d50c51dec522d0b9",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": \"Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1293289', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule_chembl_id ASC, assay_chembl_id ASC. Limit: 1000.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures. Join: activities.assay_id = assays.assay_id, assays.tid = target_dictionary.tid, activities.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: target_dictionary.chembl_id = 'CHEMBL1293289', activities.standard_type = 'IC50', activities.standard_relation = '=', activities.pchembl_value IS NOT NULL. Sort: molecule_chembl_id ASC, assay_chembl_id ASC. Limit: 1000."
+    }
+  }
+}

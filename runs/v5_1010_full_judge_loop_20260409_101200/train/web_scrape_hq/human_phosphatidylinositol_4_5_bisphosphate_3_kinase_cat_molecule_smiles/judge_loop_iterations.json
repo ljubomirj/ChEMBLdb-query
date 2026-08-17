@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "up": "List the distinct compounds (by their public ChEMBL ID and preferred name) that have been tested in human cell assays (assays with assay_organism = 'Homo sapiens' and assay_type = 'B' for binding) for the target Phosphatidylinositol 4,5\u2011bisphosphate 3\u2011kinase catalytic subunit, identified by its ChEMBL target ID CHEMBL3267. The query should return two columns: the compound's public ChEMBL identifier (chembl_id) and its canonical SMILES representation (canonical_smiles). The compounds must be linked to the target CHEMBL3267, and the target must be assigned to a human assay (i.e., assay_organism = 'Homo sapiens'). The query should not duplicate results, so each compound must appear only once.",
+    "sql": "WITH target_activities AS ( SELECT a.* FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL3267' AND ass.assay_organism = 'Homo sapiens' AND ass.assay_type = 'B' ) SELECT DISTINCT md.chembl_id, cs.canonical_smiles AS canonical_smiles FROM target_activities a JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno ), compound_related AS ( SELECT DISTINCT mh.molregno FROM target_activities a JOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id JOIN molecule_hierarchy mh ON md.molregno = mh.parent_molregno ) SELECT md.chembl_id, cs.canonical_smiles AS canonical_smiles FROM molecule_dictionary md JOIN compound_structures cs ON md.molregno = cs.molregno WHERE md.chembl_id IN ( SELECT molregno FROM compound_related ) ORDER BY md.chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: near \")\": syntax error",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "near \")\": syntax error",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "{\"text\":\"List distinct compounds (by their public CHEMBL ID and canonical SMILES) that have been tested in human assays (Homo sapiens) for the target Phosphatidylinositol 4,5\u2011bisphosphate 3\u2011kinase catalytic subunit, which is identified by its ChEMBL target ID CHEMBL3267. Return exactly two columns: the compound's CHEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles). The compounds must be linked to CHEMBL3267, and the target must be present in an assay with assay_organism = 'Homo sapiens'. No other filters or limits are required; each qualifying compound should appear only once in the result set.\\n\\nImportant fields to use: molecule_dictionary.chembl_id, compound_structures.canonical_smiles, target_dictionary.chembl_id, assays.assay_organism, assays.assay_type, assays.tid, activities.molecule_chembl_id, and activities.assay_id. The target CHEMBL3267 must be joined through target_dictionary and assay tables to ensure the assay is on a human assay organism (Homo sapiens). Use appropriate joins and ensure each compound appears only once in the output (distinct rows).\\n\\nIf a compound has multiple human binding assays, its canonical SMILES should still be returned once. Ensure the SMILES are retrieved from compound_structures and the target is confirmed to be the correct one (CHEMBL3267).\\n\\nDo not add any extra filters, date ranges, or limits beyond what is explicitly stated.\\n\\nIf a compound is linked to the target via multiple assay paths, it still should be returned once. Ensure that the target_dictionary.tid correctly points to the target CHEMBL3267 and that the assay_organism is 'Homo sapiens'.\\n\\nNo other columns or transformations are required; simply select the CHEMBL identifier and the canonical SMILES for each distinct compound.",
+    "sql": "SELECT DISTINCT md.chembl_id, cs.canonical_smiles AS canonical_smiles FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid JOIN molecule_dictionary md ON a.molecule_chembl_id = md.molregno JOIN compound_structures cs ON a.molecule_chembl_id = cs.molregno WHERE td.chembl_id = 'CHEMBL3267' AND ass.assay_organism = 'Homo sapiens' AND ass.assay_type = 'B'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List distinct compounds (by their public CHEMBL ID and canonical SMILES) that have been tested in human assays (Homo sapiens) for the target Phosphatidylinositol 4,5\u2011bisphosphate 3\u2011kinase catalytic subunit, which is identified by its ChEMBL target ID CHEMBL3267. Return exactly two columns: the compound's CHEMBL identifier (chembl_id) and its canonical SMILES (canonical_smiles). The compounds must be linked to CHEMBL3267, and the target must be present in an assay with assay_organism = 'Homo sapiens'. No other filters or limits are required; each qualifying compound should appear only once in the result set.\n\nImportant fields to use: molecule_dictionary.chembl_id, compound_structures.canonical_smiles, target_dictionary.chembl_id, assays.assay_organism, assays.assay_type, assays.tid, activities.molregno, and activities.assay_id. The target CHEMBL3267 must be joined through target_dictionary and assay tables to ensure the assay is on a human assay organism (Homo sapiens). Use appropriate joins and ensure each compound appears only once in the output (distinct rows).\n\nIf a compound has multiple human binding assays, its canonical SMILES should still be returned once. Ensure the SMILES are retrieved from compound_structures and the target is confirmed to be the correct one (CHEMBL3267).\n\nDo not add any extra filters, date ranges, or limits beyond what is explicitly stated.\n\nIf a compound is linked to the target via multiple assay paths, it still should be returned once. Ensure that the target_dictionary.tid correctly points to the target CHEMBL3267 and that the assay_organism is 'Homo sapiens'.\n\nNo other columns or transformations are required; simply select the CHEMBL identifier and the canonical SMILES for each distinct compound.",
+    "sql": "WITH t AS (SELECT a.assay_id, a.molregno FROM activities a JOIN assays ass ON a.assay_id = ass.assay_id JOIN target_dictionary td ON ass.tid = td.tid WHERE td.chembl_id = 'CHEMBL3267' AND ass.assay_organism = 'Homo sapiens' AND ass.assay_type = 'B') SELECT DISTINCT md.chembl_id, cs.canonical_smiles AS canonical_smiles FROM t a JOIN molecule_dictionary md ON a.molregno = md.molregno JOIN compound_structures cs ON a.molregno = cs.molregno",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n12 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n17 | 0 | 204 | SEARCH ass USING INDEX idx_assay_assay_id (assay_type=?)\n27 | 0 | 64 | SEARCH a USING INDEX fk_act_assay_id (assay_id=?)\n33 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n43 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n62 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 7203,
+    "res_columns": [
+      "chembl_id",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

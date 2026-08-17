@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_lysine_specific_histone_demethylase_1a.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_lysine_specific_histone_demethylase_1a",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select compound ChEMBL identifier, canonical SMILES, compound key, PubMed ID or DOI, assay description, activity standard type, relation, value, units, comment, target ChEMBL identifier, target name, and target organism. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno as an inner join to require structures. Join compound_records on activities.record_id and docs on compound_records.doc_id to retrieve compound_key and publication identifiers. Filter for target CHEMBL6136 and standard_type IC50 with standard_units nM. Return all qualifying activity rows without deduplication. Sort by compound ChEMBL identifier, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, relation, value, units, activity comment, target ChEMBL identifier, target name, and target organism.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select compound ChEMBL identifier, canonical SMILES, compound key, PubMed ID or DOI, assay description, activity standard type, relation, value, units, comment, target ChEMBL identifier, target name, and target organism. Join molecule_dictionary to activities on molregno, then to assays on assay_id, then to target_dictionary on tid. Join compound_structures on molregno as an inner join to require structures. Join compound_records on activities.record_id and docs on compound_records.doc_id to retrieve compound_key and publication identifiers. Filter for target CHEMBL6136 and standard_type IC50 with standard_units nM. Return all qualifying activity rows without deduplication. Sort by compound ChEMBL identifier, canonical SMILES, compound key, PubMed ID or DOI, assay description, standard type, relation, value, units, activity comment, target ChEMBL identifier, target name, and target organism."
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "case_id": "sorafenib_vegfr2_ic50_salts",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/uq.txt",
+    "up_exec": null,
+    "sql_gold": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/sqlite.sql",
+    "res_gold": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/source.sql",
+    "sqlite_sql": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/sqlite.sql",
+    "documentation": "cases/v5.1010/cases/sorafenib_vegfr2_ic50_salts/provenance/original/web_scrape--sorafenib_vegfr2_ic50_salts/documentation.txt"
+  },
+  "metadata": {
+    "family": "salts",
+    "origin": "templated_from_promoted_case",
+    "source_title": "Templated from ChEMBL FAQ salts example",
+    "source_url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples",
+    "realism_level": "templated_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "activity_comment",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "sort_keys": [
+      "compound_chembl_id",
+      "compound_key",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "standard_type",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "target_chembl_id",
+      "target_name",
+      "target_organism"
+    ],
+    "tags": [
+      "salts",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "['pubmed_id_or_doi']"
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "compound_chembl_id": "compound_chembl_id",
+      "smiles": "canonical_smiles",
+      "compound_smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles",
+      "pubmed_id": "pubmed_id_or_doi",
+      "doi": "pubmed_id_or_doi",
+      "article_doi": "pubmed_id_or_doi",
+      "pubmed_id_or_doi": "pubmed_id_or_doi",
+      "target_name": "target_name",
+      "target_pref_name": "target_name",
+      "pref_name": "target_name",
+      "target_chembl_id": "target_chembl_id",
+      "organism": "target_organism",
+      "target_organism": "target_organism",
+      "ic50": "standard_value",
+      "ic50_value": "standard_value",
+      "ic50_nm": "standard_value"
+    },
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

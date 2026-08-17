@@ -1,0 +1,75 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve up to 1000 activity records where the activity type is IC50 with a measured pChEMBL value for assays targeting human Thromboxane\u2011A synthase (target chembl_id = CHEMBL1835). For each activity row, return the assay\u2019s ChEMBL identifier, the target type (e.g., \"SINGLE PROTEIN\"), the target\u2019s taxonomic identifier, the compound\u2019s canonical SMILES, the compound\u2019s ChEMBL identifier, the activity\u2019s standard type (e.g., \"IC50\"), and the pChEMBL value. Order the output by the molecule ChEMBL ID in ascending order, then by the assay ChEMBL ID in ascending order.",
+    "sql": "SELECT a.chembl_id AS assay_chembl_id,\n       t.target_type,\n       t.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary t ON ass.tid = t.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE t.chembl_id = 'CHEMBL1835'\n  AND a.pchembl_value IS NOT NULL\n  AND a.standard_type = 'IC50'\nORDER BY md.chembl_id ASC,\n         ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Target: human SINGLE PROTEIN CHEMBL1835 (Thromboxane\u2011A synthase). Output: assay ChEMBL ID, target type, target tax_id, compound canonical SMILES, compound ChEMBL ID, activity standard type (must be \"IC50\"), and pChEMBL value. Filters: activity standard type = \"IC50\", pChEMBL value present. Order by molecule ChEMBL ID then assay ChEMBL ID. Return up to 1000 rows.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id,\n       t.target_type,\n       t.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary t ON ass.tid = t.tid\nJOIN molecule_dictionary md ON a.molecule_chembl_id = md.molecule_chembl_id\nJOIN compound_structures cs ON a.molecule_chembl_id = cs.molecule_chembl_id\nWHERE t.chembl_id = 'CHEMBL1835'\n  AND a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC,\n         ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve up to 1000 activity records where the activity type is IC50 with a present pChEMBL value for the human single-protein target CHEMBL1835 (Thromboxane\u2011A synthase). For each record return: the assay ChEMBL identifier, target type, target tax_id, compound canonical SMILES, compound ChEMBL identifier, activity standard type, and pChEMBL value. Join activities to assays, target_dictionary, molecule_dictionary and compound_structures using the appropriate internal IDs, filter on the target's ChEMBL ID, require that the activity standard type is exactly \"IC50\" and that a pChEMBL value exists, and order the results by compound ChEMBL ID ascending then assay ChEMBL ID ascending. Do not filter further on activity relation, units, assay confidence score, or any other attribute unless explicitly requested.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id,\n       t.target_type,\n       t.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary t ON ass.tid = t.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.chembl_id = cs.molecule_chembl_id\nWHERE t.chembl_id = 'CHEMBL1835'\n  AND a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC,\n         ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cs.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cs.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve up to 1000 activity records for IC50 activities with a present pChEMBL value on the human single\u2011protein target CHEMBL1835 (Thromboxane\u2011A synthase). Return the assay's ChEMBL identifier, the target's type, its tax_id, the compound's canonical SMILES, the compound's ChEMBL identifier, the activity's standard type (must be exactly \"IC50\"), and the pChEMBL value. Join activities to assays, target_dictionary, molecule_dictionary and compound_structures via the appropriate internal keys, filter on the target's ChEMBL ID, require a pChEMBL value, and order by molecule ChEMBL ID then assay ChEMBL ID. Do not add further filters on assay confidence, units, or relation.",
+    "sql": "WITH target_info AS (SELECT CHEMBL1835 AS chembl_id, 'SINGLE PROTEIN' AS target_type, 9606 AS tax_id) SELECT ass.chembl_id AS assay_chembl_id,\n       t.target_type,\n       t.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_info t ON t.chembl_id = 'CHEMBL1835'\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC,\n         ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: CHEMBL1835",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: CHEMBL1835",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve up to 1000 activity records for IC50 activities with a present pChEMBL value on the human single\u2011protein target CHEMBL1835 (Thromboxane\u2011A synthase). Return the assay's ChEMBL identifier, the target's type, its tax_id, the compound's canonical SMILES, the compound's ChEMBL identifier, the activity's standard type (must be exactly \"IC50\"), and the pChEMBL value. Join activities to assays, target_dictionary, molecule_dictionary and compound_structures via the appropriate internal keys, filter on the target's ChEMBL ID, require a pChEMBL value, and order by molecule ChEMBL ID then assay ChEMBL ID. Do not add further filters on assay confidence, units, or relation.",
+    "sql": "SELECT ass.chembl_id AS assay_chembl_id,\n       td.target_type,\n       td.tax_id,\n       cs.canonical_smiles,\n       md.chembl_id AS molecule_chembl_id,\n       a.standard_type,\n       a.pchembl_value\nFROM activities a\nJOIN assays ass ON a.assay_id = ass.assay_id\nJOIN target_dictionary td ON ass.tid = td.tid\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE td.chembl_id = 'CHEMBL1835'\n  AND a.standard_type = 'IC50'\n  AND a.pchembl_value IS NOT NULL\nORDER BY md.chembl_id ASC,\n         ass.chembl_id ASC\nLIMIT 1000;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 42 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n18 | 0 | 142 | SEARCH a USING INDEX idx_act_std_type (standard_type=?)\n25 | 0 | 47 | SEARCH ass USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n34 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n66 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 961,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

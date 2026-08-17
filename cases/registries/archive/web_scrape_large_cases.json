@@ -1,0 +1,94 @@
+[
+  {
+    "id": "chembl_downloader_all_ic50_activities",
+    "uq": "Retrieve all exact IC50 activities in nM from binding or functional assays. Exact means only rows with standard_relation = '='. Exclude rows where standard_value is null or standard_relation is null. Return these columns exactly: canonical_smiles, compound_chembl_id, bao_endpoint, standard_relation, standard_value, standard_units, assay_type, organism, tid, target_chembl_id, and target_name. Use the raw assay_type code from assays.assay_type, the target organism from target_dictionary.organism, and the assay TID from assays.tid.",
+    "source_url": "https://chembl-downloader.readthedocs.io/en/stable/api/chembl_downloader.queries.ACTIVITIES_QUERY.html",
+    "source_sql_path": "tests/fixtures/web_scrape/chembl_downloader_all_ic50_activities/source.sql",
+    "sqlite_sql_path": "tests/fixtures/web_scrape/chembl_downloader_all_ic50_activities/sqlite.sql",
+    "result_csv_path": "tests/fixtures/web_scrape/chembl_downloader_all_ic50_activities/result-last.csv",
+    "log_path": "tests/fixtures/web_scrape/chembl_downloader_all_ic50_activities/run-last.log",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "size_class": "large",
+    "sort_keys": [
+      "compound_chembl_id",
+      "canonical_smiles",
+      "bao_endpoint",
+      "standard_relation",
+      "standard_value",
+      "standard_units",
+      "assay_type",
+      "organism",
+      "tid",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "tid"
+    ],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    },
+    "column_rename_map": {
+      "chembl_id": "compound_chembl_id",
+      "compound_chembl_id": "compound_chembl_id",
+      "molecule_chembl_id": "compound_chembl_id",
+      "smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles",
+      "pref_name": "target_name",
+      "target_name": "target_name",
+      "target_pref_name": "target_name",
+      "target_chembl_id": "target_chembl_id",
+      "organism": "organism",
+      "tid": "tid"
+    }
+  },
+  {
+    "id": "chembl_multitask_single_protein_nM_bioactivities",
+    "uq": "Retrieve high-quality nM bioactivity measurements for single-protein targets. Return exactly these columns: doc_id, standard_value, parent_molregno, canonical_smiles, tid, target_chembl_id, and protein_class_desc. Keep only EC50, IC50, Ki, Kd, XC50, AC50, or Potency measurements with valid data, standard_relation in ('=', '<'), no potential duplicates, assay confidence score at least 8, and target_type = 'SINGLE PROTEIN'.",
+    "source_url": "https://raw.githubusercontent.com/chembl/chembl_multitask_model/main/extract_format_dataset.py",
+    "source_sql_path": "tests/fixtures/web_scrape2/chembl_multitask_single_protein_nM_bioactivities/source.sql",
+    "sqlite_sql_path": "tests/fixtures/web_scrape2/chembl_multitask_single_protein_nM_bioactivities/sqlite.sql",
+    "result_csv_path": "tests/fixtures/web_scrape2/chembl_multitask_single_protein_nM_bioactivities/result-last.csv",
+    "log_path": "tests/fixtures/web_scrape2/chembl_multitask_single_protein_nM_bioactivities/run-last.log",
+    "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+    "size_class": "large",
+    "sort_keys": [
+      "doc_id",
+      "standard_value",
+      "parent_molregno",
+      "canonical_smiles",
+      "tid",
+      "target_chembl_id",
+      "protein_class_desc"
+    ],
+    "float_cols": [
+      "standard_value"
+    ],
+    "int_cols": [
+      "doc_id",
+      "parent_molregno",
+      "tid"
+    ],
+    "normalize": {
+      "lowercase_columns": true,
+      "strip_values": true,
+      "lowercase_values": []
+    },
+    "column_rename_map": {
+      "doc_id": "doc_id",
+      "standard_value": "standard_value",
+      "molregno": "parent_molregno",
+      "parent_molregno": "parent_molregno",
+      "canonical_smiles": "canonical_smiles",
+      "tid": "tid",
+      "target_tid": "tid",
+      "target_chembl_id": "target_chembl_id",
+      "protein_class_desc": "protein_class_desc"
+    }
+  }
+]

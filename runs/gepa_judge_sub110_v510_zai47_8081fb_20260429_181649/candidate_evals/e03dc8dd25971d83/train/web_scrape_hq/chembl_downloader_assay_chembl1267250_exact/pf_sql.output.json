@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl1267250_exact.json",
+  "case_id": "chembl_downloader_assay_chembl1267250_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT DISTINCT cs.canonical_smiles, d.chembl_id, a.standard_type, a.standard_relation, a.standard_value, a.standard_units\nFROM activities a\nJOIN compound_structures cs ON a.molregno = cs.molregno\nJOIN molecule_dictionary d ON cs.molregno = d.molregno\nWHERE a.assay_id = 1267250\n  AND a.standard_type IS NOT NULL\n  AND a.standard_value IS NOT NULL\n  AND a.standard_relation IS NOT NULL\n  AND a.standard_units IS NOT NULL\nORDER BY a.standard_value ASC;"
+}

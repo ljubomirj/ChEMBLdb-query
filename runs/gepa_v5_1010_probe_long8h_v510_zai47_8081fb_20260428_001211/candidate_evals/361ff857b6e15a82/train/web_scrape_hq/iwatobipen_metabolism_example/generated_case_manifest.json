@@ -1,0 +1,61 @@
+{
+  "case_id": "iwatobipen_metabolism_example",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/361ff857b6e15a82/train/web_scrape_hq/iwatobipen_metabolism_example/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/361ff857b6e15a82/train/web_scrape_hq/iwatobipen_metabolism_example/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_evals/361ff857b6e15a82/train/web_scrape_hq/iwatobipen_metabolism_example/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/documentation.txt"
+  },
+  "metadata": {
+    "family": "metabolism",
+    "origin": "inferred_from_source_description",
+    "source_title": "ChemblDB 21 was released!",
+    "source_url": "https://iwatobipen.wordpress.com/2016/03/06/chembldb-21-was-released/",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "small",
+    "expected_output_columns": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "sort_keys": [
+      "canonical_smiles",
+      "compound_name",
+      "met_conversion",
+      "pathway_key"
+    ],
+    "tags": [
+      "metabolism",
+      "small"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "smiles": "canonical_smiles",
+      "canonical_smiles": "canonical_smiles",
+      "compound_name": "compound_name",
+      "met_conversion": "met_conversion",
+      "pathway_key": "pathway_key"
+    },
+    "float_cols": [],
+    "int_cols": [],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

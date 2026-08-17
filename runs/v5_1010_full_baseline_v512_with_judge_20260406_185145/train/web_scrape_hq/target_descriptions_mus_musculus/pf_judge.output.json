@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_descriptions_mus_musculus.json",
+  "case_id": "target_descriptions_mus_musculus",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The SQL query correctly implements the user's request: distinct target names for assays using Mus musculus. The query joins activities to assays on assay_id, then joins target_dictionary on tid, filters by assay_organism = 'Mus musculus', and selects distinct target descriptions. The result shows 1825 distinct target descriptions, with sample rows matching expected target names for mouse assays. The query uses proper table aliases (act, a, td) and follows the schema. The output format matches the requested columns (target_description). The sample rows show appropriate target names for mouse assays, confirming the query works as intended.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The SQL query correctly implements the user's request: distinct target names for assays using Mus musculus. The query joins activities to assays on assay_id, then joins target_dictionary on tid, filters by assay_organism = 'Mus musculus', and selects distinct target descriptions. The result shows 1825 distinct target descriptions, with sample rows matching expected target names for mouse assays. The query uses proper table aliases (act, a, td) and follows the schema. The output format matches the requested columns (target_description). The sample rows show appropriate target names for mouse assays, confirming the query works as intended.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_mus_musculus/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_mus_musculus/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_descriptions_mus_musculus/pf_judge.generated_artifact_record.json"
+  }
+}

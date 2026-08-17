@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1126796.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1126796",
+  "split": "test",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select distinct molecules from document CHEMBL1126796. Join docs to compound_records on doc_id, then to molecule_dictionary on molregno, then inner join compound_structures on molregno (to enforce canonical_smiles availability). Return chembl_id, compound_name, canonical_smiles. Sort by chembl_id, compound_name, canonical_smiles.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select distinct molecules from document CHEMBL1126796. Join docs to compound_records on doc_id, then to molecule_dictionary on molregno, then inner join compound_structures on molregno (to enforce canonical_smiles availability). Return chembl_id, compound_name, canonical_smiles. Sort by chembl_id, compound_name, canonical_smiles."
+    }
+  }
+}

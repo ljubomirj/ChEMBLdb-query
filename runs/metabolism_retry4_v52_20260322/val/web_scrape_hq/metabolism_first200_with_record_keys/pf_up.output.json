@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.2.yaml",
+  "prompt_pack_version": "v5.2",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_with_record_keys.json",
+  "case_id": "metabolism_first200_with_record_keys",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "metabolism",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai",
+    "model": "glm-5-turbo",
+    "base_url": "https://api.z.ai/api/paas/v4",
+    "raw_text": "```json\n{\n  \"up\": \"Select canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, pathway_key from metabolism. Inner join compound_records on metabolism.substrate_record_id = compound_records.record_id to get substrate_compound_key. Inner join compound_structures on that compound_records.molregno = compound_structures.molregno to get canonical_smiles. Left join compound_records on metabolism.metabolite_record_id = compound_records.record_id to get metabolite_compound_key. Do not add sorting; preserve source row order. Limit to first 200 rows.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select canonical_smiles, substrate_record_id, metabolite_record_id, substrate_compound_key, metabolite_compound_key, met_conversion, pathway_key from metabolism. Inner join compound_records on metabolism.substrate_record_id = compound_records.record_id to get substrate_compound_key. Inner join compound_structures on that compound_records.molregno = compound_structures.molregno to get canonical_smiles. Left join compound_records on metabolism.metabolite_record_id = compound_records.record_id to get metabolite_compound_key. Do not add sorting; preserve source row order. Limit to first 200 rows."
+    }
+  }
+}

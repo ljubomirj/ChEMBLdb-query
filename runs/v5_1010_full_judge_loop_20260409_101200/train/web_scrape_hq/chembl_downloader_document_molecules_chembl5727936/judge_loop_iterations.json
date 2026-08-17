@@ -1,0 +1,66 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve the distinct compound identifiers (CHEMBL IDs and corresponding molecule names) that are described in the publication with CHEMBL ID CHEMBL5727936. The result must include the compound's ChEMBL identifier (pref_name and/or chembl_id) and should be returned as a list of unique compounds.",
+    "sql": "SELECT DISTINCT md.pref_name, md.chembl_id FROM docs doc JOIN compound_records cr ON doc.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE doc.chembl_id = 'CHEMBL5727936';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1204,
+    "res_columns": [
+      "pref_name",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.6,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compounds (molecules) described in the publication document with CHEMBL identifier CHEMBL5727936. For each compound, return its ChEMBL compound identifier and its preferred compound name. The result should be a deduplicated list of unique compounds with their ChEMBL ID and molecule name, without any additional filters or joins beyond the document\u2019s compound records and the molecule dictionary.",
+    "sql": "SELECT DISTINCT md.chembl_id, md.pref_name FROM docs doc JOIN compound_records cr ON doc.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE doc.chembl_id = 'CHEMBL5727936';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1204,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.65,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules (compounds) that are described in the publication document with ChEMBL identifier CHEMBL5727936. Return for each molecule its unique identifier (CHEMBL compound ID) and its preferred molecule name (pref_name). The result must include the fields 'chembl_id' and 'pref_name', deduplicated, and must be linked to the specific document CHEMBL5727936 via the document\u2011record relationship. No additional filtering, target definitions, or other constraints should be applied.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS pref_name FROM docs doc JOIN compound_records cr ON doc.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE doc.chembl_id = 'CHEMBL5727936';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1204,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.3,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve a deduplicated list of compounds (with their ChEMBL compound identifier and preferred molecule name) that are described in the publication with CHEMBL identifier CHEMBL5727936. Return the fields 'chembl_id' (the public ChEMBL compound identifier) and 'pref_name' (the molecule's preferred name) for each unique compound linked to that document, ensuring the compounds are tied to the specified document via the document\u2011record relationship. No additional filters, target definitions, organism constraints, or output limits are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, md.pref_name AS pref_name FROM docs doc JOIN compound_records cr ON doc.doc_id = cr.doc_id JOIN molecule_dictionary md ON cr.molregno = md.molregno WHERE doc.chembl_id = 'CHEMBL5727936';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH doc USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n33 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1204,
+    "res_columns": [
+      "chembl_id",
+      "pref_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

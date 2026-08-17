@@ -54,7 +54,7 @@ def count_ground_truth_rows(csv_path: Path) -> int:
 
 
 def main() -> None:
-    registry_path = REPO_ROOT / "tests/cases/web_scrape_hq_cases.json"
+    registry_path = REPO_ROOT / "cases/registries/archive/web_scrape_hq_cases.json"
     manifest_dir = REPO_ROOT / "tests/v5_manifests" / "web_scrape_hq"
     manifest_dir.mkdir(parents=True, exist_ok=True)
 

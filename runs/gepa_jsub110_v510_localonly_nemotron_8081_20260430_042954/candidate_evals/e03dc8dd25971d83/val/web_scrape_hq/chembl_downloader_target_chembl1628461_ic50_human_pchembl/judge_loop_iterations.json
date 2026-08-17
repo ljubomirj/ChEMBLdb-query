@@ -1,0 +1,24 @@
+[
+  {
+    "n": 1,
+    "up": "Select: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value\nSource: activities, assays, target_dictionary, compound_structures, molecule_dictionary\nJoin: activities.assay_id = assays.assay_id; activities.tid = target_dictionary.tid; activities.molregno = compound_structures.molregno; activities.molregno = molecule_dictionary.molregno\nFilter: activities.type = 'IC50' AND activities.standard_relation = '=' AND activities.pchembl_value IS NOT NULL AND target_dictionary.chembl_id = 'CHEMBL1628461' AND target_dictionary.target_type = 'SINGLE PROTEIN' AND target_dictionary.tax_id = 9606\nSort: molecule_chembl_id ASC, assay_chembl_id ASC\nLimit: 1000",
+    "sql": "SELECT a_s.chembl_id AS assay_chembl_id, td.target_type, td.tax_id, cs.canonical_smiles, md.chembl_id AS molecule_chembl_id, a.standard_type, a.pchembl_value FROM activities a INNER JOIN assays a_s ON a.assay_id = a_s.assay_id INNER JOIN target_dictionary td ON a_s.tid = td.tid INNER JOIN compound_structures cs ON a.molregno = cs.molregno INNER JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE a.type = 'IC50' AND a.standard_relation = '=' AND a.pchembl_value IS NOT NULL AND td.chembl_id = 'CHEMBL1628461' AND td.target_type = 'SINGLE PROTEIN' AND td.tax_id = 9606 ORDER BY md.chembl_id ASC, a_s.chembl_id ASC LIMIT 1000;",
+    "sql_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "plan_summary": "OK\nplan_rows: 6\n13 | 0 | 0 | SEARCH td USING INDEX idx_td_chembl_id (chembl_id=?)\n22 | 0 | 0 | SEARCH a USING INDEX idx_act_type (type=?)\n31 | 0 | 0 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n41 | 0 | 0 | SEARCH a_s USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n50 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n76 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 84,
+    "res_columns": [
+      "assay_chembl_id",
+      "target_type",
+      "tax_id",
+      "canonical_smiles",
+      "molecule_chembl_id",
+      "standard_type",
+      "pchembl_value"
+    ],
+    "res_error": null,
+    "judge_text": "{\n  \"analysis\": \"The query correctly filters activities of type 'IC50' with exact standard relation '=', non\u2011null pChEMBL values, and joins to assays, target_dictionary, compound_structures, and molecule_dictionary to retrieve the requested columns. It applies the target filter for CHEMBL1628461 (human SINGLE PROTEIN, tax_id 9606). The result set of 84 rows is ordered by molecule_chembl_id and assay_chembl_id, includes all requested fields (assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value), and respects the limit of 1000 rows. No missing columns, no incorrect joins, and the data appears consistent with the schema. The output matches the user's specification exactly.\",\n  \"score\": 1,\n  \"decision\": \"NO\"\n}",
+    "judge_model": "llamacpp/nemotron-cascade-2-30b-a3b",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

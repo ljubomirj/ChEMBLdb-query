@@ -1,0 +1,23 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all rows for Renin target CHEMBL286 where the standard_type is 'IC50' and the standard_units are 'nM'. Return the exact IC50 value, the compound's ChEMBL ID, its canonical SMILES, and the PubMed ID or DOI, along with the assay description and the target's ChEMBL ID and preferred name.",
+    "sql": "SELECT DISTINCT\n  activities.standard_value AS ic50_nM,\n  molecule_dictionary.chembl_id AS molecule_chembl_id,\n  compound_structures.canonical_smiles,\n  COALESCE(docs.pubmed_id, docs.doi) AS pubmed_id_or_doi,\n  assays.description AS assay_description,\n  target_dictionary.chembl_id AS target_chembl_id,\n  target_dictionary.pref_name AS target_name\nFROM activities\nJOIN assays ON activities.assay_id = assays.assay_id\nJOIN target_dictionary ON assays.tid = target_dictionary.tid\nJOIN molecule_dictionary ON activities.molregno = molecule_dictionary.molregno\nJOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno\nJOIN docs ON activities.doc_id = docs.doc_id\nWHERE target_dictionary.chembl_id = 'CHEMBL286'\n  AND activities.standard_type = 'IC50'\n  AND activities.standard_units = 'nM'\n  AND activities.standard_relation = '=';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 7\n14 | 0 | 42 | SEARCH target_dictionary USING INDEX idx_td_chembl_id (chembl_id=?)\n19 | 0 | 142 | SEARCH activities USING INDEX idx_act_std_type (standard_type=?)\n28 | 0 | 47 | SEARCH assays USING INDEX sqlite_autoindex_assays_1 (assay_id=?)\n37 | 0 | 47 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n44 | 0 | 47 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)\n53 | 0 | 43 | SEARCH docs USING INDEX pk_doc_doc_id (doc_id=?)\n75 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 4380,
+    "res_columns": [
+      "ic50_nM",
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "pubmed_id_or_doi",
+      "assay_description",
+      "target_chembl_id",
+      "target_name"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

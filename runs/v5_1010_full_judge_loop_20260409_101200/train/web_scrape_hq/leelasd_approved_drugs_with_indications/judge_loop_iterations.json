@@ -1,0 +1,53 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve approved drugs from ChEMBL that have a clinical phase of 4 (i.e., are approved) and include the following data: preferred name (molecule_dictionary.pref_name), canonical SMILES (compound_structures.canonical_smiles), max clinical phase (molecule_dictionary.max_phase), indication heading (drug_indication.mesh_heading), and first approval year (molecule_dictionary.first_approval). Ensure results are distinct, i.e., no duplicate rows for the same molecule, and order the results by the first approval year in descending order (most recent first). Do not include any additional columns or filters beyond those explicitly mentioned.",
+    "sql": "WITH approved AS ( SELECT d.molregno, d.pref_name, d.max_phase, d.first_approval, d.chembl_id, d.prefered_name, d.first_approval, d.max_phase, di.mesh_heading FROM molecule_dictionary d JOIN drug_indication di ON d.molregno = di.molregno WHERE d.max_phase = 4 ) SELECT DISTINCT d.pref_name, cs.canonical_smiles, d.max_phase, di.mesh_heading, d.first_approval FROM approved d JOIN compound_structures cs ON d.molregno = cs.molregno JOIN drug_indication di ON d.molregno = di.molregno WHERE d.max_phase = 4 ORDER BY d.first_approval DESC ;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: d.prefered_name",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: d.prefered_name",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve approved drugs (max_phase = 4) from ChEMBL and return one row per molecule with distinct output columns: pref_name (molecule_dictionary.pref_name), canonical SMILES (compound_structures.canonical_smiles), max_phase (molecule_dictionary.max_phase), indication heading (drug_indication.mesh_heading), first_approval_year (molecule_dictionary.first_approval). The target must be a small molecule (structure_type = 'MOL'), include only drugs approved (no additional filter needed beyond max_phase = 4), and the result set must be ordered by first_approval_year descending (most recent first). No other filters, units, or additional columns are requested.",
+    "sql": "SELECT DISTINCT d.pref_name, cs.canonical_smiles, d.max_phase, di.mesh_heading, d.first_approval FROM molecule_dictionary d JOIN compound_structures cs ON d.molregno = cs.molregno JOIN drug_indication di ON d.molregno = di.molregno WHERE d.max_phase = 4 AND d.structure_type = 'MOL' ORDER BY d.first_approval DESC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n8 | 0 | 174 | SCAN di\n10 | 0 | 47 | SEARCH d USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n21 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n42 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n43 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 28801,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mesh_heading",
+      "first_approval"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve approved drugs (max_phase = 4, small molecule) from ChEMBL. For each distinct molecule return: preferred name (molecule_dictionary.pref_name), canonical SMILES (compound_structures.canonical_smiles), max clinical phase (molecule_dictionary.max_phase), indication heading (drug_indication.mesh_heading), first approval year (molecule_dictionary.first_approval). The result set must be ordered by first_approval year descending (most recent first). Return exactly one row per molecule (distinct on pref_name, canonical_smiles, max_phase, indication heading, first_approval). No other filters, units, or additional columns are required.",
+    "sql": "WITH approved_small_mol AS ( SELECT d.molregno, d.pref_name, d.max_phase, d.first_approval, d.structure_type, d.chembl_id FROM molecule_dictionary d WHERE d.max_phase = 4 AND d.structure_type = 'MOL' ), molecules AS ( SELECT DISTINCT ds.molregno, ds.pref_name, ds.max_phase, ds.first_approval, cs.canonical_smiles FROM approved_small_mol ds JOIN compound_structures cs ON ds.molregno = cs.molregno ), drug_ind AS ( SELECT d.molregno, di.mesh_heading FROM drug_indication di JOIN molecule_dictionary d ON di.molregno = d.molregno ) SELECT DISTINCT m.pref_name, m.canonical_smiles, m.max_phase, i.mesh_heading, m.first_approval FROM molecules m JOIN drug_ind i ON m.molregno = i.molregno ORDER BY m.first_approval DESC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 10\n2 | 0 | 0 | CO-ROUTINE molecules\n8 | 2 | 208 | SEARCH d USING INDEX idx_moldict_max_phase (max_phase=?)\n15 | 2 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n31 | 2 | 0 | USE TEMP B-TREE FOR DISTINCT\n37 | 0 | 174 | SCAN di\n39 | 0 | 45 | SEARCH d USING COVERING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n47 | 0 | 0 | BLOOM FILTER ON m (molregno=?)\n62 | 0 | 51 | SEARCH m USING AUTOMATIC COVERING INDEX (molregno=?)\n81 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n82 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 28801,
+    "res_columns": [
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "mesh_heading",
+      "first_approval"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

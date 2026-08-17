@@ -1,0 +1,4012 @@
+{
+  "version": "v4.7",
+  "description": "1000-case benchmark: preserves v4.6 assignments for the original 500 and deterministically hashes the additional 500 target_pchembl cases into train/val/test.",
+  "splits": {
+    "train": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "baoilleach_celegans_target_descriptions"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "baoilleach_human_hsp90_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_egfr_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_jak2_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "all_single_protein_targets_accession_sequence"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "target_ic50_with_pubmed_or_doi_egfr"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "imatinib_kit_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "iwatobipen_ki_target_tid_pref_name"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "iwatobipen_metabolism_example"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "metabolism_first200_parent_names"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_id_name_pairs"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_drug_indications"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_with_mechanisms"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "approved_drugs_with_indications_and_efo"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "selective_cdk2_over_cdk5_smiles_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_erbb2_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_kit_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "target_ic50_with_pubmed_or_doi_erbb2"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "target_ic50_with_pubmed_or_doi_kit"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "tacrine_acetylcholinesterase_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "ceritinib_alk_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "afatinib_egfr_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "sorafenib_vegfr2_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "rofecoxib_ptgs2_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "alogliptin_dpp4_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "cabozantinib_met_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123859"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl829152_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "baoilleach_herg_bioassay_metadata"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "leelasd_approved_drugs_with_structures"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "abhik_human_sub50nm_single_protein_first200"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_ache_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_alk_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_erbb2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_ptgs2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1217643_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123860"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_d4_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_vegfr2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_jak2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123858"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123892"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_jak3_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_mapk14_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_ntrk1_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_pik3cd_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_tyk2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_igf1r_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1267250_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1614455_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1964022_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl3705960_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl5732041_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123558"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1125325"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1131436"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1134522"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_braf_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_tlr8_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_tlr7_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1142710"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl203_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl279_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl240_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741186_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2835_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163125_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4296_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3130_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3778_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4005_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2148_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl340_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2599_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2998_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl260_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4792_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4888485_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4689845_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4689853_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl3885882_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl3885863_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649949_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649948_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1614459_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649955_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1614458_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649952_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649942_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4649962_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1138844"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1142695"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1147425"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1287767"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl2417551"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl3044971"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl3638969"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl4376833"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3397_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl213_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl219_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4791_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl244_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl204_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl209_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3706_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1824_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3735_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3974_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1785_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl258_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4561_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1855_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4607_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1929_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4426_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl283_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl236_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3890_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2034_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1994_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl286_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4481_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3568_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2520_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2334_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl287_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl335_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3243_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3521_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4804_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl321_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1917_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1792_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4803_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3590_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2127_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl237_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl230_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1806_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3798_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2167_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1790_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3047_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl221_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3559_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4235_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4018_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl255_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl267_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3795_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl259_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2055_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2008_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2003_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4176_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3622_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl289_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2531_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4777_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1949_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4588_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3869_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl250_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3593_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3474_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4181_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4703_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4179_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5378_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4072_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2060_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4315_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl206_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl242_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl215_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4618_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1782_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1800_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl214_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3911_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl225_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3171_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2954_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl211_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl245_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1821_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2386_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2319_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl224_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4444_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3587_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1841_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1978_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3904_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl268_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2437_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3371_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1919_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl235_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl331_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2373_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl262_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3731_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl402_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4641_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1892_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2850_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4805_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl284_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3898_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2916_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3473_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3475_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2782_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4465_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3004_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3133_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2870_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3979_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4187_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4393_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4550_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3106_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3636_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4959_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3161_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2633_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3396_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2327_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3189_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3572_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3157_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3045_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl299_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2938_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl210_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1862_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1781_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2940_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2014_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3179_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3202_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4630_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1987_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4619_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2264_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3582_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3616_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1947_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3524_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4801_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2345_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2738_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1951_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4429_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2722_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl208_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2136_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3092_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3308_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2273_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4135_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1811_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2085_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl229_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl232_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2872_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2708_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2815_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2964_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4071_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3438_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4625_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3178_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2346_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3710_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2789_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4875_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4427_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3338_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1903_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3972_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1836_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2000_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2243_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3975_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4551_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2335_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4617_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2803_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2568_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4633_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3964_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4333_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3230_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2955_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4629_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4050_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3378_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5212_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3775_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3468_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3235_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4973_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2721_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2755_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2182_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3687_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3913_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1805_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4306_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2717_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4860_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4302_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2758_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3217_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075097_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075104_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075105_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075113_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075115_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075126_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075132_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075144_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075145_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075149_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075152_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075157_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075162_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075163_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075167_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075169_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075173_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075189_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075315_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075317_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075323_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163101_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163106_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163108_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163112_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163117_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163119_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163126_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163128_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163129_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1169600_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250344_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250348_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250375_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250378_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250380_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250381_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250411_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250412_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250415_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250417_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255126_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255129_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255137_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275212_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275221_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275223_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287622_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287623_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287624_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287625_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287627_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293193_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293199_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293222_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293224_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293226_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293227_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293229_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293235_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293237_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293240_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293243_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293257_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293258_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293266_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293267_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293274_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293275_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293286_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293292_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293295_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293296_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293314_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293320_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615381_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615382_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615383_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615386_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615387_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615388_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628461_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628468_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628472_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628477_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628478_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628481_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1641347_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1641348_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1641353_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1649052_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1649058_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1649059_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1671609_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1671612_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1681631_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1697668_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1697669_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1697671_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741179_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741195_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741200_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741207_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741208_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741213_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741214_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741215_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741217_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741218_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741220_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743124_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743125_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743126_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743128_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743129_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743291_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1744522_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1744524_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1772926_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1772927_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1781868_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1783_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1784_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795085_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795087_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795094_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795098_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795114_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795118_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795123_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795129_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795138_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795140_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795143_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795151_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795165_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795171_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795172_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795176_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795177_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795185_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795188_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795190_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795191_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795192_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795194_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795195_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795198_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795199_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1803_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1807_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1828_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1829_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1838_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1839_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1844_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1845_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1847_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1850_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1854_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1859_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1861_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1866_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1867_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1868_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1869_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1870_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1878_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1882_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1904_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908383_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908384_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908386_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909484_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909487_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909488_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909490_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1910_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1911_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914266_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914272_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914276_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914277_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1916_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1921_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1921664_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1926492_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1927_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1930_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1932891_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1932893_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1932895_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1932912_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1935_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1936_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938208_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938209_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938210_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938211_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938212_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938215_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938217_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938222_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938226_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1941_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1942_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1944496_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1945_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1946_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1949490_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1950_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1955_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1957_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1959_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1961783_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1961788_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1961790_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1961792_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1962_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1968_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1969_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1970_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1972_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1977_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1980_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1988_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1989_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1991_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1993_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1995_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1997_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2004_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2007625_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2007628_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2009_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2010627_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2010628_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2010631_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2016431_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2021749_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2021752_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2021753_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2021754_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2029194_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2029197_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2033_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2034803_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2034804_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2034807_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2040_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2040701_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2040705_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2041_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2044_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2045_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2046259_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2046260_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2047_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2048_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2049_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052031_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052032_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052033_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052038_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2056_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2062348_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2062349_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2062353_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2062354_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2064_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2066_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2068_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069159_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069161_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069163_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2070_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2071_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2072_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073669_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073677_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2074_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2075_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2077_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2079845_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2079849_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2081_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2083_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2088_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2104_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2105_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2107_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2108_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2116_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2120_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2121_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2123_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2131_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2140_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2145_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146296_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146308_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146312_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146343_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146346_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146347_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2147_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2150837_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2150838_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2150840_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2150844_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2154_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157852_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157854_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157858_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163167_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163175_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163176_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163177_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163186_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2164_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2169716_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2169731_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2169732_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2169735_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2169736_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2171_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2176769_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2176771_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2176774_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2176775_ic50_human_pchembl"
+      }
+    ],
+    "val": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "baoilleach_human_cgmp_target_descriptions"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_pde5_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "target_ic50_with_pubmed_or_doi_jak2"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "sitagliptin_dpp4_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "metabolism_first200_with_record_keys"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "leelasd_approved_drugs_with_indications"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "baoilleach_herg_ic50_export"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_egfr_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1217644_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123890"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_fgfr1_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_irak4_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1133512"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_akt1_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4822_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4040_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5113_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl3885862_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1140357"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1145073"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl3886467"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl4433236"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1835_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl234_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1944_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4128_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl298_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4073_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3070_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1871_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl205_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2413_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl249_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl227_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl254_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl280_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1804_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2028_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1983_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4611_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3891_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl248_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1973_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2778_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1856_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl238_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2845_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2001_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl202_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3589_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1808_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl308_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl274_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1827_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3965_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3772_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2275_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2374_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl228_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl301_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2754_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3514_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3976_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl239_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2933_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1985_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl231_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1860_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3058_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3905_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4068_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3776_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2097_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2039_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl226_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4772_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3991_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4438_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3892_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2378_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1958_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1899_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075092_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075102_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075121_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075127_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075138_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075155_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075195_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075322_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163104_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163120_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1169596_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1229011_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250358_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255163_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287617_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293191_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293194_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293255_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293289_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293299_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628465_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628469_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628474_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741162_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741174_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741191_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741199_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741216_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743183_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1764945_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1772932_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1781870_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795093_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795116_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795173_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795186_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1830_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1832_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1846_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1848_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908381_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909481_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909482_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1909486_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1915_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1920_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1926497_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1949488_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1954_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1964_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1974_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1992_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2007_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2007629_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2010624_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2016_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2016430_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2023_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2027_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052034_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073663_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073690_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2079846_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2079850_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2082_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2086_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2099_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2109_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl212_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157853_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163182_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163185_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2176772_ic50_human_pchembl"
+      }
+    ],
+    "test": [
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_single_protein_targets_accession_sequence"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_count_activities"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "selective_egfr_over_erbb2_smiles_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "selective_jak2_over_jak1_smiles_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "human_dpp4_molecule_smiles"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "target_ic50_with_pubmed_or_doi_dpp4"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "tofacitinib_jak2_ic50_salts"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_pde5_single_protein_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_dpp4_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_kit_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_met_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl647319_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1123873"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_rock2_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_mapk1_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl1794523_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl3705858_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1126796"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1134488"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_scn9a_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2971_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5251_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl325_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1865_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl220_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5145_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_assay_chembl4689846_exact"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1139796"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl1240317"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_document_molecules_chembl4420072"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3921_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3356_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl217_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1902_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1801_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2061_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl252_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl233_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl332_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl333_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3142_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3102_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1853_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3085_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1787_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1913_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2002_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2094_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1873_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2581_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3402_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2414_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3522_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4069_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1900_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4478_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1817_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl5137_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl216_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2035_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3650_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4338_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2492_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1952_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2664_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1901_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4284_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1966_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1907_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1798_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3663_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl278_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2781_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3592_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4644_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4608_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2409_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2864_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3575_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1937_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2063_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2996_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2959_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2534_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1898_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl223_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4491_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2873_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3837_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1889_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1881_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl4796_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1918_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3526_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3683_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2617_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2518_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3213_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl3258_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075094_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075131_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075133_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075137_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075165_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075166_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075178_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1075319_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163123_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1163124_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250343_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250350_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250363_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250379_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1250402_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255131_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1255161_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275209_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275210_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1275217_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1287628_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293197_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293249_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293265_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293287_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1293293_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615384_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1615385_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628462_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628473_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1628475_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1649048_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1681611_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1697657_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741176_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741187_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741209_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1741221_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743121_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743122_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1743127_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1744525_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1764946_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1770034_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1778_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1781865_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1791_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1793_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795091_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795103_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795117_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795139_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795148_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795166_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795168_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795178_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1795184_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1812_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1822_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1825_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1833_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1851_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1875_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1893_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1906_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1908389_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914260_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1914278_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1938224_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1940_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1944495_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1961784_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1963_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl1981_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2015_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2024_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2029198_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2032_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2046258_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2046267_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2052028_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069156_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2069164_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2073673_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2079852_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2106_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2118_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146302_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2146342_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157850_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2157851_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163183_ic50_human_pchembl"
+      },
+      {
+        "corpus": "web_scrape_hq",
+        "id": "chembl_downloader_target_chembl2163184_ic50_human_pchembl"
+      }
+    ]
+  }
+}

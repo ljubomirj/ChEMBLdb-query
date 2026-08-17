@@ -1,0 +1,57 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_1010_probe_long8h_v510_zai47_8081fb_20260428_001211/candidate_cache/candidate_8e43843f9562cd0e.yaml",
+  "prompt_pack_version": "v5.13",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1123859.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1123859",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "8e43843f9562cd0e",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"up\": {\n    \"Select\": [\n      \"molecule_dictionary.chembl_id\",\n      \"compound_records.compound_name\",\n      \"compound_structures.canonical_smiles\"\n    ],\n    \"Source\": [\n      \"docs\",\n      \"compound_records\",\n      \"molecule_dictionary\",\n      \"compound_structures\"\n    ],\n    \"Join\": [\n      \"docs.doc_id = compound_records.doc_id\",\n      \"compound_records.molregno = molecule_dictionary.molregno\",\n      \"molecule_dictionary.molregno = compound_structures.molregno\"\n    ],\n    \"Filter\": [\n      \"docs.chembl_id = 'CHEMBL1123859'\",\n      \"compound_structures.canonical_smiles IS NOT NULL\"\n    ],\n    \"Sort\": [\n      \"molecule_dictionary.chembl_id ASC\",\n      \"compound_records.compound_name ASC\",\n      \"compound_structures.canonical_smiles ASC\"\n    ],\n    \"Limit\": \"All rows\"\n  }\n}\n```",
+    "parsed_json": {
+      "up": {
+        "Select": [
+          "molecule_dictionary.chembl_id",
+          "compound_records.compound_name",
+          "compound_structures.canonical_smiles"
+        ],
+        "Source": [
+          "docs",
+          "compound_records",
+          "molecule_dictionary",
+          "compound_structures"
+        ],
+        "Join": [
+          "docs.doc_id = compound_records.doc_id",
+          "compound_records.molregno = molecule_dictionary.molregno",
+          "molecule_dictionary.molregno = compound_structures.molregno"
+        ],
+        "Filter": [
+          "docs.chembl_id = 'CHEMBL1123859'",
+          "compound_structures.canonical_smiles IS NOT NULL"
+        ],
+        "Sort": [
+          "molecule_dictionary.chembl_id ASC",
+          "compound_records.compound_name ASC",
+          "compound_structures.canonical_smiles ASC"
+        ],
+        "Limit": "All rows"
+      }
+    }
+  }
+}

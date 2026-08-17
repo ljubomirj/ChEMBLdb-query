@@ -1,0 +1,1 @@
+SELECT DISTINCT m.chembl_id AS molecule_chembl_id, m.pref_name, cs.canonical_smiles, m.max_phase, m.first_approval FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno LEFT JOIN compound_structures cs ON m.molregno = cs.molregno WHERE m.max_phase IN (3, 4) ORDER BY m.chembl_id, cs.canonical_smiles, m.max_phase, m.first_approval

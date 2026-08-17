@@ -15,8 +15,8 @@ from typing import Iterable
 
 BASE_DIR = Path("/Users/ljubomir/ChEMBLdb-query")
 DB_PATH = BASE_DIR / "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db"
-MAIN_CASES = BASE_DIR / "tests/cases/web_scrape_hq_cases.json"
-DEFAULT_SNAPSHOT = BASE_DIR / "tests/cases/web_scrape_hq_cases_v4.7.json"
+MAIN_CASES = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases.json"
+DEFAULT_SNAPSHOT = BASE_DIR / "cases/registries/archive/web_scrape_hq_cases_v4.7.json"
 FIXTURES_BASE = BASE_DIR / "tests/fixtures"
 DEFAULT_SUMMARY_PATH = BASE_DIR / "experiments/v4.7_expansion_to_1000_summary.json"
 DEFAULT_REPORT_PATH = BASE_DIR / "experiments/v4.7_to_1000_report.md"

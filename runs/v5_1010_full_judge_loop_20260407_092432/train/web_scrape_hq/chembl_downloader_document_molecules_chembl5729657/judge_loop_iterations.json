@@ -1,0 +1,181 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all molecule records (including compound identifiers, names, and associated document details) that are cited in the document with the ChEMBL identifier CHEMBL5729657. Specifically, return the molecule's ChEMBL ID, preferred name, record_id, compound_key, and the document's title and publication year for each compound linked to this document. Ensure that the retrieval includes every molecule entry referenced by this document, preserving any molecule-specific identifiers and associated bibliographic information.",
+    "sql": "SELECT DISTINCT\n    md.chembl_id AS molecule_chembl_id,\n    md.pref_name AS molecule_name,\n    cr.record_id,\n    cr.compound_key,\n    d.title,\n    d.year\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE cr.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cr.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cr.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all molecules (compound records) and their associated bibliographic information that are linked to the document CHEMBL5729657. For each molecule, return the molecule's internal identifier (molregno), preferred name, the compound key, record identifier, and the document's title and publication year. This ensures we get every compound entry referenced by the specified document along with its key bibliographic details.",
+    "sql": "SELECT DISTINCT md.molregno,\n       md.pref_name AS molecule_name,\n       cr.compound_key,\n       cr.record_id,\n       d.title,\n       d.year\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE cr.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cr.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cr.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve all molecules (compound records) and their associated bibliographic details for the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: the molecule's internal identifier (molregno), preferred name, the compound key, record identifier, the document title, and the publication year. Ensure that only molecules linked to this specific document are included in the results.",
+    "sql": "SELECT DISTINCT md.molregno, md.pref_name AS molecule_name, cr.compound_key, cr.record_id, d.title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molregno",
+      "molecule_name",
+      "compound_key",
+      "record_id",
+      "title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Return all molecule records linked to document CHEMBL5729657. For each molecule, provide: molecule internal identifier (molregno), preferred name, compound key, record identifier, and the document title and year of publication. The molecules must be explicitly associated with this document (i.e., via compound_records). Ensure the molecule's preferred name is retrieved from molecule_dictionary and that only compounds that have a matching record for this document are returned.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id,\n       md.pref_name AS molecule_preferred_name,\n       cr.compound_key,\n       cr.record_id,\n       d.title AS document_title,\n       d.year\nFROM molecule_dictionary md\nJOIN compound_records cr ON md.molregno = cr.molregno\nJOIN docs d ON cr.doc_id = d.doc_id\nWHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.4,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Return all molecule records linked to document CHEMBL5729657. For each molecule, provide: molecule internal identifier (molregno), preferred name, compound key, record identifier, and the document title and year of publication. Ensure that only molecules explicitly linked to this document via a matching entry in the compound_records table are returned, and retrieve the molecule's preferred name from molecule_dictionary. No additional filters or ranking are required.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE cr.chembl_id = 'CHEMBL5729657'",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: cr.chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: cr.chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 6,
+    "up": "Retrieve all molecule records linked to the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: molecule internal identifier (molregno), preferred name, compound key, record identifier, document title, and publication year. Ensure only compounds that have a matching entry in the compound_records table for this document are included, and fetch the preferred name from molecule_dictionary. No additional filters or ranking are needed.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.85,
+    "judge_decision": false
+  },
+  {
+    "n": 7,
+    "up": "Retrieve all molecules linked to the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: the internal identifier (molregno), the preferred name (pref_name), the compound_key, the record identifier (record_id), the document title, and the publication year. Ensure that only compounds that have a matching entry in the compound_records table for this document are included, and retrieve the molecule's preferred name from molecule_dictionary via the molregno linkage. No additional filters or ranking are required.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.1,
+    "judge_decision": false
+  },
+  {
+    "n": 8,
+    "up": "Retrieve all molecule records linked to the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: the internal identifier (molregno), the preferred name (pref_name) from molecule_dictionary, the compound_key, the record_id, the document title, and the publication year. Ensure only compounds that have a matching entry in the compound_records table for this document are included, and retrieve the molecule's preferred name via the molregno linkage. No additional filters, ranking, or limiting rows is required.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 9,
+    "up": "Retrieve all molecules (compound records) linked to the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: the internal identifier (molregno), the preferred name (pref_name) from molecule_dictionary, the compound_key, the record_id, the document title, and the publication year. Ensure only compounds that have a matching entry in the compound_records table for this document are included, and retrieve the molecule's preferred name via the molregno linkage. No additional filters, ranking, or limiting rows is required.",
+    "sql": "SELECT DISTINCT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n8 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n13 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n19 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n37 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.75,
+    "judge_decision": false
+  },
+  {
+    "n": 10,
+    "up": "Retrieve all molecules (compound records) linked to the document with ChEMBL identifier CHEMBL5729657. For each molecule, return: the internal identifier (molregno), the preferred name (pref_name) from molecule_dictionary, the compound key, the record identifier (record_id), the document title, and the publication year. Ensure only molecules that have a matching entry in the compound_records table for this document are included, and retrieve the preferred name via the molregno linkage. No additional filters, ranking, or row limits are required.",
+    "sql": "SELECT md.molregno AS molecule_internal_id, md.pref_name AS molecule_preferred_name, cr.compound_key, cr.record_id, d.title AS document_title, d.year FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id WHERE d.chembl_id = 'CHEMBL5729657';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 3\n7 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n12 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n18 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)",
+    "res_row_count": 1532,
+    "res_columns": [
+      "molecule_internal_id",
+      "molecule_preferred_name",
+      "compound_key",
+      "record_id",
+      "document_title",
+      "year"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

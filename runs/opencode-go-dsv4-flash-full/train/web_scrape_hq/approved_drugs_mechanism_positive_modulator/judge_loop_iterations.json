@@ -1,0 +1,68 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs (max_phase = 4) whose mechanism of action is a positive modulator, including their target information. For positive modulator, include all action types whose parent_type is 'POSITIVE MODULATOR' in the action_type table. Return the following columns: drug ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), mechanism action type (drug_mechanism.action_type), mechanism description (drug_mechanism.mechanism_of_action), target ChEMBL ID (target_dictionary.chembl_id), target name (target_dictionary.pref_name), target type (target_dictionary.target_type), and target organism (target_dictionary.organism). Ensure distinct rows for each combination without adding extra filters or limits.",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, dm.action_type AS mechanism_action_type, dm.mechanism_of_action AS mechanism_description, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.target_type AS target_type, td.organism AS target_organism FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN action_type at ON dm.action_type = at.action_type JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4 AND at.parent_type = 'POSITIVE MODULATOR' ORDER BY md.chembl_id;",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 6\n10 | 0 | 0 | SCAN dm\n12 | 0 | 0 | SEARCH at USING INDEX sqlite_autoindex_action_type_1 (action_type=?)\n20 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n29 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n51 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT\n52 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 773,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "mechanism_action_type",
+      "mechanism_description",
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "List all approved drugs (defined as molecules with max_phase = 4 in molecule_dictionary) that have at least one mechanism of action whose action_type belongs to the 'POSITIVE MODULATOR' category (i.e., the action_type has parent_type = 'POSITIVE MODULATOR' in the action_type table). For each qualifying drug, include the following output columns: drug ChEMBL ID (molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), mechanism action type (drug_mechanism.action_type), mechanism description (drug_mechanism.mechanism_of_action), target ChEMBL ID (target_dictionary.chembl_id), target name (target_dictionary.pref_name), target type (target_dictionary.target_type), and target organism (target_dictionary.organism). If a drug has multiple positive modulator mechanisms, list each drug\u2013mechanism\u2013target combination separately. For cases where the target is not assigned to a mechanism (target_dictionary.tid is NULL), still include the drug and show NULL for the target fields. Ensure that each combination of drug\u2013mechanism\u2013target appears only once (use distinct rows). Do not impose any artificial limit on the number of returned rows.",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, dm.action_type AS mechanism_action_type, dm.mechanism_of_action AS mechanism_description, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.target_type AS target_type, td.organism AS target_organism FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN action_type at ON dm.action_type = at.action_type AND at.parent_type = 'POSITIVE MODULATOR' LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n11 | 0 | 0 | SEARCH at USING INDEX sqlite_autoindex_action_type_1 (action_type=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 773,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "mechanism_action_type",
+      "mechanism_description",
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "List all approved drugs (as defined by max_phase = 4 in the molecule_dictionary table) that have at least one mechanism of action whose action_type belongs to the 'POSITIVE MODULATOR' category (i.e., the parent_type is 'POSITIVE MODULATOR' in the action_type table). Include the following information for each qualifying combination: drug ChEMBL ID (from molecule_dictionary.chembl_id), drug name (molecule_dictionary.pref_name), mechanism action type (drug_mechanism.action_type), mechanism description (drug_mechanism.mechanism_of_action), target ChEMBL ID (target_dictionary.chembl_id), target name (target_dictionary.pref_name), target type (target_dictionary.target_type), and target organism (target_dictionary.organism). If a drug has multiple positive modulator mechanisms, list each drug\u2013mechanism\u2013target combination separately. If the target is not assigned to a mechanism (i.e., target_dictionary.tid is NULL), still include the drug and display NULL for the target fields. Ensure that each combination is returned only once (distinct rows). Do not apply any arbitrary limit on the number of rows returned.",
+    "sql": "SELECT DISTINCT md.chembl_id AS drug_chembl_id, md.pref_name AS drug_name, dm.action_type AS mechanism_action_type, dm.mechanism_of_action AS mechanism_description, td.chembl_id AS target_chembl_id, td.pref_name AS target_name, td.target_type AS target_type, td.organism AS target_organism FROM molecule_dictionary md JOIN drug_mechanism dm ON md.molregno = dm.molregno JOIN action_type at ON dm.action_type = at.action_type AND at.parent_type = 'POSITIVE MODULATOR' LEFT JOIN target_dictionary td ON dm.tid = td.tid WHERE md.max_phase = 4",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 0 | SCAN dm\n11 | 0 | 0 | SEARCH at USING INDEX sqlite_autoindex_action_type_1 (action_type=?)\n19 | 0 | 0 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n28 | 0 | 0 | SEARCH td USING INDEX sqlite_autoindex_target_dictionary_1 (tid=?)\n54 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 773,
+    "res_columns": [
+      "drug_chembl_id",
+      "drug_name",
+      "mechanism_action_type",
+      "mechanism_description",
+      "target_chembl_id",
+      "target_name",
+      "target_type",
+      "target_organism"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

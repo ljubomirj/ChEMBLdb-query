@@ -1,0 +1,26 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.9.yaml",
+  "prompt_pack_version": "v5.9",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/imatinib_kit_ic50_salts.json",
+  "case_id": "imatinib_kit_ic50_salts",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "salts",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the parent-and-salts pattern using molecule_hierarchy to include CHEMBL941 (parent) and its salts (e.g., CHEMBL1642 - Imatinib mesylate, CHEMBL2386595 - deuterated Imatinib). The join path follows the FAQ provenance pattern (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary). All requested columns are present with correct aliases. The filters for target CHEMBL1936, standard_type IC50, and standard_units nM are applied. The sample rows show expected data including the parent compound and salt forms with IC50 values in nM against KIT. Row count (43) is reasonable for this compound-target pair.\",\n  \"score\": 10,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the parent-and-salts pattern using molecule_hierarchy to include CHEMBL941 (parent) and its salts (e.g., CHEMBL1642 - Imatinib mesylate, CHEMBL2386595 - deuterated Imatinib). The join path follows the FAQ provenance pattern (molecule_dictionary -> compound_records -> docs -> activities -> assays -> target_dictionary). All requested columns are present with correct aliases. The filters for target CHEMBL1936, standard_type IC50, and standard_units nM are applied. The sample rows show expected data including the parent compound and salt forms with IC50 values in nM against KIT. Row count (43) is reasonable for this compound-target pair.",
+      "score": 10,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/imatinib_kit_ic50_salts/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/imatinib_kit_ic50_salts/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/non_target_wave1_validation_v59_retry_20260323/val/web_scrape_hq/imatinib_kit_ic50_salts/pf_judge.generated_artifact_record.json"
+  }
+}

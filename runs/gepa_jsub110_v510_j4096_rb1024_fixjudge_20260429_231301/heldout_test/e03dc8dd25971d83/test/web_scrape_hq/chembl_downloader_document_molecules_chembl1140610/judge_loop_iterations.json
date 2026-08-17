@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "Select: molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles. Source: docs, compound_records, molecule_dictionary, compound_structures. Join: docs.doc_id = compound_records.doc_id, compound_records.molregno = molecule_dictionary.molregno, molecule_dictionary.molregno = compound_structures.molregno. Filter: docs.chembl_id = 'CHEMBL1140610'.",
+    "sql": "SELECT molecule_dictionary.chembl_id, molecule_dictionary.pref_name, molecule_dictionary.max_phase, molecule_dictionary.molecule_type, compound_structures.canonical_smiles FROM docs JOIN compound_records ON docs.doc_id = compound_records.doc_id JOIN molecule_dictionary ON compound_records.molregno = molecule_dictionary.molregno JOIN compound_structures ON molecule_dictionary.molregno = compound_structures.molregno WHERE docs.chembl_id = 'CHEMBL1140610'",
+    "sql_model": "zai-anthropic/glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n9 | 0 | 0 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 0 | SEARCH compound_records USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 0 | SEARCH molecule_dictionary USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 0 | SEARCH compound_structures USING INDEX compound_structures_pk (molregno=?)",
+    "res_row_count": 478,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "max_phase",
+      "molecule_type",
+      "canonical_smiles"
+    ],
+    "res_error": null,
+    "judge_text": "```json\n{\n  \"analysis\": \"The query correctly identifies molecules reported in document CHEMBL1140610 by joining docs, compound_records, molecule_dictionary, and compound_structures. The result includes all requested columns: chembl_id, pref_name, max_phase, molecule_type, and canonical_smiles. The sample shows 200 of 478 total rows, with valid ChEMBL IDs, SMILES strings, and appropriate NULL values for names/phases where not defined. The execution plan is efficient with indexed lookups. This fully satisfies the user's request.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "judge_model": "zai-anthropic/glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

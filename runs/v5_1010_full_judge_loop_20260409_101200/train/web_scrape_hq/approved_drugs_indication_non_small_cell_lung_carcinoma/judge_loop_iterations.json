@@ -1,0 +1,22 @@
+[
+  {
+    "n": 1,
+    "up": "List all approved drugs indicated for non-small cell lung carcinoma. For each drug, return: ChEMBL ID, drug name (pref_name), canonical SMILES, EFO ID, indication label (efo_term), and the max phase for that specific indication (max_phase_for_ind). Use tables molecule_dictionary, compound_structures, drug_indication, and molecule_atc_classification where appropriate.",
+    "sql": "SELECT\n  md.chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  di.efo_id,\n  di.efo_term AS indication_label,\n  di.max_phase_for_ind\nFROM drug_indication di\nJOIN molecule_dictionary md ON di.molregno = md.molregno\nJOIN compound_structures cs ON md.molregno = cs.molregno\nWHERE di.mesh_heading = 'Carcinoma, Non-Small-Cell Lung'\nORDER BY di.max_phase_for_ind DESC;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 4\n7 | 0 | 174 | SCAN di\n11 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n18 | 0 | 47 | SEARCH cs USING INDEX compound_structures_pk (molregno=?)\n36 | 0 | 0 | USE TEMP B-TREE FOR ORDER BY",
+    "res_row_count": 468,
+    "res_columns": [
+      "chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "efo_id",
+      "indication_label",
+      "max_phase_for_ind"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

@@ -1,0 +1,7 @@
+1. Objective: Retrieve the first 1000 IC50 activity rows with pChEMBL values for the specified human single-protein target, using only exact standard relation '=' rows with non-null pChEMBL values.
+
+2. Output: assay_chembl_id, target_type, tax_id, canonical_smiles, molecule_chembl_id, standard_type, pchembl_value
+
+3. Source: activities, assays, target_dictionary, molecule_dictionary, compound_structures
+
+4. Logic: Filter activities where standard_type = 'IC50', standard_relation = '=', and pchembl_value IS NOT NULL. Join to assays on assay_id, target_dictionary on tid, molecule_dictionary on molregno, and compound_structures on molregno. Restrict to target chembl_id = 'CHEMBL1293194'. Order by molecule_chembl_id, assay_chembl_id. Limit to 1000 rows.

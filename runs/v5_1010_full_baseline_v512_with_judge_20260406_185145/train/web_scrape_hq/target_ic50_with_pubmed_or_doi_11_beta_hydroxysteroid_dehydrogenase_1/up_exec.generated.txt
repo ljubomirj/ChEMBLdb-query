@@ -1,0 +1,10 @@
+Select compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Join molecule_dictionary as m on m.molregno = a.molregno
+Join activities as a on a.molregno = m.molregno and a.standard_type = 'IC50' and a.standard_relation = '=' and a.standard_units = 'nM'
+Join assays as ass on ass.assay_id = a.assay_id
+Join target_dictionary as t on t.tid = ass.tid
+Join compound_structures as cs on cs.molregno = m.molregno
+Join docs as d on d.doc_id = a.doc_id
+Filter m.chembl_id = 'CHEMBL4235' and t.target_type = 'SINGLE PROTEIN' and t.pref_name = '11-beta-hydroxysteroid dehydrogenase 1' and (d.pubmed_id IS NOT NULL OR d.doi IS NOT NULL)
+Return compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism
+Sort by compound_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, standard_type, standard_relation, standard_value, standard_units, activity_comment, target_chembl_id, target_name, target_organism

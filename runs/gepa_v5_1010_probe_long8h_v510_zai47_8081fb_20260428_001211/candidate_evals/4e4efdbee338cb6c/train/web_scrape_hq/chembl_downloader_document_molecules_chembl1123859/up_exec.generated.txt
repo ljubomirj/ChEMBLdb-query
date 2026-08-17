@@ -1,0 +1,4 @@
+1. Objective: Retrieve all distinct molecules mentioned in document CHEMBL1123859, returning chembl_id, compound_name, and canonical_smiles, ordered by chembl_id, compound_name, canonical_smiles.
+2. Output: chembl_id, compound_name, canonical_smiles
+3. Source: docs, compound_records, molecule_dictionary, compound_structures
+4. Logic: Join docs to compound_records on doc_id, compound_records to molecule_dictionary on molregno, molecule_dictionary to compound_structures on molregno. Filter docs.chembl_id = 'CHEMBL1123859' AND compound_structures.canonical_smiles IS NOT NULL. Select distinct molecule_dictionary.chembl_id, molecule_dictionary.pref_name as compound_name, compound_structures.canonical_smiles. Order by chembl_id, compound_name, canonical_smiles.

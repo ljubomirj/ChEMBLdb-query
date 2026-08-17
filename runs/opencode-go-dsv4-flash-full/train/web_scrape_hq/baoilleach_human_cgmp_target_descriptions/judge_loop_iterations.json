@@ -1,0 +1,17 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve distinct target descriptions from the target_dictionary table for human targets (organism = 'Homo sapiens') where the preferred name (pref_name) starts with 'cGMP'. Return exactly one column named 'target_description' containing these distinct pref_name values.",
+    "sql": "SELECT DISTINCT pref_name AS target_description FROM target_dictionary WHERE organism = 'Homo sapiens' AND pref_name LIKE 'cGMP%';",
+    "sql_model": "openai/deepseek-v4-flash",
+    "plan_summary": "OK\nplan_rows: 2\n4 | 0 | 0 | SEARCH target_dictionary USING INDEX idx_td_org (organism=?)\n18 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 6,
+    "res_columns": [
+      "target_description"
+    ],
+    "res_error": null,
+    "judge_model": "openai/deepseek-v4-flash",
+    "judge_score": 1.0,
+    "judge_decision": true
+  }
+]

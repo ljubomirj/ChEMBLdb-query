@@ -1,0 +1,1098 @@
+{
+  "total_non_target_cases": 98,
+  "family_counts": {
+    "other": 29,
+    "salts": 10,
+    "assay_exact": 27,
+    "document": 29,
+    "metabolism": 3
+  },
+  "template_counts": {
+    "other": {
+      "other_grounded_sql_family": 12,
+      "approved_drugs_with_indications_export": 2,
+      "approved_drugs_with_mechanisms_export": 1,
+      "target_description_list": 2,
+      "drug_indications_export": 1,
+      "human_target_molecule_smiles_export": 6,
+      "target_activity_with_pubmed_or_doi": 5
+    },
+    "salts": {
+      "faq_parent_and_salts_activity_provenance": 10
+    },
+    "assay_exact": {
+      "baoilleach_bioassay_metadata_export": 1,
+      "chembl_downloader_assay_exact_export": 26
+    },
+    "document": {
+      "chembl_downloader_document_molecules_export": 29
+    },
+    "metabolism": {
+      "metabolism_example_export": 1,
+      "metabolism_first_n_with_parent_name_enrichment": 1,
+      "metabolism_first_n_with_record_keys": 1
+    }
+  },
+  "examples": {
+    "other": {
+      "other_grounded_sql_family": [
+        "abhik_human_sub50nm_single_protein_first200",
+        "all_single_protein_targets_accession_sequence",
+        "baoilleach_herg_ic50_export",
+        "baoilleach_human_hsp90_molecule_smiles",
+        "chembl_downloader_count_activities"
+      ],
+      "approved_drugs_with_indications_export": [
+        "approved_drugs_with_indications_and_efo",
+        "leelasd_approved_drugs_with_indications"
+      ],
+      "approved_drugs_with_mechanisms_export": [
+        "approved_drugs_with_mechanisms"
+      ],
+      "target_description_list": [
+        "baoilleach_celegans_target_descriptions",
+        "baoilleach_human_cgmp_target_descriptions"
+      ],
+      "drug_indications_export": [
+        "chembl_downloader_drug_indications"
+      ],
+      "human_target_molecule_smiles_export": [
+        "human_dpp4_molecule_smiles",
+        "human_egfr_molecule_smiles",
+        "human_erbb2_molecule_smiles",
+        "human_jak2_molecule_smiles",
+        "human_kit_molecule_smiles"
+      ],
+      "target_activity_with_pubmed_or_doi": [
+        "target_ic50_with_pubmed_or_doi_dpp4",
+        "target_ic50_with_pubmed_or_doi_egfr",
+        "target_ic50_with_pubmed_or_doi_erbb2",
+        "target_ic50_with_pubmed_or_doi_jak2",
+        "target_ic50_with_pubmed_or_doi_kit"
+      ]
+    },
+    "salts": {
+      "faq_parent_and_salts_activity_provenance": [
+        "afatinib_egfr_ic50_salts",
+        "alogliptin_dpp4_ic50_salts",
+        "cabozantinib_met_ic50_salts",
+        "ceritinib_alk_ic50_salts",
+        "imatinib_kit_ic50_salts"
+      ]
+    },
+    "assay_exact": {
+      "baoilleach_bioassay_metadata_export": [
+        "baoilleach_herg_bioassay_metadata"
+      ],
+      "chembl_downloader_assay_exact_export": [
+        "chembl_downloader_assay_chembl1217643_exact",
+        "chembl_downloader_assay_chembl1217644_exact",
+        "chembl_downloader_assay_chembl1267250_exact",
+        "chembl_downloader_assay_chembl1614455_exact",
+        "chembl_downloader_assay_chembl1614458_exact"
+      ]
+    },
+    "document": {
+      "chembl_downloader_document_molecules_export": [
+        "chembl_downloader_document_molecules_chembl1123558",
+        "chembl_downloader_document_molecules_chembl1123858",
+        "chembl_downloader_document_molecules_chembl1123859",
+        "chembl_downloader_document_molecules_chembl1123860",
+        "chembl_downloader_document_molecules_chembl1123873"
+      ]
+    },
+    "metabolism": {
+      "metabolism_example_export": [
+        "iwatobipen_metabolism_example"
+      ],
+      "metabolism_first_n_with_parent_name_enrichment": [
+        "metabolism_first200_parent_names"
+      ],
+      "metabolism_first_n_with_record_keys": [
+        "metabolism_first200_with_record_keys"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "case_id": "abhik_human_sub50nm_single_protein_first200",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/abhik_human_sub50nm_single_protein_first200.json",
+      "sql_gold_path": "tests/fixtures/web_scrape3/abhik_human_sub50nm_single_protein_first200/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape3/abhik_human_sub50nm_single_protein_first200/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "afatinib_egfr_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/afatinib_egfr_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/afatinib_egfr_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/afatinib_egfr_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "all_single_protein_targets_accession_sequence",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/all_single_protein_targets_accession_sequence.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/all_single_protein_targets_accession_sequence/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "alogliptin_dpp4_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/alogliptin_dpp4_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/alogliptin_dpp4_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/alogliptin_dpp4_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "approved_drugs_with_indications_and_efo",
+      "family": "other",
+      "template_key": "approved_drugs_with_indications_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_indications_and_efo.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/approved_drugs_with_indications_and_efo/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "approved_drugs_with_mechanisms",
+      "family": "other",
+      "template_key": "approved_drugs_with_mechanisms_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/approved_drugs_with_mechanisms.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/approved_drugs_with_mechanisms/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/approved_drugs_with_mechanisms/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "baoilleach_celegans_target_descriptions",
+      "family": "other",
+      "template_key": "target_description_list",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_celegans_target_descriptions.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/baoilleach_celegans_target_descriptions/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/baoilleach_celegans_target_descriptions/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "baoilleach_herg_bioassay_metadata",
+      "family": "assay_exact",
+      "template_key": "baoilleach_bioassay_metadata_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_herg_bioassay_metadata.json",
+      "sql_gold_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape4/baoilleach_herg_bioassay_metadata/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "baoilleach_herg_ic50_export",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_herg_ic50_export.json",
+      "sql_gold_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape4/baoilleach_herg_ic50_export/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "baoilleach_human_cgmp_target_descriptions",
+      "family": "other",
+      "template_key": "target_description_list",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_human_cgmp_target_descriptions.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/baoilleach_human_cgmp_target_descriptions/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/baoilleach_human_cgmp_target_descriptions/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "baoilleach_human_hsp90_molecule_smiles",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/baoilleach_human_hsp90_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/baoilleach_human_hsp90_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/baoilleach_human_hsp90_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "cabozantinib_met_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/cabozantinib_met_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/cabozantinib_met_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/cabozantinib_met_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "ceritinib_alk_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/ceritinib_alk_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/ceritinib_alk_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/ceritinib_alk_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1217643_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1217643_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217643_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217643_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217643_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1217644_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1217644_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape7/chembl_downloader_assay_chembl1217644_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1267250_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1267250_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1267250_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1267250_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1267250_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1614455_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1614455_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1614455_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1614455_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1614455_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1614458_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1614458_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614458_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614458_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614458_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1614459_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1614459_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614459_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614459_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl1614459_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1794523_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1794523_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1794523_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1794523_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1794523_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl1964022_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl1964022_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1964022_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1964022_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl1964022_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl3705858_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3705858_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705858_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705858_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705858_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl3705960_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3705960_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705960_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705960_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl3705960_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl3885862_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3885862_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885862_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885862_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885862_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl3885863_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3885863_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885863_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885863_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885863_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl3885882_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl3885882_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885882_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885882_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl3885882_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649942_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649942_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649942_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649942_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649942_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649948_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649948_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649948_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649948_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649948_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649949_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649949_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649949_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649949_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649949_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649952_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649952_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649952_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649952_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649952_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649955_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649955_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649955_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649955_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649955_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4649962_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4649962_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649962_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649962_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4649962_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4689845_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4689845_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689845_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689845_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689845_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4689846_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4689846_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689846_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689846_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689846_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4689853_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4689853_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689853_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689853_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4689853_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl4888485_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl4888485_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4888485_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4888485_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape20/chembl_downloader_assay_chembl4888485_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl5732041_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl5732041_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl5732041_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl5732041_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape12/chembl_downloader_assay_chembl5732041_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl647319_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl647319_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape9/chembl_downloader_assay_chembl647319_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape9/chembl_downloader_assay_chembl647319_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape9/chembl_downloader_assay_chembl647319_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_assay_chembl829152_exact",
+      "family": "assay_exact",
+      "template_key": "chembl_downloader_assay_exact_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_assay_chembl829152_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape3/chembl_downloader_assay_chembl829152_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape3/chembl_downloader_assay_chembl829152_exact/uq.txt",
+      "uq_benchmark_spec_path": "tests/fixtures/web_scrape3/chembl_downloader_assay_chembl829152_exact/benchmark_spec_uq.txt",
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_count_activities",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_count_activities.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/chembl_downloader_count_activities/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/chembl_downloader_count_activities/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123558",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123558.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1123558/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1123558/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123858",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123858.json",
+      "sql_gold_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123858/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123858/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123859",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123859.json",
+      "sql_gold_path": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape3/chembl_downloader_document_molecules_chembl1123859/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123860",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123860.json",
+      "sql_gold_path": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape7/chembl_downloader_document_molecules_chembl1123860/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123873",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123873.json",
+      "sql_gold_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123873/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123873/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123890",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123890.json",
+      "sql_gold_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123890/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123890/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1123892",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1123892.json",
+      "sql_gold_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123892/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape9/chembl_downloader_document_molecules_chembl1123892/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1125325",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1125325.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1125325/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1125325/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1126796",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1126796.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1126796/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1126796/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1131436",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1131436.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1131436/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1131436/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1133512",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1133512.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1133512/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1133512/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1134488",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1134488.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1134488/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1134488/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1134522",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1134522.json",
+      "sql_gold_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1134522/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape13/chembl_downloader_document_molecules_chembl1134522/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1138844",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1138844.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1138844/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1138844/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1139796",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1139796.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1139796/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1139796/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1140357",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1140357.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1140357/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1140357/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1142695",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1142695.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1142695/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1142695/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1142710",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1142710.json",
+      "sql_gold_path": "tests/fixtures/web_scrape16/chembl_downloader_document_molecules_chembl1142710/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape16/chembl_downloader_document_molecules_chembl1142710/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1145073",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1145073.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1145073/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1145073/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1147425",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1147425.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1147425/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1147425/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1240317",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1240317.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1240317/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1240317/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl1287767",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl1287767.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1287767/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl1287767/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl2417551",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl2417551.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl2417551/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl2417551/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl3044971",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl3044971.json",
+      "sql_gold_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl3044971/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape21/chembl_downloader_document_molecules_chembl3044971/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl3638969",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl3638969.json",
+      "sql_gold_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl3638969/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl3638969/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl3886467",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl3886467.json",
+      "sql_gold_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl3886467/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl3886467/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl4376833",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl4376833.json",
+      "sql_gold_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4376833/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4376833/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl4420072",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl4420072.json",
+      "sql_gold_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4420072/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4420072/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_document_molecules_chembl4433236",
+      "family": "document",
+      "template_key": "chembl_downloader_document_molecules_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_document_molecules_chembl4433236.json",
+      "sql_gold_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4433236/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape22/chembl_downloader_document_molecules_chembl4433236/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_drug_indications",
+      "family": "other",
+      "template_key": "drug_indications_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_drug_indications.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/chembl_downloader_drug_indications/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "chembl_downloader_id_name_pairs",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_id_name_pairs.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/chembl_downloader_id_name_pairs/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/chembl_downloader_id_name_pairs/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "human_dpp4_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_dpp4_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_dpp4_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_dpp4_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_egfr_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_egfr_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_egfr_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_erbb2_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_erbb2_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_erbb2_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_erbb2_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_jak2_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_jak2_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_jak2_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_jak2_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_kit_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_kit_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_kit_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_kit_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_pde5_molecule_smiles",
+      "family": "other",
+      "template_key": "human_target_molecule_smiles_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_pde5_molecule_smiles.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_pde5_molecule_smiles/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "human_single_protein_targets_accession_sequence",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/human_single_protein_targets_accession_sequence.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/human_single_protein_targets_accession_sequence/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "imatinib_kit_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/imatinib_kit_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/imatinib_kit_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/imatinib_kit_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "iwatobipen_ki_target_tid_pref_name",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_ki_target_tid_pref_name.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/iwatobipen_ki_target_tid_pref_name/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "iwatobipen_metabolism_example",
+      "family": "metabolism",
+      "template_key": "metabolism_example_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/iwatobipen_metabolism_example.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/iwatobipen_metabolism_example/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "leelasd_approved_drugs_with_indications",
+      "family": "other",
+      "template_key": "approved_drugs_with_indications_export",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_indications.json",
+      "sql_gold_path": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape2/leelasd_approved_drugs_with_indications/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "leelasd_approved_drugs_with_structures",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_structures.json",
+      "sql_gold_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "realistic_surface"
+    },
+    {
+      "case_id": "metabolism_first200_parent_names",
+      "family": "metabolism",
+      "template_key": "metabolism_first_n_with_parent_name_enrichment",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_parent_names.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/metabolism_first200_parent_names/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/metabolism_first200_parent_names/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "metabolism_first200_with_record_keys",
+      "family": "metabolism",
+      "template_key": "metabolism_first_n_with_record_keys",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/metabolism_first200_with_record_keys.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/metabolism_first200_with_record_keys/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "rofecoxib_ptgs2_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/rofecoxib_ptgs2_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/rofecoxib_ptgs2_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/rofecoxib_ptgs2_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "selective_cdk2_over_cdk5_smiles_exact",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_cdk2_over_cdk5_smiles_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/selective_cdk2_over_cdk5_smiles_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/selective_cdk2_over_cdk5_smiles_exact/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "selective_egfr_over_erbb2_smiles_exact",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_egfr_over_erbb2_smiles_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/selective_egfr_over_erbb2_smiles_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/selective_egfr_over_erbb2_smiles_exact/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "selective_jak2_over_jak1_smiles_exact",
+      "family": "other",
+      "template_key": "other_grounded_sql_family",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/selective_jak2_over_jak1_smiles_exact.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/selective_jak2_over_jak1_smiles_exact/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/selective_jak2_over_jak1_smiles_exact/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "sitagliptin_dpp4_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/sitagliptin_dpp4_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/sitagliptin_dpp4_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/sitagliptin_dpp4_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "sorafenib_vegfr2_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/sorafenib_vegfr2_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/sorafenib_vegfr2_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/sorafenib_vegfr2_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "tacrine_acetylcholinesterase_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/tacrine_acetylcholinesterase_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/tacrine_acetylcholinesterase_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/tacrine_acetylcholinesterase_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "target_ic50_with_pubmed_or_doi_dpp4",
+      "family": "other",
+      "template_key": "target_activity_with_pubmed_or_doi",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_dpp4.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_dpp4/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_dpp4/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "target_ic50_with_pubmed_or_doi_egfr",
+      "family": "other",
+      "template_key": "target_activity_with_pubmed_or_doi",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_egfr.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_egfr/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "target_ic50_with_pubmed_or_doi_erbb2",
+      "family": "other",
+      "template_key": "target_activity_with_pubmed_or_doi",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_erbb2.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_erbb2/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_erbb2/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "target_ic50_with_pubmed_or_doi_jak2",
+      "family": "other",
+      "template_key": "target_activity_with_pubmed_or_doi",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_jak2.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_jak2/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_jak2/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "target_ic50_with_pubmed_or_doi_kit",
+      "family": "other",
+      "template_key": "target_activity_with_pubmed_or_doi",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/target_ic50_with_pubmed_or_doi_kit.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_kit/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/target_ic50_with_pubmed_or_doi_kit/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    },
+    {
+      "case_id": "tofacitinib_jak2_ic50_salts",
+      "family": "salts",
+      "template_key": "faq_parent_and_salts_activity_provenance",
+      "source_manifest": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/tofacitinib_jak2_ic50_salts.json",
+      "sql_gold_path": "tests/fixtures/web_scrape/tofacitinib_jak2_ic50_salts/sqlite.sql",
+      "uq_surface_path": "tests/fixtures/web_scrape/tofacitinib_jak2_ic50_salts/uq.txt",
+      "uq_benchmark_spec_path": null,
+      "realism_level": "templated_surface"
+    }
+  ]
+}

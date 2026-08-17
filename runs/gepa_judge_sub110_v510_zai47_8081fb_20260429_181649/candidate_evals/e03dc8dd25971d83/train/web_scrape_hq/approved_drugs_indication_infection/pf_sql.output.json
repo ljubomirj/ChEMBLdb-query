@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_judge_sub110_v510_zai47_8081fb_20260429_181649/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/approved_drugs_indication_infection.json",
+  "case_id": "approved_drugs_indication_infection",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "sql",
+  "text": "SELECT DISTINCT d.chembl_id AS chembl_id, d.pref_name AS name, s.canonical_smiles AS smiles, di.efo_id AS efo_id, di.efo_term AS indication, di.mesh_id AS mesh_id, di.mesh_heading AS indication_heading, di.max_phase_for_ind AS max_phase_for_ind\nFROM molecule_dictionary d\nINNER JOIN drug_indication di ON d.molregno = di.molregno\nINNER JOIN compound_structures s ON d.molregno = s.molregno\nWHERE d.therapeutic_flag = 1\n  AND d.oral = 1\n  AND d.black_box_warning = 0\n  AND d.withdrawn_flag = 0\n  AND di.mesh_id IS NOT NULL\n  AND di.mesh_heading IS NOT NULL\nORDER BY di.mesh_heading ASC, di.efo_term ASC;"
+}

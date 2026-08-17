@@ -1,0 +1,73 @@
+# v4.11 on v4.5 failure shortlist
+
+- report: `/Users/ljubomir/ChEMBLdb-query/experiments/evals/v4.11_on_v4.5_zai/eval_prompt_pack_v4.11_20260319_zai/report.json`
+- total cases: `91`
+- exact pass: `31`
+- failures: `60`
+
+## Family counts
+- `compare_error`: `18`
+- `row_mismatch`: `38`
+- `value_mismatch`: `4`
+
+## Cases
+- `train` `chembl_downloader_target_chembl1785_ic50_human_pchembl`: `row_mismatch` score=`0.496632` status=`partial`
+- `train` `chembl_downloader_target_chembl258_ic50_human_pchembl`: `row_mismatch` score=`0.278438` status=`partial`
+- `train` `chembl_downloader_target_chembl4561_ic50_human_pchembl`: `row_mismatch` score=`0.536626` status=`partial`
+- `train` `chembl_downloader_target_chembl1855_ic50_human_pchembl`: `row_mismatch` score=`0.359575` status=`partial`
+- `train` `chembl_downloader_target_chembl4607_ic50_human_pchembl`: `row_mismatch` score=`0.354915` status=`partial`
+- `train` `chembl_downloader_target_chembl1929_ic50_human_pchembl`: `row_mismatch` score=`0.464736` status=`partial`
+- `train` `chembl_downloader_target_chembl4426_ic50_human_pchembl`: `row_mismatch` score=`0.520441` status=`partial`
+- `train` `chembl_downloader_target_chembl283_ic50_human_pchembl`: `row_mismatch` score=`0.290632` status=`partial`
+- `train` `chembl_downloader_target_chembl236_ic50_human_pchembl`: `row_mismatch` score=`0.335162` status=`partial`
+- `train` `chembl_downloader_target_chembl3890_ic50_human_pchembl`: `row_mismatch` score=`0.345113` status=`partial`
+- `train` `chembl_downloader_target_chembl2034_ic50_human_pchembl`: `row_mismatch` score=`0.251911` status=`partial`
+- `train` `chembl_downloader_target_chembl1994_ic50_human_pchembl`: `row_mismatch` score=`0.499836` status=`partial`
+- `train` `chembl_downloader_target_chembl286_ic50_human_pchembl`: `row_mismatch` score=`0.26292` status=`partial`
+- `train` `chembl_downloader_target_chembl4481_ic50_human_pchembl`: `row_mismatch` score=`0.514177` status=`partial`
+- `train` `chembl_downloader_target_chembl3568_ic50_human_pchembl`: `row_mismatch` score=`0.518213` status=`partial`
+- `train` `chembl_downloader_target_chembl2520_ic50_human_pchembl`: `value_mismatch` score=`0.571429` status=`partial`
+- `train` `chembl_downloader_target_chembl2334_ic50_human_pchembl`: `row_mismatch` score=`0.336513` status=`partial`
+- `train` `chembl_downloader_target_chembl287_ic50_human_pchembl`: `row_mismatch` score=`0.38251` status=`partial`
+- `val` `chembl_downloader_target_chembl4822_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_target_chembl4040_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_target_chembl5113_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_assay_chembl3885862_exact`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_document_molecules_chembl1140357`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_document_molecules_chembl1145073`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_document_molecules_chembl3886467`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_document_molecules_chembl4433236`: `compare_error` score=`0.85` status=`partial`
+- `val` `chembl_downloader_target_chembl1835_ic50_human_pchembl`: `row_mismatch` score=`0.367152` status=`partial`
+- `val` `chembl_downloader_target_chembl234_ic50_human_pchembl`: `row_mismatch` score=`0.315136` status=`partial`
+- `val` `chembl_downloader_target_chembl1944_ic50_human_pchembl`: `row_mismatch` score=`0.525245` status=`partial`
+- `val` `chembl_downloader_target_chembl4128_ic50_human_pchembl`: `row_mismatch` score=`0.383333` status=`partial`
+- `val` `chembl_downloader_target_chembl298_ic50_human_pchembl`: `row_mismatch` score=`0.444653` status=`partial`
+- `val` `chembl_downloader_target_chembl4073_ic50_human_pchembl`: `row_mismatch` score=`0.380233` status=`partial`
+- `val` `chembl_downloader_target_chembl3070_ic50_human_pchembl`: `row_mismatch` score=`0.435954` status=`partial`
+- `val` `chembl_downloader_target_chembl1871_ic50_human_pchembl`: `row_mismatch` score=`0.267352` status=`partial`
+- `val` `chembl_downloader_target_chembl205_ic50_human_pchembl`: `row_mismatch` score=`0.358257` status=`partial`
+- `val` `chembl_downloader_target_chembl2413_ic50_human_pchembl`: `row_mismatch` score=`0.516817` status=`partial`
+- `val` `chembl_downloader_target_chembl249_ic50_human_pchembl`: `row_mismatch` score=`0.302619` status=`partial`
+- `test` `chembl_downloader_count_activities`: `value_mismatch` score=`0.4` status=`partial`
+- `test` `chembl_downloader_assay_chembl1794523_exact`: `value_mismatch` score=`0.9` status=`partial`
+- `test` `chembl_downloader_assay_chembl3705858_exact`: `value_mismatch` score=`0.9` status=`partial`
+- `test` `chembl_downloader_target_chembl2971_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl5251_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl325_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl1865_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl220_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl5145_ic50_human_pchembl`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_assay_chembl4689846_exact`: `compare_error` score=`0.799017` status=`partial`
+- `test` `chembl_downloader_document_molecules_chembl1139796`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_document_molecules_chembl1240317`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_document_molecules_chembl4420072`: `compare_error` score=`0.85` status=`partial`
+- `test` `chembl_downloader_target_chembl3921_ic50_human_pchembl`: `row_mismatch` score=`0.553171` status=`partial`
+- `test` `chembl_downloader_target_chembl3356_ic50_human_pchembl`: `row_mismatch` score=`0.156436` status=`partial`
+- `test` `chembl_downloader_target_chembl217_ic50_human_pchembl`: `row_mismatch` score=`0.340705` status=`partial`
+- `test` `chembl_downloader_target_chembl1902_ic50_human_pchembl`: `row_mismatch` score=`0.549301` status=`partial`
+- `test` `chembl_downloader_target_chembl1801_ic50_human_pchembl`: `row_mismatch` score=`0.411747` status=`partial`
+- `test` `chembl_downloader_target_chembl2061_ic50_human_pchembl`: `row_mismatch` score=`0.548844` status=`partial`
+- `test` `chembl_downloader_target_chembl252_ic50_human_pchembl`: `row_mismatch` score=`0.327131` status=`partial`
+- `test` `chembl_downloader_target_chembl233_ic50_human_pchembl`: `row_mismatch` score=`0.297931` status=`partial`
+- `test` `chembl_downloader_target_chembl332_ic50_human_pchembl`: `row_mismatch` score=`0.179832` status=`partial`
+- `test` `chembl_downloader_target_chembl333_ic50_human_pchembl`: `row_mismatch` score=`0.254936` status=`partial`

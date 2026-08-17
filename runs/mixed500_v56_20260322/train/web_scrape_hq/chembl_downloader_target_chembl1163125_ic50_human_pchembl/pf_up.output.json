@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/chembl_downloader_target_chembl1163125_ic50_human_pchembl.json",
+  "case_id": "chembl_downloader_target_chembl1163125_ic50_human_pchembl",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "target_pchembl",
+  "selected_step": "up",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```json\n{\n  \"up\": \"Select assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value for IC50 activity rows against human single-protein target CHEMBL1163125 (Bromodomain-containing protein 4). Join molecule_dictionary to activities on molregno, join assays on assay_id, join target_dictionary on tid, and join compound_structures on molregno. Filter by target chembl_id CHEMBL1163125, target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation equals, and pchembl_value not null. Keep all qualifying activity rows without deduplication. Sort by molecule_chembl_id then assay_chembl_id.\"\n}\n```",
+    "parsed_json": {
+      "up": "Select assay ChEMBL ID, target type, tax ID, canonical SMILES, molecule ChEMBL ID, standard type, and pChEMBL value for IC50 activity rows against human single-protein target CHEMBL1163125 (Bromodomain-containing protein 4). Join molecule_dictionary to activities on molregno, join assays on assay_id, join target_dictionary on tid, and join compound_structures on molregno. Filter by target chembl_id CHEMBL1163125, target_type SINGLE PROTEIN, tax_id 9606, standard_type IC50, standard_relation equals, and pchembl_value not null. Keep all qualifying activity rows without deduplication. Sort by molecule_chembl_id then assay_chembl_id."
+    }
+  }
+}

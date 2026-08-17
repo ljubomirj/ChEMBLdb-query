@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "up": "Find all molecules (compound records) that are associated with the document having chembl_id CHEMBL5725679. For each such molecule, return the following columns: the compound's unique identifier (molecule_chembl_id), the molecule's pref_name, the source database identifier (src_compound_id), and the document details (title, year, journal). The molecule must have at least one associated activity record in the document (activities.doc_id = CHEMBL5725679).",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, md.pref_name, cr.src_compound_id, d.title, d.year, d.journal FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities a ON cr.record_id = a.record_id WHERE d.chembl_id = 'CHEMBL5725679';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve all compound records linked to the document with chembl_id CHEMBL5725679, including each molecule's unique internal key (molecule_chembl_id), preferred name (pref_name), the source database compound identifier (src_compound_id), and the full citation details (title, year, journal) of the associated document. Each result must be linked to at least one activity row where the activity's associated document identifier (doc_id) matches CHEMBL5725679. Do not filter by activity standard type, units, or target; only ensure the activity connects the molecule to the specified document. Return one row per unique combination of molecule_chembl_id, pref_name, src_compound_id, title, year, and journal.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, md.pref_name, cr.src_compound_id, d.title, d.year, d.journal FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities a ON cr.record_id = a.record_id WHERE d.chembl_id = 'CHEMBL5725679' AND a.molecule_chembl_id = md.molecule_chembl_id;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve each molecule that has at least one activity linked to the document with chembl_id CHEMBL5725679. For every matching molecule return the columns:\n- molecule_chembl_id (the public ChEMBL identifier for the molecule)\n- pref_name (the molecule's preferred name)\n- src_compound_id (the compound identifier used in the source database)\n- title (the title of the associated document)\n- year (the publication year of the associated document)\n- journal (the journal of the associated document)\nThe molecule must be connected to the specified document through at least one activity record. No other filters (such as activity type, unit, target, organism, or assay) should be applied beyond ensuring the activity is linked to the specified document. Return one row per unique combination of molecule_chembl_id, pref_name, src_compound_id, title, year, journal.",
+    "sql": "SELECT DISTINCT md.molecule_chembl_id, md.pref_name, cr.src_compound_id, d.title, d.year, d.journal FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities a ON cr.record_id = a.record_id WHERE d.chembl_id = 'CHEMBL5725679';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: md.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: md.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve each molecule that has at least one activity record linked to the document with chembl_id CHEMBL5725679. For each molecule return the columns: molecule_chembl_id (the public ChEMBL identifier for the molecule), pref_name (the molecule's preferred name), src_compound_id (the source database compound identifier), title (the title of the associated document), year (the publication year of the document), and journal (the journal of the document). The connection between the molecule and the document must be established via at least one activity record (activities.doc_id = CHEMBL5725679). No additional filters on activity type, units, target, organism, or assays are required. Return one row per unique combination of molecule_chembl_id, pref_name, src_compound_id, title, year, journal.",
+    "sql": "SELECT DISTINCT m.molecule_chembl_id, m.pref_name, cr.src_compound_id, d.title, d.year, d.journal FROM molecule_dictionary m JOIN compound_records cr ON m.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities a ON cr.record_id = a.record_id WHERE d.chembl_id = 'CHEMBL5725679';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: m.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: m.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Find all molecules (compound records) that are linked to the document with chembl_id CHEMBL5725679. For each molecule return the public ChEMBL identifier (chembl_id), the preferred name (pref_name), the source database compound identifier (src_compound_id), and the document details (title, year, journal). Ensure each result is linked to the specified document through at least one activity record (activities.doc_id = CHEMBL5725679). No other filters on activity type, units, target, organism, or assay should be applied. Return one row per unique combination of chembl_id, pref_name, src_compound_id, title, year, and journal.",
+    "sql": "SELECT DISTINCT md.chembl_id AS molecule_chembl_id, md.pref_name, cr.src_compound_id, d.title, d.year, d.journal FROM molecule_dictionary md JOIN compound_records cr ON md.molregno = cr.molregno JOIN docs d ON cr.doc_id = d.doc_id JOIN activities a ON cr.record_id = a.record_id WHERE d.chembl_id = 'CHEMBL5725679';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 43 | SEARCH d USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n14 | 0 | 75 | SEARCH cr USING INDEX fk_comp_rec_docid (doc_id=?)\n20 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n27 | 0 | 51 | SEARCH a USING COVERING INDEX fk_act_record_id (record_id=?)\n44 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 836,
+    "res_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "src_compound_id",
+      "title",
+      "year",
+      "journal"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

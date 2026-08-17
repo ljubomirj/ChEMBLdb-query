@@ -1,0 +1,76 @@
+[
+  {
+    "n": 1,
+    "up": "Retrieve all compound keys (compound_key) and their associated CHEMBL IDs (chembl_id) for molecules that were the subject of a published document with the identifier CHEMBL5726094. Return only those compounds that have at least one associated activity record in the ChEMBL database.",
+    "sql": "SELECT DISTINCT a.molecule_chembl_id AS chembl_id, cr.compound_key\nFROM activities a\nJOIN compound_records cr ON a.record_id = cr.record_id\nWHERE cr.doc_id = 5726094\nAND a.activity_id IS NOT NULL;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: no such column: a.molecule_chembl_id",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "no such column: a.molecule_chembl_id",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 2,
+    "up": "Retrieve the CHEMBL identifiers (chembl_id) and compound keys (compound_key) for every compound that has at least one activity record appearing in the document CHEMBL5726094. The user expects each qualifying compound to be listed once, with its public ChEMBL ID (derived from molecule_dictionary) and the compound_key from compound_records, for the document specified.",
+    "sql": "WITH docs AS (SELECT doc_id FROM docs WHERE doc_id = 5726094)\nSELECT DISTINCT md.chembl_id AS chembl_id, cr.compound_key\nFROM activities a\nJOIN docs d ON a.doc_id = d.doc_id\nJOIN compound_records cr ON a.record_id = cr.record_id\nJOIN molecule_dictionary md ON a.molregno = md.molregno\nWHERE d.doc_id = 5726094;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "ERROR: circular reference: docs",
+    "res_row_count": 0,
+    "res_columns": [],
+    "res_error": "circular reference: docs",
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 3,
+    "up": "Retrieve the CHEMBL identifiers (chembl_id) and compound keys (compound_key) for every compound that has at least one activity record appearing in the document CHEMBL5726094. The user expects each qualifying compound to be listed once, with its public ChEMBL ID (derived from molecule_dictionary) and the compound_key from compound_records, for the document specified.",
+    "sql": "SELECT DISTINCT cr.compound_key AS compound_key, md.chembl_id AS chembl_id FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.doc_id = 5726094;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 41 | SEARCH docs USING COVERING INDEX pk_doc_doc_id (doc_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_key",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 4,
+    "up": "Retrieve the CHEMBL identifiers (chembl_id) and compound keys (compound_key) for every compound that has at least one activity record appearing in the document with the identifier CHEMBL5726094. Return each qualifying compound once, showing its public ChEMBL ID (from molecule_dictionary.chembl_id) and the compound_key (from compound_records.compound_key) associated with that document. No additional filters or columns are required.",
+    "sql": "SELECT DISTINCT cr.compound_key AS compound_key, md.chembl_id AS chembl_id FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.doc_id = 5726094;",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n9 | 0 | 41 | SEARCH docs USING COVERING INDEX pk_doc_doc_id (doc_id=?)\n13 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n20 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n26 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n40 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 0,
+    "res_columns": [
+      "compound_key",
+      "chembl_id"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.0,
+    "judge_decision": false
+  },
+  {
+    "n": 5,
+    "up": "Retrieve the CHEMBL identifiers (chembl_id) and compound keys (compound_key) for every compound that has at least one activity record appearing in the document with the identifier CHEMBL5726094. Return each qualifying compound once, showing its public ChEMBL ID (from molecule_dictionary.chembl_id) and the compound_key (from compound_records.compound_key) associated with that document. No additional filters or columns are required.",
+    "sql": "SELECT DISTINCT md.chembl_id AS chembl_id, cr.compound_key FROM activities a JOIN docs ON a.doc_id = docs.doc_id JOIN compound_records cr ON a.record_id = cr.record_id JOIN molecule_dictionary md ON a.molregno = md.molregno WHERE docs.chembl_id = 'CHEMBL5726094';",
+    "sql_model": "glm-4.7",
+    "plan_summary": "OK\nplan_rows: 5\n10 | 0 | 43 | SEARCH docs USING INDEX sqlite_autoindex_docs_2 (chembl_id=?)\n15 | 0 | 101 | SEARCH a USING INDEX fk_act_doc_id (doc_id=?)\n21 | 0 | 47 | SEARCH cr USING INDEX pk_comp_rec_recid (record_id=?)\n27 | 0 | 47 | SEARCH md USING INDEX sqlite_autoindex_molecule_dictionary_1 (molregno=?)\n41 | 0 | 0 | USE TEMP B-TREE FOR DISTINCT",
+    "res_row_count": 814,
+    "res_columns": [
+      "chembl_id",
+      "compound_key"
+    ],
+    "res_error": null,
+    "judge_model": "glm-4.7",
+    "judge_score": 0.95,
+    "judge_decision": true
+  }
+]

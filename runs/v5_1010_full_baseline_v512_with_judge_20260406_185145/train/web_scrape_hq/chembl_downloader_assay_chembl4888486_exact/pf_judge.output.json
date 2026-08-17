@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_assay_chembl4888486_exact.json",
+  "case_id": "chembl_downloader_assay_chembl4888486_exact",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "assay_exact",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "model_id": "glm-4.7",
+    "responses_model_id": "glm-4.7",
+    "dspy_model_id": "anthropic/glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "provenance": {
+      "provider": "zai-anthropic",
+      "model_id": "glm-4.7",
+      "responses_model_id": "glm-4.7",
+      "dspy_model_id": "anthropic/glm-4.7",
+      "base_url": "https://api.z.ai/api/anthropic"
+    },
+    "raw_text": "```json\n{\n  \"analysis\": \"The query correctly implements the user request for exact activity values (standard_relation = '=') and structures (canonical_smiles) for compounds tested in assay CHEMBL4888486. The join path (molecule_dictionary -> activities -> assays -> compound_structures) is appropriate, and the INNER JOIN on compound_structures ensures only compounds with structures are returned. The WHERE clause filters for exact values (standard_relation = '=') and non-null standard_value. The ORDER BY clause matches the requested columns. The result set (4815 rows) is consistent with a large screening assay, and the sample rows show valid data with canonical SMILES, ChEMBL IDs, and exact inhibition percentages.\",\n  \"score\": 1.0,\n  \"decision\": \"stop\"\n}\n```",
+    "parsed_json": {
+      "analysis": "The query correctly implements the user request for exact activity values (standard_relation = '=') and structures (canonical_smiles) for compounds tested in assay CHEMBL4888486. The join path (molecule_dictionary -> activities -> assays -> compound_structures) is appropriate, and the INNER JOIN on compound_structures ensures only compounds with structures are returned. The WHERE clause filters for exact values (standard_relation = '=') and non-null standard_value. The ORDER BY clause matches the requested columns. The result set (4815 rows) is consistent with a large screening assay, and the sample rows show valid data with canonical SMILES, ChEMBL IDs, and exact inhibition percentages.",
+      "score": 1.0,
+      "decision": "stop"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4888486_exact/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4888486_exact/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/chembl_downloader_assay_chembl4888486_exact/pf_judge.generated_artifact_record.json"
+  }
+}

@@ -11,7 +11,7 @@ Watch the latest GEPA per-case LLM outputs (pf_up/pf_sql raw_text) in near real-
 Options:
   --run-dir PATH        GEPA run directory. If omitted, newest gepa_v5_* under --eval-root is used.
   --eval-root PATH      Parent directory containing gepa_v5_* runs.
-                        Default: /opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval
+                        Default: /opt/ljubomir/ChEMBLdb-query/runs
   --step STEP           Which step artifacts to watch: up | sql | both (default: both)
   --lines N             Show last N lines of raw text (default: 120)
   --interval SEC        Poll interval seconds (default: 1)
@@ -21,11 +21,11 @@ Options:
 Examples:
   scripts/tail_gepa_llm_live.sh
   scripts/tail_gepa_llm_live.sh --step sql --interval 2
-  scripts/tail_gepa_llm_live.sh --run-dir experiments/evals/v5_forward_eval/gepa_v5_...
+  scripts/tail_gepa_llm_live.sh --run-dir runs/gepa_v5_...
 EOF
 }
 
-EVAL_ROOT="/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval"
+EVAL_ROOT="/opt/ljubomir/ChEMBLdb-query/runs"
 RUN_DIR=""
 STEP="both"
 LINES=120

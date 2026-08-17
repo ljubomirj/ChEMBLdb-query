@@ -1,0 +1,61 @@
+{
+  "case_id": "leelasd_approved_drugs_with_structures",
+  "corpus": "web_scrape_hq",
+  "split": null,
+  "db_path": "database/latest/chembl_36/chembl_36_sqlite/chembl_36.db",
+  "artifacts": {
+    "uq_surface": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/uq.txt",
+    "up_exec": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b61819595c7f08b9/train/web_scrape_hq/leelasd_approved_drugs_with_structures/up_exec.generated.txt",
+    "sql_gold": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b61819595c7f08b9/train/web_scrape_hq/leelasd_approved_drugs_with_structures/sql.generated.sql",
+    "res_gold": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/ground-truth.csv.zst",
+    "uq_benchmark_spec": null,
+    "res_gold_presentation": null,
+    "source_sql": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/source.sql",
+    "sqlite_sql": "experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_evals/b61819595c7f08b9/train/web_scrape_hq/leelasd_approved_drugs_with_structures/sql.generated.sql",
+    "documentation": "tests/fixtures/web_scrape4/leelasd_approved_drugs_with_structures/documentation.txt"
+  },
+  "metadata": {
+    "family": "other",
+    "origin": "inferred_from_gist_family_and_sql",
+    "source_title": "Extract approved drugs from Chembl local database - structure-bearing variant",
+    "source_url": "https://gist.github.com/leelasd/2d9625c9bca20bc70668270e0f410daa",
+    "realism_level": "realistic_surface",
+    "ambiguity_level": "unambiguous",
+    "size_class": "medium",
+    "expected_output_columns": [
+      "molecule_chembl_id",
+      "pref_name",
+      "canonical_smiles",
+      "max_phase",
+      "first_approval"
+    ],
+    "sort_keys": [
+      "molecule_chembl_id",
+      "canonical_smiles",
+      "max_phase",
+      "first_approval"
+    ],
+    "tags": [
+      "other",
+      "medium"
+    ],
+    "allows_multiple_sql_forms": true,
+    "requires_schema_alias_fidelity": true,
+    "normalize": {
+      "lowercase_columns": "True",
+      "strip_values": "True",
+      "lowercase_values": "[]"
+    },
+    "column_rename_map": {
+      "chembl_id": "molecule_chembl_id"
+    },
+    "float_cols": [],
+    "int_cols": [
+      "max_phase",
+      "first_approval"
+    ],
+    "string_cols": [],
+    "float_tol": 1e-06,
+    "notes": "Migrated automatically from the v4 web_scrape_hq registry."
+  }
+}

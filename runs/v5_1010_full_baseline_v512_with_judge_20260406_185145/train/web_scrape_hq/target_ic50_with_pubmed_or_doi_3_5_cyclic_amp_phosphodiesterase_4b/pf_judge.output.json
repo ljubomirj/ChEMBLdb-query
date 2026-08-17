@@ -1,0 +1,36 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_v5_weakfamilies_glm47_reseed56d_20260406_011416/candidate_cache/candidate_56d01a91befd8d8a.yaml",
+  "prompt_pack_version": "v5.12",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/target_ic50_with_pubmed_or_doi_3_5_cyclic_amp_phosphodiesterase_4b.json",
+  "case_id": "target_ic50_with_pubmed_or_doi_3_5_cyclic_amp_phosphodiesterase_4b",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "judge",
+  "execution": {
+    "provider": "llamacpp",
+    "model": "nemotron-cascade-2-30b-a3b",
+    "model_id": "nemotron-cascade-2-30b-a3b",
+    "responses_model_id": "nemotron-cascade-2-30b-a3b",
+    "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+    "base_url": "http://127.0.0.1:18081/v1",
+    "provenance": {
+      "provider": "llamacpp",
+      "model_id": "nemotron-cascade-2-30b-a3b",
+      "responses_model_id": "nemotron-cascade-2-30b-a3b",
+      "dspy_model_id": "openai/nemotron-cascade-2-30b-a3b",
+      "base_url": "http://127.0.0.1:18081/v1"
+    },
+    "raw_text": "{\n  \"analysis\": \"The current result returns 26 rows of compounds with IC50 values against human PDE4B (CHEMBL275) as requested. The query correctly filters for standard_type='IC50', standard_relation='=', standard_units='nM', assay_type='F', assay_organism='Homo sapiens', and target_dictionary.chembl_id='CHEMBL275'. The output includes all required columns: molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, and target details. The sample rows show valid data with IC50 values in nM, and the query uses DISTINCT appropriately to avoid duplicates. The result set is limited to 2000 rows as requested, and the ordering matches the specification. No extra columns are included, and the provenance (PubMed ID/DOI) is correctly derived from docs. The result appears complete and accurate for the user's query.\",\n  \"score\": 95,\n  \"decision\": \"good_enough\"\n}",
+    "parsed_json": {
+      "analysis": "The current result returns 26 rows of compounds with IC50 values against human PDE4B (CHEMBL275) as requested. The query correctly filters for standard_type='IC50', standard_relation='=', standard_units='nM', assay_type='F', assay_organism='Homo sapiens', and target_dictionary.chembl_id='CHEMBL275'. The output includes all required columns: molecule_chembl_id, canonical_smiles, compound_key, pubmed_id_or_doi, assay_description, and target details. The sample rows show valid data with IC50 values in nM, and the query uses DISTINCT appropriately to avoid duplicates. The result set is limited to 2000 rows as requested, and the ordering matches the specification. No extra columns are included, and the provenance (PubMed ID/DOI) is correctly derived from docs. The result appears complete and accurate for the user's query.",
+      "score": 95,
+      "decision": "good_enough"
+    }
+  },
+  "written_paths": {
+    "step_output_json": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_3_5_cyclic_amp_phosphodiesterase_4b/pf_judge.output.json",
+    "generated_case_manifest": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_3_5_cyclic_amp_phosphodiesterase_4b/generated_case_manifest.json",
+    "generated_artifact_record": "experiments/evals/v5_forward_eval/v5_1010_full_baseline_v512_with_judge_20260406_185145/train/web_scrape_hq/target_ic50_with_pubmed_or_doi_3_5_cyclic_amp_phosphodiesterase_4b/pf_judge.generated_artifact_record.json"
+  }
+}

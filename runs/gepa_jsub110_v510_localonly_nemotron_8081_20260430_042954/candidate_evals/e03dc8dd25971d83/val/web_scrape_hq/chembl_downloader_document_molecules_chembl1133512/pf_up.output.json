@@ -1,0 +1,12 @@
+{
+  "prompt_pack_path": "/opt/ljubomir/ChEMBLdb-query/experiments/evals/v5_forward_eval/gepa_jsub110_v510_localonly_nemotron_8081_20260430_042954/candidate_cache/candidate_e03dc8dd25971d83.yaml",
+  "case_manifest_path": "/opt/ljubomir/ChEMBLdb-query/tests/v5_manifests_1010/web_scrape_hq/chembl_downloader_document_molecules_chembl1133512.json",
+  "case_id": "chembl_downloader_document_molecules_chembl1133512",
+  "split": "val",
+  "corpus": "web_scrape_hq",
+  "family": "document",
+  "candidate_hash": "e03dc8dd25971d83",
+  "metric_mode": "judge-loop",
+  "selected_step": "up",
+  "text": "{\n  \"Select\": \"chembl_id, compound_name, canonical_smiles (DISTINCT)\",\n  \"Source\": \"docs, compound_records, molecule_dictionary, compound_structures\",\n  \"Join\": \"docs.doc_id = compound_records.doc_id; compound_records.molregno = molecule_dictionary.molregno; molecule_dictionary.molregno = compound_structures.molregno\",\n  \"Filter\": \"docs.chembl_id = 'CHEMBL1133512' AND compound_structures.canonical_smiles IS NOT NULL\",\n  \"Sort\": \"chembl_id ASC, compound_name ASC, canonical_smiles ASC\",\n  \"Limit\": null\n}"
+}

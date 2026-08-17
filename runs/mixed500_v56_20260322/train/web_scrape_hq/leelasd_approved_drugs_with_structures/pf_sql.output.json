@@ -1,0 +1,19 @@
+{
+  "prompt_pack_path": "/Users/ljubomir/ChEMBLdb-query/experiments/prompt_pack_v5.6.yaml",
+  "prompt_pack_version": "v5.6",
+  "case_manifest_path": "/Users/ljubomir/ChEMBLdb-query/tests/v5_manifests/web_scrape_hq/leelasd_approved_drugs_with_structures.json",
+  "case_id": "leelasd_approved_drugs_with_structures",
+  "split": "train",
+  "corpus": "web_scrape_hq",
+  "family": "other",
+  "selected_step": "sql",
+  "execution": {
+    "provider": "zai-anthropic",
+    "model": "glm-4.7",
+    "base_url": "https://api.z.ai/api/anthropic",
+    "raw_text": "```sql\nSELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  md.first_approval\nFROM molecule_dictionary md\nJOIN compound_records cr ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE md.max_phase IN (3, 4)\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  md.max_phase,\n  md.first_approval\n```",
+    "parsed_json": {
+      "sql": "SELECT DISTINCT\n  md.chembl_id AS molecule_chembl_id,\n  md.pref_name,\n  cs.canonical_smiles,\n  md.max_phase,\n  md.first_approval\nFROM molecule_dictionary md\nJOIN compound_records cr ON cr.molregno = md.molregno\nLEFT JOIN compound_structures cs ON cs.molregno = md.molregno\nWHERE md.max_phase IN (3, 4)\nORDER BY\n  md.chembl_id,\n  cs.canonical_smiles,\n  md.max_phase,\n  md.first_approval"
+    }
+  }
+}
